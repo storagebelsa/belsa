@@ -589,6 +589,11 @@ a {
   align-items: center;
 }
 
+.belsa-about-section {
+  padding-bottom: 0 !important;
+  overflow: hidden;
+}
+
 .belsa-about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2729,10 +2734,20 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
   .belsa-grid-hero,
   .belsa-grid-2col,
   .belsa-grid-2col-equal,
-  .belsa-banner-grid,
-  .belsa-about-grid {
+  .belsa-banner-grid {
     grid-template-columns: 1fr !important;
     gap: 28px !important;
+  }
+
+  .belsa-about-section {
+    padding-bottom: 0 !important;
+  }
+
+  .belsa-about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   .belsa-about-text {
@@ -2741,11 +2756,21 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
   }
 
   .belsa-about-img-wrap {
+    display: flex !important;
     justify-content: center !important;
+    align-items: flex-end !important;
+    line-height: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   .belsa-about-img-wrap img {
-    max-width: 440px !important;
+    max-width: 390px !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+    vertical-align: bottom !important;
   }
 
   .belsa-grid-4col,

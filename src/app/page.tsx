@@ -56,7 +56,7 @@ export default function HomePage() {
       <MetricsBar />
 
       {/* We Are Belsa Section */}
-      <section className="belsa-section" style={{ paddingBottom: 0, overflow: 'hidden' }}>
+      <section className="belsa-section belsa-about-section" style={{ paddingBottom: 0, overflow: 'hidden' }}>
         <div className="belsa-container belsa-about-grid">
           <div className="belsa-about-text">
             <h2 className="heading-section" style={{ marginBottom: '16px' }}>
