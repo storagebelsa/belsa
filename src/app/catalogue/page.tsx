@@ -88,6 +88,7 @@ export default function CataloguePage() {
   const [selectedCategory, setSelectedCategory] = useState<BelsaCategory>('Air Cylinder');
   const [expandedCategory, setExpandedCategory] = useState<BelsaCategory | null>('Air Cylinder');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isMobileHtoOpen, setIsMobileHtoOpen] = useState(false);
 
   // Custom Series from Google Sheets
   const [sheetSeries, setSheetSeries] = useState<BelsaProductSeries[]>([]);
@@ -100,6 +101,11 @@ export default function CataloguePage() {
     const combined = [...activeCatalogue, ...sheetSeries.filter(s => !activeCatalogue.some(ac => ac.id === s.id))];
     return combined.sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
   }, [activeCatalogue, sheetSeries]);
+
+  // Series filtered by active category for mobile dropdown picker
+  const currentCategorySeries = useMemo(() => {
+    return allSeries.filter(s => s.category === selectedCategory);
+  }, [allSeries, selectedCategory]);
 
   // Series filtered by search query across all categories - sorted A-Z
   const searchFilteredSeries = useMemo(() => {
@@ -531,7 +537,7 @@ export default function CataloguePage() {
         <div className="belsa-container" style={{ display: 'grid', gridTemplateColumns: '290px 1fr', gap: '28px', alignItems: 'start' }}>
           
           {/* SIDEBAR: TEXT-ONLY CATEGORIES & SERIES NAVIGATION (NO PHOTOS) */}
-          <aside className="cat-sidebar-no-print" style={{
+          <aside className="cat-sidebar-no-print cat-sidebar-desktop" style={{
             background: '#ffffff',
             border: '1px solid #e2e8f0',
             borderRadius: '16px',
@@ -804,6 +810,208 @@ export default function CataloguePage() {
 
           </aside>
 
+          {/* MOBILE NAVIGATION BAR: Replaces the heavy vertical accordion on mobile */}
+          <div className="cat-nav-mobile pdf-hide-buttons" style={{
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '16px',
+            padding: '16px',
+            boxShadow: '0 4px 15px -3px rgba(0,0,0,0.05)',
+            marginBottom: '18px'
+          }}>
+            {/* Search Input on Mobile */}
+            <div style={{ position: 'relative', marginBottom: '14px' }}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={lang === 'id' ? 'Cari seri / produk (103)...' : 'Search series / product (103)...'}
+                style={{
+                  width: '100%',
+                  padding: '9px 30px 9px 12px',
+                  borderRadius: '10px',
+                  border: '1.5px solid #cbd5e1',
+                  fontSize: '0.85rem',
+                  outline: 'none',
+                  background: '#f8fafc',
+                  color: '#0f172a',
+                  boxSizing: 'border-box'
+                }}
+              />
+              {searchQuery ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: '#94a3b8',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  ✕
+                </button>
+              ) : (
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#94a3b8"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              )}
+            </div>
+
+            {/* If Search is Active on Mobile */}
+            {searchQuery ? (
+              <div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '8px' }}>
+                  {lang === 'id' ? `Hasil Pencarian (${searchFilteredSeries.length}):` : `Search Results (${searchFilteredSeries.length}):`}
+                </div>
+                {searchFilteredSeries.length === 0 ? (
+                  <div style={{ padding: '12px', textAlign: 'center', color: '#94a3b8', fontSize: '0.82rem' }}>
+                    {lang === 'id' ? 'Tidak ada seri yang cocok.' : 'No matching series found.'}
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '200px', overflowY: 'auto' }}>
+                    {searchFilteredSeries.map(s => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => {
+                          handleSelectProduct(s);
+                          setSearchQuery('');
+                        }}
+                        style={{
+                          textAlign: 'left',
+                          padding: '8px 12px',
+                          borderRadius: '8px',
+                          border: selectedSeries.id === s.id ? '1.5px solid #dc2626' : '1px solid #e2e8f0',
+                          background: selectedSeries.id === s.id ? '#fee2e2' : '#ffffff',
+                          color: selectedSeries.id === s.id ? '#dc2626' : '#0f172a',
+                          fontWeight: selectedSeries.id === s.id ? 800 : 600,
+                          fontSize: '0.84rem',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {s.series} - <span style={{ color: '#64748b', fontSize: '0.78rem' }}>{s.category}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                {/* Horizontal Category Chips Carousel */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                    {lang === 'id' ? 'Kategori Produk:' : 'Product Category:'}
+                  </div>
+                  <div className="cat-mobile-chips" style={{
+                    display: 'flex',
+                    gap: '6px',
+                    overflowX: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    paddingBottom: '4px',
+                    scrollbarWidth: 'none'
+                  }}>
+                    {BELSA_CATEGORIES.map(cat => {
+                      const isCatActive = selectedCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCategory(cat);
+                            setExpandedCategory(cat);
+                            const firstInCat = allSeries.find(s => s.category === cat);
+                            if (firstInCat) handleSelectProduct(firstInCat, cat);
+                          }}
+                          style={{
+                            padding: '6px 14px',
+                            borderRadius: '999px',
+                            fontSize: '0.78rem',
+                            fontWeight: isCatActive ? 800 : 600,
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer',
+                            border: isCatActive ? '1.5px solid #dc2626' : '1px solid #cbd5e1',
+                            background: isCatActive ? '#dc2626' : '#ffffff',
+                            color: isCatActive ? '#ffffff' : '#334155',
+                            transition: 'all 0.15s ease',
+                            flexShrink: 0
+                          }}
+                        >
+                          {cat}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Series Dropdown Selector */}
+                <div>
+                  <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                    {lang === 'id' ? 'Pilih Seri Produk:' : 'Select Series:'}
+                  </div>
+                  <div style={{ position: 'relative' }}>
+                    <select
+                      value={selectedSeries.id}
+                      onChange={(e) => {
+                        const found = allSeries.find(s => s.id === e.target.value);
+                        if (found) handleSelectProduct(found);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '10px 34px 10px 12px',
+                        borderRadius: '10px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        color: '#0f172a',
+                        background: '#ffffff',
+                        appearance: 'none',
+                        outline: 'none',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.03)'
+                      }}
+                    >
+                      {currentCategorySeries.map(s => (
+                        <option key={s.id} value={s.id}>
+                          {s.series} - {cleanSubTitle(s.subTitle[lang])}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#64748b"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
           {/* MAIN PREVIEW AREA */}
           <section id="belsa-catalog-sheet" style={{
             background: '#ffffff',
@@ -827,7 +1035,7 @@ export default function CataloguePage() {
               {/* Left Side: Title & Subtitle with Category Badge */}
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
-                  <h2 style={{
+                  <h2 className="cat-hero-title" style={{
                     fontSize: '2.25rem',
                     fontWeight: 900,
                     color: '#0f172a',
@@ -866,6 +1074,7 @@ export default function CataloguePage() {
                 gap: '5px'
               }}>
                 <img
+                  className="cat-hero-logo"
                   src="/images/logo.webp"
                   alt="BELSA Official Logo"
                   style={{
@@ -1008,6 +1217,131 @@ export default function CataloguePage() {
                 </ul>
               </div>
             </div>
+
+            {/* Mobile Quick Action Buttons (Directly below features, thumb-friendly) */}
+            <div className="cat-mobile-quick-actions pdf-hide-buttons" style={{
+              flexDirection: 'column',
+              gap: '10px',
+              marginBottom: '22px'
+            }}>
+              <button
+                type="button"
+                onClick={handleAddToRfq}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  background: '#1d4ed8',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 12px rgba(29, 78, 216, 0.25)',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  <path d="M12 11h4" />
+                  <path d="M12 16h4" />
+                  <path d="M8 11h.01" />
+                  <path d="M8 16h.01" />
+                </svg>
+                <span>+ {lang === 'id' ? 'Tambah ke Penawaran (RFQ)' : 'Add to RFQ'}</span>
+              </button>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '10px',
+                    borderRadius: '10px',
+                    border: '1px solid #16a34a',
+                    background: '#15803d',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.82rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <span>💬 WhatsApp</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  disabled={isGeneratingPdf}
+                  style={{
+                    padding: '10px',
+                    borderRadius: '10px',
+                    border: '1px solid #ef4444',
+                    background: isGeneratingPdf ? '#991b1b' : '#dc2626',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.82rem',
+                    cursor: isGeneratingPdf ? 'wait' : 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span>📄 {isGeneratingPdf ? 'Membuat...' : 'Unduh PDF'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Toggle Button for How to Order Matrix */}
+            <button
+              type="button"
+              onClick={() => setIsMobileHtoOpen(!isMobileHtoOpen)}
+              className="cat-hto-mobile-toggle pdf-hide-buttons"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                background: isMobileHtoOpen ? '#fee2e2' : '#f8fafc',
+                border: '1.5px solid #fca5a5',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                color: '#991b1b',
+                fontWeight: 800,
+                fontSize: '0.92rem',
+                cursor: 'pointer',
+                marginBottom: '16px',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.1rem' }}>⚙️</span>
+                <span>{lang === 'id' ? 'Tabel Spesifikasi & How to Order' : 'Specification & How to Order Table'}</span>
+              </div>
+              <span style={{
+                fontSize: '0.78rem',
+                background: '#ffffff',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                border: '1px solid #fca5a5',
+                fontWeight: 700
+              }}>
+                {isMobileHtoOpen ? (lang === 'id' ? 'Tutup ▲' : 'Close ▲') : (lang === 'id' ? 'Buka Tabel ▼' : 'Open Table ▼')}
+              </span>
+            </button>
+
+            {/* How to Order Matrix: Always visible on Desktop, collapsible on Mobile */}
+            <div className={`cat-hto-container ${isMobileHtoOpen ? 'is-open' : ''}`}>
 
             {/* Red "How to Order" Ribbon */}
             <div style={{
@@ -1392,6 +1726,8 @@ export default function CataloguePage() {
                   </div>
                 ))}
               </div>
+
+            </div>
 
             </div>
 
