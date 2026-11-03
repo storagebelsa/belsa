@@ -104,11 +104,25 @@ export default function RootLayout({
     <html lang="id">
       <head>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var nf = document.querySelector('script[data-nf-variant]');
+                  if (nf) nf.remove();
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
         />
       </head>
       <body>
+        <div id="nl-badge-frame" style={{ display: 'none' }} aria-hidden="true" />
+        <div id="nl-hud-frame" style={{ display: 'none' }} aria-hidden="true" />
         <LanguageProvider>
           <RfqProvider>
             <Header />

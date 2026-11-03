@@ -3124,3 +3124,25 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
 }
 
 
+
+/* =======================================================
+   NETLIFY BADGE / HUD SUPPRESSION (100% CLEAN BRANDING)
+   ======================================================= */
+#nl-badge-frame,
+#nl-hud-frame,
+iframe[id*="nl-badge"],
+iframe[id*="nl-hud"],
+iframe[src*="netlify"],
+[data-nf-variant],
+.netlify-badge,
+#netlify-badge {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  z-index: -9999 !important;
+}
