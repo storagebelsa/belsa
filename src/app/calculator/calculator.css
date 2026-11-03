@@ -1,0 +1,796 @@
+/* ==========================================================================
+   BELSA ENGINEERING CALCULATOR STYLESHEET (OPTION 1: DASHBOARD SPLIT + STICKY HUD)
+   Matches BELSA Design System (Red #D3232A, Slate #1F2937, Clean Industrial UI)
+   ========================================================================== */
+
+.belsa-calc-page {
+  padding-top: 40px;
+  padding-bottom: 90px;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #F8FAFC 100%);
+  min-height: 100vh;
+}
+
+/* Header & Banner */
+.belsa-calc-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 32px;
+}
+
+.belsa-calc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF1F2;
+  border: 1px solid #FECDD3;
+  color: #D3232A;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+
+.belsa-calc-title {
+  font-size: 2.35rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.belsa-calc-subtitle {
+  font-size: 1.02rem;
+  color: #64748B;
+  line-height: 1.65;
+}
+
+/* Nav Modules Tabs */
+.belsa-calc-nav {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  background: #FFFFFF;
+  padding: 8px;
+  border-radius: 18px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.04);
+  margin-bottom: 32px;
+}
+
+.belsa-calc-tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 13px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #475569;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  user-select: none;
+}
+
+.belsa-calc-tab-btn:hover {
+  background: #F8FAFC;
+  color: #111827;
+}
+
+.belsa-calc-tab-btn.active {
+  background: #D3232A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(211, 35, 42, 0.28);
+}
+
+.belsa-calc-tab-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.belsa-calc-tab-btn:hover svg {
+  transform: translateY(-1px);
+}
+
+/* Main Layout Grid (2 Columns Dashboard) */
+.belsa-calc-grid-2col {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Sticky HUD on Desktop */
+@media (min-width: 1024px) {
+  .belsa-calc-sticky-hud {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+  }
+}
+
+/* Station Card (Left Input Panel) */
+.belsa-calc-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.05);
+  padding: 26px;
+  margin-bottom: 24px;
+}
+
+.belsa-calc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.belsa-calc-card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.belsa-calc-card-title svg {
+  width: 20px;
+  height: 20px;
+  color: #D3232A;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
+.belsa-calc-badge-excel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #F1F5F9;
+  color: #475569;
+  padding: 4px 9px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+  font-family: monospace;
+}
+
+/* Mode Switcher Pill */
+.belsa-calc-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: #F1F5F9;
+  padding: 5px;
+  border-radius: 12px;
+  margin-bottom: 22px;
+}
+
+.belsa-calc-mode-btn {
+  padding: 10px 14px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: #64748B;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.belsa-calc-mode-btn.active {
+  background: #FFFFFF;
+  color: #D3232A;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-weight: 700;
+}
+
+/* Form Groups & Inputs */
+.belsa-calc-form-group {
+  margin-bottom: 20px;
+}
+
+.belsa-calc-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.belsa-calc-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1E293B;
+}
+
+.belsa-calc-label-val {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #D3232A;
+}
+
+.belsa-calc-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.belsa-calc-input {
+  flex: 1;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0F172A;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.belsa-calc-input:focus {
+  border-color: #D3232A;
+  box-shadow: 0 0 0 3px rgba(211, 35, 42, 0.12);
+}
+
+.belsa-calc-select {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0F172A;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.belsa-calc-select:focus {
+  border-color: #D3232A;
+  box-shadow: 0 0 0 3px rgba(211, 35, 42, 0.12);
+}
+
+/* Range Slider */
+.belsa-calc-range {
+  width: 100%;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  outline: none;
+  margin-top: 10px;
+  accent-color: #D3232A;
+  cursor: pointer;
+}
+
+/* Preset Chips */
+.belsa-calc-preset-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.belsa-calc-preset-chip {
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.belsa-calc-preset-chip:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.belsa-calc-preset-chip.active {
+  background: #FFF1F2;
+  border-color: #FECDD3;
+  color: #D3232A;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   UNIFIED COCKPIT / LIVE HUD CARD (Right Column)
+   Merges CAD Blueprint & Live Results into a seamless dual-deck console
+   ========================================================================== */
+.belsa-calc-cockpit {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 10px 32px -4px rgba(15, 23, 42, 0.12);
+  background: #FFFFFF;
+}
+
+/* Top Deck: CAD Blueprint Visual Station */
+.belsa-calc-cockpit-stage {
+  background: #0F172A;
+  border-bottom: 1px solid #1E293B;
+  padding: 20px 22px;
+  color: #F8FAFC;
+}
+
+.belsa-calc-cockpit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.belsa-calc-cockpit-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.belsa-calc-cockpit-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #1E293B;
+  color: #38BDF8;
+  letter-spacing: 0.04em;
+}
+
+.belsa-calc-svg-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0B1120;
+  border-radius: 12px;
+  border: 1px solid #1E293B;
+  padding: 14px;
+}
+
+.belsa-calc-svg-wrapper svg {
+  width: 100%;
+  height: auto;
+  max-height: 165px;
+  display: block;
+}
+
+/* Specs ribbon below SVG */
+.belsa-calc-diagram-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #1E293B;
+}
+
+.belsa-calc-diagram-spec-item {
+  text-align: center;
+}
+
+.belsa-calc-diagram-spec-label {
+  font-size: 0.7rem;
+  color: #64748B;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.belsa-calc-diagram-spec-val {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+
+/* Bottom Deck: Results, Actions, Recommendations */
+.belsa-calc-cockpit-results {
+  padding: 22px;
+  background: #FFFFFF;
+}
+
+.belsa-calc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.belsa-calc-result-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.belsa-calc-result-box.highlight {
+  background: #FFF5F5;
+  border-color: #FECDD3;
+}
+
+.belsa-calc-result-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.belsa-calc-result-val {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.belsa-calc-result-box.highlight .belsa-calc-result-val {
+  color: #D3232A;
+}
+
+.belsa-calc-result-unit {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #64748B;
+  margin-left: 4px;
+}
+
+.belsa-calc-result-sub {
+  font-size: 0.74rem;
+  color: #94A3B8;
+  margin-top: 6px;
+}
+
+/* Status Badges */
+.belsa-calc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.belsa-calc-status-safe {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.belsa-calc-status-warn {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.belsa-calc-status-danger {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+/* Metric Rows Card */
+.belsa-calc-metric-table {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.belsa-calc-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.86rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.belsa-calc-metric-row:last-child {
+  border-bottom: none;
+}
+
+.belsa-calc-metric-label {
+  color: #64748B;
+}
+
+.belsa-calc-metric-val {
+  color: #0F172A;
+  font-weight: 700;
+}
+
+/* Recommendations Card */
+.belsa-calc-rec-card {
+  background: #F8FAFC;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.belsa-calc-rec-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.belsa-calc-rec-title svg {
+  color: #D3232A;
+  width: 17px;
+  height: 17px;
+}
+
+.belsa-calc-rec-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.belsa-calc-rec-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.belsa-calc-rec-item:hover {
+  border-color: #D3232A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 35, 42, 0.08);
+}
+
+.belsa-calc-rec-code {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.belsa-calc-rec-desc {
+  font-size: 0.7rem;
+  color: #64748B;
+}
+
+/* Action Buttons */
+.belsa-calc-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.belsa-calc-btn-wa {
+  flex: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 13px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+}
+
+.belsa-calc-btn-wa:hover {
+  background: #20BA59;
+  transform: translateY(-1px);
+}
+
+.belsa-calc-btn-wa svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.belsa-calc-btn-copy {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #FFFFFF;
+  color: #475569;
+  border: 1.5px solid #CBD5E1;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 13px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.belsa-calc-btn-copy:hover {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  color: #0F172A;
+}
+
+.belsa-calc-btn-copy svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Collapsible Formula Box */
+.belsa-calc-formula-accordion {
+  margin-top: 18px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  background: #F8FAFC;
+  overflow: hidden;
+}
+
+.belsa-calc-formula-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  transition: background 0.15s ease;
+}
+
+.belsa-calc-formula-toggle:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.belsa-calc-formula-body {
+  padding: 12px 16px;
+  border-top: 1px solid #E2E8F0;
+  font-size: 0.8rem;
+  color: #64748B;
+  line-height: 1.6;
+  background: #FFFFFF;
+}
+
+/* Data Table Styles (Module 5 Torque) */
+.belsa-calc-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+}
+
+.belsa-calc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  text-align: left;
+}
+
+.belsa-calc-table th {
+  background: #F8FAFC;
+  padding: 11px 14px;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1px solid #E2E8F0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.belsa-calc-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #1E293B;
+}
+
+.belsa-calc-table tr:hover td {
+  background: #F8FAFC;
+}
+
+.belsa-calc-table tr.active td {
+  background: #FFF1F2 !important;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .belsa-calc-nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .belsa-calc-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .belsa-calc-page {
+    padding-top: 24px;
+  }
+  .belsa-calc-title {
+    font-size: 1.6rem;
+  }
+  .belsa-calc-nav {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .belsa-calc-tab-btn {
+    padding: 10px 8px;
+    font-size: 0.78rem;
+  }
+  .belsa-calc-tab-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .belsa-calc-results-grid {
+    grid-template-columns: 1fr;
+  }
+  .belsa-calc-rec-list {
+    grid-template-columns: 1fr;
+  }
+  .belsa-calc-actions {
+    flex-direction: column;
+  }
+  .belsa-calc-card {
+    padding: 20px 16px;
+  }
+  .belsa-calc-cockpit-results {
+    padding: 18px 14px;
+  }
+  .belsa-calc-cockpit-stage {
+    padding: 16px 14px;
+  }
+}

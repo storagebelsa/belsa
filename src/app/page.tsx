@@ -1,69 +1,218 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React from 'react';
+import Link from 'next/link';
+import MetricsBar from '@/components/MetricsBar';
+import VideoPlayer from '@/components/VideoPlayer';
+import RafitamaLink from '@/components/RafitamaLink';
+import TwoToneTitle from '@/components/TwoToneTitle';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
+
+export default function HomePage() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <main>
+      {/* Hero Section */}
+      <section className="belsa-section" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)' }}>
+        <div className="belsa-container belsa-grid-hero">
+          <div>
+            <h1 className="heading-hero" style={{ color: 'var(--belsa-dark)', marginBottom: '20px' }}>
+              {lang === 'id' ? (
+                <>
+                  Manufaktur Silinder <span style={{ color: 'var(--belsa-red)' }}>Hidrolik & Pneumatik</span>
+                </>
+              ) : (
+                <>
+                  Hydraulic & Pneumatic <span style={{ color: 'var(--belsa-red)' }}>Cylinder Manufacturer</span>
+                </>
+              )}
+            </h1>
+            <p className="subhead" style={{ marginBottom: '32px', maxWidth: '520px' }}>
+              {t.hero.subtitle}
+            </p>
+            <div className="belsa-hero-btns" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <Link href="/products" className="btn-belsa-primary">
+                {t.hero.btnExplore} &rarr;
+              </Link>
+              <Link href="/contact-us" className="btn-belsa-outline">
+                {t.hero.btnContact}
+              </Link>
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <img
+              src="/images/hero_cylinder_user.webp"
+              alt="Hydraulic and Pneumatic Cylinder Precision Engineering"
+              style={{ maxHeight: '440px', width: '100%', objectFit: 'contain' }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Metrics Counter Bar */}
+      <MetricsBar />
+
+      {/* We Are Belsa Section */}
+      <section className="belsa-section" style={{ paddingBottom: 0, overflow: 'hidden' }}>
+        <div className="belsa-container belsa-about-grid">
+          <div className="belsa-about-text">
+            <h2 className="heading-section" style={{ marginBottom: '16px' }}>
+              <TwoToneTitle text={t.weAreBelsa.title} />
+            </h2>
+            <p style={{ color: 'var(--belsa-gray)', lineHeight: 1.8, marginBottom: '24px', fontSize: '1.05rem' }}>
+              {t.weAreBelsa.desc1}{' '}
+              <RafitamaLink>{t.weAreBelsa.companyName}</RafitamaLink>
+              {t.weAreBelsa.desc2}
+            </p>
+            <Link href="/about-us" className="btn-belsa-primary">
+              {t.weAreBelsa.btnMore} &rarr;
+            </Link>
+          </div>
+          <div className="belsa-about-img-wrap">
+            <img
+              src="/images/about_technician.webp"
+              alt="Teknisi PT Rafitama Millenial Wahyudi memegang Silinder Pneumatik BELSA"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Our Products Section (4-column grid on desktop) */}
+      <section className="belsa-section" style={{ backgroundColor: 'var(--belsa-bg-soft)' }}>
+        <div className="belsa-container">
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h2 className="heading-section" style={{ marginBottom: '12px' }}>
+              <TwoToneTitle text={t.homeProducts.title} />
+            </h2>
+            <p className="subhead">{t.homeProducts.subtitle}</p>
+          </div>
+          
+          <div className="belsa-grid-3col" style={{ marginBottom: '40px' }}>
+            {/* 1. Hydraulic & Pneumatic Cylinder */}
+            <Link href="/products/silinder-hidrolik-pneumatik" className="belsa-card">
+              <div className="belsa-card-img-wrap">
+                <img src="/images/prod_cylinder_clean.webp" alt="Silinder Hidrolik & Pneumatik BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
+              </div>
+              <h3 className="heading-card">{t.homeProducts.categories[0].title}</h3>
+              <p className="belsa-card-desc">
+                {t.homeProducts.categories[0].desc}
+              </p>
+              <span className="link-learn-more">
+                {lang === 'id' ? 'Lihat Produk' : 'Explore Products'} &rarr;
+              </span>
+            </Link>
+
+            {/* 2. Industrial Hose */}
+            <Link href="/products/selang-hidrolik-industri" className="belsa-card">
+              <div className="belsa-card-img-wrap">
+                <img src="/images/prod_hose_clean.webp" alt="Selang Hidrolik & Industri BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
+              </div>
+              <h3 className="heading-card">{t.homeProducts.categories[1].title}</h3>
+              <p className="belsa-card-desc">
+                {t.homeProducts.categories[1].desc}
+              </p>
+              <span className="link-learn-more">
+                {lang === 'id' ? 'Lihat Produk' : 'Explore Products'} &rarr;
+              </span>
+            </Link>
+
+            {/* 3. Process Valve */}
+            <Link href="/products/process-valve" className="belsa-card">
+              <div className="belsa-card-img-wrap">
+                <img src="/images/prod_valve_clean.webp" alt="Process Valve BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
+              </div>
+              <h3 className="heading-card">{t.homeProducts.categories[2].title}</h3>
+              <p className="belsa-card-desc">
+                {t.homeProducts.categories[2].desc}
+              </p>
+              <span className="link-learn-more">
+                {lang === 'id' ? 'Lihat Produk' : 'Explore Products'} &rarr;
+              </span>
+            </Link>
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <Link href="/products" className="btn-belsa-primary" style={{ padding: '14px 36px' }}>
+              {t.homeProducts.btnAllProducts} &rarr;
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Engineering Consultation Box */}
+      <section style={{ padding: '20px 0 50px' }}>
+        <div className="belsa-container">
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '20px',
+            padding: '36px 32px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '24px',
+            flexWrap: 'wrap'
+          }}>
+            <div>
+              <span className="belsa-page-eyebrow" style={{ marginBottom: '6px', display: 'inline-block' }}>
+                {lang === 'id' ? 'Konsultasi Fabrikasi & Drawing' : 'Custom Engineering & Drawing Inquiries'}
+              </span>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--belsa-dark)', margin: '0 0 6px 0' }}>
+                {lang === 'id' ? 'Butuh Komponen dengan Spesifikasi Khusus?' : 'Require Custom Specifications or Bespoke Fabrication?'}
+              </h3>
+              <p style={{ color: 'var(--belsa-gray)', margin: 0, fontSize: '0.94rem', maxWidth: '640px', lineHeight: 1.6 }}>
+                {lang === 'id'
+                  ? 'Kirim drawing, sample, atau kebutuhan overhaul komponen mesin Anda. Tim teknis PT. Rafitama Millenial Wahyudi akan membantu menghitung dan menyiapkan penawaran.'
+                  : 'Discuss your CAD drawings, physical samples, or industrial machinery overhaul requirements with our engineering team.'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <Link href="/contact-us" className="btn-belsa-primary">
+                {lang === 'id' ? 'Hubungi Tim Teknis' : 'Contact Engineering Team'} &rarr;
+              </Link>
+              <a
+                href="https://wa.me/6281119168752"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-belsa-outline"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Need Custom Industrial Solution */}
+      <section className="belsa-section">
+        <div className="belsa-container belsa-grid-2col">
+          <div>
+            <h2 className="heading-section" style={{ marginBottom: '16px' }}>
+              <TwoToneTitle text={t.workshop.title} />
+            </h2>
+            <p style={{ color: 'var(--belsa-gray)', lineHeight: 1.8, marginBottom: '28px', fontSize: '1.02rem' }}>
+              {t.workshop.desc}
+            </p>
+            <Link href="/contact-us" className="btn-belsa-primary">
+              {t.workshop.btnContact} &rarr;
+            </Link>
+          </div>
+          <div>
+            <VideoPlayer
+              videoId="V4_F5Im9tks"
+              title={lang === 'id' ? 'Custom Cylinder vs Standard Cylinder: Mengapa Industri Memilih Custom?' : 'Custom Cylinder vs Standard Cylinder: Why Industry Chooses Custom?'}
+              thumbnail="/images/yt_custom_cylinder.webp"
+              badge={lang === 'id' ? 'Video Teknis' : 'Technical Video'}
+              showInfo={false}
+            />
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
