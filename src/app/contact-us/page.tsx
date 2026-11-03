@@ -13,6 +13,7 @@ export default function ContactUsPage() {
 
   const [submitted, setSubmitted] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('hydraulic');
+  const [activeMapTab, setActiveMapTab] = useState<'workshop' | 'office'>('workshop');
 
   const topics = [
     { id: 'hydraulic', labelId: 'Silinder Hidrolik Kustom', labelEn: 'Custom Hydraulic Cylinder' },
@@ -273,7 +274,8 @@ export default function ContactUsPage() {
               borderRadius: '20px',
               padding: '36px',
               boxShadow: '0 6px 24px rgba(0, 0, 0, 0.04)'
-            }}>
+            }}
+            className="contact-form-box">
               {submitted ? (
                 <div style={{ textAlign: 'center', padding: '48px 20px' }}>
                   <div style={{
@@ -353,7 +355,10 @@ export default function ContactUsPage() {
                   </div>
 
                   {/* 2-Column Inputs: Name & Company */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                  <div
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}
+                    className="contact-form-row"
+                  >
                     <div>
                       <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: '6px', color: '#334155' }}>
                         {t.formName}
@@ -394,7 +399,10 @@ export default function ContactUsPage() {
                   </div>
 
                   {/* 2-Column Inputs: Phone & Email */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                  <div
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}
+                    className="contact-form-row"
+                  >
                     <div>
                       <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: '6px', color: '#334155' }}>
                         {t.formPhone}
@@ -637,76 +645,180 @@ export default function ContactUsPage() {
                 </a>
               </div>
 
-              {/* Realtime Workshop Google Maps Card (Replaces Gambar 1) */}
-              <div style={{
-                background: '#FFFFFF',
-                border: '1px solid var(--belsa-border)',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <div style={{ padding: '20px 24px 16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span className="belsa-brand-badge">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <circle cx="12" cy="12" r="10" />
-                        <circle cx="12" cy="12" r="3" fill="currentColor" />
-                      </svg>
-                      {isId ? 'Lokasi di Google Maps' : 'Live Maps Location'}
-                    </span>
-                    <span style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
-                      Pasar Kemis, Tangerang
-                    </span>
-                  </div>
-                  <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--belsa-dark)', margin: '0 0 4px' }}>
-                    {isId ? 'Peta Lokasi Workshop BELSA' : 'BELSA Workshop Location'}
-                  </h4>
-                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748B', lineHeight: 1.5 }}>
-                    Kawasan Pergudangan Sunrise Bizpark, Jl. Raya Prabu Siliwangi Km 3,5, Pasar Kemis, Tangerang
-                  </p>
-                </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                {/* Realtime Google Maps Embed */}
-                <div style={{ position: 'relative', width: '100%', height: '260px', background: '#F1F5F9', borderTop: '1px solid #F1F5F9', borderBottom: '1px solid #F1F5F9' }}>
-                  <iframe
-                    title="Titik Maps Workshop PT Rafitama Millenial Wahyudi"
-                    src="https://maps.google.com/maps?q=-6.178381069208916,106.56286069510205+(Workshop+PT+Rafitama+Millenial+Wahyudi)&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, display: 'block' }}
-                    allowFullScreen={false}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-
-                <div style={{ padding: '16px 24px 20px' }}>
-                  <a
-                    href="https://maps.app.goo.gl/CPFtJNBygVUNbXiQ9"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-belsa-primary"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '12px 20px',
-                      fontSize: '0.88rem',
-                      fontWeight: 700,
-                      width: '100%',
-                      justifyContent: 'center',
-                      textDecoration: 'none'
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="3 11 22 2 13 21 11 13 3 11" />
+      {/* 4. Full-Width Interactive Location Maps Canvas Card */}
+      <section style={{ marginBottom: '60px' }}>
+        <div className="belsa-container">
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--belsa-border)',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            boxShadow: '0 6px 24px rgba(0, 0, 0, 0.04)',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            {/* Header: Title, Address & Interactive Tab Switcher */}
+            <div className="contact-map-header" style={{
+              padding: '24px 28px',
+              borderBottom: '1px solid #F1F5F9',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap'
+            }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                  <span className="belsa-brand-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="3" fill="currentColor" />
                     </svg>
-                    <span>{isId ? 'Buka Rute di Google Maps' : 'Open Navigation in Google Maps'} &rarr;</span>
-                  </a>
+                    {isId ? 'Peta & Akses Lokasi' : 'Live Maps & Navigation'}
+                  </span>
+                  <span style={{ fontSize: '0.78rem', color: '#16A34A', fontWeight: 700, background: '#DCFCE7', padding: '3px 10px', borderRadius: '6px' }}>
+                    {isId ? 'Navigasi Aktif' : 'GPS Active'}
+                  </span>
                 </div>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--belsa-dark)', margin: 0, lineHeight: 1.2 }}>
+                  {activeMapTab === 'workshop'
+                    ? (isId ? 'Titik Lokasi Workshop & Pabrik Fabrikasi BELSA' : 'BELSA Manufacturing Plant & Workshop')
+                    : (isId ? 'Titik Lokasi Kantor Pusat (Head Office)' : 'BELSA Corporate Head Office')}
+                </h3>
+                <p style={{ margin: '4px 0 0', fontSize: '0.86rem', color: '#64748B', lineHeight: 1.5 }}>
+                  {activeMapTab === 'workshop'
+                    ? 'Kawasan Pergudangan Sunrise Bizpark, Jl. Raya Prabu Siliwangi Km 3,5, Pasar Kemis, Tangerang'
+                    : 'Jl. Scientia Garden T/07, Scientia Boulevard, Gading Serpong, Kab. Tangerang – Banten 15334'}
+                </p>
               </div>
+
+              {/* Location Switcher Tabs */}
+              <div style={{
+                display: 'inline-flex',
+                background: '#F1F5F9',
+                padding: '4px',
+                borderRadius: '12px',
+                gap: '4px',
+                width: 'auto'
+              }} className="contact-tab-buttons">
+                <button
+                  type="button"
+                  onClick={() => setActiveMapTab('workshop')}
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '9px',
+                    border: 'none',
+                    background: activeMapTab === 'workshop' ? '#FFFFFF' : 'transparent',
+                    color: activeMapTab === 'workshop' ? 'var(--belsa-red)' : '#64748B',
+                    fontWeight: activeMapTab === 'workshop' ? 800 : 600,
+                    fontSize: '0.84rem',
+                    cursor: 'pointer',
+                    boxShadow: activeMapTab === 'workshop' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span>📍</span>
+                  <span>{isId ? 'Workshop Pasar Kemis' : 'Pasar Kemis Workshop'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveMapTab('office')}
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '9px',
+                    border: 'none',
+                    background: activeMapTab === 'office' ? '#FFFFFF' : 'transparent',
+                    color: activeMapTab === 'office' ? 'var(--belsa-red)' : '#64748B',
+                    fontWeight: activeMapTab === 'office' ? 800 : 600,
+                    fontSize: '0.84rem',
+                    cursor: 'pointer',
+                    boxShadow: activeMapTab === 'office' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span>🏢</span>
+                  <span>{isId ? 'Head Office Gading Serpong' : 'Gading Serpong HO'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Google Maps Full Width Embed Canvas */}
+            <div className="contact-map-frame" style={{ position: 'relative', width: '100%', height: '380px', background: '#F1F5F9' }}>
+              <iframe
+                key={activeMapTab}
+                title={activeMapTab === 'workshop' ? 'Titik Maps Workshop BELSA' : 'Titik Maps Head Office BELSA'}
+                src={
+                  activeMapTab === 'workshop'
+                    ? 'https://maps.google.com/maps?q=-6.178381069208916,106.56286069510205+(Workshop+PT+Rafitama+Millenial+Wahyudi)&t=&z=16&ie=UTF8&iwloc=&output=embed'
+                    : 'https://maps.google.com/maps?q=-6.2575,106.6186+(Head+Office+PT+Rafitama+Millenial+Wahyudi)&t=&z=16&ie=UTF8&iwloc=&output=embed'
+                }
+                width="100%"
+                height="100%"
+                style={{ border: 0, display: 'block' }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+
+            {/* Map Footer Bar with Freight Info and Navigation Button */}
+            <div className="contact-map-footer" style={{
+              padding: '18px 28px',
+              background: '#F8FAFC',
+              borderTop: '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '1.25rem' }}>🚛</span>
+                <span style={{ fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
+                  {activeMapTab === 'workshop'
+                    ? (isId ? 'Akses ekspedisi truk kontainer 20ft & 40ft melalui Tol Jakarta-Merak (Exit Tol Cikupa / Pasar Kemis).' : 'Accessible for 20ft & 40ft container freight trucks via Jakarta-Merak Toll (Cikupa Exit).')
+                    : (isId ? 'Lokasi strategis di Gading Serpong, dekat pusat bisnis dan akses tol Jakarta-Tangerang.' : 'Located strategically in Gading Serpong commercial hub with direct toll access.')}
+                </span>
+              </div>
+
+              <a
+                href={
+                  activeMapTab === 'workshop'
+                    ? 'https://maps.app.goo.gl/CPFtJNBygVUNbXiQ9'
+                    : 'https://share.google/oB67z8Q2J3j44GqfS'
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-belsa-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  borderRadius: '10px',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                </svg>
+                <span>{isId ? 'Buka Navigasi di Google Maps' : 'Open Navigation in Maps'} &rarr;</span>
+              </a>
             </div>
           </div>
         </div>
@@ -791,6 +903,45 @@ export default function ContactUsPage() {
           </div>
         </div>
       </section>
+
+      {/* Responsive Styles for Contact Page */}
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .contact-form-box {
+            padding: 22px 16px !important;
+            border-radius: 16px !important;
+          }
+          .contact-form-row {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+          .contact-map-header {
+            padding: 18px 16px !important;
+          }
+          .contact-tab-buttons {
+            width: 100% !important;
+          }
+          .contact-tab-buttons button {
+            flex: 1 !important;
+            justify-content: center !important;
+            padding: 8px 10px !important;
+            font-size: 0.78rem !important;
+          }
+          .contact-map-frame {
+            height: 280px !important;
+          }
+          .contact-map-footer {
+            padding: 16px !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 14px !important;
+          }
+          .contact-map-footer a {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }
