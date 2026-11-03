@@ -618,6 +618,7 @@ export default function CataloguePage() {
                         <button
                           key={s.id}
                           type="button"
+                          className={`cat-sidebar-item ${isActive ? 'active' : ''}`}
                           onClick={() => handleSelectProduct(s)}
                           onMouseEnter={() => preloadProductImage(s.image)}
                           onTouchStart={() => preloadProductImage(s.image)}
@@ -727,7 +728,7 @@ export default function CataloguePage() {
 
                         {/* Accordion Content: Product Series List */}
                         {isExpanded && (
-                          <div style={{
+                          <div className="cat-accordion-content" style={{
                             padding: '6px 8px 8px',
                             background: '#f8fafc',
                             borderTop: '1px solid #e2e8f0',
@@ -742,6 +743,7 @@ export default function CataloguePage() {
                                 <button
                                   key={s.id}
                                   type="button"
+                                  className={`cat-sidebar-item ${isActive ? 'active' : ''}`}
                                   onClick={() => handleSelectProduct(s, cat)}
                                   onMouseEnter={() => preloadProductImage(s.image)}
                                   onTouchStart={() => preloadProductImage(s.image)}
@@ -812,6 +814,7 @@ export default function CataloguePage() {
             padding: '28px 24px',
             boxShadow: '0 4px 25px -4px rgba(0,0,0,0.05)'
           }}>
+            <div key={selectedSeries.id} className="cat-content-animate">
 
             {/* Top Sheet Header */}
             <div style={{
@@ -985,7 +988,7 @@ export default function CataloguePage() {
                     filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.08))',
                     opacity: isImageLoading ? 0 : 1,
                     transform: isImageLoading ? 'scale(0.96)' : 'scale(1)',
-                    transition: 'opacity 0.28s ease-out, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transition: 'opacity 0.22s ease-out, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
                     zIndex: 1
                   }}
                 />
@@ -1230,6 +1233,7 @@ export default function CataloguePage() {
                                 return (
                                   <tr
                                     key={row.id}
+                                    className={`cat-table-row ${isSel ? 'active' : ''}`}
                                     onClick={() => setDynamicSlots({ ...dynamicSlots, [block.slotIndex]: row.code })}
                                     style={{
                                       cursor: 'pointer',
@@ -1290,6 +1294,7 @@ export default function CataloguePage() {
                             <button
                               key={chip}
                               type="button"
+                              className={`cat-chip-btn ${isSel ? 'active' : ''}`}
                               onClick={() => setDynamicSlots({ ...dynamicSlots, [block.slotIndex]: String(chip) })}
                               style={{
                                 flex: '1 0 50px',
@@ -1328,6 +1333,7 @@ export default function CataloguePage() {
                               <button
                                 key={stk}
                                 type="button"
+                                className={`cat-stroke-btn ${isSel ? 'active' : ''}`}
                                 onClick={() => {
                                   setDynamicSlots({ ...dynamicSlots, [block.slotIndex]: String(stk) });
                                   setDynamicStrokeInput('');
@@ -1426,6 +1432,7 @@ export default function CataloguePage() {
                   {/* Salin Kode Button */}
                   <button
                     type="button"
+                    className="cat-btn-utility"
                     onClick={handleCopyCode}
                     style={{
                       padding: '8px 14px',
@@ -1463,6 +1470,7 @@ export default function CataloguePage() {
                   {/* Cetak Button */}
                   <button
                     type="button"
+                    className="cat-btn-utility"
                     onClick={handlePrint}
                     style={{
                       padding: '8px 14px',
@@ -1499,6 +1507,7 @@ export default function CataloguePage() {
                 {/* 1. Add to RFQ Cart */}
                 <button
                   type="button"
+                  className="cat-btn-primary-action"
                   onClick={handleAddToRfq}
                   style={{
                     padding: '12px 18px',
@@ -1532,6 +1541,7 @@ export default function CataloguePage() {
                 {/* 2. Download PDF Datasheet */}
                 <button
                   type="button"
+                  className="cat-btn-primary-action"
                   onClick={handleDownloadPdf}
                   disabled={isGeneratingPdf}
                   style={{
@@ -1555,7 +1565,7 @@ export default function CataloguePage() {
                 >
                   {isGeneratingPdf ? (
                     <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'belsaSpin 1s linear infinite' }}>
                         <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                         <path d="M12 2a10 10 0 0 1 10 10" />
                       </svg>
@@ -1579,6 +1589,7 @@ export default function CataloguePage() {
                 <a
                   href={whatsappUrl}
                   target="_blank"
+                  className="cat-btn-primary-action"
                   rel="noopener noreferrer"
                   style={{
                     padding: '12px 18px',
@@ -1603,6 +1614,8 @@ export default function CataloguePage() {
                   <span>Pesan via WhatsApp</span>
                 </a>
               </div>
+            </div>
+
             </div>
 
             {/* Dedicated PDF & Print Official Footer (Hidden on Web Screen, Rendered on PDF/Print) */}
@@ -1648,9 +1661,87 @@ export default function CataloguePage() {
 
       {/* Scoped CSS for Print-to-PDF & Responsive */}
       <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        @keyframes belsaFadeIn {
+          from {
+            opacity: 0.25;
+            transform: translateY(4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes belsaAccordionDown {
+          from {
+            opacity: 0;
+            transform: translateY(-4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .cat-content-animate {
+          animation: belsaFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .cat-accordion-content {
+          animation: belsaAccordionDown 0.18s ease-out forwards;
+        }
+        .cat-sidebar-item {
+          transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .cat-sidebar-item:not(.active):hover {
+          background: #f8fafc !important;
+          border-color: #cbd5e1 !important;
+          transform: translateX(3px);
+        }
+        .cat-table-row {
+          transition: background-color 0.15s ease, color 0.15s ease !important;
+        }
+        .cat-table-row:not(.active):hover {
+          background-color: #f1f5f9 !important;
+        }
+        .cat-table-row:not(.active):hover td {
+          color: #0f172a !important;
+        }
+        .cat-chip-btn {
+          transition: all 0.15s ease !important;
+        }
+        .cat-chip-btn:not(.active):hover {
+          border-color: #f87171 !important;
+          color: #dc2626 !important;
+          background-color: #fef2f2 !important;
+          transform: translateY(-1px);
+        }
+        .cat-stroke-btn {
+          transition: all 0.15s ease !important;
+        }
+        .cat-stroke-btn:not(.active):hover {
+          border-color: #f87171 !important;
+          color: #dc2626 !important;
+          background-color: #fef2f2 !important;
+          transform: translateY(-1px);
+        }
+        .cat-btn-utility {
+          transition: all 0.18s ease !important;
+        }
+        .cat-btn-utility:hover {
+          background: rgba(255, 255, 255, 0.16) !important;
+          transform: translateY(-1px);
+        }
+        .cat-btn-utility:active {
+          transform: translateY(0);
+        }
+        .cat-btn-primary-action {
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .cat-btn-primary-action:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+          filter: brightness(1.06);
+        }
+        .cat-btn-primary-action:active {
+          transform: translateY(0);
         }
         @media print {
           header,
