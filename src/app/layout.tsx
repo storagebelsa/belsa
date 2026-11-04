@@ -79,6 +79,9 @@ export const metadata: Metadata = {
     shortcut: '/images/Favicon.webp',
     apple: '/images/Favicon.webp',
   },
+  verification: {
+    google: 'fiEHPS8ETTJPlFnJ0BOi6gRsEGGivqPO6ipFGEQMPao',
+  },
 };
 
 const jsonLdRoot = {
@@ -164,6 +167,22 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-KV0FKPNW9K"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-KV0FKPNW9K', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
