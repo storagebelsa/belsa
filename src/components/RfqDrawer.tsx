@@ -176,12 +176,12 @@ export default function RfqDrawer() {
                   : 'Browse our catalog and click "+ Add to RFQ" to compile cylinder or machinery component specifications for formal quotation.'}
               </p>
               <Link
-                href="/catalogue"
+                href="/products"
                 onClick={() => setIsDrawerOpen(false)}
                 className="belsa-btn belsa-btn-primary"
                 style={{ display: 'inline-block' }}
               >
-                {isId ? 'Lihat Katalog' : 'Open Product Catalogue'}
+                {isId ? 'Lihat Produk' : 'Explore Products'}
               </Link>
             </div>
           ) : (

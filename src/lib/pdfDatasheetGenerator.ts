@@ -276,6 +276,32 @@ async function getImageAsBase64(imageUrl: string, fallbackDomSelector?: string):
 }
 
 /**
+ * Render a crisp numbered badge (1..20) that avoids blurry double-digit Unicode circled characters in html2canvas
+ */
+function renderSlotNumberBadge(num: number, size: 'sm' | 'md' = 'md'): string {
+  const dim = size === 'sm' ? 15 : 16;
+  const fontSize = num >= 10 ? (size === 'sm' ? '7.5px' : '8px') : (size === 'sm' ? '8.5px' : '9px');
+  return `
+    <span style="display: inline-block; width: ${dim}px; height: ${dim}px; border-radius: 50%; background: #0f172a; color: #ffffff; font-size: ${fontSize}; font-weight: 800; text-align: center; line-height: ${dim - 2}px; padding-bottom: 2px; box-sizing: border-box; flex-shrink: 0; vertical-align: middle;">
+      ${num}
+    </span>
+  `;
+}
+
+/**
+ * Render a code pill inside table cells with html2canvas baseline compensation
+ */
+function renderCodePill(code: string, isSelected: boolean, compact = false): string {
+  const bg = isSelected ? '#dc2626' : '#f1f5f9';
+  const color = isSelected ? '#ffffff' : '#0f172a';
+  const border = isSelected ? '1px solid #dc2626' : '1px solid #cbd5e1';
+  const fontSize = compact ? '7.8px' : '8px';
+  const minW = compact ? '24px' : '26px';
+  // Asymmetric top/bottom padding (1px top, 3.5px bottom) counteracts html2canvas font baseline drop
+  return `<span style="display: inline-block; min-width: ${minW}; text-align: center; padding: 0.5px 5px 3.5px 5px; border-radius: 4px; background: ${bg}; color: ${color}; border: ${border}; font-weight: 800; font-size: ${fontSize}; line-height: 1.1; box-sizing: border-box; vertical-align: middle;">${code || 'Nil'}</span>`;
+}
+
+/**
  * Render an individual HTO Block Card (supports 'table', 'chips', and 'stroke_matrix')
  */
 function renderBlockCard(
@@ -295,21 +321,24 @@ function renderBlockCard(
   };
 
   const blockTitle = localizeBlockTitle(block.title || '', lang);
-  const circledNum = CIRCLED_NUMBERS[block.slotIndex] || `(${block.slotIndex})`;
+  const slotNum = Number(block.slotIndex) || 1;
+  const numBadge = renderSlotNumberBadge(slotNum, 'md');
 
   let bodyHtml = '';
+  let selectedSummaryLabel = '';
 
   if (block.displayType === 'chips') {
     const chips: (string | number)[] = block.chipValues || [];
+    selectedSummaryLabel = normSelected ? `Ø${normSelected} mm` : '';
     bodyHtml = `
-      <div style="padding: 6px 8px; display: flex; flex-wrap: wrap; gap: 5px;">
+      <div style="padding: 7px 8px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center;">
         ${chips.map((chip) => {
           const sel = String(chip).trim() === normSelected;
           const bg = sel ? '#dc2626' : '#f8fafc';
           const color = sel ? '#ffffff' : '#0f172a';
           const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
           return `
-            <div style="flex: 1 0 48px; height: 22px; padding: 0 6px; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: 9px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; letter-spacing: 0.01em;">
+            <div style="flex: 1 0 48px; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: 9px; font-weight: 800; text-align: center; padding: 2px 6px 5px 6px; line-height: 1.15; letter-spacing: 0.01em; box-sizing: border-box;">
               Ø${chip}
             </div>
           `;
@@ -324,8 +353,10 @@ function renderBlockCard(
       normSelected !== '—' &&
       !strokes.some((s) => String(s).trim() === normSelected);
 
+    selectedSummaryLabel = normSelected ? `${normSelected} mm` : '';
+
     bodyHtml = `
-      <div style="padding: 6px 8px;">
+      <div style="padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
         <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 5px;">
           ${strokes.map((stk) => {
             const sel = String(stk).trim() === normSelected;
@@ -333,19 +364,19 @@ function renderBlockCard(
             const color = sel ? '#ffffff' : '#334155';
             const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
             return `
-              <div style="height: 20px; border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: 8.5px; font-weight: 800; display: flex; align-items: center; justify-content: center;">
+              <div style="border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: 8.5px; font-weight: 800; text-align: center; padding: 1.5px 2px 4.5px 2px; line-height: 1.15; box-sizing: border-box;">
                 ${stk}
               </div>
             `;
           }).join('')}
         </div>
-        <div style="border-top: 1px dashed #cbd5e1; padding-top: 4px; display: flex; align-items: center; justify-content: space-between; font-size: 8px; color: #475569;">
+        <div style="border-top: 1px dashed #cbd5e1; padding: 3px 0 2px 0; display: flex; align-items: center; justify-content: space-between; font-size: 8px; color: #475569; line-height: 1.2;">
           <span>
             <strong>${lang === 'id' ? 'Stroke Kustom' : 'Custom Stroke'}:</strong>
             ${lang === 'id' ? `Tersedia hingga maks. ${maxStk} mm` : `Available up to max. ${maxStk} mm`}
           </span>
           ${isCustomSelected ? `
-            <span style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 1px 6px; border-radius: 4px;">
+            <span style="display: inline-block; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 0.5px 6px 3px 6px; border-radius: 4px; line-height: 1.1;">
               ${lang === 'id' ? 'Dipilih' : 'Selected'}: ${normSelected} mm
             </span>
           ` : ''}
@@ -370,6 +401,12 @@ function renderBlockCard(
     const rows: any[] = block.rows || [];
     const codeColLabel = lang === 'id' ? 'Kode' : 'Code';
 
+    // Find active row description for header badge summary
+    const activeRow = rows.find((r) => isRowSelected(r.code));
+    if (activeRow) {
+      selectedSummaryLabel = activeRow.code || 'Nil';
+    }
+
     // Split tables with > 5 rows into 2 side-by-side compact sub-tables when there is only 1 description column
     if (rows.length > 5 && visibleColumns.length <= 1) {
       const mid = Math.ceil(rows.length / 2);
@@ -381,8 +418,8 @@ function renderBlockCard(
         <table style="width: 100%; border-collapse: collapse; font-size: 8.2px;">
           <thead>
             <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-              <th style="padding: 3px 4px; text-align: left; width: 26%;">${codeColLabel}</th>
-              <th style="padding: 3px 4px; text-align: left; width: 74%;">${colHeader}</th>
+              <th style="padding: 2px 4px 4.5px 4px; text-align: left; width: 42px;">${codeColLabel}</th>
+              <th style="padding: 2px 4px 4.5px 4px; text-align: left;">${colHeader}</th>
             </tr>
           </thead>
           <tbody>
@@ -393,17 +430,13 @@ function renderBlockCard(
                 : (r.description || r.label?.replace(/^[^-]+-\s*/, '') || '-');
               const val = localizeHtoText(rawVal, lang);
               const bg = sel ? '#fee2e2' : (idx % 2 === 0 ? '#ffffff' : '#f8fafc');
-              const codeBg = sel ? '#dc2626' : '#f1f5f9';
-              const codeColor = sel ? '#ffffff' : '#0f172a';
-              const textColor = sel ? '#b91c1c' : '#334155';
+              const textColor = sel ? '#991b1b' : '#334155';
               return `
                 <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                  <td style="padding: 2.5px 4px; vertical-align: middle;">
-                    <span style="display: inline-block; min-width: 22px; text-align: center; padding: 1px 4px; border-radius: 3px; background: ${codeBg}; color: ${codeColor}; font-weight: 800; font-size: 7.8px;">
-                      ${r.code || 'Nil'}
-                    </span>
+                  <td style="padding: 2.5px 4px; vertical-align: middle; width: 42px;">
+                    ${renderCodePill(r.code || 'Nil', sel, true)}
                   </td>
-                  <td style="padding: 2.5px 4px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.2;">
+                  <td style="padding: 1.5px 4px 4px 4px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.2;">
                     ${val}
                   </td>
                 </tr>
@@ -414,7 +447,7 @@ function renderBlockCard(
       `;
 
       bodyHtml = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 3px 6px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 3px 6px; flex: 1;">
           <div>${renderSubTable(leftRows)}</div>
           <div style="border-left: 1px solid #e2e8f0; padding-left: 6px;">${renderSubTable(rightRows)}</div>
         </div>
@@ -422,15 +455,15 @@ function renderBlockCard(
     } else {
       // Standard single table inside card (supports 1 or multiple visible columns)
       bodyHtml = `
-        <div style="padding: 3px 6px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 8.4px;">
+        <div style="padding: 3px 6px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: 8.4px;">
             <thead>
               <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-                <th style="padding: 3px 5px; text-align: left; width: 22%;">${codeColLabel}</th>
+                <th style="padding: 2px 5px 4.5px 5px; text-align: left; width: 50px;">${codeColLabel}</th>
                 ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => `
-                  <th style="padding: 3px 5px; text-align: left;">${cleanColumnLabel(c.label, lang)}</th>
+                  <th style="padding: 2px 5px 4.5px 5px; text-align: left;">${cleanColumnLabel(c.label, lang)}</th>
                 `).join('') : `
-                  <th style="padding: 3px 5px; text-align: left;">${lang === 'id' ? 'Deskripsi' : 'Description'}</th>
+                  <th style="padding: 2px 5px 4.5px 5px; text-align: left;">${lang === 'id' ? 'Deskripsi' : 'Description'}</th>
                 `}
               </tr>
             </thead>
@@ -438,25 +471,21 @@ function renderBlockCard(
               ${rows.map((r: any, idx: number) => {
                 const sel = isRowSelected(r.code);
                 const bg = sel ? '#fee2e2' : (idx % 2 === 0 ? '#ffffff' : '#f8fafc');
-                const codeBg = sel ? '#dc2626' : '#f1f5f9';
-                const codeColor = sel ? '#ffffff' : '#0f172a';
-                const textColor = sel ? '#b91c1c' : '#334155';
+                const textColor = sel ? '#991b1b' : '#334155';
                 return `
                   <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 2.5px 5px; vertical-align: middle;">
-                      <span style="display: inline-block; min-width: 24px; text-align: center; padding: 1px 5px; border-radius: 3px; background: ${codeBg}; color: ${codeColor}; font-weight: 800; font-size: 8px;">
-                        ${r.code || 'Nil'}
-                      </span>
+                    <td style="padding: 2.5px 5px; vertical-align: middle; width: 50px;">
+                      ${renderCodePill(r.code || 'Nil', sel, false)}
                     </td>
                     ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => {
                       const rawCell = r.values?.[c.id] || r.label || '-';
                       return `
-                        <td style="padding: 2.5px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
+                        <td style="padding: 1.5px 5px 4px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
                           ${localizeHtoText(rawCell, lang)}
                         </td>
                       `;
                     }).join('') : `
-                      <td style="padding: 2.5px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
+                      <td style="padding: 1.5px 5px 4px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
                         ${localizeHtoText(r.label || '-', lang)}
                       </td>
                     `}
@@ -471,10 +500,17 @@ function renderBlockCard(
   }
 
   return `
-    <div style="border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column;">
-      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: 3.5px 8px; display: flex; align-items: center; gap: 6px;">
-        <span style="font-size: 11.5px; font-weight: 900; color: #0f172a; line-height: 1;">${circledNum}</span>
-        <span style="font-size: 9px; font-weight: 800; color: #0f172a; letter-spacing: 0.02em;">${blockTitle}</span>
+    <div style="border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: 3.5px 8px; display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          ${numBadge}
+          <span style="font-size: 9px; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1.1; padding-bottom: 2px;">${blockTitle}</span>
+        </div>
+        ${selectedSummaryLabel ? `
+          <span style="font-size: 7.5px; font-weight: 700; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0.5px 5px 2.5px 5px; line-height: 1.1;">
+            ${selectedSummaryLabel}
+          </span>
+        ` : ''}
       </div>
       ${bodyHtml}
     </div>
@@ -529,9 +565,19 @@ export async function generateProductDatasheetPdf({
   const slotDelimiters = hto?.slotDelimiters;
   const defaultSep = hto?.separator ?? '-';
 
+  const readableSlotBreakdown = slots
+    .map((slotNum) => {
+      const v = getSlotValue(slotNum);
+      return v && String(v).trim() !== '' && String(v).trim().toLowerCase() !== 'nil'
+        ? String(v).trim()
+        : null;
+    })
+    .filter(Boolean)
+    .join(' - ');
+
   const howToOrderBarHtml = `
     <div style="margin-bottom: 8px;">
-      <div style="background: #dc2626; color: #ffffff; display: inline-block; padding: 3px 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: 9px; letter-spacing: 0.03em;">
+      <div style="background: #dc2626; color: #ffffff; display: inline-block; padding: 1.5px 14px 4.5px 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: 9px; letter-spacing: 0.03em; line-height: 1.15;">
         How to Order
       </div>
       <div style="border: 1.5px solid #fca5a5; border-radius: 0 8px 8px 8px; background: #fffafa; padding: 7px 10px;">
@@ -549,15 +595,15 @@ export async function generateProductDatasheetPdf({
             const hasVal = val !== undefined && val !== null && String(val).trim() !== '';
             return `
               <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">
-                <div style="min-width: ${isManySlots ? '28px' : '36px'}; height: ${isManySlots ? '23px' : '26px'}; padding: 0 ${isManySlots ? '4px' : '7px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : '9.5px'}; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+                <div style="min-width: ${isManySlots ? '28px' : '36px'}; padding: 1.5px ${isManySlots ? '5px' : '7px'} 4.5px ${isManySlots ? '5px' : '7px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : '9.5px'}; font-weight: 800; text-align: center; line-height: 1.15; box-sizing: border-box;">
                   ${hasVal ? val : 'Nil'}
                 </div>
-                <span style="font-size: ${isManySlots ? '10px' : '11px'}; font-weight: 800; color: #0f172a; margin-top: 2px; line-height: 1;">
-                  ${CIRCLED_NUMBERS[slotNum] || `#${slotNum}`}
-                </span>
+                <div style="margin-top: 3px;">
+                  ${renderSlotNumberBadge(slotNum, 'sm')}
+                </div>
               </div>
               ${delimiterAfter && delimiterAfter.trim() !== '' ? `
-                <div style="height: ${isManySlots ? '23px' : '26px'}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 1px; flex-shrink: 0;">
+                <div style="padding-top: 3px; font-size: 11px; font-weight: 900; color: #dc2626; padding-left: 1px; padding-right: 1px; flex-shrink: 0; line-height: 1;">
                   ${delimiterAfter}
                 </div>
               ` : ''}
@@ -586,7 +632,7 @@ export async function generateProductDatasheetPdf({
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    font-family: 'Barlow', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #0f172a;
   `;
 
@@ -595,13 +641,13 @@ export async function generateProductDatasheetPdf({
     <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: 9px;">
       <div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.1; letter-spacing: -0.02em;">
+          <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.1; padding-bottom: 2px; letter-spacing: -0.02em;">
             ${product.series}
           </h1>
-          <span style="font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 2.5px 8px; border-radius: 4px; letter-spacing: 0.05em;">
+          <span style="display: inline-block; font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 1.5px 8px 4px 8px; border-radius: 4px; letter-spacing: 0.05em; line-height: 1.1;">
             ${product.category}
           </span>
-          <span style="font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 2.5px 7px; border-radius: 4px;">
+          <span style="display: inline-block; font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 1.5px 7px 4px 7px; border-radius: 4px; line-height: 1.1;">
             ISO 9001:2015
           </span>
         </div>
@@ -650,19 +696,24 @@ export async function generateProductDatasheetPdf({
 
     <!-- 5. Bottom Summary: Print-Friendly Configured Model Code & Official Footer -->
     <div style="margin-top: auto; padding-top: 4px;">
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
+      <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
         <!-- Print-Friendly Model Code Box -->
-        <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 7px 12px; display: flex; flex-direction: column; justify-content: center;">
-          <div style="font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">
+        <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 6px 12px 8px 12px; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 7.4px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">
             ${lang === 'id' ? 'KODE PEMESANAN MODEL (CONFIGURED MODEL CODE):' : 'CONFIGURED ORDERING MODEL CODE:'}
           </div>
-          <div style="font-size: 15px; font-weight: 900; color: #0f172a; letter-spacing: 0.03em; margin-top: 2px; font-family: 'Barlow', monospace;">
+          <div style="font-size: 14.5px; font-weight: 900; color: #0f172a; letter-spacing: 0.03em; margin-top: 1px; line-height: 1.2;">
             ${activeModelCode || product.code}
           </div>
+          ${readableSlotBreakdown ? `
+            <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
+              ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
+            </div>
+          ` : ''}
         </div>
 
         <!-- Workshop & Custom Engineering Note -->
-        <div style="border: 1px solid #fecdd3; border-radius: 7px; background: #fff1f2; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center;">
+        <div style="border: 1px solid #fecdd3; border-radius: 7px; background: #fff1f2; padding: 6px 10px 8px 10px; display: flex; flex-direction: column; justify-content: center;">
           <div style="font-size: 7.8px; font-weight: 800; color: #9f1239; margin-bottom: 1.5px;">
             ${lang === 'id' ? 'LAYANAN CUSTOM & FABRIKASI CNC BELSA:' : 'BELSA CNC CUSTOM FABRICATION & SUPPORT:'}
           </div>

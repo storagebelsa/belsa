@@ -108,7 +108,7 @@ export default function Footer() {
               <li><Link href="/">{lang === 'id' ? 'Beranda' : 'Home'}</Link></li>
               <li><Link href="/about-us">{lang === 'id' ? 'Tentang BELSA' : 'About Us'}</Link></li>
               <li><Link href="/products">{lang === 'id' ? 'Kategori Produk' : 'Product Categories'}</Link></li>
-              <li><Link href="/catalogue">{lang === 'id' ? 'Katalog Online' : 'Interactive Catalogue'}</Link></li>
+              <li className="hide-on-mobile"><Link href="/catalogue">{lang === 'id' ? 'Katalog Online' : 'Interactive Catalogue'}</Link></li>
               <li><Link href="/calculator">{lang === 'id' ? 'Kalkulator Teknis' : 'Engineering Calculator'}</Link></li>
               <li><Link href="/projects">{lang === 'id' ? 'Daftar Proyek' : 'Project Portfolio'}</Link></li>
               <li><Link href="/contact-us">{lang === 'id' ? 'Hubungi Kami' : 'Contact Us'}</Link></li>

@@ -126,10 +126,12 @@ export default function Header() {
         </Link>
 
         <div className="belsa-nav-right">
-          {/* Desktop Navigation Menu */}
+          {/* Desktop Navigation Menu (Streamlined: Home via Logo, Contact Us via Request Quote CTA) */}
           <nav>
             <ul className="belsa-nav-menu">
-              {navLinks.map((link) => {
+              {navLinks
+                .filter((link) => link.href !== '/' && link.href !== '/contact-us')
+                .map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <li key={link.href}>
@@ -282,7 +284,7 @@ export default function Header() {
 
           {/* Core Navigation Links */}
           <nav className="belsa-mobile-nav-list">
-            {navLinks.map((link) => {
+            {navLinks.filter((link) => link.href !== '/catalogue').map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link

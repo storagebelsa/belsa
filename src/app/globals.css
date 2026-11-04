@@ -2286,6 +2286,9 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
    RESPONSIVE & MOBILE REFINEMENTS
    ======================================================= */
 @media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
   .series-slogan {
     font-size: 1rem !important;
     line-height: 1.35 !important;

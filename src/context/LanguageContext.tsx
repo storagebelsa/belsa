@@ -11,28 +11,30 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: 'id',
+  lang: 'en',
   setLang: () => {},
   toggleLang: () => {},
 });
 
+const LANG_STORAGE_KEY = 'belsa_lang_v2';
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>('id');
+  const [lang, setLangState] = useState<Language>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('belsa_lang') as Language;
+    const saved = localStorage.getItem(LANG_STORAGE_KEY) as Language;
     if (saved === 'id' || saved === 'en') {
       setLangState(saved);
       document.documentElement.lang = saved;
     } else {
-      document.documentElement.lang = 'id';
+      document.documentElement.lang = 'en';
     }
   }, []);
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('belsa_lang', newLang);
+      localStorage.setItem(LANG_STORAGE_KEY, newLang);
       document.documentElement.lang = newLang;
     }
   };

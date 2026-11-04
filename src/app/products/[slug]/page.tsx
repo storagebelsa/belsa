@@ -53,6 +53,16 @@ export default function ProductCategoryPage({ params }: Props) {
   // Sub-category active filter state
   const [activeSubCat, setActiveSubCat] = useState<string>('all');
 
+  // Mobile popup state when clicking Specifications
+  const [desktopModalItem, setDesktopModalItem] = useState<BelsaProductSeries | null>(null);
+
+  const handleSpecClick = (e: React.MouseEvent, item: BelsaProductSeries) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 991) {
+      e.preventDefault();
+      setDesktopModalItem(item);
+    }
+  };
+
   // Live Catalog loaded from /api/catalogue (defaults to master BELSA_CATALOGUE_FULL minus deleted items)
   const [activeCatalogue, setActiveCatalogue] = useState<BelsaProductSeries[]>(() =>
     BELSA_CATALOGUE_FULL.filter((item) => !DELETED_SERIES_IDS.has(item.id))
@@ -388,7 +398,7 @@ export default function ProductCategoryPage({ params }: Props) {
               </p>
             </div>
 
-            <Link href="/catalogue" className="belsa-btn belsa-btn-outline" style={{ fontSize: '0.86rem' }}>
+            <Link href="/catalogue" className="belsa-btn belsa-btn-outline hide-on-mobile" style={{ fontSize: '0.86rem' }}>
               {isId ? 'Lihat Katalog Lengkap →' : 'Explore Full Interactive Catalogue →'}
             </Link>
           </div>
@@ -473,7 +483,12 @@ export default function ProductCategoryPage({ params }: Props) {
                       </div>
 
                       {/* Image - Clickable to Specs */}
-                      <Link href={catalogueHref} className="belsa-series-img-wrap" title={item.series}>
+                      <Link
+                        href={catalogueHref}
+                        className="belsa-series-img-wrap"
+                        title={item.series}
+                        onClick={(e) => handleSpecClick(e, item)}
+                      >
                         <img
                           src={formatProductImageUrl(item.image)}
                           alt={item.series}
@@ -485,7 +500,11 @@ export default function ProductCategoryPage({ params }: Props) {
                       </Link>
 
                       {/* Title - Clickable to Specs */}
-                      <Link href={catalogueHref} className="belsa-series-name">
+                      <Link
+                        href={catalogueHref}
+                        className="belsa-series-name"
+                        onClick={(e) => handleSpecClick(e, item)}
+                      >
                         {item.series}
                       </Link>
 
@@ -538,6 +557,7 @@ export default function ProductCategoryPage({ params }: Props) {
                         href={catalogueHref}
                         className="belsa-btn-spec"
                         title={isId ? 'Lihat Spesifikasi & How To Order' : 'View Specifications & How To Order'}
+                        onClick={(e) => handleSpecClick(e, item)}
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -682,6 +702,175 @@ export default function ProductCategoryPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Mobile Popup Modal for Specifications / Catalogue Feature */}
+      {desktopModalItem && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+        >
+          {/* Backdrop */}
+          <div
+            onClick={() => setDesktopModalItem(null)}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          />
+
+          {/* Popup Card */}
+          <div
+            role="dialog"
+            aria-modal="true"
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              width: '100%',
+              maxWidth: '380px',
+              background: '#FFFFFF',
+              borderRadius: '20px',
+              padding: '28px 24px 24px',
+              boxShadow: '0 24px 48px rgba(15, 23, 42, 0.22)',
+              border: '1px solid #E2E8F0',
+              textAlign: 'center',
+            }}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setDesktopModalItem(null)}
+              aria-label={isId ? 'Tutup' : 'Close'}
+              style={{
+                position: 'absolute',
+                top: '14px',
+                right: '14px',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: '1px solid #E2E8F0',
+                background: '#F8FAFC',
+                color: '#64748B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {/* Desktop Monitor Icon */}
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '16px',
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                color: 'var(--belsa-red)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+              }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+
+            {/* Series Tag */}
+            <div style={{ marginBottom: '10px' }}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  background: '#F1F5F9',
+                  color: '#334155',
+                  fontSize: '0.76rem',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: '999px',
+                }}
+              >
+                {desktopModalItem.series} ({desktopModalItem.code})
+              </span>
+            </div>
+
+            <h3
+              style={{
+                fontSize: '1.18rem',
+                fontWeight: 800,
+                color: 'var(--belsa-dark)',
+                margin: '0 0 10px',
+                lineHeight: 1.3,
+              }}
+            >
+              {isId ? 'Optimal pada Mode Desktop' : 'Best Viewed on Desktop'}
+            </h3>
+
+            <p
+              style={{
+                fontSize: '0.88rem',
+                color: '#64748B',
+                lineHeight: 1.6,
+                margin: '0 0 22px',
+              }}
+            >
+              {isId
+                ? 'Tabel spesifikasi teknis, gambar dimensi, serta konfigurator "How To Order" dirancang untuk tampilan layar lebar. Silakan buka halaman ini melalui perangkat desktop atau laptop untuk mengakses fitur katalog interaktif.'
+                : 'Interactive technical datasheets, dimensional blueprints, and the "How To Order" configurator are designed for larger screens. Please switch to a desktop or laptop to explore full product specifications.'}
+            </p>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <button
+                type="button"
+                onClick={() => setDesktopModalItem(null)}
+                className="btn-belsa-primary"
+                style={{ width: '100%', justifyContent: 'center', padding: '12px 20px', fontSize: '0.9rem' }}
+              >
+                {isId ? 'Mengerti, Tutup' : 'Got It, Close'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const item = desktopModalItem;
+                  setDesktopModalItem(null);
+                  addItem({
+                    id: item.id,
+                    series: item.series,
+                    code: item.code,
+                    category: item.category,
+                    image: item.image,
+                    quantity: 1,
+                  });
+                  setIsDrawerOpen(true);
+                }}
+                className="btn-belsa-outline"
+                style={{ width: '100%', justifyContent: 'center', padding: '10px 18px', fontSize: '0.85rem' }}
+              >
+                {isId ? '+ Tambah Seri Ini ke RFQ' : '+ Add This Series to RFQ'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
