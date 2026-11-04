@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const SCROLL_TARGET_SELECTOR = [
-  '.belsa-reveal',
   '.belsa-card',
   '.belsa-series-card',
   '.belsa-project-card',
@@ -14,8 +13,9 @@ const SCROLL_TARGET_SELECTOR = [
   '.belsa-dark-cta-banner',
   '.belsa-about-text',
   '.belsa-about-img-wrap',
+  '.belsa-stats-card',
+  '.contact-form-box',
   '.contact-map-header',
-  '.contact-map-footer',
   '.footer-light-header',
   '.footer-light-grid > *',
 ].join(', ');
@@ -37,8 +37,9 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Global Scroll-Triggered Slide ("Geser saat di-scroll") Engine using Web Animations API
-  // Does NOT mutate className, style, or data-* attributes, preventing any React hydration mismatch!
+  // Rock-Solid Scroll Slide Engine:
+  // Never pre-hides elements at opacity: 0 (so elements NEVER disappear when scrolling!).
+  // Plays a hardware-accelerated directional slide with fill: 'none' as elements enter the viewport.
   useEffect(() => {
     if (
       typeof window === 'undefined' ||
@@ -49,69 +50,60 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
     }
 
     const observedSet = new WeakSet<Element>();
-    const armedMap = new WeakMap<Element, Animation>();
+    const activeAnimMap = new WeakMap<Element, Animation>();
+    const hasEnteredMap = new WeakMap<Element, boolean>();
     const dirMap = new WeakMap<Element, 'left' | 'right' | 'up'>();
 
     const getKeyframes = (dir: 'left' | 'right' | 'up'): Keyframe[] => {
       if (dir === 'left') {
         return [
-          { opacity: 0, transform: 'translate3d(-32px, 16px, 0)' },
+          { opacity: 0.18, transform: 'translate3d(-26px, 18px, 0)' },
           { opacity: 1, transform: 'translate3d(0, 0, 0)' },
         ];
       }
       if (dir === 'right') {
         return [
-          { opacity: 0, transform: 'translate3d(32px, 16px, 0)' },
+          { opacity: 0.18, transform: 'translate3d(26px, 18px, 0)' },
           { opacity: 1, transform: 'translate3d(0, 0, 0)' },
         ];
       }
       return [
-        { opacity: 0, transform: 'translate3d(0, 32px, 0)' },
+        { opacity: 0.18, transform: 'translate3d(0, 26px, 0)' },
         { opacity: 1, transform: 'translate3d(0, 0, 0)' },
       ];
-    };
-
-    const armElement = (el: HTMLElement, dir: 'left' | 'right' | 'up') => {
-      if (typeof el.animate !== 'function') return;
-      const existing = armedMap.get(el);
-      if (existing) existing.cancel();
-
-      const anim = el.animate(getKeyframes(dir), {
-        duration: 620,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        fill: 'both',
-      });
-      anim.pause();
-      anim.currentTime = 0;
-      armedMap.set(el, anim);
     };
 
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const el = entry.target as HTMLElement;
-          const dir = dirMap.get(el) || 'up';
-
           if (entry.isIntersecting) {
-            const armed = armedMap.get(el);
-            if (armed) {
-              armed.play();
-              armed.onfinish = () => {
-                armed.cancel();
-                armedMap.delete(el);
-              };
+            if (!hasEnteredMap.get(el)) {
+              hasEnteredMap.set(el, true);
+              // Only animate elements entering from the lower part of the viewport
+              if (entry.boundingClientRect.top > window.innerHeight * 0.45 && typeof el.animate === 'function') {
+                const prev = activeAnimMap.get(el);
+                if (prev) prev.cancel();
+                const dir = dirMap.get(el) || 'up';
+                const anim = el.animate(getKeyframes(dir), {
+                  duration: 520,
+                  easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                  fill: 'none',
+                });
+                activeAnimMap.set(el, anim);
+              }
             }
-          } else if (entry.boundingClientRect.top > window.innerHeight * 0.96) {
-            // Re-arm when scrolled back above the element so scrolling down replays the slide
-            if (!armedMap.has(el)) {
-              armElement(el, dir);
+          } else {
+            // Only reset if the element has scrolled completely below the viewport
+            if (entry.boundingClientRect.top >= window.innerHeight) {
+              hasEnteredMap.set(el, false);
             }
           }
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.02,
+        rootMargin: '0px 0px -8px 0px',
       }
     );
 
@@ -145,25 +137,27 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
         dirMap.set(el, dir);
 
         const rect = el.getBoundingClientRect();
-        if (rect.top >= window.innerHeight * 0.9) {
-          armElement(el, dir);
+        // Mark elements already visible in the initial viewport so they don't re-animate until scrolled below
+        if (rect.top < window.innerHeight * 0.92) {
+          hasEnteredMap.set(el, true);
+        } else {
+          hasEnteredMap.set(el, false);
         }
 
         io.observe(el);
       });
     };
 
-    // Wait until after React hydration completes before registering
     const initTimer = setTimeout(() => {
       requestAnimationFrame(registerElements);
-    }, 140);
+    }, 120);
 
     const mo = new MutationObserver(() => {
       registerElements();
     });
     const moTimer = setTimeout(() => {
       mo.observe(document.body, { childList: true, subtree: true });
-    }, 200);
+    }, 180);
 
     return () => {
       clearTimeout(initTimer);
