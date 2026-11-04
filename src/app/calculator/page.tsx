@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect, useRef, Suspense } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
@@ -63,7 +64,12 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
   const [mobileCadExpanded, setMobileCadExpanded] = useState(true);
   const [isToolSwitching, setIsToolSwitching] = useState(false);
   const [slideDir, setSlideDir] = useState<'right' | 'left'>('right');
+  const [portalMounted, setPortalMounted] = useState(false);
   const switchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setPortalMounted(true);
+  }, []);
 
   useEffect(() => {
     const tool = searchParams.get('tool') || searchParams.get('tab');
@@ -2847,71 +2853,75 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
       </div>
 
       {/* ========================================================================= */}
-      {/* FIXED NATIVE MOBILE BOTTOM APP NAVIGATION BAR (5 MODULES)                 */}
+      {/* FIXED NATIVE MOBILE BOTTOM APP NAVIGATION BAR (5 MODULES - PORTALED)      */}
       {/* ========================================================================= */}
-      <nav className="belsa-calc-bottom-nav" aria-label="Calculator Module Navigation">
-        <button
-          type="button"
-          onClick={() => switchTab('pressure')}
-          className={`belsa-calc-bottom-tab ${activeTab === 'pressure' ? 'is-active' : ''}`}
-        >
-          <span className="belsa-calc-bottom-indicator" />
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-          </svg>
-          <span>{isId ? 'Tekanan' : 'Pressure'}</span>
-        </button>
+      {portalMounted &&
+        createPortal(
+          <nav className="belsa-calc-bottom-nav" aria-label="Calculator Module Navigation">
+            <button
+              type="button"
+              onClick={() => switchTab('pressure')}
+              className={`belsa-calc-bottom-tab ${activeTab === 'pressure' ? 'is-active' : ''}`}
+            >
+              <span className="belsa-calc-bottom-indicator" />
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+              <span>{isId ? 'Tekanan' : 'Pressure'}</span>
+            </button>
 
-        <button
-          type="button"
-          onClick={() => switchTab('thickness')}
-          className={`belsa-calc-bottom-tab ${activeTab === 'thickness' ? 'is-active' : ''}`}
-        >
-          <span className="belsa-calc-bottom-indicator" />
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9" />
-            <circle cx="12" cy="12" r="5" strokeDasharray="3 3" />
-          </svg>
-          <span>{isId ? 'Tube' : 'Tube'}</span>
-        </button>
+            <button
+              type="button"
+              onClick={() => switchTab('thickness')}
+              className={`belsa-calc-bottom-tab ${activeTab === 'thickness' ? 'is-active' : ''}`}
+            >
+              <span className="belsa-calc-bottom-indicator" />
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" strokeDasharray="3 3" />
+              </svg>
+              <span>{isId ? 'Tube' : 'Tube'}</span>
+            </button>
 
-        <button
-          type="button"
-          onClick={() => switchTab('bolt')}
-          className={`belsa-calc-bottom-tab ${activeTab === 'bolt' ? 'is-active' : ''}`}
-        >
-          <span className="belsa-calc-bottom-indicator" />
-          <svg viewBox="0 0 24 24">
-            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-          <span>{isId ? 'Baut' : 'Bolt'}</span>
-        </button>
+            <button
+              type="button"
+              onClick={() => switchTab('bolt')}
+              className={`belsa-calc-bottom-tab ${activeTab === 'bolt' ? 'is-active' : ''}`}
+            >
+              <span className="belsa-calc-bottom-indicator" />
+              <svg viewBox="0 0 24 24">
+                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>{isId ? 'Baut' : 'Bolt'}</span>
+            </button>
 
-        <button
-          type="button"
-          onClick={() => switchTab('weight')}
-          className={`belsa-calc-bottom-tab ${activeTab === 'weight' ? 'is-active' : ''}`}
-        >
-          <span className="belsa-calc-bottom-indicator" />
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3v18m-8-7l4-9 4 9H4zm12 0l4-9 4 9h-8z" />
-          </svg>
-          <span>{isId ? 'Berat' : 'Weight'}</span>
-        </button>
+            <button
+              type="button"
+              onClick={() => switchTab('weight')}
+              className={`belsa-calc-bottom-tab ${activeTab === 'weight' ? 'is-active' : ''}`}
+            >
+              <span className="belsa-calc-bottom-indicator" />
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3v18m-8-7l4-9 4 9H4zm12 0l4-9 4 9h-8z" />
+              </svg>
+              <span>{isId ? 'Berat' : 'Weight'}</span>
+            </button>
 
-        <button
-          type="button"
-          onClick={() => switchTab('torque')}
-          className={`belsa-calc-bottom-tab ${activeTab === 'torque' ? 'is-active' : ''}`}
-        >
-          <span className="belsa-calc-bottom-indicator" />
-          <svg viewBox="0 0 24 24">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <span>{isId ? 'Torsi' : 'Torque'}</span>
-        </button>
-      </nav>
+            <button
+              type="button"
+              onClick={() => switchTab('torque')}
+              className={`belsa-calc-bottom-tab ${activeTab === 'torque' ? 'is-active' : ''}`}
+            >
+              <span className="belsa-calc-bottom-indicator" />
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <span>{isId ? 'Torsi' : 'Torque'}</span>
+            </button>
+          </nav>,
+          document.body
+        )}
     </div>
   );
 }
