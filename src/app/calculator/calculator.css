@@ -342,7 +342,8 @@
   padding: 4px 9px;
   border-radius: 6px;
   border: 1px solid #E2E8F0;
-  font-family: monospace;
+  font-family: var(--belsa-font);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Mode Switcher Pill */
@@ -1031,7 +1032,8 @@
   .belsa-calc-mobile-std-pill {
     font-size: 0.66rem;
     font-weight: 700;
-    font-family: monospace;
+    font-family: var(--belsa-font);
+  font-variant-numeric: tabular-nums;
     color: #D3232A;
     background: #FFE4E6;
     border: 1px solid #FECDD3;

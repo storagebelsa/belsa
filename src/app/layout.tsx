@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Barlow } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,6 +7,14 @@ import WhatsAppWidget from '@/components/WhatsAppWidget';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { RfqProvider } from '@/context/RfqContext';
 import RfqDrawer from '@/components/RfqDrawer';
+
+const barlow = Barlow({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-barlow',
+  display: 'swap',
+});
 
 const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://belsa.id';
 const siteUrl = rawSiteUrl.replace(/belsa\.co\.id/i, 'belsa.id').replace(/\/$/, '');
@@ -198,7 +207,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" data-scroll-behavior="smooth">
+    <html lang="id" data-scroll-behavior="smooth" className={barlow.variable}>
       <head>
         <script
           async
@@ -233,7 +242,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdRoot) }}
         />
       </head>
-      <body>
+      <body className={barlow.className}>
         <div id="nl-badge-frame" style={{ display: 'none' }} aria-hidden="true" />
         <div id="nl-hud-frame" style={{ display: 'none' }} aria-hidden="true" />
         <LanguageProvider>

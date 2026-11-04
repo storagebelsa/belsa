@@ -365,20 +365,20 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
           <g transform="translate(225, 15)">
             <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
             <circle cx="15" cy="22" r="4" fill="#38BDF8" />
-            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Luar (OD):</text>
-            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {odMm} mm</text>
+            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Diameter Luar (OD):</text>
+            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Ø {odMm} mm</text>
 
             <circle cx="15" cy="48" r="4" fill="#CBD5E1" />
-            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Dalam (ID):</text>
-            <text x="265" y="52" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {idMm} mm</text>
+            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Diameter Dalam (ID):</text>
+            <text x="265" y="52" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Ø {idMm} mm</text>
 
             <circle cx="15" cy="74" r="4" fill={limitColor} />
-            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Batas ID Honing Maks:</text>
-            <text x="265" y="78" fill={limitColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {thicknessResult.overSizeDimMax} mm</text>
+            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Batas ID Honing Maks:</text>
+            <text x="265" y="78" fill={limitColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Ø {thicknessResult.overSizeDimMax} mm</text>
 
             <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
-            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Sisa Batas Honing:</text>
-            <text x="265" y="112" fill={overSizeSafetyAllowance > 0 ? '#4ADE80' : '#F87171'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="var(--belsa-font), sans-serif">Sisa Batas Honing:</text>
+            <text x="265" y="112" fill={overSizeSafetyAllowance > 0 ? '#4ADE80' : '#F87171'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">
               {overSizeSafetyAllowance > 0 ? `+${overSizeSafetyAllowance} mm` : 'HABIS (0 mm)'}
             </text>
           </g>
@@ -424,20 +424,20 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
           <g transform="translate(225, 15)">
             <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
             <circle cx="15" cy="22" r="4" fill="#38BDF8" />
-            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Susunan Baut:</text>
-            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{boltQty}x M{boltDiaMm} (Gr {boltGrade})</text>
+            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Susunan Baut:</text>
+            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{boltQty}x M{boltDiaMm} (Gr {boltGrade})</text>
 
             <circle cx="15" cy="48" r="4" fill="#EF4444" />
-            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Gaya Silinder × SF 2:</text>
-            <text x="265" y="52" fill="#F87171" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.safetyFactorCylinderForceN / 1000).toFixed(1)} kN</text>
+            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Gaya Silinder × SF 2:</text>
+            <text x="265" y="52" fill="#F87171" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{(boltResult.safetyFactorCylinderForceN / 1000).toFixed(1)} kN</text>
 
             <circle cx="15" cy="74" r="4" fill={boltColor} />
-            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Total Kapasitas Baut:</text>
-            <text x="265" y="78" fill={boltColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.totalBoltForceN / 1000).toFixed(1)} kN</text>
+            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Total Kapasitas Baut:</text>
+            <text x="265" y="78" fill={boltColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{(boltResult.totalBoltForceN / 1000).toFixed(1)} kN</text>
 
             <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
-            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Status:</text>
-            <text x="265" y="112" fill={boltResult.isSafe ? '#4ADE80' : '#EF4444'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="var(--belsa-font), sans-serif">Status:</text>
+            <text x="265" y="112" fill={boltResult.isSafe ? '#4ADE80' : '#EF4444'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">
               {boltResult.isSafe ? `AMAN (SF ${boltResult.safetyFactor}x)` : 'TIDAK AMAN (OVERLOAD)'}
             </text>
           </g>
@@ -521,26 +521,26 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
               <line x1={xLeft - 14} y1={cy} x2={xRight + 14} y2={cy} stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" opacity="0.7" />
               <line x1={xLeft} y1="134" x2={xRight} y2="134" stroke="#94A3B8" strokeWidth="1.5" />
               <path d={`M ${xLeft + 5} 131 L ${xLeft} 134 L ${xLeft + 5} 137 M ${xRight - 5} 131 L ${xRight} 134 L ${xRight - 5} 137`} stroke="#94A3B8" strokeWidth="1.5" fill="none" />
-              <text x="115" y="149" fill="#94A3B8" fontSize="10" fontFamily="monospace" textAnchor="middle">L: {roundLength} mm (Ø{roundOd})</text>
+              <text x="115" y="149" fill="#94A3B8" fontSize="10" fontFamily="var(--belsa-font), sans-serif" textAnchor="middle">L: {roundLength} mm (Ø{roundOd})</text>
 
               {/* Unified Right Callout Panel */}
               <g transform="translate(225, 15)">
                 <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
                 <circle cx="15" cy="24" r="4" fill="#38BDF8" />
-                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="monospace">Tipe Material:</text>
-                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundId > 0 ? 'Pipa / Hollow Tube' : 'As Pejal (Solid)'}</text>
+                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Tipe Material:</text>
+                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{roundId > 0 ? 'Pipa / Hollow Tube' : 'As Pejal (Solid)'}</text>
 
                 <circle cx="15" cy="52" r="4" fill="#CBD5E1" />
-                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="monospace">Dimensi OD × ID:</text>
-                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø{roundOd} × Ø{roundId} mm</text>
+                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Dimensi OD × ID:</text>
+                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Ø{roundOd} × Ø{roundId} mm</text>
 
                 <circle cx="15" cy="78" r="4" fill="#94A3B8" />
-                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="monospace">Panjang × ρ:</text>
-                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundLength}mm ({density})</text>
+                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Panjang × ρ:</text>
+                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{roundLength}mm ({density})</text>
 
                 <line x1="12" y1="94" x2="268" y2="94" stroke="#1E293B" strokeWidth="1" />
-                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="monospace">Berat Total:</text>
-                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundWeightResult} Kg</text>
+                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="var(--belsa-font), sans-serif">Berat Total:</text>
+                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{roundWeightResult} Kg</text>
               </g>
             </g>
           ) : (
@@ -567,7 +567,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                 strokeWidth="1.5"
               />
 
-              <text x="115" y="147" fill="#38BDF8" fontSize="10" fontFamily="monospace" textAnchor="middle">
+              <text x="115" y="147" fill="#38BDF8" fontSize="10" fontFamily="var(--belsa-font), sans-serif" textAnchor="middle">
                 {plateLength} × {plateWidth} × {plateHeight} mm
               </text>
 
@@ -575,20 +575,20 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
               <g transform="translate(225, 15)">
                 <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
                 <circle cx="15" cy="24" r="4" fill="#38BDF8" />
-                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="monospace">Bentuk Komponen:</text>
-                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">Plat / Flange Kotak</text>
+                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Bentuk Komponen:</text>
+                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Plat / Flange Kotak</text>
 
                 <circle cx="15" cy="52" r="4" fill="#CBD5E1" />
-                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="monospace">Panjang × Lebar:</text>
-                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateLength} × {plateWidth} mm</text>
+                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Panjang × Lebar:</text>
+                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{plateLength} × {plateWidth} mm</text>
 
                 <circle cx="15" cy="78" r="4" fill="#94A3B8" />
-                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="monospace">Tebal × ρ:</text>
-                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateHeight} mm ({density})</text>
+                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Tebal × ρ:</text>
+                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{plateHeight} mm ({density})</text>
 
                 <line x1="12" y1="94" x2="268" y2="94" stroke="#1E293B" strokeWidth="1" />
-                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="monospace">Berat Total:</text>
-                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateWeightResult} Kg</text>
+                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="var(--belsa-font), sans-serif">Berat Total:</text>
+                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">{plateWeightResult} Kg</text>
               </g>
             </g>
           )}
@@ -614,10 +614,10 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
         <polygon points={pts.join(' ')} fill="#1E293B" stroke="#38BDF8" strokeWidth="2" />
         <circle cx={cx} cy={cy} r="32" fill="#0B1120" stroke="#475569" strokeWidth="1.5" />
 
-        <text x={cx} y={cy - 5} fill="#F8FAFC" fontSize="13" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
+        <text x={cx} y={cy - 5} fill="#F8FAFC" fontSize="13" fontWeight="bold" textAnchor="middle" fontFamily="var(--belsa-font), sans-serif">
           {activeTorqueRow ? activeTorqueRow.metricSize : selectedBoltSize}
         </text>
-        <text x={cx} y={cy + 13} fill="#D3232A" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
+        <text x={cx} y={cy + 13} fill="#D3232A" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="var(--belsa-font), sans-serif">
           GR {torqueGrade}
         </text>
 
@@ -629,7 +629,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
           strokeLinecap="round"
         />
         <polygon points="168,80 162,68 174,72" fill="#F59E0B" />
-        <text x="160" y="38" fill="#F59E0B" fontSize="10" fontWeight="bold" fontFamily="monospace">T (CW)</text>
+        <text x="160" y="38" fill="#F59E0B" fontSize="10" fontWeight="bold" fontFamily="var(--belsa-font), sans-serif">T (CW)</text>
 
         <g transform="translate(190, 20)">
           <rect x="15" y="28" width="30" height="74" fill="#0B1120" stroke="#38BDF8" strokeWidth="1.5" />
@@ -641,29 +641,29 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
 
           <path d="M 30 16 L 30 26 M 26 22 L 30 26 L 34 22" stroke="#4ADE80" strokeWidth="2" />
           <path d="M 30 114 L 30 104 M 26 108 L 30 104 L 34 108" stroke="#4ADE80" strokeWidth="2" />
-          <text x="30" y="9" fill="#4ADE80" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="monospace">F_clamp</text>
+          <text x="30" y="9" fill="#4ADE80" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="var(--belsa-font), sans-serif">F_clamp</text>
         </g>
 
         <g transform="translate(255, 15)">
           <rect x="0" y="0" width="250" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-          <text x="14" y="24" fill="#94A3B8" fontSize="11" fontFamily="monospace">Pneumatik (≤ 10 Bar):</text>
-          <text x="235" y="24" fill="#38BDF8" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+          <text x="14" y="24" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Pneumatik (≤ 10 Bar):</text>
+          <text x="235" y="24" fill="#38BDF8" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">
             {lowVal > 0 ? `${lowVal} ${torqueUnit}` : '—'}
           </text>
 
-          <text x="14" y="54" fill="#94A3B8" fontSize="11" fontFamily="monospace">{isId ? 'Menengah (10-35 Bar):' : 'Medium (10-35 Bar):'}</text>
-          <text x="235" y="54" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+          <text x="14" y="54" fill="#94A3B8" fontSize="11" fontFamily="var(--belsa-font), sans-serif">{isId ? 'Menengah (10-35 Bar):' : 'Medium (10-35 Bar):'}</text>
+          <text x="235" y="54" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">
             {medVal > 0 ? `${medVal} ${torqueUnit}` : '—'}
           </text>
 
-          <text x="14" y="84" fill="#F87171" fontSize="11" fontFamily="monospace">Hidrolik (&gt; 35 Bar):</text>
-          <text x="235" y="84" fill="#EF4444" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+          <text x="14" y="84" fill="#F87171" fontSize="11" fontFamily="var(--belsa-font), sans-serif">Hidrolik (&gt; 35 Bar):</text>
+          <text x="235" y="84" fill="#EF4444" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">
             {highVal > 0 ? `${highVal} ${torqueUnit}` : '—'}
           </text>
 
           <line x1="12" y1="100" x2="238" y2="100" stroke="#1E293B" strokeWidth="1" />
-          <text x="14" y="118" fill="#64748B" fontSize="10" fontFamily="monospace">Alat Ukur:</text>
-          <text x="235" y="118" fill="#F59E0B" fontSize="10" fontWeight="bold" textAnchor="end" fontFamily="monospace">Kunci Torsi Terkalibrasi</text>
+          <text x="14" y="118" fill="#64748B" fontSize="10" fontFamily="var(--belsa-font), sans-serif">Alat Ukur:</text>
+          <text x="235" y="118" fill="#F59E0B" fontSize="10" fontWeight="bold" textAnchor="end" fontFamily="var(--belsa-font), sans-serif">Kunci Torsi Terkalibrasi</text>
         </g>
       </svg>
     );
