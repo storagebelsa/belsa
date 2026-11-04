@@ -122,6 +122,11 @@
   align-items: start;
 }
 
+.belsa-calc-grid-2col > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
 /* Sticky HUD on Desktop */
 @media (min-width: 1024px) {
   .belsa-calc-sticky-hud {
@@ -139,6 +144,9 @@
   box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.05);
   padding: 26px;
   margin-bottom: 24px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .belsa-calc-card-header {

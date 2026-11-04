@@ -419,6 +419,38 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
     }
 
     if (tab === 'weight') {
+      // Dynamic geometry for Round Bar / Hollow Tube
+      const barLen = Math.min(165, Math.max(68, 68 + (roundLength / 2000) * 97));
+      const xLeft = Math.round(115 - barLen / 2);
+      const xRight = Math.round(115 + barLen / 2);
+      const ryOd = Math.min(46, Math.max(16, 16 + (roundOd / 350) * 30));
+      const rxOd = Math.round(ryOd * 0.45 * 10) / 10;
+      const cy = 74;
+      const yTop = cy - ryOd;
+      const yBot = cy + ryOd;
+
+      const idRatio = roundOd > 0 ? Math.min(0.88, Math.max(0, roundId / roundOd)) : 0;
+      const ryId = Math.max(idRatio > 0 ? 4 : 0, Math.round(ryOd * idRatio * 10) / 10);
+      const rxId = Math.max(idRatio > 0 ? 2.5 : 0, Math.round(rxOd * idRatio * 10) / 10);
+
+      // Dynamic geometry for 3D Isometric Plate
+      const pL = Math.min(95, Math.max(42, 42 + (plateLength / 2000) * 53));
+      const pW = Math.min(75, Math.max(34, 34 + (plateWidth / 1500) * 41));
+      const pT = Math.min(34, Math.max(6, 6 + (plateHeight / 150) * 28));
+
+      const pCx = 115;
+      const pCy = 76 - pT / 2;
+      // Isometric projection vectors
+      const dxL = pL * 0.86;
+      const dyL = pL * 0.28;
+      const dxW = pW * 0.78;
+      const dyW = -pW * 0.34;
+
+      const ptLeft = { x: pCx - (dxL + dxW) / 2, y: pCy - (dyL + dyW) / 2 };
+      const ptTop = { x: ptLeft.x + dxW, y: ptLeft.y + dyW };
+      const ptRight = { x: ptTop.x + dxL, y: ptTop.y + dyL };
+      const ptFront = { x: ptLeft.x + dxL, y: ptLeft.y + dyL };
+
       return (
         <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
           {weightType === 'round' ? (
@@ -431,67 +463,105 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                 </linearGradient>
               </defs>
 
+              {/* Dynamic Cylinder Body */}
               <path
-                d="M 120 36 L 280 36 A 22 44 0 0 1 280 124 L 120 124 A 22 44 0 0 1 120 36"
+                d={`M ${xLeft} ${yTop} L ${xRight} ${yTop} A ${rxOd} ${ryOd} 0 0 1 ${xRight} ${yBot} L ${xLeft} ${yBot} A ${rxOd} ${ryOd} 0 0 1 ${xLeft} ${yTop}`}
                 fill={`url(#${idPrefix}metalBody)`}
                 stroke="#38BDF8"
                 strokeWidth="1.5"
               />
-              <ellipse cx="280" cy="80" rx="20" ry="44" fill="#1E293B" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
-              <ellipse cx="120" cy="80" rx="20" ry="44" fill="#334155" stroke="#38BDF8" strokeWidth="2" />
+              <ellipse cx={xRight} cy={cy} rx={rxOd} ry={ryOd} fill="#1E293B" stroke="#475569" strokeWidth="1.2" strokeDasharray="3 3" />
+              <ellipse cx={xLeft} cy={cy} rx={rxOd} ry={ryOd} fill="#334155" stroke="#38BDF8" strokeWidth="2" />
 
+              {/* Dynamic Inner Hollow Bore (if ID > 0) */}
               {roundId > 0 && (
-                <ellipse
-                  cx="120"
-                  cy="80"
-                  rx={Math.max(6, (roundId / Math.max(roundOd, 1)) * 20)}
-                  ry={Math.max(12, (roundId / Math.max(roundOd, 1)) * 44)}
-                  fill="#0B1120"
-                  stroke="#EF4444"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 2"
-                />
+                <>
+                  <line x1={xLeft} y1={cy - ryId} x2={xRight} y2={cy - ryId} stroke="#EF4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.65" />
+                  <line x1={xLeft} y1={cy + ryId} x2={xRight} y2={cy + ryId} stroke="#EF4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.65" />
+                  <ellipse
+                    cx={xLeft}
+                    cy={cy}
+                    rx={rxId}
+                    ry={ryId}
+                    fill="#0B1120"
+                    stroke="#EF4444"
+                    strokeWidth="1.5"
+                  />
+                </>
               )}
 
-              <line x1="90" y1="80" x2="310" y2="80" stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" />
-              <line x1="120" y1="138" x2="280" y2="138" stroke="#94A3B8" strokeWidth="1.5" />
-              <path d="M 124 135 L 118 138 L 124 141 M 276 135 L 282 138 L 276 141" stroke="#94A3B8" strokeWidth="1.5" />
-              <text x="200" y="152" fill="#94A3B8" fontSize="10" fontFamily="monospace" textAnchor="middle">L: {roundLength} mm</text>
+              {/* Centerline & Length Dimension */}
+              <line x1={xLeft - 14} y1={cy} x2={xRight + 14} y2={cy} stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" opacity="0.7" />
+              <line x1={xLeft} y1="134" x2={xRight} y2="134" stroke="#94A3B8" strokeWidth="1.5" />
+              <path d={`M ${xLeft + 5} 131 L ${xLeft} 134 L ${xLeft + 5} 137 M ${xRight - 5} 131 L ${xRight} 134 L ${xRight - 5} 137`} stroke="#94A3B8" strokeWidth="1.5" fill="none" />
+              <text x="115" y="149" fill="#94A3B8" fontSize="10" fontFamily="monospace" textAnchor="middle">L: {roundLength} mm (Ø{roundOd})</text>
 
-              <g transform="translate(325, 15)">
-                <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-                <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
-                <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">{roundId > 0 ? 'Pipa / Tube' : 'Batang Pejal'}</text>
+              {/* Unified Right Callout Panel */}
+              <g transform="translate(225, 15)">
+                <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+                <circle cx="15" cy="24" r="4" fill="#38BDF8" />
+                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="monospace">Tipe Material:</text>
+                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundId > 0 ? 'Pipa / Hollow Tube' : 'As Pejal (Solid)'}</text>
 
-                <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">OD × ID:</text>
-                <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">Ø{roundOd} × Ø{roundId} mm</text>
+                <circle cx="15" cy="52" r="4" fill="#CBD5E1" />
+                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="monospace">Dimensi OD × ID:</text>
+                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø{roundOd} × Ø{roundId} mm</text>
 
-                <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
-                <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
-                <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{roundWeightResult} Kg</text>
+                <circle cx="15" cy="78" r="4" fill="#94A3B8" />
+                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="monospace">Panjang × ρ:</text>
+                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundLength}mm ({density})</text>
+
+                <line x1="12" y1="94" x2="268" y2="94" stroke="#1E293B" strokeWidth="1" />
+                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="monospace">Berat Total:</text>
+                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">{roundWeightResult} Kg</text>
               </g>
             </g>
           ) : (
             <g>
-              <polygon points="80,95 190,60 190,118 80,153" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
-              <polygon points="80,95 190,60 290,90 180,125" fill="#334155" stroke="#38BDF8" strokeWidth="1.5" />
-              <polygon points="180,125 290,90 290,110 180,145" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.5" />
+              {/* Top Face */}
+              <polygon
+                points={`${ptLeft.x},${ptLeft.y} ${ptTop.x},${ptTop.y} ${ptRight.x},${ptRight.y} ${ptFront.x},${ptFront.y}`}
+                fill="#334155"
+                stroke="#38BDF8"
+                strokeWidth="1.5"
+              />
+              {/* Left Extrusion Face */}
+              <polygon
+                points={`${ptLeft.x},${ptLeft.y} ${ptFront.x},${ptFront.y} ${ptFront.x},${ptFront.y + pT} ${ptLeft.x},${ptLeft.y + pT}`}
+                fill="#1E293B"
+                stroke="#38BDF8"
+                strokeWidth="1.5"
+              />
+              {/* Right Extrusion Face */}
+              <polygon
+                points={`${ptFront.x},${ptFront.y} ${ptRight.x},${ptRight.y} ${ptRight.x},${ptRight.y + pT} ${ptFront.x},${ptFront.y + pT}`}
+                fill="#0F172A"
+                stroke="#38BDF8"
+                strokeWidth="1.5"
+              />
 
-              <text x="125" y="115" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">W: {plateWidth}</text>
-              <text x="235" y="105" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">L: {plateLength}</text>
-              <text x="180" y="156" fill="#38BDF8" fontSize="10" fontFamily="monospace" textAnchor="middle">T: {plateHeight} mm</text>
+              <text x="115" y="147" fill="#38BDF8" fontSize="10" fontFamily="monospace" textAnchor="middle">
+                {plateLength} × {plateWidth} × {plateHeight} mm
+              </text>
 
-              <g transform="translate(325, 15)">
-                <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-                <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
-                <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">Plat Kotak / Flange</text>
+              {/* Unified Right Callout Panel */}
+              <g transform="translate(225, 15)">
+                <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+                <circle cx="15" cy="24" r="4" fill="#38BDF8" />
+                <text x="28" y="28" fill="#94A3B8" fontSize="11" fontFamily="monospace">Bentuk Komponen:</text>
+                <text x="265" y="28" fill="#38BDF8" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">Plat / Flange Kotak</text>
 
-                <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">DIMENSI (L×W×T):</text>
-                <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">{plateLength}×{plateWidth}×{plateHeight}</text>
+                <circle cx="15" cy="52" r="4" fill="#CBD5E1" />
+                <text x="28" y="56" fill="#94A3B8" fontSize="11" fontFamily="monospace">Panjang × Lebar:</text>
+                <text x="265" y="56" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateLength} × {plateWidth} mm</text>
 
-                <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
-                <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
-                <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{plateWeightResult} Kg</text>
+                <circle cx="15" cy="78" r="4" fill="#94A3B8" />
+                <text x="28" y="82" fill="#94A3B8" fontSize="11" fontFamily="monospace">Tebal × ρ:</text>
+                <text x="265" y="82" fill="#CBD5E1" fontSize="11" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateHeight} mm ({density})</text>
+
+                <line x1="12" y1="94" x2="268" y2="94" stroke="#1E293B" strokeWidth="1" />
+                <text x="15" y="114" fill="#64748B" fontSize="10" fontFamily="monospace">Berat Total:</text>
+                <text x="265" y="115" fill="#FF4D55" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">{plateWeightResult} Kg</text>
               </g>
             </g>
           )}
@@ -1987,19 +2057,32 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                 </button>
               </div>
 
-              {/* Quick Material Presets */}
+              {/* Quick Material Presets & Compact Density Input */}
               <div className="belsa-calc-form-group">
-                <label className="belsa-calc-label" style={{ display: 'block', marginBottom: '8px' }}>
-                  {isId ? 'Pilih Material:' : 'Select Standard Material:'}
-                </label>
-                <div className="belsa-calc-preset-wrap" style={{ marginTop: 0, marginBottom: '10px' }}>
+                <div className="belsa-calc-label-row" style={{ marginBottom: '6px' }}>
+                  <label className="belsa-calc-label">
+                    {isId ? 'Material & Massa Jenis:' : 'Material & Density:'}
+                  </label>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      value={density}
+                      onChange={(e) => setDensity(parseFloat(e.target.value) || 0)}
+                      className="belsa-calc-input"
+                      style={{ height: '30px', width: '78px', padding: '0 8px', fontSize: '0.82rem', textAlign: 'right' }}
+                    />
+                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: '#D3232A' }}>kg/m³</span>
+                  </div>
+                </div>
+                <div className="belsa-calc-preset-wrap" style={{ marginTop: 0 }}>
                   {[
-                    { label: 'Baja ST-52', rho: 7850 },
-                    { label: 'Stainless SS304', rho: 7930 },
-                    { label: 'Aluminium', rho: 2700 },
-                    { label: 'Besi Cor', rho: 7200 },
-                    { label: 'Kuningan', rho: 8500 },
-                    { label: 'Tembaga', rho: 8960 }
+                    { label: 'ST-52', rho: 7850 },
+                    { label: 'SS304', rho: 7930 },
+                    { label: 'Alu 6061', rho: 2700 },
+                    { label: 'Cast Iron', rho: 7200 },
+                    { label: 'Brass', rho: 8500 },
+                    { label: 'Copper', rho: 8960 }
                   ].map((item) => (
                     <button
                       key={item.label}
@@ -2010,18 +2093,6 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       {item.label} ({item.rho})
                     </button>
                   ))}
-                </div>
-                <div className="belsa-calc-input-row">
-                  <span style={{ fontSize: '0.85rem', color: '#64748B' }}>Massa Jenis:</span>
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    value={density}
-                    onChange={(e) => setDensity(parseFloat(e.target.value) || 0)}
-                    className="belsa-calc-input"
-                    style={{ height: '38px', maxWidth: '140px' }}
-                  />
-                  <span className="belsa-calc-unit-tag">kg/m³</span>
                 </div>
               </div>
 
@@ -2071,7 +2142,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
 
                   <div className="belsa-calc-form-group">
                     <div className="belsa-calc-label-row">
-                      <label className="belsa-calc-label">Diameter Dalam (ID, isi 0 untuk pejal):</label>
+                      <label className="belsa-calc-label">{isId ? 'Diameter Dalam (ID — 0 = Pejal):' : 'Inner Bore (ID — 0 = Solid):'}</label>
                       <span className="belsa-calc-label-val">Ø {roundId} mm</span>
                     </div>
                     <div className="belsa-calc-input-row">
