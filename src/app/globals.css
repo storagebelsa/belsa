@@ -3154,6 +3154,311 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
 
 
 /* =======================================================
+   ENGINEERING MOTION & MOBILE UX STANDARDIZATION (2026)
+   ======================================================= */
+@keyframes belsaFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes belsaFloatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes belsaPulseRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes belsaVideoPulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.48);
+    opacity: 0;
+  }
+}
+
+@keyframes belsaModalSpring {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes belsaBackdropFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes belsaGridFade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.belsa-reveal {
+  animation: belsaFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-stagger-1 {
+  animation-delay: 0.08s;
+}
+
+.belsa-stagger-2 {
+  animation-delay: 0.16s;
+}
+
+.belsa-stagger-3 {
+  animation-delay: 0.24s;
+}
+
+.belsa-stagger-4 {
+  animation-delay: 0.32s;
+}
+
+.belsa-hero-cylinder-anim {
+  animation: belsaFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both,
+             belsaFloatSlow 5.5s ease-in-out 0.85s infinite;
+}
+
+.belsa-pulse-dot {
+  animation: belsaPulseRing 2.2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.belsa-video-play-btn {
+  position: relative;
+}
+
+.belsa-video-play-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(211, 35, 42, 0.55);
+  animation: belsaVideoPulseRing 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+.belsa-grid-fade {
+  animation: belsaGridFade 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-modal-backdrop-anim {
+  animation: belsaBackdropFade 0.22s ease-out both;
+}
+
+.belsa-modal-card-anim {
+  animation: belsaModalSpring 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-topic-chip {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease,
+              box-shadow 0.2s ease !important;
+}
+
+.belsa-topic-chip:active {
+  transform: scale(0.95) !important;
+}
+
+.belsa-btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.belsa-btn-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 65%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.24) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.belsa-btn-sheen:hover::after {
+  left: 140%;
+}
+
+@media (max-width: 768px) {
+  /* 1. Home Hero & Section Headers Centered on Mobile */
+  .belsa-hero-text-mobile {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .belsa-hero-text-mobile .subhead {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .belsa-mobile-center-heading {
+    text-align: center !important;
+  }
+
+  /* 2. Full-Width Primary Action Buttons on Mobile */
+  .belsa-mobile-full-btn {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* 3. Bottom CTA Boxes & Dark Banners Standardized on Mobile */
+  .belsa-cta-box-mobile,
+  .belsa-dark-cta-banner {
+    padding: 26px 20px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 18px !important;
+  }
+
+  .belsa-cta-box-btns,
+  .belsa-dark-cta-btns {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .belsa-cta-box-btns > a,
+  .belsa-cta-box-btns > button,
+  .belsa-dark-cta-btns > a,
+  .belsa-dark-cta-btns > button {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* 4. Products Page Cards & Quality Card Mobile Spacing */
+  .belsa-prod-card-title,
+  .belsa-prod-card-desc {
+    min-height: 0 !important;
+  }
+
+  .belsa-quality-card {
+    padding: 22px 18px !important;
+  }
+
+  /* 5. Project Detail Page Mobile Ergonomics */
+  .belsa-project-detail-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+  }
+
+  .belsa-project-detail-logo {
+    height: auto !important;
+    max-width: 180px !important;
+    justify-content: flex-start !important;
+    background: #F8FAFC !important;
+    padding: 8px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid #E2E8F0 !important;
+  }
+
+  .belsa-project-detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .belsa-project-scope-card {
+    padding: 22px 18px !important;
+  }
+
+  .belsa-project-action-btns {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+
+  .belsa-project-action-btns > a,
+  .belsa-project-action-btns > button {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* 6. Tactile Touch Active Feedback on Mobile */
+  .belsa-card:active,
+  .belsa-series-card:active,
+  .belsa-project-card:active {
+    transform: scale(0.985) !important;
+    transition: transform 0.12s ease !important;
+  }
+
+  .btn-belsa-primary:active,
+  .btn-belsa-outline:active {
+    transform: scale(0.975) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .belsa-reveal,
+  .belsa-hero-cylinder-anim,
+  .belsa-pulse-dot,
+  .belsa-video-play-btn::after,
+  .belsa-grid-fade,
+  .belsa-modal-card-anim,
+  .belsa-modal-backdrop-anim {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =======================================================
    NETLIFY BADGE / HUD SUPPRESSION (100% CLEAN BRANDING)
    ======================================================= */
 #nl-badge-frame,

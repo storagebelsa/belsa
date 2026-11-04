@@ -1,20 +1,79 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
+
+function AnimatedStatValue({ rawValue, isVisible }: { rawValue: string; isVisible: boolean }) {
+  const [display, setDisplay] = useState(rawValue);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    // Match leading number if present (e.g. "2017", "6+", "670+")
+    const match = rawValue.match(/^(\d+)(.*)$/);
+    if (!match) {
+      setDisplay(rawValue);
+      return;
+    }
+
+    const target = parseInt(match[1], 10);
+    const suffix = match[2] || '';
+    const startVal = target > 1900 ? 2000 : 0;
+    const duration = 1100;
+    const startTime = performance.now();
+
+    let rafId: number;
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(startVal + (target - startVal) * eased);
+      setDisplay(`${current}${suffix}`);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      }
+    };
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [rawValue, isVisible]);
+
+  return <>{display}</>;
+}
 
 export default function MetricsBar() {
   const { lang } = useLanguage();
   const t = translations[lang].metrics;
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="belsa-metrics-section">
+    <section className="belsa-metrics-section" ref={ref}>
       <div className="belsa-container">
-        <div className="belsa-stats-card">
+        <div className="belsa-stats-card belsa-reveal">
           
           {/* 1. Founded 2017: Clean Calendar / Establishment Icon */}
-          <div className="stat-item">
+          <div className="stat-item belsa-stagger-1">
             <div className="stat-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -30,13 +89,15 @@ export default function MetricsBar() {
               </svg>
             </div>
             <div>
-              <div className="stat-value">{t.experienceValue}</div>
+              <div className="stat-value">
+                <AnimatedStatValue rawValue={t.experienceValue} isVisible={isVisible} />
+              </div>
               <div className="stat-label">{t.experienceLabel}</div>
             </div>
           </div>
 
           {/* 2. 6+ Product Categories: Modular Layers Component Icon */}
-          <div className="stat-item">
+          <div className="stat-item belsa-stagger-2">
             <div className="stat-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -45,13 +106,15 @@ export default function MetricsBar() {
               </svg>
             </div>
             <div>
-              <div className="stat-value">{t.productsValue}</div>
+              <div className="stat-value">
+                <AnimatedStatValue rawValue={t.productsValue} isVisible={isVisible} />
+              </div>
               <div className="stat-label">{t.productsLabel}</div>
             </div>
           </div>
 
           {/* 3. 670+ Industrial Clients: Precision Industrial Factory Icon */}
-          <div className="stat-item">
+          <div className="stat-item belsa-stagger-3">
             <div className="stat-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 20h20" />
@@ -61,13 +124,15 @@ export default function MetricsBar() {
               </svg>
             </div>
             <div>
-              <div className="stat-value">{t.clientsValue}</div>
+              <div className="stat-value">
+                <AnimatedStatValue rawValue={t.clientsValue} isVisible={isVisible} />
+              </div>
               <div className="stat-label">{t.clientsLabel}</div>
             </div>
           </div>
 
           {/* 4. ISO 9001:2015: Certified Quality Shield Icon */}
-          <div className="stat-item">
+          <div className="stat-item belsa-stagger-4">
             <div className="stat-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />

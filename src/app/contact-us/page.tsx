@@ -31,7 +31,7 @@ export default function ContactUsPage() {
   return (
     <main style={{ padding: '50px 0 60px' }}>
       {/* 1. Page Header */}
-      <section className="belsa-page-header">
+      <section className="belsa-page-header belsa-reveal">
         <div className="belsa-container">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '14px' }}>
             <span style={{
@@ -261,12 +261,15 @@ export default function ContactUsPage() {
       {/* 3. Main Split Section: Form RFQ (Left) & Workshop / Technical Facilities (Right) */}
       <section style={{ marginBottom: '60px' }}>
         <div className="belsa-container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '36px',
-            alignItems: 'start'
-          }}>
+          <div
+            className="contact-main-split-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '36px',
+              alignItems: 'start'
+            }}
+          >
             {/* Left Column: Corporate RFQ Form */}
             <div style={{
               background: '#FFFFFF',
@@ -275,7 +278,7 @@ export default function ContactUsPage() {
               padding: '36px',
               boxShadow: '0 6px 24px rgba(0, 0, 0, 0.04)'
             }}
-            className="contact-form-box">
+            className="contact-form-box belsa-reveal belsa-stagger-1">
               {submitted ? (
                 <div style={{ textAlign: 'center', padding: '48px 20px' }}>
                   <div style={{
@@ -335,6 +338,7 @@ export default function ContactUsPage() {
                             key={item.id}
                             type="button"
                             onClick={() => setSelectedTopic(item.id)}
+                            className={`belsa-topic-chip ${isSelected ? 'is-selected' : ''}`}
                             style={{
                               padding: '7px 13px',
                               borderRadius: '8px',
@@ -344,7 +348,7 @@ export default function ContactUsPage() {
                               border: isSelected ? '1.5px solid var(--belsa-red)' : '1px solid #E2E8F0',
                               background: isSelected ? '#FEF2F2' : '#F8FAFC',
                               color: isSelected ? 'var(--belsa-red)' : '#475569',
-                              transition: 'all 0.2s ease'
+                              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                             }}
                           >
                             {isId ? item.labelId : item.labelEn}
@@ -827,18 +831,21 @@ export default function ContactUsPage() {
       {/* 4. Bottom Fast-Track Consultation Banner */}
       <section>
         <div className="belsa-container">
-          <div style={{
-            background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
-            borderRadius: '20px',
-            padding: '40px 36px',
-            color: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '28px',
-            flexWrap: 'wrap',
-            boxShadow: '0 8px 30px rgba(15, 23, 42, 0.15)'
-          }}>
+          <div
+            className="belsa-dark-cta-banner belsa-reveal"
+            style={{
+              background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
+              borderRadius: '20px',
+              padding: '40px 36px',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '28px',
+              flexWrap: 'wrap',
+              boxShadow: '0 8px 30px rgba(15, 23, 42, 0.15)'
+            }}
+          >
             <div style={{ maxWidth: '640px' }}>
               <span style={{
                 fontSize: '0.75rem',
@@ -863,12 +870,12 @@ export default function ContactUsPage() {
               </p>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div className="belsa-dark-cta-btns" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
                 href="https://wa.me/6281119168752?text=Halo%20tim%20teknis%20BELSA%2C%20saya%20ingin%20mengirimkan%20file%20drawing%20CAD%20dan%20spesifikasi%20untuk%20estimasi%20penawaran."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-belsa-primary"
+                className="btn-belsa-primary belsa-btn-sheen"
                 style={{
                   padding: '14px 24px',
                   fontSize: '0.94rem',
@@ -907,6 +914,10 @@ export default function ContactUsPage() {
       {/* Responsive Styles for Contact Page */}
       <style jsx global>{`
         @media (max-width: 768px) {
+          .contact-main-split-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
           .contact-form-box {
             padding: 22px 16px !important;
             border-radius: 16px !important;

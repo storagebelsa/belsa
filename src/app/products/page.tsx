@@ -20,7 +20,7 @@ export default function ProductsPage() {
   return (
     <main style={{ padding: '50px 0 60px' }}>
       {/* Unified Page Header */}
-      <section className="belsa-page-header">
+      <section className="belsa-page-header belsa-reveal">
         <div className="belsa-container">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '14px' }}>
             <span style={{
@@ -76,8 +76,8 @@ export default function ProductsPage() {
       {/* Overview & Technical Capabilities */}
       <section style={{ marginBottom: '56px' }}>
         <div className="belsa-container belsa-grid-2col">
-          <div>
-            <h2 className="heading-section" style={{ marginBottom: '16px' }}>
+          <div className="belsa-reveal">
+            <h2 className="heading-section belsa-mobile-center-heading" style={{ marginBottom: '16px' }}>
               <TwoToneTitle text={t.overviewTitle} />
             </h2>
             <p style={{ color: 'var(--belsa-gray)', lineHeight: 1.8, fontSize: '1.02rem', margin: 0 }}>
@@ -85,40 +85,43 @@ export default function ProductsPage() {
             </p>
           </div>
 
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid var(--belsa-border)',
-            borderRadius: '16px',
-            padding: '28px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: '16px'
-          }}>
+          <div
+            className="belsa-quality-card belsa-reveal belsa-stagger-2"
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid var(--belsa-border)',
+              borderRadius: '16px',
+              padding: '28px',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: '16px'
+            }}
+          >
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--belsa-dark)', margin: 0, paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
               {lang === 'id' ? 'Standar Mutu & Kemampuan Fabrikasi' : 'Quality Standards & Fabrication Capability'}
             </h3>
             <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
+              <li className="belsa-stagger-1" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--belsa-red)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 <span><strong>{lang === 'id' ? 'Pemesinan CNC & Bubut:' : 'High-Precision Machining:'}</strong> {lang === 'id' ? 'Komponen dikerjakan di workshop kami dengan mesin CNC dan mesin bubut.' : 'Precision CNC & lathe machining tolerances up to ±0.02 mm for dimensional reliability.'}</span>
               </li>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
+              <li className="belsa-stagger-2" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--belsa-red)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 <span><strong>{lang === 'id' ? 'Material:' : 'Industrial Grade Materials:'}</strong> {lang === 'id' ? 'Tabung hasil honing dan piston rod berlapis hard chrome. Material disesuaikan dengan aplikasi.' : 'Honed ST52 / S45C barrel tubes with Hard Chrome plated piston rods (min 25 µm).'}</span>
               </li>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
+              <li className="belsa-stagger-3" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--belsa-red)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 <span><strong>{lang === 'id' ? 'Tekanan Kerja:' : 'Operating Pressure Range:'}</strong> {lang === 'id' ? 'Tersedia untuk tekanan kerja standar sampai heavy-duty, sesuai kebutuhan mesin Anda.' : 'Operating capacities from standard 70 Bar to heavy-duty 350 Bar for severe plant environments.'}</span>
               </li>
-              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
+              <li className="belsa-stagger-4" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.5 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--belsa-red)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
@@ -132,12 +135,12 @@ export default function ProductsPage() {
       {/* Symmetrical Products Grid */}
       <section style={{ marginBottom: '70px' }}>
         <div className="belsa-container">
-          <h2 className="heading-section" style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h2 className="heading-section belsa-reveal" style={{ textAlign: 'center', marginBottom: '40px' }}>
             <TwoToneTitle text={t.listTitle} />
           </h2>
           <div className="belsa-grid-3col">
             {t.items.map((p, idx) => (
-              <Link key={idx} href={`/products/${p.slug}`} className="belsa-card">
+              <Link key={idx} href={`/products/${p.slug}`} className={`belsa-card belsa-reveal belsa-stagger-${(idx % 3) + 1}`}>
                 <div className="belsa-card-img-wrap">
                   <img
                     src={formatProductImageUrl(productImages[p.slug])}
@@ -149,10 +152,10 @@ export default function ProductsPage() {
                     height={220}
                   />
                 </div>
-                <h3 className="heading-card" style={{ minHeight: '48px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <h3 className="heading-card belsa-prod-card-title" style={{ minHeight: '48px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {p.title}
                 </h3>
-                <p style={{ color: 'var(--belsa-gray)', fontSize: '0.9rem', marginTop: '8px', minHeight: '52px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.6 }}>
+                <p className="belsa-prod-card-desc" style={{ color: 'var(--belsa-gray)', fontSize: '0.9rem', marginTop: '8px', minHeight: '52px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.6 }}>
                   {p.desc}
                 </p>
                 <span className="link-learn-more" style={{ marginTop: 'auto', paddingTop: '12px' }}>
@@ -167,18 +170,21 @@ export default function ProductsPage() {
       {/* Professional Engineering Consultation Box */}
       <section style={{ paddingBottom: '30px' }}>
         <div className="belsa-container">
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '20px',
-            padding: '36px 32px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '24px',
-            flexWrap: 'wrap'
-          }}>
+          <div
+            className="belsa-cta-box-mobile belsa-reveal"
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '20px',
+              padding: '36px 32px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '24px',
+              flexWrap: 'wrap'
+            }}
+          >
             <div>
               <span className="belsa-page-eyebrow" style={{ marginBottom: '6px', display: 'inline-block' }}>
                 {lang === 'id' ? 'Konsultasi Fabrikasi & Drawing' : 'Custom Engineering & Drawing Inquiries'}
@@ -192,7 +198,7 @@ export default function ProductsPage() {
                   : 'Discuss your CAD drawings, physical samples, or industrial machinery overhaul requirements with our engineering team.'}
               </p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <div className="belsa-cta-box-btns" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
               <Link href="/contact-us" className="btn-belsa-primary">
                 {lang === 'id' ? 'Hubungi Tim Teknis' : 'Contact Engineering Team'} &rarr;
               </Link>

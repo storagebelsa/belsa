@@ -346,7 +346,7 @@ export default function ProductCategoryPage({ params }: Props) {
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-belsa-primary"
+                className="btn-belsa-primary belsa-mobile-full-btn belsa-btn-sheen"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -409,6 +409,7 @@ export default function ProductCategoryPage({ params }: Props) {
               <button
                 type="button"
                 onClick={() => setActiveSubCat('all')}
+                className="belsa-topic-chip"
                 style={{
                   background: activeSubCat === 'all' ? '#0F172A' : '#FFFFFF',
                   color: activeSubCat === 'all' ? '#FFFFFF' : '#475569',
@@ -432,6 +433,7 @@ export default function ProductCategoryPage({ params }: Props) {
                     key={sub.key}
                     type="button"
                     onClick={() => setActiveSubCat(sub.matchCategory)}
+                    className="belsa-topic-chip"
                     style={{
                       background: isActive ? '#0F172A' : '#FFFFFF',
                       color: isActive ? '#FFFFFF' : '#475569',
@@ -453,7 +455,7 @@ export default function ProductCategoryPage({ params }: Props) {
 
           {/* Product Series Grid */}
           {displayedItems.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '22px' }}>
+            <div key={activeSubCat} className="belsa-grid-fade" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '22px' }}>
               {displayedItems.map((item) => {
                 const specs = getProductQuickSpecs(item, isId);
                 const catalogueHref = `/catalogue?series=${item.slug || item.id}`;
@@ -660,18 +662,21 @@ export default function ProductCategoryPage({ params }: Props) {
       {/* Professional Engineering Consultation Box */}
       <section style={{ paddingBottom: '30px' }}>
         <div className="belsa-container">
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '20px',
-            padding: '36px 32px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '24px',
-            flexWrap: 'wrap'
-          }}>
+          <div
+            className="belsa-cta-box-mobile belsa-reveal"
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '20px',
+              padding: '36px 32px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '24px',
+              flexWrap: 'wrap'
+            }}
+          >
             <div>
               <span className="belsa-page-eyebrow" style={{ marginBottom: '6px', display: 'inline-block' }}>
                 {isId ? 'Konsultasi Fabrikasi & Drawing' : 'Custom Engineering & Drawing Inquiries'}
@@ -685,7 +690,7 @@ export default function ProductCategoryPage({ params }: Props) {
                   : 'Discuss your CAD drawings, physical samples, or bespoke technical specifications with our engineering team.'}
               </p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <div className="belsa-cta-box-btns" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
               <Link href="/contact-us" className="btn-belsa-primary">
                 {isId ? 'Hubungi Tim Teknis' : 'Contact Engineering Team'} &rarr;
               </Link>
@@ -719,6 +724,7 @@ export default function ProductCategoryPage({ params }: Props) {
           {/* Backdrop */}
           <div
             onClick={() => setDesktopModalItem(null)}
+            className="belsa-modal-backdrop-anim"
             style={{
               position: 'absolute',
               inset: 0,
@@ -732,6 +738,7 @@ export default function ProductCategoryPage({ params }: Props) {
           <div
             role="dialog"
             aria-modal="true"
+            className="belsa-modal-card-anim"
             style={{
               position: 'relative',
               zIndex: 1,

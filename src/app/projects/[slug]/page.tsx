@@ -117,8 +117,8 @@ export default function ProjectDetailPage({ params }: Props) {
       <section style={{ marginBottom: '60px' }}>
         <div className="belsa-container">
           {/* Header with Client Logo */}
-          <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
-            <div style={{ flex: '1 1 500px' }}>
+          <div className="belsa-project-detail-header belsa-reveal" style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1 1 500px', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
                 <span style={{
                   background: '#FEF2F2',
@@ -160,6 +160,7 @@ export default function ProjectDetailPage({ params }: Props) {
             {/* Client Logo (Frameless & Prominent) */}
             {logoSrc && (
               <div
+                className="belsa-project-detail-logo"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -186,9 +187,9 @@ export default function ProjectDetailPage({ params }: Props) {
           </div>
 
           {/* 2-Column Detail Layout */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '36px', alignItems: 'start' }}>
+          <div className="belsa-project-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '36px', alignItems: 'start' }}>
             {/* Visual Column */}
-            <div>
+            <div className="belsa-reveal belsa-stagger-1">
               <div style={{
                 position: 'relative',
                 borderRadius: '20px',
@@ -217,7 +218,7 @@ export default function ProjectDetailPage({ params }: Props) {
                   alignItems: 'center',
                   gap: '8px'
                 }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981' }} />
+                  <span className="belsa-pulse-dot" />
                   {t.clientBadge}
                 </div>
               </div>
@@ -253,8 +254,8 @@ export default function ProjectDetailPage({ params }: Props) {
             </div>
 
             {/* Content & Specs Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              <div style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '20px', padding: '30px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <div className="belsa-reveal belsa-stagger-2" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div className="belsa-project-scope-card" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '20px', padding: '30px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--belsa-dark)', marginBottom: '14px' }}>
                   {isId ? (
                     <>
@@ -304,12 +305,12 @@ export default function ProjectDetailPage({ params }: Props) {
                 )}
 
                 {/* Action Buttons */}
-                <div style={{ marginTop: '30px', paddingTop: '24px', borderTop: '1px solid #F3F4F6', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <div className="belsa-project-action-btns" style={{ marginTop: '30px', paddingTop: '24px', borderTop: '1px solid #F3F4F6', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                   <a
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-belsa-primary"
+                    className="btn-belsa-primary belsa-btn-sheen"
                     style={{ flexGrow: 1, justifyContent: 'center', padding: '12px 24px', textDecoration: 'none' }}
                   >
                     <span>{t.btnConsult}</span>
@@ -394,18 +395,22 @@ export default function ProjectDetailPage({ params }: Props) {
                 </h2>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
                 {/* 1. Challenge Card */}
                 {(project as any).challenge && (
-                  <div style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E5E7EB',
-                    borderRadius: '16px',
-                    padding: '24px',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
+                  <div
+                    className="belsa-reveal belsa-stagger-1"
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #E5E7EB',
+                      borderTop: '3.5px solid #DC2626',
+                      borderRadius: '16px',
+                      padding: '24px',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                       <div style={{
                         width: '36px',
@@ -436,15 +441,19 @@ export default function ProjectDetailPage({ params }: Props) {
 
                 {/* 2. Solution Card */}
                 {(project as any).solution && (
-                  <div style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E5E7EB',
-                    borderRadius: '16px',
-                    padding: '24px',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
+                  <div
+                    className="belsa-reveal belsa-stagger-2"
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #E5E7EB',
+                      borderTop: '3.5px solid #2563EB',
+                      borderRadius: '16px',
+                      padding: '24px',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                       <div style={{
                         width: '36px',
@@ -473,15 +482,19 @@ export default function ProjectDetailPage({ params }: Props) {
 
                 {/* 3. Result Card */}
                 {(project as any).result && (
-                  <div style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E5E7EB',
-                    borderRadius: '16px',
-                    padding: '24px',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
+                  <div
+                    className="belsa-reveal belsa-stagger-3"
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #E5E7EB',
+                      borderTop: '3.5px solid #059669',
+                      borderRadius: '16px',
+                      padding: '24px',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                       <div style={{
                         width: '36px',
@@ -580,17 +593,20 @@ export default function ProjectDetailPage({ params }: Props) {
       {/* Tailored Engineering Consultation Box (Replacing Generic BannerCard) */}
       <section style={{ paddingBottom: '30px' }}>
         <div className="belsa-container">
-          <div style={{
-            background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
-            borderRadius: '20px',
-            padding: '36px 40px',
-            color: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '24px',
-            flexWrap: 'wrap'
-          }}>
+          <div
+            className="belsa-dark-cta-banner belsa-reveal"
+            style={{
+              background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
+              borderRadius: '20px',
+              padding: '36px 40px',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '24px',
+              flexWrap: 'wrap'
+            }}
+          >
             <div>
               <span style={{ color: 'var(--belsa-red)', fontWeight: 700, fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '8px' }}>
                 {isId ? 'Konsultasi Fabrikasi & Modifikasi' : 'Custom Engineering & Retrofit'}
@@ -608,8 +624,7 @@ export default function ProjectDetailPage({ params }: Props) {
               href="https://wa.me/6281119168752"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-belsa-primary"
-              style={{ whiteSpace: 'nowrap' }}
+              className="btn-belsa-primary belsa-mobile-full-btn belsa-btn-sheen"
             >
               {isId ? 'Konsultasi Teknis via WhatsApp' : 'Technical Consultation on WhatsApp'} &rarr;
             </a>

@@ -18,7 +18,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="belsa-section" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)' }}>
         <div className="belsa-container belsa-grid-hero">
-          <div>
+          <div className="belsa-hero-text-mobile belsa-reveal">
             <h1 className="heading-hero" style={{ color: 'var(--belsa-dark)', marginBottom: '20px' }}>
               {lang === 'id' ? (
                 <>
@@ -34,7 +34,7 @@ export default function HomePage() {
               {t.hero.subtitle}
             </p>
             <div className="belsa-hero-btns" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-              <Link href="/products" className="btn-belsa-primary">
+              <Link href="/products" className="btn-belsa-primary belsa-btn-sheen">
                 {t.hero.btnExplore} &rarr;
               </Link>
               <Link href="/contact-us" className="btn-belsa-outline">
@@ -42,10 +42,11 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="belsa-hero-cylinder-wrap" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img
               src="/images/hero_cylinder_user.webp"
               alt="Hydraulic and Pneumatic Cylinder Precision Engineering"
+              className="belsa-hero-cylinder-anim"
               style={{ maxHeight: '440px', width: '100%', objectFit: 'contain' }}
             />
           </div>
@@ -58,8 +59,8 @@ export default function HomePage() {
       {/* We Are Belsa Section */}
       <section className="belsa-section belsa-about-section" style={{ paddingBottom: 0, overflow: 'hidden' }}>
         <div className="belsa-container belsa-about-grid">
-          <div className="belsa-about-text">
-            <h2 className="heading-section" style={{ marginBottom: '16px' }}>
+          <div className="belsa-about-text belsa-reveal">
+            <h2 className="heading-section belsa-mobile-center-heading" style={{ marginBottom: '16px' }}>
               <TwoToneTitle text={t.weAreBelsa.title} />
             </h2>
             <p style={{ color: 'var(--belsa-gray)', lineHeight: 1.8, marginBottom: '24px', fontSize: '1.05rem' }}>
@@ -67,11 +68,11 @@ export default function HomePage() {
               <RafitamaLink>{t.weAreBelsa.companyName}</RafitamaLink>
               {t.weAreBelsa.desc2}
             </p>
-            <Link href="/about-us" className="btn-belsa-primary">
+            <Link href="/about-us" className="btn-belsa-primary belsa-mobile-full-btn">
               {t.weAreBelsa.btnMore} &rarr;
             </Link>
           </div>
-          <div className="belsa-about-img-wrap">
+          <div className="belsa-about-img-wrap belsa-reveal belsa-stagger-2">
             <img
               src="/images/about_technician.webp"
               alt="Teknisi PT Rafitama Millenial Wahyudi memegang Silinder Pneumatik BELSA"
@@ -83,7 +84,7 @@ export default function HomePage() {
       {/* Our Products Section (4-column grid on desktop) */}
       <section className="belsa-section" style={{ backgroundColor: 'var(--belsa-bg-soft)' }}>
         <div className="belsa-container">
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div className="belsa-reveal" style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h2 className="heading-section" style={{ marginBottom: '12px' }}>
               <TwoToneTitle text={t.homeProducts.title} />
             </h2>
@@ -92,7 +93,7 @@ export default function HomePage() {
           
           <div className="belsa-grid-3col" style={{ marginBottom: '40px' }}>
             {/* 1. Hydraulic & Pneumatic Cylinder */}
-            <Link href="/products/silinder-hidrolik-pneumatik" className="belsa-card">
+            <Link href="/products/silinder-hidrolik-pneumatik" className="belsa-card belsa-reveal belsa-stagger-1">
               <div className="belsa-card-img-wrap">
                 <img src="/images/prod_cylinder_clean.webp" alt="Silinder Hidrolik & Pneumatik BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
               </div>
@@ -106,7 +107,7 @@ export default function HomePage() {
             </Link>
 
             {/* 2. Industrial Hose */}
-            <Link href="/products/selang-hidrolik-industri" className="belsa-card">
+            <Link href="/products/selang-hidrolik-industri" className="belsa-card belsa-reveal belsa-stagger-2">
               <div className="belsa-card-img-wrap">
                 <img src="/images/prod_hose_clean.webp" alt="Selang Hidrolik & Industri BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
               </div>
@@ -120,7 +121,7 @@ export default function HomePage() {
             </Link>
 
             {/* 3. Process Valve */}
-            <Link href="/products/process-valve" className="belsa-card">
+            <Link href="/products/process-valve" className="belsa-card belsa-reveal belsa-stagger-3">
               <div className="belsa-card-img-wrap">
                 <img src="/images/prod_valve_clean.webp" alt="Process Valve BELSA" loading="lazy" decoding="async" referrerPolicy="no-referrer" width={280} height={200} />
               </div>
@@ -135,7 +136,7 @@ export default function HomePage() {
           </div>
 
           <div style={{ textAlign: 'center' }}>
-            <Link href="/products" className="btn-belsa-primary" style={{ padding: '14px 36px' }}>
+            <Link href="/products" className="btn-belsa-primary belsa-mobile-full-btn" style={{ padding: '14px 36px' }}>
               {t.homeProducts.btnAllProducts} &rarr;
             </Link>
           </div>
@@ -145,18 +146,21 @@ export default function HomePage() {
       {/* Professional Engineering Consultation Box */}
       <section style={{ padding: '20px 0 50px' }}>
         <div className="belsa-container">
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '20px',
-            padding: '36px 32px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '24px',
-            flexWrap: 'wrap'
-          }}>
+          <div
+            className="belsa-cta-box-mobile belsa-reveal"
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '20px',
+              padding: '36px 32px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '24px',
+              flexWrap: 'wrap'
+            }}
+          >
             <div>
               <span className="belsa-page-eyebrow" style={{ marginBottom: '6px', display: 'inline-block' }}>
                 {lang === 'id' ? 'Konsultasi Fabrikasi & Drawing' : 'Custom Engineering & Drawing Inquiries'}
@@ -170,7 +174,7 @@ export default function HomePage() {
                   : 'Discuss your CAD drawings, physical samples, or industrial machinery overhaul requirements with our engineering team.'}
               </p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <div className="belsa-cta-box-btns" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
               <Link href="/contact-us" className="btn-belsa-primary">
                 {lang === 'id' ? 'Hubungi Tim Teknis' : 'Contact Engineering Team'} &rarr;
               </Link>
@@ -191,18 +195,18 @@ export default function HomePage() {
       {/* Need Custom Industrial Solution */}
       <section className="belsa-section">
         <div className="belsa-container belsa-grid-2col">
-          <div>
-            <h2 className="heading-section" style={{ marginBottom: '16px' }}>
+          <div className="belsa-reveal">
+            <h2 className="heading-section belsa-mobile-center-heading" style={{ marginBottom: '16px' }}>
               <TwoToneTitle text={t.workshop.title} />
             </h2>
             <p style={{ color: 'var(--belsa-gray)', lineHeight: 1.8, marginBottom: '28px', fontSize: '1.02rem' }}>
               {t.workshop.desc}
             </p>
-            <Link href="/contact-us" className="btn-belsa-primary">
+            <Link href="/contact-us" className="btn-belsa-primary belsa-mobile-full-btn">
               {t.workshop.btnContact} &rarr;
             </Link>
           </div>
-          <div>
+          <div className="belsa-reveal belsa-stagger-2">
             <VideoPlayer
               videoId="V4_F5Im9tks"
               title={lang === 'id' ? 'Custom Cylinder vs Standard Cylinder: Mengapa Industri Memilih Custom?' : 'Custom Cylinder vs Standard Cylinder: Why Industry Chooses Custom?'}
