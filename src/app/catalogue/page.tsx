@@ -80,13 +80,35 @@ export function preloadProductImage(url?: string) {
   img.src = formatted;
 }
 
-export default function CataloguePage() {
+export function CatalogueView({ initialSeriesSlug }: { initialSeriesSlug?: string }) {
   const { lang } = useLanguage();
   const t = translations[lang].cataloguePage;
 
+  const initialMatchedSeries = useMemo(() => {
+    if (initialSeriesSlug) {
+      const s = initialSeriesSlug.toLowerCase().trim();
+      const found = BELSA_CATALOGUE_FULL.find(
+        (item) =>
+          item.slug?.toLowerCase() === s ||
+          item.id.toLowerCase() === s ||
+          item.code.toLowerCase() === s ||
+          item.series.toLowerCase() === s
+      );
+      if (found) return found;
+    }
+    const airSeries = BELSA_CATALOGUE_FULL
+      .filter((s) => s.category === 'Air Cylinder')
+      .sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
+    return airSeries[0] || BELSA_CATALOGUE_FULL[0];
+  }, [initialSeriesSlug]);
+
   // Selected Category & Accordion Expanded State
-  const [selectedCategory, setSelectedCategory] = useState<BelsaCategory>('Air Cylinder');
-  const [expandedCategory, setExpandedCategory] = useState<BelsaCategory | null>('Air Cylinder');
+  const [selectedCategory, setSelectedCategory] = useState<BelsaCategory>(
+    () => (initialMatchedSeries?.category as BelsaCategory) || 'Air Cylinder'
+  );
+  const [expandedCategory, setExpandedCategory] = useState<BelsaCategory | null>(
+    () => (initialMatchedSeries?.category as BelsaCategory) || 'Air Cylinder'
+  );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Custom Series from Google Sheets
@@ -116,13 +138,8 @@ export default function CataloguePage() {
       .sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
   }, [allSeries, searchQuery]);
 
-  // Selected Product Series - default to first A-Z product in 'Air Cylinder'
-  const [selectedSeries, setSelectedSeries] = useState<BelsaProductSeries>(() => {
-    const airSeries = BELSA_CATALOGUE_FULL
-      .filter((s) => s.category === 'Air Cylinder')
-      .sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
-    return airSeries[0] || BELSA_CATALOGUE_FULL[0];
-  });
+  // Selected Product Series - default to initialMatchedSeries
+  const [selectedSeries, setSelectedSeries] = useState<BelsaProductSeries>(() => initialMatchedSeries);
   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
 
@@ -1800,4 +1817,8 @@ export default function CataloguePage() {
       `}</style>
     </main>
   );
+}
+
+export default function CataloguePage() {
+  return <CatalogueView />;
 }

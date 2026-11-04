@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://belsa.co.id';
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://belsa.id';
+  const baseUrl = rawBaseUrl.replace(/belsa\.co\.id/i, 'belsa.id').replace(/\/$/, '');
 
   return {
     rules: [
@@ -12,5 +13,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
   };
 }

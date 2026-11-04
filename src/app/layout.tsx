@@ -3,50 +3,64 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
+import { LanguageProvider } from '@/context/LanguageContext';
+import { RfqProvider } from '@/context/RfqContext';
+import RfqDrawer from '@/components/RfqDrawer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://belsa.co.id';
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://belsa.id';
+const siteUrl = rawSiteUrl.replace(/belsa\.co\.id/i, 'belsa.id').replace(/\/$/, '');
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'BELSA - Produsen Silinder Hidrolik & Pneumatik | PT. Rafitama Millenial Wahyudi',
+    default: 'BELSA - Produsen Silinder Hidrolik & Pneumatik Indonesia | PT. Rafitama Millenial Wahyudi',
     template: '%s | BELSA Hydraulic & Pneumatic'
   },
-  description: 'Produsen silinder hidrolik, silinder pneumatik, power pack, selang hidrolik, dan process valve di Tangerang. Bersertifikat ISO 9001:2015.',
+  description:
+    'Manufaktur silinder hidrolik, silinder pneumatik standar ISO 15552 & custom, hydraulic power unit (HPU), selang hidrolik industri, dan process valve di Tangerang, Indonesia. Bersertifikat ISO 9001:2015.',
   keywords: [
     'silinder hidrolik',
+    'pabrik silinder hidrolik indonesia',
     'hydraulic cylinder indonesia',
     'silinder pneumatik',
-    'pneumatic cylinder',
-    'belsa hydraulic',
+    'pneumatic cylinder iso 15552',
+    'custom hydraulic cylinder tangerang',
+    'belsa hydraulic pneumatic',
     'PT Rafitama Millenial Wahyudi',
-    'selang hidrolik',
-    'process valve',
-    'custom cylinder'
+    'selang hidrolik industri',
+    'hydraulic hose assembly',
+    'process valve industri',
+    'hydraulic power pack'
   ],
   authors: [{ name: 'PT. Rafitama Millenial Wahyudi', url: siteUrl }],
-  creator: 'BELSA Hydraulic Pneumatic',
+  creator: 'BELSA Hydraulic & Pneumatic',
   publisher: 'PT. Rafitama Millenial Wahyudi',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
+    alternateLocale: ['en_US'],
     url: siteUrl,
-    siteName: 'BELSA Fluid Power Solutions',
-    title: 'BELSA - Hydraulic and Pneumatic Cylinder Manufacturer',
-    description: 'Fabrikasi silinder hidrolik dan pneumatik, perakitan selang hidrolik, dan process valve. Bersertifikat ISO 9001:2015.',
+    siteName: 'BELSA Hydraulic & Pneumatic',
+    title: 'BELSA - Manufaktur Silinder Hidrolik & Pneumatik Indonesia',
+    description:
+      'Fabrikasi silinder hidrolik & pneumatik standar maupun custom, perakitan selang hidrolik bertekanan tinggi, dan penyediaan process valve industri. Bersertifikat ISO 9001:2015.',
     images: [
       {
         url: '/images/prod_cylinder_clean.webp',
         width: 1200,
         height: 630,
-        alt: 'BELSA Hydraulic and Pneumatic Cylinder',
+        alt: 'BELSA Hydraulic and Pneumatic Cylinder Manufacturer Indonesia',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BELSA - Hydraulic & Pneumatic Cylinder Manufacturer',
-    description: 'Silinder hidrolik, silinder pneumatik, selang hidrolik, dan process valve dari Tangerang.',
+    title: 'BELSA - Produsen Silinder Hidrolik & Pneumatik Indonesia',
+    description:
+      'Fabrikasi silinder hidrolik, silinder pneumatik, selang hidrolik, dan process valve di Tangerang. Bersertifikat ISO 9001:2015.',
     images: ['/images/prod_cylinder_clean.webp'],
   },
   robots: {
@@ -67,33 +81,80 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLdOrg = {
+const jsonLdRoot = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'BELSA (PT. Rafitama Millenial Wahyudi)',
-  url: siteUrl,
-  logo: `${siteUrl}/images/Favicon.webp`,
-  description: 'Produsen silinder hidrolik, silinder pneumatik, power pack, selang hidrolik, dan process valve di Indonesia.',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Jl. Scientia Garden T/07, Scientia Boulevard, Gading Serpong',
-    addressLocality: 'Kab. Tangerang',
-    addressRegion: 'Banten',
-    postalCode: '15334',
-    addressCountry: 'ID'
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+62-811-1916-8752',
-    contactType: 'sales & technical support',
-    areaServed: 'ID',
-    availableLanguage: ['Indonesian', 'English']
-  }
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'BELSA (PT. Rafitama Millenial Wahyudi)',
+      alternateName: ['BELSA Hydraulic Pneumatic', 'PT. Rafitama Millenial Wahyudi'],
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/images/logo.webp`,
+        width: 400,
+        height: 120,
+      },
+      image: `${siteUrl}/images/prod_cylinder_clean.webp`,
+      description:
+        'Produsen silinder hidrolik, silinder pneumatik, hydraulic power unit, selang hidrolik industri, dan process valve bersertifikat ISO 9001:2015 di Indonesia.',
+      foundingDate: '2017',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Ruko Newton Timur No. 22, Jl. Scientia Square Timur, Curug Sangereng, Kec. Kelapa Dua',
+        addressLocality: 'Kab. Tangerang',
+        addressRegion: 'Banten',
+        postalCode: '15810',
+        addressCountry: 'ID',
+      },
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          telephone: '+62-811-1916-8752',
+          contactType: 'sales & technical support',
+          email: 'sales@rafitama.com',
+          areaServed: 'ID',
+          availableLanguage: ['Indonesian', 'English'],
+        },
+      ],
+    },
+    {
+      '@type': 'LocalBusiness',
+      '@id': `${siteUrl}/#localbusiness`,
+      name: 'BELSA Hydraulic & Pneumatic - PT. Rafitama Millenial Wahyudi',
+      image: `${siteUrl}/images/prod_cylinder_clean.webp`,
+      url: siteUrl,
+      telephone: '+62-811-1916-8752',
+      email: 'sales@rafitama.com',
+      priceRange: '$$$',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Ruko Newton Timur No. 22, Jl. Scientia Square Timur, Curug Sangereng, Kec. Kelapa Dua',
+        addressLocality: 'Kab. Tangerang',
+        addressRegion: 'Banten',
+        postalCode: '15810',
+        addressCountry: 'ID',
+      },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          opens: '08:00',
+          closes: '17:00',
+        },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'BELSA Hydraulic & Pneumatic',
+      publisher: { '@id': `${siteUrl}/#organization` },
+      inLanguage: ['id-ID', 'en-US'],
+    },
+  ],
 };
-
-import { LanguageProvider } from '@/context/LanguageContext';
-import { RfqProvider } from '@/context/RfqContext';
-import RfqDrawer from '@/components/RfqDrawer';
 
 export default function RootLayout({
   children,
@@ -117,7 +178,7 @@ export default function RootLayout({
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdRoot) }}
         />
       </head>
       <body>

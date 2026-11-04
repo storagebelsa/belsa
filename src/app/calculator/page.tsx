@@ -18,9 +18,9 @@ import {
 } from '@/lib/cylinderCalculator';
 import './calculator.css';
 
-type CalculatorTab = 'pressure' | 'thickness' | 'bolt' | 'weight' | 'torque';
+export type CalculatorTab = 'pressure' | 'thickness' | 'bolt' | 'weight' | 'torque';
 
-function CalculatorContent() {
+function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
   const { lang } = useLanguage();
   const isId = lang === 'id';
 
@@ -57,7 +57,7 @@ function CalculatorContent() {
   const featuresLabel = (text: string) => (isId ? FEATURES_ID[text] || text : text);
   const searchParams = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<CalculatorTab>('pressure');
+  const [activeTab, setActiveTab] = useState<CalculatorTab>(initialTool || 'pressure');
   const [copied, setCopied] = useState(false);
   const [showFormula, setShowFormula] = useState(false);
 
@@ -2142,10 +2142,14 @@ function CalculatorContent() {
   );
 }
 
-export default function CalculatorPage() {
+export function CalculatorView({ initialTool }: { initialTool?: CalculatorTab }) {
   return (
     <Suspense fallback={<div style={{ padding: '80px 0', textAlign: 'center' }}>Loading calculator...</div>}>
-      <CalculatorContent />
+      <CalculatorContent initialTool={initialTool} />
     </Suspense>
   );
+}
+
+export default function CalculatorPage() {
+  return <CalculatorView />;
 }
