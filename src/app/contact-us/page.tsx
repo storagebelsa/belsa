@@ -14,6 +14,13 @@ export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('hydraulic');
   const [activeMapTab, setActiveMapTab] = useState<'workshop' | 'office'>('workshop');
+  const [isMapLoading, setIsMapLoading] = useState(true);
+
+  const handleMapTabChange = (tab: 'workshop' | 'office') => {
+    if (tab === activeMapTab) return;
+    setIsMapLoading(true);
+    setActiveMapTab(tab);
+  };
 
   const topics = [
     { id: 'hydraulic', labelId: 'Silinder Hidrolik Kustom', labelEn: 'Custom Hydraulic Cylinder' },
@@ -712,7 +719,7 @@ export default function ContactUsPage() {
               }} className="contact-tab-buttons">
                 <button
                   type="button"
-                  onClick={() => setActiveMapTab('workshop')}
+                  onClick={() => handleMapTabChange('workshop')}
                   style={{
                     padding: '9px 18px',
                     borderRadius: '9px',
@@ -735,7 +742,7 @@ export default function ContactUsPage() {
 
                 <button
                   type="button"
-                  onClick={() => setActiveMapTab('office')}
+                  onClick={() => handleMapTabChange('office')}
                   style={{
                     padding: '9px 18px',
                     borderRadius: '9px',
@@ -759,7 +766,54 @@ export default function ContactUsPage() {
             </div>
 
             {/* Google Maps Full Width Embed Canvas */}
-            <div className="contact-map-frame" style={{ position: 'relative', width: '100%', height: '380px', background: '#F1F5F9' }}>
+            <div className="contact-map-frame" style={{ position: 'relative', width: '100%', height: '380px', background: '#F1F5F9', overflow: 'hidden' }}>
+              {isMapLoading && (
+                <div
+                  className="belsa-image-skeleton"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background: 'rgba(255, 255, 255, 0.94)',
+                      backdropFilter: 'blur(4px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 4px 12px rgba(15, 23, 42, 0.08)'
+                    }}
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#dc2626"
+                      strokeWidth="2.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ animation: 'belsaSpin 0.9s linear infinite' }}
+                    >
+                      <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
+                      <path d="M12 2a10 10 0 0 1 10 10" />
+                    </svg>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 700, letterSpacing: '0.02em' }}>
+                    {isId ? 'Memuat Peta Lokasi...' : 'Loading Location Map...'}
+                  </span>
+                </div>
+              )}
               <iframe
                 key={activeMapTab}
                 title={activeMapTab === 'workshop' ? 'Titik Maps Workshop BELSA' : 'Titik Maps Head Office BELSA'}
@@ -770,7 +824,13 @@ export default function ContactUsPage() {
                 }
                 width="100%"
                 height="100%"
-                style={{ border: 0, display: 'block' }}
+                onLoad={() => setIsMapLoading(false)}
+                style={{
+                  border: 0,
+                  display: 'block',
+                  opacity: isMapLoading ? 0 : 1,
+                  transition: 'opacity 0.3s ease-out'
+                }}
                 allowFullScreen={false}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

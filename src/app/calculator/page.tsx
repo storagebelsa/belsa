@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import React, { useState, useMemo, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
@@ -61,6 +61,9 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
   const [copied, setCopied] = useState(false);
   const [showFormula, setShowFormula] = useState(false);
   const [mobileCadExpanded, setMobileCadExpanded] = useState(true);
+  const [isToolSwitching, setIsToolSwitching] = useState(false);
+  const [slideDir, setSlideDir] = useState<'right' | 'left'>('right');
+  const switchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const tool = searchParams.get('tool') || searchParams.get('tab');
@@ -69,8 +72,26 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    return () => {
+      if (switchTimerRef.current) clearTimeout(switchTimerRef.current);
+    };
+  }, []);
+
   const switchTab = (tab: CalculatorTab) => {
+    if (tab === activeTab) return;
+    const order: CalculatorTab[] = ['pressure', 'thickness', 'bolt', 'weight', 'torque'];
+    const prevIdx = order.indexOf(activeTab);
+    const nextIdx = order.indexOf(tab);
+    setSlideDir(nextIdx >= prevIdx ? 'right' : 'left');
+    setIsToolSwitching(true);
     setActiveTab(tab);
+
+    if (switchTimerRef.current) clearTimeout(switchTimerRef.current);
+    switchTimerRef.current = setTimeout(() => {
+      setIsToolSwitching(false);
+    }, 240);
+
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('tool', tab);
@@ -834,7 +855,18 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
           </div>
 
           {mobileCadExpanded && (
-            <div className="belsa-calc-mobile-svg-stage">
+            <div key={`cad-${activeTab}-${pressureMode}-${weightType}`} className="belsa-calc-mobile-svg-stage belsa-calc-cad-enter" style={{ position: 'relative' }}>
+              {isToolSwitching && (
+                <div className="belsa-calc-cad-skull-shimmer">
+                  <div className="belsa-calc-cad-skull-spinner">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'belsaSpin 0.85s linear infinite' }}>
+                      <circle cx="12" cy="12" r="10" strokeOpacity="0.22" />
+                      <path d="M12 2a10 10 0 0 1 10 10" />
+                    </svg>
+                    <span>{isId ? 'Memuat Modul CAD...' : 'Loading CAD Module...'}</span>
+                  </div>
+                </div>
+              )}
               {renderCadSvg(activeTab, 'mob-')}
             </div>
           )}
@@ -949,6 +981,36 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
             </div>
           )}
         </div>
+
+        {/* ========================================================================= */}
+        {/* ANIMATED TOOL STAGE WITH SKULL SHIMMER TRANSITION                         */}
+        {/* ========================================================================= */}
+        <div
+          key={activeTab}
+          className={`belsa-calc-tool-stage slide-${slideDir} ${isToolSwitching ? 'is-switching' : ''}`}
+        >
+          {isToolSwitching && (
+            <div className="belsa-calc-tool-skull-overlay" aria-hidden="true">
+              <div className="belsa-calc-tool-skull-card">
+                <div className="belsa-calc-tool-skull-header">
+                  <div className="belsa-image-skeleton" style={{ width: '48%', height: '20px', borderRadius: '6px' }} />
+                  <div className="belsa-image-skeleton" style={{ width: '24%', height: '18px', borderRadius: '6px' }} />
+                </div>
+                <div className="belsa-image-skeleton" style={{ width: '100%', height: '42px', borderRadius: '10px', marginBottom: '16px' }} />
+                <div className="belsa-image-skeleton" style={{ width: '100%', height: '64px', borderRadius: '12px', marginBottom: '14px' }} />
+                <div className="belsa-image-skeleton" style={{ width: '100%', height: '64px', borderRadius: '12px' }} />
+                <div className="belsa-calc-tool-skull-badge">
+                  <div className="belsa-calc-tool-skull-ring">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D3232A" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'belsaSpin 0.9s linear infinite' }}>
+                      <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
+                      <path d="M12 2a10 10 0 0 1 10 10" />
+                    </svg>
+                  </div>
+                  <span>{isId ? 'Memuat Alat Hitung...' : 'Loading Calculator Tool...'}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
         {/* ========================================================================= */}
         {/* MODULE 1: PRESSURE & LOAD CALCULATOR */}
@@ -2780,6 +2842,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
 
           </div>
         )}
+        </div>
 
       </div>
 
@@ -2855,7 +2918,22 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
 
 export function CalculatorView({ initialTool }: { initialTool?: CalculatorTab }) {
   return (
-    <Suspense fallback={<div style={{ padding: '80px 0', textAlign: 'center' }}>Loading calculator...</div>}>
+    <Suspense
+      fallback={
+        <div className="belsa-container" style={{ padding: '48px 16px 80px' }}>
+          <div className="belsa-image-skeleton" style={{ height: '140px', borderRadius: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+            <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D3232A" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'belsaSpin 0.9s linear infinite' }}>
+                <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
+                <path d="M12 2a10 10 0 0 1 10 10" />
+              </svg>
+            </div>
+            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748B' }}>Memuat Kalkulator Teknik...</span>
+          </div>
+          <div className="belsa-image-skeleton" style={{ height: '320px', borderRadius: '20px' }} />
+        </div>
+      }
+    >
       <CalculatorContent initialTool={initialTool} />
     </Suspense>
   );

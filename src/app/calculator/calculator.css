@@ -114,6 +114,166 @@
   display: none;
 }
 
+/* ==========================================================================
+   TOOL SWITCHING ANIMATIONS + SKULL SHIMMER OVERLAY
+   ========================================================================== */
+@keyframes belsaCalcSlideInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes belsaCalcSlideInLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-18px, 0, 0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes belsaCalcCadFadeIn {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes belsaCalcSkullFadeOut {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes belsaDarkCadShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.belsa-calc-tool-stage {
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.belsa-calc-tool-stage.slide-right {
+  animation: belsaCalcSlideInRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-calc-tool-stage.slide-left {
+  animation: belsaCalcSlideInLeft 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-calc-cad-enter {
+  animation: belsaCalcCadFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.belsa-calc-cad-skull-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 41, 59, 0.94) 50%, rgba(15, 23, 42, 0.88) 100%);
+  background-size: 200% 100%;
+  animation: belsaDarkCadShimmer 1.1s infinite ease-in-out, belsaCalcSkullFadeOut 0.25s ease-out forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+
+.belsa-calc-cad-skull-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #E2E8F0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.belsa-calc-tool-skull-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  animation: belsaCalcSkullFadeOut 0.25s ease-out forwards;
+}
+
+.belsa-calc-tool-skull-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(4px);
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.belsa-calc-tool-skull-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.belsa-calc-tool-skull-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(248, 250, 252, 0.55);
+}
+
+.belsa-calc-tool-skull-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.belsa-calc-tool-skull-badge span {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.02em;
+}
+
 /* Main Layout Grid (2 Columns Dashboard) */
 .belsa-calc-grid-2col {
   display: grid;
