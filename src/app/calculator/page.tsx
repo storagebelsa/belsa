@@ -2143,7 +2143,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <div className="belsa-calc-form-group">
                     <div className="belsa-calc-label-row">
                       <label className="belsa-calc-label">{isId ? 'Diameter Dalam (ID — 0 = Pejal):' : 'Inner Bore (ID — 0 = Solid):'}</label>
-                      <span className="belsa-calc-label-val">Ø {roundId} mm</span>
+                      <span className="belsa-calc-label-val">{roundId === 0 ? (isId ? '0 mm (Pejal)' : '0 mm (Solid)') : `Ø ${roundId} mm`}</span>
                     </div>
                     <div className="belsa-calc-input-row">
                       <button
@@ -2180,11 +2180,23 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       onChange={(e) => setRoundId(parseFloat(e.target.value))}
                       className="belsa-calc-range"
                     />
+                    <div className="belsa-calc-preset-wrap">
+                      {[0, 32, 40, 50, 63, 80, 100].filter((p) => p === 0 || p < roundOd).map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => setRoundId(preset)}
+                          className={`belsa-calc-preset-chip ${roundId === preset ? 'active' : ''}`}
+                        >
+                          {preset === 0 ? (isId ? '0 (As Pejal)' : '0 (Solid Rod)') : `ID Ø${preset}`}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="belsa-calc-form-group">
                     <div className="belsa-calc-label-row">
-                      <label className="belsa-calc-label">Panjang Batang:</label>
+                      <label className="belsa-calc-label">{isId ? 'Panjang Batang / Pipa:' : 'Bar / Tube Length:'}</label>
                       <span className="belsa-calc-label-val">{roundLength} mm</span>
                     </div>
                     <div className="belsa-calc-input-row">
@@ -2350,6 +2362,18 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       onChange={(e) => setPlateHeight(parseFloat(e.target.value))}
                       className="belsa-calc-range"
                     />
+                    <div className="belsa-calc-preset-wrap">
+                      {[6, 8, 10, 12, 16, 20, 25, 32, 50].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => setPlateHeight(preset)}
+                          className={`belsa-calc-preset-chip ${plateHeight === preset ? 'active' : ''}`}
+                        >
+                          {preset} mm
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </>
               )}
@@ -2453,9 +2477,32 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                     </div>
                   </div>
 
-                  <p style={{ fontSize: '0.84rem', color: '#64748B', lineHeight: 1.6, marginBottom: '20px' }}>
-                    Berat komponen dipakai untuk perencanaan fabrikasi, pemilihan alat angkat, dan perkiraan ongkos kirim.
-                  </p>
+                  <div className="belsa-calc-metric-table">
+                    <div className="belsa-calc-metric-row">
+                      <span className="belsa-calc-metric-label">{isId ? 'Bentuk Komponen:' : 'Component Geometry:'}</span>
+                      <strong className="belsa-calc-metric-val">
+                        {weightType === 'round'
+                          ? roundId > 0
+                            ? (isId ? 'Pipa Berongga (Hollow Tube)' : 'Hollow Pipe / Tube')
+                            : (isId ? 'As Bulat Pejal (Solid Bar)' : 'Solid Round Bar')
+                          : (isId ? 'Plat Kotak / Flange' : 'Square Plate / Flange')}
+                      </strong>
+                    </div>
+                    <div className="belsa-calc-metric-row">
+                      <span className="belsa-calc-metric-label">{isId ? 'Dimensi Aktual:' : 'Actual Dimensions:'}</span>
+                      <strong className="belsa-calc-metric-val">
+                        {weightType === 'round'
+                          ? `Ø${roundOd} × Ø${roundId} × ${roundLength} mm`
+                          : `${plateLength} × ${plateWidth} × ${plateHeight} mm`}
+                      </strong>
+                    </div>
+                    <div className="belsa-calc-metric-row">
+                      <span className="belsa-calc-metric-label">{isId ? 'Estimasi Berat (Lbs):' : 'Estimated Weight (Lbs):'}</span>
+                      <strong className="belsa-calc-metric-val" style={{ color: '#D3232A' }}>
+                        {((weightType === 'round' ? roundWeightResult : plateWeightResult) * 2.20462).toFixed(2)} Lbs
+                      </strong>
+                    </div>
+                  </div>
 
                   {/* Actions */}
                   <div className="belsa-calc-actions">

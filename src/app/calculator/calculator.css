@@ -1038,8 +1038,7 @@
   }
 
   .belsa-calc-badge-excel {
-    font-size: 0.65rem !important;
-    padding: 3px 7px !important;
+    display: none !important;
   }
 
   .belsa-calc-mode-switch {
