@@ -201,7 +201,7 @@ export default function ContactUsPage() {
               </div>
               <div style={{ display: 'flex', gap: '10px', marginTop: 'auto', paddingTop: '4px' }}>
                 <a
-                  href="https://share.google/oB67z8Q2J3j44GqfS"
+                  href="https://www.google.com/maps/place/Nabel+Sakha+Building/@-6.259055,106.6080465,1346m/data=!3m1!1e3!4m6!3m5!1s0x2e69fc750c1499af:0x6a880c03d8ec12b1!8m2!3d-6.2589089!4d106.6079929!16s%2Fg%2F119vrtf59?entry=ttu&g_ep=EgoyMDI2MTEwMS4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--belsa-red)', textDecoration: 'none' }}
@@ -628,7 +628,7 @@ export default function ContactUsPage() {
                 </p>
 
                 <a
-                  href="https://share.google/oB67z8Q2J3j44GqfS"
+                  href="https://www.google.com/maps/place/Nabel+Sakha+Building/@-6.259055,106.6080465,1346m/data=!3m1!1e3!4m6!3m5!1s0x2e69fc750c1499af:0x6a880c03d8ec12b1!8m2!3d-6.2589089!4d106.6079929!16s%2Fg%2F119vrtf59?entry=ttu&g_ep=EgoyMDI2MTEwMS4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-belsa-outline"
@@ -766,7 +766,7 @@ export default function ContactUsPage() {
                 src={
                   activeMapTab === 'workshop'
                     ? 'https://maps.google.com/maps?q=-6.178381069208916,106.56286069510205+(Workshop+PT+Rafitama+Millenial+Wahyudi)&t=&z=16&ie=UTF8&iwloc=&output=embed'
-                    : 'https://maps.google.com/maps?q=-6.2575,106.6186+(Head+Office+PT+Rafitama+Millenial+Wahyudi)&t=&z=16&ie=UTF8&iwloc=&output=embed'
+                    : 'https://maps.google.com/maps?q=-6.2589089,106.6079929+(Nabel+Sakha+Building)&t=&z=17&ie=UTF8&iwloc=&output=embed'
                 }
                 width="100%"
                 height="100%"
@@ -801,7 +801,7 @@ export default function ContactUsPage() {
                 href={
                   activeMapTab === 'workshop'
                     ? 'https://maps.app.goo.gl/CPFtJNBygVUNbXiQ9'
-                    : 'https://share.google/oB67z8Q2J3j44GqfS'
+                    : 'https://www.google.com/maps/place/Nabel+Sakha+Building/@-6.259055,106.6080465,1346m/data=!3m1!1e3!4m6!3m5!1s0x2e69fc750c1499af:0x6a880c03d8ec12b1!8m2!3d-6.2589089!4d106.6079929!16s%2Fg%2F119vrtf59?entry=ttu&g_ep=EgoyMDI2MTEwMS4wIKXMDSoASAFQAw%3D%3D'
                 }
                 target="_blank"
                 rel="noopener noreferrer"

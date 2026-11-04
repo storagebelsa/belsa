@@ -126,7 +126,7 @@ export default function Footer() {
               <div className="footer-light-facility-head">
                 <span className="footer-light-facility-label">{lang === 'id' ? 'Head Office' : 'Head Office'}</span>
                 <a 
-                  href="https://share.google/7sUbNCiE3iQiNqYwx" 
+                  href="https://www.google.com/maps/place/Nabel+Sakha+Building/@-6.259055,106.6080465,1346m/data=!3m1!1e3!4m6!3m5!1s0x2e69fc750c1499af:0x6a880c03d8ec12b1!8m2!3d-6.2589089!4d106.6079929!16s%2Fg%2F119vrtf59?entry=ttu&g_ep=EgoyMDI2MTEwMS4wIKXMDSoASAFQAw%3D%3D" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="footer-light-map-link"
