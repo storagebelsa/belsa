@@ -106,6 +106,14 @@
   transform: translateY(-1px);
 }
 
+/* Mobile-only elements hidden by default on Desktop */
+.belsa-calc-mobile-appbar,
+.belsa-calc-mobile-monitor,
+.belsa-calc-bottom-nav,
+.belsa-calc-mobile-torque-controls {
+  display: none;
+}
+
 /* Main Layout Grid (2 Columns Dashboard) */
 .belsa-calc-grid-2col {
   display: grid;
@@ -228,12 +236,51 @@
 
 .belsa-calc-input-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
+}
+
+.belsa-calc-stepper-btn {
+  width: 40px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #F8FAFC;
+  color: #1E293B;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.belsa-calc-stepper-btn:hover {
+  background: #FFF1F2;
+  border-color: #FECDD3;
+  color: #D3232A;
+}
+
+.belsa-calc-stepper-btn:active {
+  transform: scale(0.93);
+  background: #FEE2E2;
+}
+
+.belsa-calc-unit-tag {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #475569;
+  min-width: 28px;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .belsa-calc-input {
   flex: 1;
+  min-width: 0;
   height: 44px;
   padding: 0 14px;
   border-radius: 10px;
@@ -241,7 +288,7 @@
   background: #FFFFFF;
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #0F172A;
   transition: all 0.2s ease;
   outline: none;
@@ -302,6 +349,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .belsa-calc-preset-chip:hover {
@@ -745,7 +793,7 @@
   background: #FFF1F2 !important;
 }
 
-/* Responsive Media Queries */
+/* Tablet Layout */
 @media (max-width: 1024px) {
   .belsa-calc-nav {
     grid-template-columns: repeat(3, 1fr);
@@ -756,41 +804,432 @@
   }
 }
 
-@media (max-width: 640px) {
+/* ==========================================================================
+   BELSA POCKET ENGINEER APP MODE (MOBILE <= 768px)
+   Transforms /calculator into a native-feeling split-screen mobile toolkit
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Hide global floating WA button on /calculator mobile so it never blocks the Bottom App Bar */
+  body:has(.belsa-calc-page) .belsa-floating-wa {
+    display: none !important;
+  }
+
   .belsa-calc-page {
-    padding-top: 24px;
+    padding-top: 10px !important;
+    padding-bottom: 96px !important;
+    background: #F1F5F9 !important;
   }
-  .belsa-calc-title {
-    font-size: 1.6rem;
-  }
+
+  /* 1. Hide Verbose Desktop Hero & Top 5-Grid Nav on Mobile */
+  .belsa-calc-desktop-hero,
   .belsa-calc-nav {
-    grid-template-columns: 1fr 1fr;
+    display: none !important;
+  }
+
+  /* 2. Show Compact App Header Bar */
+  .belsa-calc-mobile-appbar {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 2px 10px;
+  }
+
+  .belsa-calc-mobile-appbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .belsa-calc-mobile-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #D3232A;
+    box-shadow: 0 0 0 3px rgba(211, 35, 42, 0.2);
+    flex-shrink: 0;
+  }
+
+  .belsa-calc-mobile-app-title {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: #0F172A;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .belsa-calc-mobile-std-pill {
+    font-size: 0.66rem;
+    font-weight: 700;
+    font-family: monospace;
+    color: #D3232A;
+    background: #FFE4E6;
+    border: 1px solid #FECDD3;
+    padding: 2px 7px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .belsa-calc-mobile-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #CBD5E1;
+    background: #FFFFFF;
+    color: #475569;
+    font-family: inherit;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .belsa-calc-mobile-reset-btn:active {
+    transform: scale(0.95);
+    background: #F8FAFC;
+  }
+
+  /* 3. Sticky Live CAD & Telemetry Monitor (Pinned at top of viewport while sliding!) */
+  .belsa-calc-mobile-monitor {
+    display: block !important;
+    position: sticky;
+    top: 64px;
+    z-index: 42;
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 16px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.42), 0 4px 10px rgba(0, 0, 0, 0.18);
+    color: #F8FAFC;
+  }
+
+  .belsa-calc-mobile-monitor-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .belsa-calc-mobile-monitor-label {
+    display: flex;
+    align-items: center;
     gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    text-transform: uppercase;
   }
-  .belsa-calc-tab-btn {
-    padding: 10px 8px;
-    font-size: 0.78rem;
+
+  .belsa-calc-mobile-cad-toggle {
+    background: #1E293B;
+    border: 1px solid #334155;
+    color: #38BDF8;
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    cursor: pointer;
   }
-  .belsa-calc-tab-btn svg {
-    width: 18px;
-    height: 18px;
+
+  .belsa-calc-mobile-svg-stage {
+    background: #0B1120;
+    border: 1px solid #1E293B;
+    border-radius: 10px;
+    padding: 6px 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .belsa-calc-results-grid {
-    grid-template-columns: 1fr;
+
+  .belsa-calc-mobile-svg-stage svg {
+    width: 100%;
+    height: auto;
+    max-height: 108px;
+    display: block;
   }
-  .belsa-calc-rec-list {
-    grid-template-columns: 1fr;
+
+  /* 3-Column Live Telemetry Ribbon inside the Sticky Monitor */
+  .belsa-calc-mobile-telemetry {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 6px;
+    background: #0B1120;
+    border: 1px solid #1E293B;
+    border-radius: 10px;
+    padding: 8px 10px;
   }
-  .belsa-calc-actions {
+
+  .belsa-calc-mobile-tel-item {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    min-width: 0;
   }
+
+  .belsa-calc-mobile-tel-item:not(:first-child) {
+    border-left: 1px solid #1E293B;
+    padding-left: 8px;
+  }
+
+  .belsa-calc-mobile-tel-lbl {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #64748B;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+
+  .belsa-calc-mobile-tel-val {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #F8FAFC;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .belsa-calc-mobile-tel-item.is-primary .belsa-calc-mobile-tel-val {
+    color: #FF4D55;
+    font-size: 0.96rem;
+  }
+
+  /* 4. Hide duplicate CAD Stage inside bottom cockpit card on Mobile */
+  .belsa-calc-sticky-hud .belsa-calc-cockpit-stage {
+    display: none !important;
+  }
+
+  /* 5. Compact Thumb-Friendly Control Deck (Input Card) on Mobile */
   .belsa-calc-card {
-    padding: 20px 16px;
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
   }
+
+  .belsa-calc-card-header {
+    margin-bottom: 14px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .belsa-calc-card-title {
+    font-size: 0.96rem !important;
+  }
+
+  .belsa-calc-badge-excel {
+    font-size: 0.65rem !important;
+    padding: 3px 7px !important;
+  }
+
+  .belsa-calc-mode-switch {
+    margin-bottom: 14px !important;
+  }
+
+  .belsa-calc-mode-btn {
+    padding: 8px 8px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .belsa-calc-form-group {
+    margin-bottom: 14px !important;
+  }
+
+  .belsa-calc-label {
+    font-size: 0.82rem !important;
+  }
+
+  .belsa-calc-label-val {
+    font-size: 0.82rem !important;
+  }
+
+  .belsa-calc-input {
+    height: 40px !important;
+    font-size: 0.92rem !important;
+    text-align: center;
+  }
+
+  .belsa-calc-stepper-btn {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.2rem !important;
+  }
+
+  /* Thicker Touch Slider on Mobile */
+  .belsa-calc-range {
+    height: 8px !important;
+    margin-top: 12px !important;
+    border-radius: 999px !important;
+  }
+
+  .belsa-calc-range::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Single-Row Horizontal Swipeable Preset Chips on Mobile */
+  .belsa-calc-preset-wrap {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    margin-top: 8px !important;
+  }
+
+  .belsa-calc-preset-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .belsa-calc-preset-chip {
+    flex-shrink: 0 !important;
+    padding: 6px 11px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Show Quick Torque Grade/Unit Switcher at top of Torque Table on Mobile */
+  .belsa-calc-mobile-torque-controls {
+    display: block !important;
+  }
+
+  /* Compact Bottom Results & Side-by-Side Action Buttons on Mobile */
+  .belsa-calc-cockpit {
+    border-radius: 16px !important;
+  }
+
   .belsa-calc-cockpit-results {
-    padding: 18px 14px;
+    padding: 16px 14px !important;
   }
-  .belsa-calc-cockpit-stage {
-    padding: 16px 14px;
+
+  .belsa-calc-results-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .belsa-calc-result-box {
+    padding: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .belsa-calc-result-val {
+    font-size: 1.3rem !important;
+  }
+
+  .belsa-calc-result-unit {
+    font-size: 0.76rem !important;
+  }
+
+  .belsa-calc-result-sub {
+    font-size: 0.68rem !important;
+  }
+
+  .belsa-calc-rec-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .belsa-calc-actions {
+    flex-direction: row !important;
+    gap: 8px !important;
+  }
+
+  .belsa-calc-btn-wa {
+    flex: 1.8 !important;
+    padding: 12px 12px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .belsa-calc-btn-copy {
+    flex: 1 !important;
+    padding: 12px 10px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* 6. Fixed Native Bottom App Navigation Bar (iOS/Android Style) */
+  .belsa-calc-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 95;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(51, 65, 85, 0.85);
+    padding: 6px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.35);
+  }
+
+  .belsa-calc-bottom-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 2px 4px;
+    border: none;
+    background: transparent;
+    color: #94A3B8;
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .belsa-calc-bottom-tab svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .belsa-calc-bottom-indicator {
+    position: absolute;
+    top: -6px;
+    width: 0;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: #D3232A;
+    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .belsa-calc-bottom-tab.is-active {
+    color: #FFFFFF;
+    font-weight: 800;
+  }
+
+  .belsa-calc-bottom-tab.is-active svg {
+    stroke: #FF4D55;
+    transform: translateY(-2px);
+  }
+
+  .belsa-calc-bottom-tab.is-active .belsa-calc-bottom-indicator {
+    width: 28px;
+    box-shadow: 0 2px 10px rgba(211, 35, 42, 0.8);
+  }
+
+  .belsa-calc-bottom-tab:active {
+    transform: scale(0.92);
   }
 }

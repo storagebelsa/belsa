@@ -60,6 +60,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
   const [activeTab, setActiveTab] = useState<CalculatorTab>(initialTool || 'pressure');
   const [copied, setCopied] = useState(false);
   const [showFormula, setShowFormula] = useState(false);
+  const [mobileCadExpanded, setMobileCadExpanded] = useState(true);
 
   useEffect(() => {
     const tool = searchParams.get('tool') || searchParams.get('tab');
@@ -74,6 +75,9 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
       const url = new URL(window.location.href);
       url.searchParams.set('tool', tab);
       window.history.replaceState(null, '', url.toString());
+      if (window.innerWidth <= 768 && window.scrollY > 80) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 
@@ -198,12 +202,413 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
     return `https://wa.me/6281119168752?text=${encodeURIComponent(msg)}`;
   };
 
+  const handleResetActiveTab = () => {
+    if (activeTab === 'pressure') {
+      setPressureMode('calcPressure');
+      setLoadTonInput(7.5);
+      setBoreMmInput(140);
+      setPressureBarInput(140);
+    } else if (activeTab === 'thickness') {
+      setOdMm(273);
+      setIdMm(225);
+      setThickPressureBar(300);
+      setMaterialKey('stkm13c');
+    } else if (activeTab === 'bolt') {
+      setBoltPressureBar(300);
+      setBoltTubeIdMm(225);
+      setBoltDiaMm(43);
+      setBoltQty(4);
+      setBoltGrade('8.8');
+    } else if (activeTab === 'weight') {
+      setWeightType('round');
+      setRoundOd(65);
+      setRoundId(0);
+      setRoundLength(220);
+      setPlateLength(250);
+      setPlateWidth(130);
+      setPlateHeight(10);
+      setDensity(7850);
+    } else if (activeTab === 'torque') {
+      setTorqueSearch('');
+      setSelectedBoltSize('M24');
+      setTorqueGrade('8.8');
+      setTorqueUnit('Nm');
+    }
+  };
+
+  // Shared CAD SVG Renderer (Prefix prevents duplicate SVG <defs> IDs between mobile sticky monitor & desktop HUD)
+  const renderCadSvg = (tab: CalculatorTab, idPrefix: string) => {
+    if (tab === 'pressure') {
+      const chamberHeight = Math.min(84, Math.max(30, (boreMmInput / 320) * 84));
+      const chamberY = 68 - chamberHeight / 2;
+      const pistonX = 190;
+      const rodHeight = Math.max(14, chamberHeight * 0.45);
+      const rodY = 68 - rodHeight / 2;
+
+      return (
+        <svg viewBox="0 0 520 135" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id={`${idPrefix}fluidGrad`} x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#D3232A" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#D3232A" stopOpacity="0.2" />
+            </linearGradient>
+            <linearGradient id={`${idPrefix}rodGrad`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#E2E8F0" />
+              <stop offset="50%" stopColor="#CBD5E1" />
+              <stop offset="100%" stopColor="#94A3B8" />
+            </linearGradient>
+          </defs>
+
+          <rect x="30" y="18" width="300" height="100" rx="6" fill="#1E293B" stroke="#334155" strokeWidth="2" />
+          <rect
+            x="42"
+            y={chamberY}
+            width="276"
+            height={chamberHeight}
+            fill="#0B1120"
+            stroke="#D3232A"
+            strokeWidth="1.5"
+            strokeDasharray="4 3"
+          />
+          <rect
+            x="44"
+            y={chamberY + 1}
+            width={pistonX - 44}
+            height={chamberHeight - 2}
+            fill={`url(#${idPrefix}fluidGrad)`}
+          />
+          <rect
+            x={pistonX}
+            y={chamberY + 1}
+            width="26"
+            height={chamberHeight - 2}
+            fill="#64748B"
+            stroke="#CBD5E1"
+            strokeWidth="1.5"
+            rx="2"
+          />
+          <rect
+            x={pistonX + 26}
+            y={rodY}
+            width="240"
+            height={rodHeight}
+            fill={`url(#${idPrefix}rodGrad)`}
+            stroke="#64748B"
+            strokeWidth="1.5"
+            rx="2"
+          />
+          <path
+            d={`M 75 68 L ${pistonX - 12} 68 M ${pistonX - 22} 62 L ${pistonX - 10} 68 L ${pistonX - 22} 74`}
+            stroke="#F87171"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="70" cy="18" r="6" fill="#D3232A" stroke="#F87171" strokeWidth="1.5" />
+          <circle cx="290" cy="18" r="6" fill="#475569" stroke="#94A3B8" strokeWidth="1.5" />
+        </svg>
+      );
+    }
+
+    if (tab === 'thickness') {
+      const cx = 120;
+      const cy = 80;
+      const maxR = 60;
+      const rOd = maxR;
+      const ratioId = Math.min(0.92, Math.max(0.25, idMm / odMm));
+      const rId = ratioId * rOd;
+      const ratioMax = Math.min(0.96, Math.max(ratioId, thicknessResult.overSizeDimMax / odMm));
+      const rMax = ratioMax * rOd;
+
+      const isSafeWall = thicknessResult.statusText === 'Recomended';
+      const isMaxed = thicknessResult.statusText === "It's Maxed";
+      const wallColor = isSafeWall ? '#1E293B' : isMaxed ? '#3730A3' : '#450A0A';
+      const strokeColor = isSafeWall ? '#38BDF8' : isMaxed ? '#F59E0B' : '#EF4444';
+      const limitColor = isSafeWall ? '#38BDF8' : '#F59E0B';
+
+      return (
+        <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
+          <line x1={cx - 70} y1={cy} x2={cx + 70} y2={cy} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
+          <line x1={cx} y1={cy - 70} x2={cx} y2={cy + 70} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
+          <circle cx={cx} cy={cy} r={rOd} fill={wallColor} stroke={strokeColor} strokeWidth="2.5" />
+          <circle cx={cx} cy={cy} r={rMax} fill="rgba(56, 189, 248, 0.12)" stroke={limitColor} strokeWidth="1.5" strokeDasharray="4 3" />
+          <circle cx={cx} cy={cy} r={rId} fill="#0B1120" stroke="#CBD5E1" strokeWidth="2" />
+          <circle cx={cx} cy={cy} r="3" fill="#D3232A" />
+
+          <g transform="translate(225, 15)">
+            <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+            <circle cx="15" cy="22" r="4" fill="#38BDF8" />
+            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Luar (OD):</text>
+            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {odMm} mm</text>
+
+            <circle cx="15" cy="48" r="4" fill="#CBD5E1" />
+            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Dalam (ID):</text>
+            <text x="265" y="52" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {idMm} mm</text>
+
+            <circle cx="15" cy="74" r="4" fill={limitColor} />
+            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Batas ID Honing Maks:</text>
+            <text x="265" y="78" fill={limitColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {thicknessResult.overSizeDimMax} mm</text>
+
+            <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
+            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Sisa Batas Honing:</text>
+            <text x="265" y="112" fill={overSizeSafetyAllowance > 0 ? '#4ADE80' : '#F87171'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+              {overSizeSafetyAllowance > 0 ? `+${overSizeSafetyAllowance} mm` : 'HABIS (0 mm)'}
+            </text>
+          </g>
+        </svg>
+      );
+    }
+
+    if (tab === 'bolt') {
+      const cx = 120;
+      const cy = 80;
+      const rFlange = 62;
+      const rPcd = 48;
+      const rBore = 25;
+
+      const bolts = [];
+      for (let i = 0; i < boltQty; i++) {
+        const angle = (2 * Math.PI * i) / boltQty - Math.PI / 2;
+        bolts.push({
+          bx: cx + rPcd * Math.cos(angle),
+          by: cy + rPcd * Math.sin(angle)
+        });
+      }
+
+      const boltColor = boltResult.isSafe ? '#22C55E' : '#EF4444';
+      const boltStroke = boltResult.isSafe ? '#4ADE80' : '#F87171';
+
+      return (
+        <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
+          <rect x={cx - rFlange} y={cy - rFlange} width={rFlange * 2} height={rFlange * 2} rx="14" fill="#1E293B" stroke="#334155" strokeWidth="2" />
+          <circle cx={cx} cy={cy} r={rPcd} fill="none" stroke="#475569" strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx={cx} cy={cy} r={rBore} fill="#0B1120" stroke="#D3232A" strokeWidth="2" />
+          <circle cx={cx} cy={cy} r={rBore * 0.55} fill="rgba(211, 35, 42, 0.25)" />
+          <circle cx={cx} cy={cy} r="3" fill="#EF4444" />
+          <text x={cx} y={cy + 4} fill="#F87171" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">P</text>
+
+          {bolts.map((b, idx) => (
+            <g key={idx}>
+              <circle cx={b.bx} cy={b.by} r="6.5" fill="#0B1120" stroke="#334155" strokeWidth="1.5" />
+              <circle cx={b.bx} cy={b.by} r="4" fill={boltColor} stroke={boltStroke} strokeWidth="1" />
+            </g>
+          ))}
+
+          <g transform="translate(225, 15)">
+            <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+            <circle cx="15" cy="22" r="4" fill="#38BDF8" />
+            <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Susunan Baut:</text>
+            <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{boltQty}x M{boltDiaMm} (Gr {boltGrade})</text>
+
+            <circle cx="15" cy="48" r="4" fill="#EF4444" />
+            <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Gaya Silinder × SF 2:</text>
+            <text x="265" y="52" fill="#F87171" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.safetyFactorCylinderForceN / 1000).toFixed(1)} kN</text>
+
+            <circle cx="15" cy="74" r="4" fill={boltColor} />
+            <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Total Kapasitas Baut:</text>
+            <text x="265" y="78" fill={boltColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.totalBoltForceN / 1000).toFixed(1)} kN</text>
+
+            <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
+            <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Status:</text>
+            <text x="265" y="112" fill={boltResult.isSafe ? '#4ADE80' : '#EF4444'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+              {boltResult.isSafe ? `AMAN (SF ${boltResult.safetyFactor}x)` : 'TIDAK AMAN (OVERLOAD)'}
+            </text>
+          </g>
+        </svg>
+      );
+    }
+
+    if (tab === 'weight') {
+      return (
+        <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
+          {weightType === 'round' ? (
+            <g>
+              <defs>
+                <linearGradient id={`${idPrefix}metalBody`} x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#334155" />
+                  <stop offset="50%" stopColor="#1E293B" />
+                  <stop offset="100%" stopColor="#0F172A" />
+                </linearGradient>
+              </defs>
+
+              <path
+                d="M 120 36 L 280 36 A 22 44 0 0 1 280 124 L 120 124 A 22 44 0 0 1 120 36"
+                fill={`url(#${idPrefix}metalBody)`}
+                stroke="#38BDF8"
+                strokeWidth="1.5"
+              />
+              <ellipse cx="280" cy="80" rx="20" ry="44" fill="#1E293B" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
+              <ellipse cx="120" cy="80" rx="20" ry="44" fill="#334155" stroke="#38BDF8" strokeWidth="2" />
+
+              {roundId > 0 && (
+                <ellipse
+                  cx="120"
+                  cy="80"
+                  rx={Math.max(6, (roundId / Math.max(roundOd, 1)) * 20)}
+                  ry={Math.max(12, (roundId / Math.max(roundOd, 1)) * 44)}
+                  fill="#0B1120"
+                  stroke="#EF4444"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                />
+              )}
+
+              <line x1="90" y1="80" x2="310" y2="80" stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" />
+              <line x1="120" y1="138" x2="280" y2="138" stroke="#94A3B8" strokeWidth="1.5" />
+              <path d="M 124 135 L 118 138 L 124 141 M 276 135 L 282 138 L 276 141" stroke="#94A3B8" strokeWidth="1.5" />
+              <text x="200" y="152" fill="#94A3B8" fontSize="10" fontFamily="monospace" textAnchor="middle">L: {roundLength} mm</text>
+
+              <g transform="translate(325, 15)">
+                <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+                <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
+                <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">{roundId > 0 ? 'Pipa / Tube' : 'Batang Pejal'}</text>
+
+                <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">OD × ID:</text>
+                <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">Ø{roundOd} × Ø{roundId} mm</text>
+
+                <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
+                <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
+                <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{roundWeightResult} Kg</text>
+              </g>
+            </g>
+          ) : (
+            <g>
+              <polygon points="80,95 190,60 190,118 80,153" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
+              <polygon points="80,95 190,60 290,90 180,125" fill="#334155" stroke="#38BDF8" strokeWidth="1.5" />
+              <polygon points="180,125 290,90 290,110 180,145" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.5" />
+
+              <text x="125" y="115" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">W: {plateWidth}</text>
+              <text x="235" y="105" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">L: {plateLength}</text>
+              <text x="180" y="156" fill="#38BDF8" fontSize="10" fontFamily="monospace" textAnchor="middle">T: {plateHeight} mm</text>
+
+              <g transform="translate(325, 15)">
+                <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+                <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
+                <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">Plat Kotak / Flange</text>
+
+                <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">DIMENSI (L×W×T):</text>
+                <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">{plateLength}×{plateWidth}×{plateHeight}</text>
+
+                <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
+                <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
+                <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{plateWeightResult} Kg</text>
+              </g>
+            </g>
+          )}
+        </svg>
+      );
+    }
+
+    // Torque
+    const cx = 110;
+    const cy = 80;
+    const hexR = 46;
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const a = (Math.PI / 3) * i;
+      pts.push(`${cx + hexR * Math.cos(a)},${cy + hexR * Math.sin(a)}`);
+    }
+    const lowVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 8, torqueGrade, torqueUnit) : 0;
+    const medVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 25, torqueGrade, torqueUnit) : 0;
+    const highVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 50, torqueGrade, torqueUnit) : 0;
+
+    return (
+      <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
+        <polygon points={pts.join(' ')} fill="#1E293B" stroke="#38BDF8" strokeWidth="2" />
+        <circle cx={cx} cy={cy} r="32" fill="#0B1120" stroke="#475569" strokeWidth="1.5" />
+
+        <text x={cx} y={cy - 5} fill="#F8FAFC" fontSize="13" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
+          {activeTorqueRow ? activeTorqueRow.metricSize : selectedBoltSize}
+        </text>
+        <text x={cx} y={cy + 13} fill="#D3232A" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
+          GR {torqueGrade}
+        </text>
+
+        <path
+          d="M 110 22 A 58 58 0 0 1 168 80"
+          fill="none"
+          stroke="#F59E0B"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <polygon points="168,80 162,68 174,72" fill="#F59E0B" />
+        <text x="160" y="38" fill="#F59E0B" fontSize="10" fontWeight="bold" fontFamily="monospace">T (CW)</text>
+
+        <g transform="translate(190, 20)">
+          <rect x="15" y="28" width="30" height="74" fill="#0B1120" stroke="#38BDF8" strokeWidth="1.5" />
+          <line x1="15" y1="40" x2="45" y2="40" stroke="#475569" strokeWidth="1" />
+          <line x1="15" y1="52" x2="45" y2="52" stroke="#475569" strokeWidth="1" />
+          <line x1="15" y1="64" x2="45" y2="64" stroke="#475569" strokeWidth="1" />
+          <line x1="15" y1="76" x2="45" y2="76" stroke="#475569" strokeWidth="1" />
+          <line x1="15" y1="88" x2="45" y2="88" stroke="#475569" strokeWidth="1" />
+
+          <path d="M 30 16 L 30 26 M 26 22 L 30 26 L 34 22" stroke="#4ADE80" strokeWidth="2" />
+          <path d="M 30 114 L 30 104 M 26 108 L 30 104 L 34 108" stroke="#4ADE80" strokeWidth="2" />
+          <text x="30" y="9" fill="#4ADE80" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="monospace">F_clamp</text>
+        </g>
+
+        <g transform="translate(255, 15)">
+          <rect x="0" y="0" width="250" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
+          <text x="14" y="24" fill="#94A3B8" fontSize="11" fontFamily="monospace">Pneumatik (≤ 10 Bar):</text>
+          <text x="235" y="24" fill="#38BDF8" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+            {lowVal > 0 ? `${lowVal} ${torqueUnit}` : '—'}
+          </text>
+
+          <text x="14" y="54" fill="#94A3B8" fontSize="11" fontFamily="monospace">{isId ? 'Menengah (10-35 Bar):' : 'Medium (10-35 Bar):'}</text>
+          <text x="235" y="54" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+            {medVal > 0 ? `${medVal} ${torqueUnit}` : '—'}
+          </text>
+
+          <text x="14" y="84" fill="#F87171" fontSize="11" fontFamily="monospace">Hidrolik (&gt; 35 Bar):</text>
+          <text x="235" y="84" fill="#EF4444" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">
+            {highVal > 0 ? `${highVal} ${torqueUnit}` : '—'}
+          </text>
+
+          <line x1="12" y1="100" x2="238" y2="100" stroke="#1E293B" strokeWidth="1" />
+          <text x="14" y="118" fill="#64748B" fontSize="10" fontFamily="monospace">Alat Ukur:</text>
+          <text x="235" y="118" fill="#F59E0B" fontSize="10" fontWeight="bold" textAnchor="end" fontFamily="monospace">Kunci Torsi Terkalibrasi</text>
+        </g>
+      </svg>
+    );
+  };
+
+  // Module metadata for Mobile App Top Bar
+  const activeModuleMeta = useMemo(() => {
+    switch (activeTab) {
+      case 'pressure':
+        return {
+          title: isId ? 'Tekanan & Beban Silinder' : 'Pressure & Thrust Load',
+          badge: 'ISO 10100'
+        };
+      case 'thickness':
+        return {
+          title: isId ? 'Tebal Tube & Batas Honing' : 'Tube Wall & Honing Limit',
+          badge: 'Lamé Stress'
+        };
+      case 'bolt':
+        return {
+          title: isId ? 'Kekuatan Baut Tie-Rod' : 'Tie-Rod Bolt Safety',
+          badge: 'VDI 2230'
+        };
+      case 'weight':
+        return {
+          title: isId ? 'Berat Material & Pipa' : 'Component Mass & Weight',
+          badge: 'ASTM A519'
+        };
+      case 'torque':
+        return {
+          title: isId ? 'Tabel Torsi Baut' : 'Bolt Torque Matrix',
+          badge: 'ISO 898-1'
+        };
+    }
+  }, [activeTab, isId]);
+
   return (
     <div className="belsa-calc-page">
       <div className="belsa-container">
         
-        {/* Header & Title */}
-        <section className="belsa-page-header" style={{ marginBottom: '36px' }}>
+        {/* Desktop Header & Title (Hidden on Mobile App Mode via CSS) */}
+        <section className="belsa-page-header belsa-calc-desktop-hero" style={{ marginBottom: '36px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '14px' }}>
             <span style={{
               background: '#FEF2F2',
@@ -256,7 +661,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
           </p>
         </section>
 
-        {/* 5-Module Navigation Bar */}
+        {/* Desktop 5-Module Navigation Bar (Hidden on Mobile App Mode via CSS) */}
         <nav className="belsa-calc-nav">
           <button
             type="button"
@@ -317,6 +722,165 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
         </nav>
 
         {/* ========================================================================= */}
+        {/* MOBILE POCKET ENGINEER APP: COMPACT TOP BAR + STICKY LIVE CAD MONITOR     */}
+        {/* ========================================================================= */}
+        <div className="belsa-calc-mobile-appbar">
+          <div className="belsa-calc-mobile-appbar-left">
+            <span className="belsa-calc-mobile-dot" />
+            <span className="belsa-calc-mobile-app-title">{activeModuleMeta.title}</span>
+            <span className="belsa-calc-mobile-std-pill">{activeModuleMeta.badge}</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleResetActiveTab}
+            className="belsa-calc-mobile-reset-btn"
+            title={isId ? 'Reset Parameter' : 'Reset Parameters'}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        {/* Sticky Live CAD & Telemetry Monitor (Mobile Only) */}
+        <div className="belsa-calc-mobile-monitor">
+          <div className="belsa-calc-mobile-monitor-bar">
+            <div className="belsa-calc-mobile-monitor-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2.2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18M9 21V9" />
+              </svg>
+              <span>{isId ? 'LIVE CAD & TELEMETRI' : 'LIVE CAD & TELEMETRY'}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setMobileCadExpanded(!mobileCadExpanded)}
+              className="belsa-calc-mobile-cad-toggle"
+            >
+              <span>{mobileCadExpanded ? (isId ? 'Sembunyikan CAD ▴' : 'Compact ▴') : (isId ? 'Tampilkan CAD ▾' : 'Show CAD ▾')}</span>
+            </button>
+          </div>
+
+          {mobileCadExpanded && (
+            <div className="belsa-calc-mobile-svg-stage">
+              {renderCadSvg(activeTab, 'mob-')}
+            </div>
+          )}
+
+          {/* Integrated 3-Col Live Telemetry Readout */}
+          {activeTab === 'pressure' && (
+            <div className="belsa-calc-mobile-telemetry">
+              <div className="belsa-calc-mobile-tel-item is-primary">
+                <span className="belsa-calc-mobile-tel-lbl">
+                  {pressureMode === 'calcPressure' ? (isId ? 'TEKANAN KERJA' : 'PRESSURE') : (isId ? 'KAPASITAS BEBAN' : 'THRUST LOAD')}
+                </span>
+                <span className="belsa-calc-mobile-tel-val">
+                  {pressureMode === 'calcPressure' ? `${pressureResult.pressureBar} Bar` : `${loadResult.loadTon} Ton`}
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'GAYA DORONG' : 'PUSH FORCE'}</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: '#38BDF8' }}>
+                  {pressureMode === 'calcPressure' ? `${pressureResult.pushForceKn} kN` : `${((loadResult.loadKg * 9.80665) / 1000).toFixed(1)} kN`}
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'LUAS PISTON' : 'PISTON AREA'}</span>
+                <span className="belsa-calc-mobile-tel-val">{pressureResult.areaCm2} cm²</span>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'thickness' && (
+            <div className="belsa-calc-mobile-telemetry">
+              <div className="belsa-calc-mobile-tel-item is-primary">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'MAX ID HONING' : 'MAX HONING ID'}</span>
+                <span className="belsa-calc-mobile-tel-val">Ø {thicknessResult.overSizeDimMax} mm</span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'SISA HONING' : 'ALLOWANCE'}</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: overSizeSafetyAllowance > 0 ? '#4ADE80' : '#F87171' }}>
+                  {overSizeSafetyAllowance > 0 ? `+${overSizeSafetyAllowance} mm` : '0 mm'}
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">SAFETY FACTOR</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: thicknessResult.safetyFactor >= 2.13 ? '#4ADE80' : '#F59E0B' }}>
+                  {thicknessResult.safetyFactor}x ({thicknessResult.tActual}mm)
+                </span>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'bolt' && (
+            <div className="belsa-calc-mobile-telemetry">
+              <div className="belsa-calc-mobile-tel-item is-primary">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'KAPASITAS BAUT' : 'BOLT CAPACITY'}</span>
+                <span className="belsa-calc-mobile-tel-val">{(boltResult.totalBoltForceN / 1000).toFixed(1)} kN</span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'GAYA × SF 2' : 'LOAD × SF 2'}</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: '#F87171' }}>
+                  {(boltResult.safetyFactorCylinderForceN / 1000).toFixed(1)} kN
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">STATUS</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: boltResult.isSafe ? '#4ADE80' : '#EF4444' }}>
+                  {boltResult.isSafe ? `SAFE (${boltResult.safetyFactor}x)` : 'OVERLOAD'}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'weight' && (
+            <div className="belsa-calc-mobile-telemetry">
+              <div className="belsa-calc-mobile-tel-item is-primary">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'BERAT BERSIH' : 'NET WEIGHT'}</span>
+                <span className="belsa-calc-mobile-tel-val">
+                  {weightType === 'round' ? roundWeightResult : plateWeightResult} Kg
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'DALAM POUND' : 'IN POUNDS'}</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: '#38BDF8' }}>
+                  {((weightType === 'round' ? roundWeightResult : plateWeightResult) * 2.20462).toFixed(1)} Lbs
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'MASSA JENIS' : 'DENSITY'}</span>
+                <span className="belsa-calc-mobile-tel-val">{density} kg/m³</span>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'torque' && (
+            <div className="belsa-calc-mobile-telemetry">
+              <div className="belsa-calc-mobile-tel-item is-primary">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'TORSI (>35 BAR)' : 'HIGH (>35 BAR)'}</span>
+                <span className="belsa-calc-mobile-tel-val">
+                  {activeTorqueRow ? `${getRecommendedTorque(activeTorqueRow, 50, torqueGrade, torqueUnit)} ${torqueUnit}` : '—'}
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">10–35 BAR</span>
+                <span className="belsa-calc-mobile-tel-val" style={{ color: '#38BDF8' }}>
+                  {activeTorqueRow ? `${getRecommendedTorque(activeTorqueRow, 25, torqueGrade, torqueUnit)} ${torqueUnit}` : '—'}
+                </span>
+              </div>
+              <div className="belsa-calc-mobile-tel-item">
+                <span className="belsa-calc-mobile-tel-lbl">{isId ? 'UKURAN BAUT' : 'SELECTED BOLT'}</span>
+                <span className="belsa-calc-mobile-tel-val">
+                  {activeTorqueRow ? activeTorqueRow.metricSize : selectedBoltSize} (Gr {torqueGrade})
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ========================================================================= */}
         {/* MODULE 1: PRESSURE & LOAD CALCULATOR */}
         {/* ========================================================================= */}
         {activeTab === 'pressure' && (
@@ -361,8 +925,17 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                     </span>
                   </div>
                   <div className="belsa-calc-input-row">
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setLoadTonInput((v) => Math.max(0.5, Math.round((v - 0.5) * 10) / 10))}
+                      aria-label="Decrease load"
+                    >
+                      −
+                    </button>
                     <input
                       type="number"
+                      inputMode="decimal"
                       step="0.1"
                       min="0.1"
                       max="500"
@@ -370,7 +943,15 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       onChange={(e) => setLoadTonInput(parseFloat(e.target.value) || 0)}
                       className="belsa-calc-input"
                     />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>Ton</span>
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setLoadTonInput((v) => Math.min(500, Math.round((v + 0.5) * 10) / 10))}
+                      aria-label="Increase load"
+                    >
+                      +
+                    </button>
+                    <span className="belsa-calc-unit-tag">Ton</span>
                   </div>
                   <input
                     type="range"
@@ -405,8 +986,17 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                     </span>
                   </div>
                   <div className="belsa-calc-input-row">
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setPressureBarInput((v) => Math.max(5, v - 5))}
+                      aria-label="Decrease pressure"
+                    >
+                      −
+                    </button>
                     <input
                       type="number"
+                      inputMode="decimal"
                       step="1"
                       min="1"
                       max="400"
@@ -414,7 +1004,15 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       onChange={(e) => setPressureBarInput(parseFloat(e.target.value) || 0)}
                       className="belsa-calc-input"
                     />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>Bar</span>
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setPressureBarInput((v) => Math.min(400, v + 5))}
+                      aria-label="Increase pressure"
+                    >
+                      +
+                    </button>
+                    <span className="belsa-calc-unit-tag">Bar</span>
                   </div>
                   <input
                     type="range"
@@ -449,8 +1047,17 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">Ø {boreMmInput} mm</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoreMmInput((v) => Math.max(20, v - 5))}
+                    aria-label="Decrease bore"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     step="1"
                     min="20"
                     max="500"
@@ -458,7 +1065,15 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                     onChange={(e) => setBoreMmInput(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>mm</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoreMmInput((v) => Math.min(500, v + 5))}
+                    aria-label="Increase bore"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">mm</span>
                 </div>
                 <input
                   type="range"
@@ -516,7 +1131,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
             <div className="belsa-calc-sticky-hud">
               <div className="belsa-calc-cockpit">
                 
-                {/* Top Deck: CAD Blueprint Visual */}
+                {/* Top Deck: CAD Blueprint Visual (Desktop Only; Mobile uses Sticky Top Monitor) */}
                 <div className="belsa-calc-cockpit-stage">
                   <div className="belsa-calc-cockpit-header">
                     <div className="belsa-calc-cockpit-title">
@@ -530,81 +1145,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   </div>
 
                   <div className="belsa-calc-svg-wrapper">
-                    <svg viewBox="0 0 520 135" preserveAspectRatio="xMidYMid meet">
-                      <defs>
-                        <linearGradient id="fluidGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#D3232A" stopOpacity="0.6" />
-                          <stop offset="100%" stopColor="#D3232A" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="rodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#E2E8F0" />
-                          <stop offset="50%" stopColor="#CBD5E1" />
-                          <stop offset="100%" stopColor="#94A3B8" />
-                        </linearGradient>
-                      </defs>
-
-                      <rect x="30" y="18" width="300" height="100" rx="6" fill="#1E293B" stroke="#334155" strokeWidth="2" />
-
-                      {(() => {
-                        const chamberHeight = Math.min(84, Math.max(30, (boreMmInput / 320) * 84));
-                        const chamberY = 68 - chamberHeight / 2;
-                        const pistonX = 190;
-                        const rodHeight = Math.max(14, chamberHeight * 0.45);
-                        const rodY = 68 - rodHeight / 2;
-
-                        return (
-                          <>
-                            <rect
-                              x="42"
-                              y={chamberY}
-                              width="276"
-                              height={chamberHeight}
-                              fill="#0B1120"
-                              stroke="#D3232A"
-                              strokeWidth="1.5"
-                              strokeDasharray="4 3"
-                            />
-                            <rect
-                              x="44"
-                              y={chamberY + 1}
-                              width={pistonX - 44}
-                              height={chamberHeight - 2}
-                              fill="url(#fluidGrad)"
-                            />
-                            <rect
-                              x={pistonX}
-                              y={chamberY + 1}
-                              width="26"
-                              height={chamberHeight - 2}
-                              fill="#64748B"
-                              stroke="#CBD5E1"
-                              strokeWidth="1.5"
-                              rx="2"
-                            />
-                            <rect
-                              x={pistonX + 26}
-                              y={rodY}
-                              width="240"
-                              height={rodHeight}
-                              fill="url(#rodGrad)"
-                              stroke="#64748B"
-                              strokeWidth="1.5"
-                              rx="2"
-                            />
-                            <path
-                              d={`M 75 68 L ${pistonX - 12} 68 M ${pistonX - 22} 62 L ${pistonX - 10} 68 L ${pistonX - 22} 74`}
-                              stroke="#F87171"
-                              strokeWidth="3"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </>
-                        );
-                      })()}
-
-                      <circle cx="70" cy="18" r="6" fill="#D3232A" stroke="#F87171" strokeWidth="1.5" />
-                      <circle cx="290" cy="18" r="6" fill="#475569" stroke="#94A3B8" strokeWidth="1.5" />
-                    </svg>
+                    {renderCadSvg('pressure', 'desk-')}
                   </div>
 
                   <div className="belsa-calc-diagram-specs">
@@ -757,13 +1298,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">{odMm} mm</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setOdMm((v) => Math.max(50, v - 5))}
+                    aria-label="Decrease OD"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={odMm}
                     onChange={(e) => setOdMm(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>mm</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setOdMm((v) => Math.min(500, v + 5))}
+                    aria-label="Increase OD"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">mm</span>
                 </div>
                 <input
                   type="range"
@@ -782,13 +1340,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">{idMm} mm</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setIdMm((v) => Math.max(30, v - 5))}
+                    aria-label="Decrease ID"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={idMm}
                     onChange={(e) => setIdMm(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>mm</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setIdMm((v) => Math.min(Math.max(30, odMm - 2), v + 5))}
+                    aria-label="Increase ID"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">mm</span>
                 </div>
                 <input
                   type="range"
@@ -807,13 +1382,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">{thickPressureBar} Bar</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setThickPressureBar((v) => Math.max(10, v - 10))}
+                    aria-label="Decrease pressure"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={thickPressureBar}
                     onChange={(e) => setThickPressureBar(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>Bar</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setThickPressureBar((v) => Math.min(450, v + 10))}
+                    aria-label="Increase pressure"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">Bar</span>
                 </div>
                 <input
                   type="range"
@@ -873,65 +1465,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   </div>
 
                   <div className="belsa-calc-svg-wrapper">
-                    <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
-                      {(() => {
-                        const cx = 120;
-                        const cy = 80;
-                        const maxR = 60;
-                        const rOd = maxR;
-                        const ratioId = Math.min(0.92, Math.max(0.25, idMm / odMm));
-                        const rId = ratioId * rOd;
-                        const ratioMax = Math.min(0.96, Math.max(ratioId, thicknessResult.overSizeDimMax / odMm));
-                        const rMax = ratioMax * rOd;
-
-                        const isSafeWall = thicknessResult.statusText === 'Recomended';
-                        const isMaxed = thicknessResult.statusText === "It's Maxed";
-                        const wallColor = isSafeWall ? '#1E293B' : isMaxed ? '#3730A3' : '#450A0A';
-                        const strokeColor = isSafeWall ? '#38BDF8' : isMaxed ? '#F59E0B' : '#EF4444';
-                        const limitColor = isSafeWall ? '#38BDF8' : '#F59E0B';
-
-                        return (
-                          <>
-                            <line x1={cx - 70} y1={cy} x2={cx + 70} y2={cy} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
-                            <line x1={cx} y1={cy - 70} x2={cx} y2={cy + 70} stroke="#334155" strokeWidth="1" strokeDasharray="4 3" />
-
-                            {/* Outer Tube Ring (OD) */}
-                            <circle cx={cx} cy={cy} r={rOd} fill={wallColor} stroke={strokeColor} strokeWidth="2.5" />
-
-                            {/* Re-Honing Limit Ring (Dashed Zone) */}
-                            <circle cx={cx} cy={cy} r={rMax} fill="rgba(56, 189, 248, 0.12)" stroke={limitColor} strokeWidth="1.5" strokeDasharray="4 3" />
-
-                            {/* Current Inner Bore (ID) */}
-                            <circle cx={cx} cy={cy} r={rId} fill="#0B1120" stroke="#CBD5E1" strokeWidth="2" />
-                            <circle cx={cx} cy={cy} r="3" fill="#D3232A" />
-
-                            {/* Right Technical Dimensions Callout */}
-                            <g transform="translate(225, 15)">
-                              <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-
-                              <circle cx="15" cy="22" r="4" fill="#38BDF8" />
-                              <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Luar (OD):</text>
-                              <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {odMm} mm</text>
-
-                              <circle cx="15" cy="48" r="4" fill="#CBD5E1" />
-                              <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Diameter Dalam (ID):</text>
-                              <text x="265" y="52" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {idMm} mm</text>
-
-                              <circle cx="15" cy="74" r="4" fill={limitColor} />
-                              <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Batas ID Honing Maks:</text>
-                              <text x="265" y="78" fill={limitColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">Ø {thicknessResult.overSizeDimMax} mm</text>
-
-                              <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
-
-                              <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Sisa Batas Honing:</text>
-                              <text x="265" y="112" fill={overSizeSafetyAllowance > 0 ? '#4ADE80' : '#F87171'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
-                                {overSizeSafetyAllowance > 0 ? `+${overSizeSafetyAllowance} mm` : 'HABIS (0 mm)'}
-                              </text>
-                            </g>
-                          </>
-                        );
-                      })()}
-                    </svg>
+                    {renderCadSvg('thickness', 'desk-')}
                   </div>
 
                   <div className="belsa-calc-diagram-specs">
@@ -1078,13 +1612,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">{boltPressureBar} Bar</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltPressureBar((v) => Math.max(10, v - 10))}
+                    aria-label="Decrease pressure"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={boltPressureBar}
                     onChange={(e) => setBoltPressureBar(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>Bar</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltPressureBar((v) => Math.min(450, v + 10))}
+                    aria-label="Increase pressure"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">Bar</span>
                 </div>
                 <input
                   type="range"
@@ -1103,13 +1654,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">Ø {boltTubeIdMm} mm</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltTubeIdMm((v) => Math.max(32, v - 5))}
+                    aria-label="Decrease bore"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={boltTubeIdMm}
                     onChange={(e) => setBoltTubeIdMm(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>mm</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltTubeIdMm((v) => Math.min(400, v + 5))}
+                    aria-label="Increase bore"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">mm</span>
                 </div>
                 <input
                   type="range"
@@ -1128,13 +1696,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span className="belsa-calc-label-val">M{boltDiaMm}</span>
                 </div>
                 <div className="belsa-calc-input-row">
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltDiaMm((v) => Math.max(8, v - 2))}
+                    aria-label="Decrease bolt diameter"
+                  >
+                    −
+                  </button>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={boltDiaMm}
                     onChange={(e) => setBoltDiaMm(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
                   />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>mm</span>
+                  <button
+                    type="button"
+                    className="belsa-calc-stepper-btn"
+                    onClick={() => setBoltDiaMm((v) => Math.min(80, v + 2))}
+                    aria-label="Increase bolt diameter"
+                  >
+                    +
+                  </button>
+                  <span className="belsa-calc-unit-tag">mm</span>
                 </div>
                 <input
                   type="range"
@@ -1152,15 +1737,34 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <label className="belsa-calc-label" style={{ display: 'block', marginBottom: '8px' }}>
                     {isId ? 'Jumlah Baut:' : 'Bolt Quantity:'}
                   </label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="32"
-                    value={boltQty}
-                    onChange={(e) => setBoltQty(parseInt(e.target.value) || 1)}
-                    className="belsa-calc-input"
-                    style={{ width: '100%' }}
-                  />
+                  <div className="belsa-calc-input-row">
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setBoltQty((v) => Math.max(2, v - 2))}
+                      aria-label="Decrease bolt count"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="1"
+                      max="32"
+                      value={boltQty}
+                      onChange={(e) => setBoltQty(parseInt(e.target.value) || 1)}
+                      className="belsa-calc-input"
+                      style={{ width: '100%', textAlign: 'center' }}
+                    />
+                    <button
+                      type="button"
+                      className="belsa-calc-stepper-btn"
+                      onClick={() => setBoltQty((v) => Math.min(32, v + 2))}
+                      aria-label="Increase bolt count"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
 
                 <div className="belsa-calc-form-group">
@@ -1231,69 +1835,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   </div>
 
                   <div className="belsa-calc-svg-wrapper">
-                    <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
-                      {(() => {
-                        const cx = 120;
-                        const cy = 80;
-                        const rFlange = 62;
-                        const rPcd = 48;
-                        const rBore = 25;
-
-                        const bolts = [];
-                        for (let i = 0; i < boltQty; i++) {
-                          const angle = (2 * Math.PI * i) / boltQty - Math.PI / 2;
-                          bolts.push({
-                            bx: cx + rPcd * Math.cos(angle),
-                            by: cy + rPcd * Math.sin(angle)
-                          });
-                        }
-
-                        const boltColor = boltResult.isSafe ? '#22C55E' : '#EF4444';
-                        const boltStroke = boltResult.isSafe ? '#4ADE80' : '#F87171';
-
-                        return (
-                          <>
-                            <rect x={cx - rFlange} y={cy - rFlange} width={rFlange * 2} height={rFlange * 2} rx="14" fill="#1E293B" stroke="#334155" strokeWidth="2" />
-                            <circle cx={cx} cy={cy} r={rPcd} fill="none" stroke="#475569" strokeWidth="1" strokeDasharray="3 3" />
-                            <circle cx={cx} cy={cy} r={rBore} fill="#0B1120" stroke="#D3232A" strokeWidth="2" />
-
-                            <circle cx={cx} cy={cy} r={rBore * 0.55} fill="rgba(211, 35, 42, 0.25)" />
-                            <circle cx={cx} cy={cy} r="3" fill="#EF4444" />
-                            <text x={cx} y={cy + 4} fill="#F87171" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">P</text>
-
-                            {bolts.map((b, idx) => (
-                              <g key={idx}>
-                                <circle cx={b.bx} cy={b.by} r="6.5" fill="#0B1120" stroke="#334155" strokeWidth="1.5" />
-                                <circle cx={b.bx} cy={b.by} r="4" fill={boltColor} stroke={boltStroke} strokeWidth="1" />
-                              </g>
-                            ))}
-
-                            <g transform="translate(225, 15)">
-                              <rect x="0" y="0" width="280" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-
-                              <circle cx="15" cy="22" r="4" fill="#38BDF8" />
-                              <text x="28" y="26" fill="#94A3B8" fontSize="11" fontFamily="monospace">Susunan Baut:</text>
-                              <text x="265" y="26" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{boltQty}x M{boltDiaMm} (Gr {boltGrade})</text>
-
-                              <circle cx="15" cy="48" r="4" fill="#EF4444" />
-                              <text x="28" y="52" fill="#94A3B8" fontSize="11" fontFamily="monospace">Gaya Silinder × SF 2:</text>
-                              <text x="265" y="52" fill="#F87171" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.safetyFactorCylinderForceN / 1000).toFixed(1)} kN</text>
-
-                              <circle cx="15" cy="74" r="4" fill={boltColor} />
-                              <text x="28" y="78" fill="#94A3B8" fontSize="11" fontFamily="monospace">Total Kapasitas Baut:</text>
-                              <text x="265" y="78" fill={boltColor} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">{(boltResult.totalBoltForceN / 1000).toFixed(1)} kN</text>
-
-                              <line x1="12" y1="92" x2="268" y2="92" stroke="#1E293B" strokeWidth="1" />
-
-                              <text x="15" y="112" fill="#64748B" fontSize="10" fontFamily="monospace">Status:</text>
-                              <text x="265" y="112" fill={boltResult.isSafe ? '#4ADE80' : '#EF4444'} fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
-                                {boltResult.isSafe ? `AMAN (SF ${boltResult.safetyFactor}x)` : 'TIDAK AMAN (OVERLOAD)'}
-                              </text>
-                            </g>
-                          </>
-                        );
-                      })()}
-                    </svg>
+                    {renderCadSvg('bolt', 'desk-')}
                   </div>
 
                   <div className="belsa-calc-diagram-specs">
@@ -1473,12 +2015,13 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span style={{ fontSize: '0.85rem', color: '#64748B' }}>Massa Jenis:</span>
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={density}
                     onChange={(e) => setDensity(parseFloat(e.target.value) || 0)}
                     className="belsa-calc-input"
-                    style={{ height: '36px', maxWidth: '140px' }}
+                    style={{ height: '38px', maxWidth: '140px' }}
                   />
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#475569' }}>kg/m³</span>
+                  <span className="belsa-calc-unit-tag">kg/m³</span>
                 </div>
               </div>
 
@@ -1490,13 +2033,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <span className="belsa-calc-label-val">Ø {roundOd} mm</span>
                     </div>
                     <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundOd((v) => Math.max(10, v - 5))}
+                        aria-label="Decrease OD"
+                      >
+                        −
+                      </button>
                       <input
                         type="number"
+                        inputMode="decimal"
                         value={roundOd}
                         onChange={(e) => setRoundOd(parseFloat(e.target.value) || 0)}
                         className="belsa-calc-input"
                       />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>mm</span>
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundOd((v) => Math.min(350, v + 5))}
+                        aria-label="Increase OD"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
                     </div>
                     <input
                       type="range"
@@ -1515,13 +2075,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <span className="belsa-calc-label-val">Ø {roundId} mm</span>
                     </div>
                     <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundId((v) => Math.max(0, v - 5))}
+                        aria-label="Decrease ID"
+                      >
+                        −
+                      </button>
                       <input
                         type="number"
+                        inputMode="decimal"
                         value={roundId}
                         onChange={(e) => setRoundId(parseFloat(e.target.value) || 0)}
                         className="belsa-calc-input"
                       />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>mm</span>
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundId((v) => Math.min(Math.max(0, roundOd - 2), v + 5))}
+                        aria-label="Increase ID"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
                     </div>
                     <input
                       type="range"
@@ -1540,13 +2117,30 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <span className="belsa-calc-label-val">{roundLength} mm</span>
                     </div>
                     <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundLength((v) => Math.max(10, v - 20))}
+                        aria-label="Decrease length"
+                      >
+                        −
+                      </button>
                       <input
                         type="number"
+                        inputMode="decimal"
                         value={roundLength}
                         onChange={(e) => setRoundLength(parseFloat(e.target.value) || 0)}
                         className="belsa-calc-input"
                       />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>mm</span>
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setRoundLength((v) => Math.min(2000, v + 20))}
+                        aria-label="Increase length"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
                     </div>
                     <input
                       type="range"
@@ -1566,13 +2160,32 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <label className="belsa-calc-label">Panjang Plat:</label>
                       <span className="belsa-calc-label-val">{plateLength} mm</span>
                     </div>
-                    <input
-                      type="number"
-                      value={plateLength}
-                      onChange={(e) => setPlateLength(parseFloat(e.target.value) || 0)}
-                      className="belsa-calc-input"
-                      style={{ width: '100%', marginBottom: '8px' }}
-                    />
+                    <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateLength((v) => Math.max(10, v - 20))}
+                        aria-label="Decrease length"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={plateLength}
+                        onChange={(e) => setPlateLength(parseFloat(e.target.value) || 0)}
+                        className="belsa-calc-input"
+                      />
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateLength((v) => Math.min(2000, v + 20))}
+                        aria-label="Increase length"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
+                    </div>
                     <input
                       type="range"
                       min="10"
@@ -1589,13 +2202,32 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <label className="belsa-calc-label">Lebar Plat:</label>
                       <span className="belsa-calc-label-val">{plateWidth} mm</span>
                     </div>
-                    <input
-                      type="number"
-                      value={plateWidth}
-                      onChange={(e) => setPlateWidth(parseFloat(e.target.value) || 0)}
-                      className="belsa-calc-input"
-                      style={{ width: '100%', marginBottom: '8px' }}
-                    />
+                    <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateWidth((v) => Math.max(10, v - 20))}
+                        aria-label="Decrease width"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={plateWidth}
+                        onChange={(e) => setPlateWidth(parseFloat(e.target.value) || 0)}
+                        className="belsa-calc-input"
+                      />
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateWidth((v) => Math.min(1500, v + 20))}
+                        aria-label="Increase width"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
+                    </div>
                     <input
                       type="range"
                       min="10"
@@ -1612,13 +2244,32 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                       <label className="belsa-calc-label">Tebal Plat:</label>
                       <span className="belsa-calc-label-val">{plateHeight} mm</span>
                     </div>
-                    <input
-                      type="number"
-                      value={plateHeight}
-                      onChange={(e) => setPlateHeight(parseFloat(e.target.value) || 0)}
-                      className="belsa-calc-input"
-                      style={{ width: '100%', marginBottom: '8px' }}
-                    />
+                    <div className="belsa-calc-input-row">
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateHeight((v) => Math.max(1, v - 2))}
+                        aria-label="Decrease thickness"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        value={plateHeight}
+                        onChange={(e) => setPlateHeight(parseFloat(e.target.value) || 0)}
+                        className="belsa-calc-input"
+                      />
+                      <button
+                        type="button"
+                        className="belsa-calc-stepper-btn"
+                        onClick={() => setPlateHeight((v) => Math.min(150, v + 2))}
+                        aria-label="Increase thickness"
+                      >
+                        +
+                      </button>
+                      <span className="belsa-calc-unit-tag">mm</span>
+                    </div>
                     <input
                       type="range"
                       min="1"
@@ -1679,84 +2330,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   </div>
 
                   <div className="belsa-calc-svg-wrapper">
-                    <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
-                      {weightType === 'round' ? (
-                        <g>
-                          <defs>
-                            <linearGradient id="metalBody" x1="0%" y1="0%" x2="0%" y2="100%">
-                              <stop offset="0%" stopColor="#334155" />
-                              <stop offset="50%" stopColor="#1E293B" />
-                              <stop offset="100%" stopColor="#0F172A" />
-                            </linearGradient>
-                          </defs>
-
-                          <path
-                            d="M 120 36 L 280 36 A 22 44 0 0 1 280 124 L 120 124 A 22 44 0 0 1 120 36"
-                            fill="url(#metalBody)"
-                            stroke="#38BDF8"
-                            strokeWidth="1.5"
-                          />
-                          <ellipse cx="280" cy="80" rx="20" ry="44" fill="#1E293B" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
-                          <ellipse cx="120" cy="80" rx="20" ry="44" fill="#334155" stroke="#38BDF8" strokeWidth="2" />
-
-                          {roundId > 0 && (
-                            <ellipse
-                              cx="120"
-                              cy="80"
-                              rx={Math.max(6, (roundId / Math.max(roundOd, 1)) * 20)}
-                              ry={Math.max(12, (roundId / Math.max(roundOd, 1)) * 44)}
-                              fill="#0B1120"
-                              stroke="#EF4444"
-                              strokeWidth="1.5"
-                              strokeDasharray="4 2"
-                            />
-                          )}
-
-                          <line x1="90" y1="80" x2="310" y2="80" stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" />
-                          <line x1="120" y1="138" x2="280" y2="138" stroke="#94A3B8" strokeWidth="1.5" />
-                          <path d="M 124 135 L 118 138 L 124 141 M 276 135 L 282 138 L 276 141" stroke="#94A3B8" strokeWidth="1.5" />
-                          <text x="200" y="152" fill="#94A3B8" fontSize="10" fontFamily="monospace" textAnchor="middle">L: {roundLength} mm</text>
-
-                          <g transform="translate(325, 15)">
-                            <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-                            <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
-                            <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">{roundId > 0 ? 'Pipa / Tube' : 'Batang Pejal'}</text>
-
-                            <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">OD × ID:</text>
-                            <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">Ø{roundOd} × Ø{roundId} mm</text>
-
-                            <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
-
-                            <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
-                            <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{roundWeightResult} Kg</text>
-                          </g>
-                        </g>
-                      ) : (
-                        <g>
-                          <polygon points="80,95 190,60 190,118 80,153" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
-                          <polygon points="80,95 190,60 290,90 180,125" fill="#334155" stroke="#38BDF8" strokeWidth="1.5" />
-                          <polygon points="180,125 290,90 290,110 180,145" fill="#0F172A" stroke="#38BDF8" strokeWidth="1.5" />
-
-                          <text x="125" y="115" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">W: {plateWidth}</text>
-                          <text x="235" y="105" fill="#94A3B8" fontSize="11" fontFamily="monospace" textAnchor="middle">L: {plateLength}</text>
-                          <text x="180" y="156" fill="#38BDF8" fontSize="10" fontFamily="monospace" textAnchor="middle">T: {plateHeight} mm</text>
-
-                          <g transform="translate(325, 15)">
-                            <rect x="0" y="0" width="180" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-                            <text x="14" y="24" fill="#64748B" fontSize="10" fontFamily="monospace">BENTUK:</text>
-                            <text x="14" y="40" fill="#38BDF8" fontSize="11" fontWeight="bold" fontFamily="monospace">Plat Kotak / Flange</text>
-
-                            <text x="14" y="62" fill="#64748B" fontSize="10" fontFamily="monospace">DIMENSI (L×W×T):</text>
-                            <text x="14" y="78" fill="#F8FAFC" fontSize="11" fontWeight="bold" fontFamily="monospace">{plateLength}×{plateWidth}×{plateHeight}</text>
-
-                            <line x1="12" y1="90" x2="168" y2="90" stroke="#1E293B" strokeWidth="1" />
-
-                            <text x="14" y="106" fill="#64748B" fontSize="10" fontFamily="monospace">BERAT TOTAL:</text>
-                            <text x="14" y="122" fill="#D3232A" fontSize="13" fontWeight="bold" fontFamily="monospace">{plateWeightResult} Kg</text>
-                          </g>
-                        </g>
-                      )}
-                    </svg>
+                    {renderCadSvg('weight', 'desk-')}
                   </div>
 
                   <div className="belsa-calc-diagram-specs">
@@ -1850,9 +2424,6 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
         {/* ========================================================================= */}
         {/* MODULE 5: BOLT TIGHTENING TORQUE TABLE (SPLIT WORKBENCH LAYOUT) */}
         {/* ========================================================================= */}
-        {/* ========================================================================= */}
-        {/* MODULE 5: BOLT TIGHTENING TORQUE TABLE (SPLIT WORKBENCH LAYOUT) */}
-        {/* ========================================================================= */}
         {activeTab === 'torque' && (
           <div className="belsa-calc-grid-2col">
             
@@ -1864,6 +2435,40 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <span>{isId ? 'Tabel Torsi Pengencangan Baut' : 'Torque Standard Matrix Table'}</span>
                 </div>
                 <span className="belsa-calc-badge-excel">{isId ? 'Acuan: Tabel Rekomendasi Torsi' : 'Standard: ISO 898-1 Torque Matrix'}</span>
+              </div>
+
+              {/* Mobile Quick Grade & Unit Controls (Visible on Mobile right above the table) */}
+              <div className="belsa-calc-mobile-torque-controls">
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '8px', marginBottom: '12px' }}>
+                  <select
+                    value={torqueGrade}
+                    onChange={(e) => setTorqueGrade(e.target.value as any)}
+                    className="belsa-calc-select"
+                    style={{ width: '100%', height: '38px', fontSize: '0.82rem' }}
+                  >
+                    <option value="8.8">Grade 8.8 (Std)</option>
+                    <option value="10.9">Grade 10.9 (+40%)</option>
+                    <option value="12.9">Grade 12.9 (+70%)</option>
+                  </select>
+                  <div style={{ display: 'flex', gap: '4px', background: '#F1F5F9', padding: '3px', borderRadius: '10px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setTorqueUnit('Nm')}
+                      className={`belsa-calc-mode-btn ${torqueUnit === 'Nm' ? 'active' : ''}`}
+                      style={{ flex: 1, padding: '6px 8px', fontSize: '0.78rem' }}
+                    >
+                      Nm
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTorqueUnit('Lbf.ft')}
+                      className={`belsa-calc-mode-btn ${torqueUnit === 'Lbf.ft' ? 'active' : ''}`}
+                      style={{ flex: 1, padding: '6px 8px', fontSize: '0.78rem' }}
+                    >
+                      Lbf.ft
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Filter Row */}
@@ -1882,7 +2487,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
               </div>
 
               {/* Scrollable Table */}
-              <div className="belsa-calc-table-wrap" style={{ maxHeight: '520px', overflowY: 'auto' }}>
+              <div className="belsa-calc-table-wrap" style={{ maxHeight: '420px', overflowY: 'auto' }}>
                 <table className="belsa-calc-table">
                   <thead>
                     <tr>
@@ -1933,7 +2538,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   <line x1="12" y1="16" x2="12" y2="12" />
                   <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
-                <em>{isId ? 'Klik salah satu baris untuk melihat detail torsi baut di panel kanan.' : 'Click any bolt row to inspect its live torque mechanics on the HUD panel on the right.'}</em>
+                <em>{isId ? 'Ketuk baris ukuran baut untuk melihat visualisasi torsi live di monitor atas/kanan.' : 'Tap any bolt size row to inspect its live torque mechanics on the monitor.'}</em>
               </div>
 
             </div>
@@ -1956,86 +2561,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
                   </div>
 
                   <div className="belsa-calc-svg-wrapper">
-                    <svg viewBox="0 0 520 160" preserveAspectRatio="xMidYMid meet">
-                      {(() => {
-                        const cx = 110;
-                        const cy = 80;
-                        const hexR = 46;
-
-                        const pts = [];
-                        for (let i = 0; i < 6; i++) {
-                          const a = (Math.PI / 3) * i;
-                          pts.push(`${cx + hexR * Math.cos(a)},${cy + hexR * Math.sin(a)}`);
-                        }
-
-                        const lowVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 8, torqueGrade, torqueUnit) : 0;
-                        const medVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 25, torqueGrade, torqueUnit) : 0;
-                        const highVal = activeTorqueRow ? getRecommendedTorque(activeTorqueRow, 50, torqueGrade, torqueUnit) : 0;
-
-                        return (
-                          <>
-                            <polygon points={pts.join(' ')} fill="#1E293B" stroke="#38BDF8" strokeWidth="2" />
-                            <circle cx={cx} cy={cy} r="32" fill="#0B1120" stroke="#475569" strokeWidth="1.5" />
-
-                            <text x={cx} y={cy - 5} fill="#F8FAFC" fontSize="13" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
-                              {activeTorqueRow ? activeTorqueRow.metricSize : selectedBoltSize}
-                            </text>
-                            <text x={cx} y={cy + 13} fill="#D3232A" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="monospace">
-                              GR {torqueGrade}
-                            </text>
-
-                            <path
-                              d="M 110 22 A 58 58 0 0 1 168 80"
-                              fill="none"
-                              stroke="#F59E0B"
-                              strokeWidth="3"
-                              strokeLinecap="round"
-                            />
-                            <polygon points="168,80 162,68 174,72" fill="#F59E0B" />
-                            <text x="160" y="38" fill="#F59E0B" fontSize="10" fontWeight="bold" fontFamily="monospace">T (CW)</text>
-
-                            {/* Bolt Shank */}
-                            <g transform="translate(190, 20)">
-                              <rect x="15" y="28" width="30" height="74" fill="#0B1120" stroke="#38BDF8" strokeWidth="1.5" />
-                              <line x1="15" y1="40" x2="45" y2="40" stroke="#475569" strokeWidth="1" />
-                              <line x1="15" y1="52" x2="45" y2="52" stroke="#475569" strokeWidth="1" />
-                              <line x1="15" y1="64" x2="45" y2="64" stroke="#475569" strokeWidth="1" />
-                              <line x1="15" y1="76" x2="45" y2="76" stroke="#475569" strokeWidth="1" />
-                              <line x1="15" y1="88" x2="45" y2="88" stroke="#475569" strokeWidth="1" />
-
-                              <path d="M 30 16 L 30 26 M 26 22 L 30 26 L 34 22" stroke="#4ADE80" strokeWidth="2" />
-                              <path d="M 30 114 L 30 104 M 26 108 L 30 104 L 34 108" stroke="#4ADE80" strokeWidth="2" />
-                              <text x="30" y="9" fill="#4ADE80" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="monospace">F_clamp</text>
-                            </g>
-
-                            {/* Right Callout Panel */}
-                            <g transform="translate(255, 15)">
-                              <rect x="0" y="0" width="250" height="130" rx="8" fill="#0B1120" stroke="#1E293B" strokeWidth="1" />
-                              
-                              <text x="14" y="24" fill="#94A3B8" fontSize="11" fontFamily="monospace">Pneumatik (≤ 10 Bar):</text>
-                              <text x="235" y="24" fill="#38BDF8" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
-                                {lowVal > 0 ? `${lowVal} ${torqueUnit}` : '—'}
-                              </text>
-
-                              <text x="14" y="54" fill="#94A3B8" fontSize="11" fontFamily="monospace">{isId ? 'Menengah (10-35 Bar):' : 'Medium (10-35 Bar):'}</text>
-                              <text x="235" y="54" fill="#F8FAFC" fontSize="12" fontWeight="bold" textAnchor="end" fontFamily="monospace">
-                                {medVal > 0 ? `${medVal} ${torqueUnit}` : '—'}
-                              </text>
-
-                              <text x="14" y="84" fill="#F87171" fontSize="11" fontFamily="monospace">Hidrolik (&gt; 35 Bar):</text>
-                              <text x="235" y="84" fill="#EF4444" fontSize="13" fontWeight="bold" textAnchor="end" fontFamily="monospace">
-                                {highVal > 0 ? `${highVal} ${torqueUnit}` : '—'}
-                              </text>
-
-                              <line x1="12" y1="100" x2="238" y2="100" stroke="#1E293B" strokeWidth="1" />
-
-                              <text x="14" y="118" fill="#64748B" fontSize="10" fontFamily="monospace">Alat Ukur:</text>
-                              <text x="235" y="118" fill="#F59E0B" fontSize="10" fontWeight="bold" textAnchor="end" fontFamily="monospace">Kunci Torsi Terkalibrasi</text>
-                            </g>
-                          </>
-                        );
-                      })()}
-                    </svg>
+                    {renderCadSvg('torque', 'desk-')}
                   </div>
 
                   <div className="belsa-calc-diagram-specs">
@@ -2138,6 +2664,73 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
         )}
 
       </div>
+
+      {/* ========================================================================= */}
+      {/* FIXED NATIVE MOBILE BOTTOM APP NAVIGATION BAR (5 MODULES)                 */}
+      {/* ========================================================================= */}
+      <nav className="belsa-calc-bottom-nav" aria-label="Calculator Module Navigation">
+        <button
+          type="button"
+          onClick={() => switchTab('pressure')}
+          className={`belsa-calc-bottom-tab ${activeTab === 'pressure' ? 'is-active' : ''}`}
+        >
+          <span className="belsa-calc-bottom-indicator" />
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
+          <span>{isId ? 'Tekanan' : 'Pressure'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => switchTab('thickness')}
+          className={`belsa-calc-bottom-tab ${activeTab === 'thickness' ? 'is-active' : ''}`}
+        >
+          <span className="belsa-calc-bottom-indicator" />
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="5" strokeDasharray="3 3" />
+          </svg>
+          <span>{isId ? 'Tube' : 'Tube'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => switchTab('bolt')}
+          className={`belsa-calc-bottom-tab ${activeTab === 'bolt' ? 'is-active' : ''}`}
+        >
+          <span className="belsa-calc-bottom-indicator" />
+          <svg viewBox="0 0 24 24">
+            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <span>{isId ? 'Baut' : 'Bolt'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => switchTab('weight')}
+          className={`belsa-calc-bottom-tab ${activeTab === 'weight' ? 'is-active' : ''}`}
+        >
+          <span className="belsa-calc-bottom-indicator" />
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3v18m-8-7l4-9 4 9H4zm12 0l4-9 4 9h-8z" />
+          </svg>
+          <span>{isId ? 'Berat' : 'Weight'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => switchTab('torque')}
+          className={`belsa-calc-bottom-tab ${activeTab === 'torque' ? 'is-active' : ''}`}
+        >
+          <span className="belsa-calc-bottom-indicator" />
+          <svg viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span>{isId ? 'Torsi' : 'Torque'}</span>
+        </button>
+      </nav>
     </div>
   );
 }
