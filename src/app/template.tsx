@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const SCROLL_TARGET_SELECTOR = [
+  '.belsa-reveal',
   '.belsa-card',
   '.belsa-series-card',
   '.belsa-project-card',
@@ -14,7 +15,10 @@ const SCROLL_TARGET_SELECTOR = [
   '.belsa-about-text',
   '.belsa-about-img-wrap',
   '.belsa-stats-card',
+  '.belsa-grid-2col > *',
+  '.belsa-grid-3col > *',
   '.contact-form-box',
+  '.contact-locations-col > *',
   '.contact-map-header',
   '.footer-light-header',
   '.footer-light-grid > *',
