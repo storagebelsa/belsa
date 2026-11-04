@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useState, useMemo, useEffect } from 'react';
+import React, { use, useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
@@ -41,6 +41,119 @@ function getProductQuickSpecs(item: BelsaProductSeries, isId: boolean): string[]
   }
 
   return specs;
+}
+
+function SeriesCardImage({
+  image,
+  alt,
+  isId,
+}: {
+  image?: string;
+  alt: string;
+  isId: boolean;
+}) {
+  const [isLoading, setIsLoading] = useState(true);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const formattedSrc = formatProductImageUrl(image);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const el = imgRef.current;
+    if (el && el.complete && el.naturalWidth > 0) {
+      setIsLoading(false);
+    }
+  }, [formattedSrc]);
+
+  return (
+    <>
+      {isLoading && (
+        <div
+          className="belsa-image-skeleton"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '12px',
+            zIndex: 2,
+            gap: '8px',
+          }}
+        >
+          <div
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.92)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+            }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#dc2626"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ animation: 'belsaSpin 1s linear infinite' }}
+            >
+              <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
+              <path d="M12 2a10 10 0 0 1 10 10" />
+            </svg>
+          </div>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              color: '#64748b',
+              fontWeight: 700,
+              letterSpacing: '0.02em',
+            }}
+          >
+            {isId ? 'Memuat Gambar...' : 'Loading Image...'}
+          </span>
+        </div>
+      )}
+
+      <img
+        ref={imgRef}
+        src={formattedSrc}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        onLoad={() => setIsLoading(false)}
+        onError={(e) => {
+          const target = e.currentTarget;
+          if (target.src.includes('googleusercontent.com/d/')) {
+            const fId = target.src.split('/d/')[1]?.split('?')[0];
+            if (fId) {
+              target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
+              return;
+            }
+          }
+          target.src = '/images/prod_cylinder_clean.webp';
+          setIsLoading(false);
+        }}
+        className="belsa-series-img"
+        style={{
+          filter: 'drop-shadow(0 8px 14px rgba(0,0,0,0.08))',
+          opacity: isLoading ? 0 : 1,
+          transform: isLoading ? 'scale(0.95)' : undefined,
+          transition:
+            'opacity 0.25s ease-out, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          zIndex: 1,
+        }}
+      />
+    </>
+  );
 }
 
 export default function ProductCategoryPage({ params }: Props) {
@@ -491,13 +604,10 @@ export default function ProductCategoryPage({ params }: Props) {
                         title={item.series}
                         onClick={(e) => handleSpecClick(e, item)}
                       >
-                        <img
-                          src={formatProductImageUrl(item.image)}
+                        <SeriesCardImage
+                          image={item.image}
                           alt={item.series}
-                          loading="lazy"
-                          decoding="async"
-                          referrerPolicy="no-referrer"
-                          className="belsa-series-img"
+                          isId={isId}
                         />
                       </Link>
 
