@@ -2991,40 +2991,196 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
     font-size: 0.88rem !important;
   }
 
-  /* Modern Light Footer on Mobile */
+  /* Modern Light Footer on Mobile — Compact 2-Column Structured Layout */
   .belsa-footer-light {
-    padding: 44px 0 24px !important;
+    padding: 36px 0 32px !important;
+    margin-top: 48px !important;
   }
 
   .footer-light-header {
     flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 20px !important;
-    padding-bottom: 24px !important;
-    margin-bottom: 32px !important;
-  }
-
-  .footer-light-divider {
-    display: none !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 22px !important;
   }
 
   .footer-light-brand-row {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 14px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
     width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .footer-light-logo img {
+    height: 46px !important;
+  }
+
+  .footer-light-divider {
+    display: block !important;
+    height: 36px !important;
+    background-color: #CBD5E1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .footer-light-rmw-group {
+    align-items: flex-end !important;
+    text-align: right !important;
+    gap: 2px !important;
+  }
+
+  .footer-light-label {
+    font-size: 0.65rem !important;
+  }
+
+  .footer-light-rmw-img {
+    height: 32px !important;
+  }
+
+  .footer-light-iso-card {
+    width: 100% !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .footer-light-iso-img {
+    height: 40px !important;
+  }
+
+  .footer-light-iso-title {
+    font-size: 0.88rem !important;
+  }
+
+  .footer-light-iso-sub,
+  .footer-light-iso-id {
+    font-size: 0.72rem !important;
   }
 
   .footer-light-grid {
-    grid-template-columns: 1fr !important;
-    gap: 32px !important;
-    margin-bottom: 32px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 22px 16px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .footer-light-col-about {
+    grid-column: 1 / -1 !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #E5E7EB !important;
+  }
+
+  .footer-light-title {
+    font-size: 0.98rem !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .footer-light-desc {
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .footer-light-contact-list {
+    gap: 8px !important;
+  }
+
+  .footer-light-contact-item {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    padding: 9px 12px !important;
+    width: 100% !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.02) !important;
+  }
+
+  .footer-light-hours {
+    padding-left: 4px !important;
+    margin-top: 4px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .footer-light-links {
+    gap: 9px !important;
+  }
+
+  .footer-light-links a {
+    font-size: 0.84rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .footer-light-col-facilities {
+    grid-column: 1 / -1 !important;
+    padding-top: 18px !important;
+    border-top: 1px solid #E5E7EB !important;
+    gap: 10px !important;
+  }
+
+  .footer-light-facility-item {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    gap: 5px !important;
+  }
+
+  .footer-light-facility-item:last-child {
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+  }
+
+  .footer-light-facility-label {
+    font-size: 0.86rem !important;
+  }
+
+  .footer-light-map-link {
+    background: #FEF2F2 !important;
+    color: var(--belsa-red) !important;
+    border: 1px solid rgba(211, 35, 42, 0.2) !important;
+    padding: 3px 10px !important;
+    border-radius: 999px !important;
+    font-size: 0.73rem !important;
+    font-weight: 700 !important;
+  }
+
+  .footer-light-facility-text {
+    font-size: 0.8rem !important;
+    line-height: 1.45 !important;
   }
 
   .footer-light-bottom {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 16px !important;
+    flex-direction: column-reverse !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 14px !important;
+    padding-top: 20px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .footer-light-copy {
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+    max-width: 310px !important;
+    margin: 0 auto !important;
+  }
+
+  .footer-light-socials {
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+
+  .footer-light-social-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
   }
 
   /* Compact Floating WhatsApp Button on Mobile */
