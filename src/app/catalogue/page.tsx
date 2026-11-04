@@ -440,13 +440,15 @@ export default function CataloguePage() {
       const optionsRecord: Record<string, string> = {};
       if (selectedSeries.htoConfig?.blocks) {
         selectedSeries.htoConfig.blocks.forEach((block) => {
-          optionsRecord[block.id] = dynamicSlots[block.slotIndex] || block.rows?.[0]?.code || '—';
+          const slotVal = dynamicSlots[block.slotIndex];
+          optionsRecord[block.id] = slotVal !== undefined ? slotVal : (block.rows?.[0]?.code ?? '');
         });
       }
       await generateProductDatasheetPdf({
         product: selectedSeries,
         activeModelCode: activeModelCode || selectedSeries.code,
         selectedOptions: optionsRecord,
+        dynamicSlots,
         lang: lang as 'id' | 'en',
       });
     } catch (e) {
@@ -997,7 +999,7 @@ export default function CataloguePage() {
               {/* Key Features List */}
               <div>
                 <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 12px' }}>
-                  Fitur & Spesifikasi
+                  {lang === 'id' ? 'Fitur & Spesifikasi' : 'Features & Specifications'}
                 </h4>
                 <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {selectedSeries.features[lang].map((f, i) => (
@@ -1364,7 +1366,7 @@ export default function CataloguePage() {
                         </div>
 
                         {/* Custom Stroke Input */}
-                        <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className="pdf-hide-input" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 600, lineHeight: 1 }}>
                             Custom (Max {block.maxStroke || 2000}mm):
                           </span>
@@ -1421,7 +1423,7 @@ export default function CataloguePage() {
               }}>
                 <div>
                   <span style={{ fontSize: '0.74rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '4px', lineHeight: 1 }}>
-                    KODE MODEL:
+                    {lang === 'id' ? 'KODE MODEL:' : 'MODEL CODE:'}
                   </span>
                   <span style={{ fontSize: '1.45rem', fontWeight: 800, fontFamily: 'var(--belsa-font), monospace', color: '#38bdf8', letterSpacing: '0.04em', lineHeight: 1.2, display: 'inline-block' }}>
                     {activeModelCode}
@@ -1454,7 +1456,7 @@ export default function CataloguePage() {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
-                        <span>Tersalin!</span>
+                        <span>{lang === 'id' ? 'Tersalin!' : 'Copied!'}</span>
                       </>
                     ) : (
                       <>
@@ -1462,7 +1464,7 @@ export default function CataloguePage() {
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                         </svg>
-                        <span>Salin Kode</span>
+                        <span>{lang === 'id' ? 'Salin Kode' : 'Copy Code'}</span>
                       </>
                     )}
                   </button>
@@ -1492,7 +1494,7 @@ export default function CataloguePage() {
                       <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                       <rect x="6" y="14" width="12" height="8" />
                     </svg>
-                    <span>Cetak</span>
+                    <span>{lang === 'id' ? 'Cetak' : 'Print'}</span>
                   </button>
                 </div>
               </div>
@@ -1535,7 +1537,7 @@ export default function CataloguePage() {
                     <path d="M8 11h.01" />
                     <path d="M8 16h.01" />
                   </svg>
-                  <span>+ Tambah ke Penawaran (RFQ)</span>
+                  <span>{lang === 'id' ? '+ Tambah ke Penawaran (RFQ)' : '+ Add to Quote (RFQ)'}</span>
                 </button>
 
                 {/* 2. Download PDF Datasheet */}
@@ -1569,7 +1571,7 @@ export default function CataloguePage() {
                         <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                         <path d="M12 2a10 10 0 0 1 10 10" />
                       </svg>
-                      <span>Memproses PDF...</span>
+                      <span>{lang === 'id' ? 'Memproses PDF...' : 'Generating PDF...'}</span>
                     </>
                   ) : (
                     <>
@@ -1580,7 +1582,7 @@ export default function CataloguePage() {
                         <line x1="9" y1="15" x2="12" y2="18" />
                         <line x1="15" y1="15" x2="12" y2="18" />
                       </svg>
-                      <span>Unduh Datasheet PDF</span>
+                      <span>{lang === 'id' ? 'Unduh Datasheet PDF' : 'Download PDF Datasheet'}</span>
                     </>
                   )}
                 </button>
@@ -1611,7 +1613,7 @@ export default function CataloguePage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                   </svg>
-                  <span>Pesan via WhatsApp</span>
+                  <span>{lang === 'id' ? 'Pesan via WhatsApp' : 'Order via WhatsApp'}</span>
                 </a>
               </div>
             </div>
@@ -1645,7 +1647,7 @@ export default function CataloguePage() {
                 color: '#64748b'
               }}>
                 <div>
-                  <strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline: +62 811-1916-8752 • Email: sales@rafitama.com • www.belsa.co.id
+                  <strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline: +62 811-1916-8752 • Email: sales@rafitama.com • www.belsa.id
                 </div>
                 <div style={{ fontWeight: 800, color: '#dc2626' }}>
                   BELSA Fluid Power Systems • Official Technical Datasheet
@@ -1750,7 +1752,8 @@ export default function CataloguePage() {
           .btn-floating-wa,
           nav,
           .belsa-page-header,
-          .pdf-hide-buttons {
+          .pdf-hide-buttons,
+          .pdf-hide-input {
             display: none !important;
           }
           .pdf-show-footer {
