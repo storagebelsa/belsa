@@ -571,7 +571,7 @@ export default function ProductCategoryPage({ params }: Props) {
             <div key={activeSubCat} className="belsa-grid-fade" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '22px' }}>
               {displayedItems.map((item) => {
                 const specs = getProductQuickSpecs(item, isId);
-                const catalogueHref = `/catalogue?series=${item.slug || item.id}`;
+                const catalogueHref = `/catalogue/${item.slug || item.id}`;
 
                 return (
                   <div

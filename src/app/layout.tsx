@@ -95,7 +95,7 @@ const jsonLdRoot = {
       url: siteUrl,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/images/logo.webp`,
+        url: `${siteUrl}/images/logo_clean.webp`,
         width: 400,
         height: 120,
       },
@@ -103,12 +103,18 @@ const jsonLdRoot = {
       description:
         'Produsen silinder hidrolik, silinder pneumatik, hydraulic power unit, selang hidrolik industri, dan process valve bersertifikat ISO 9001:2015 di Indonesia.',
       foundingDate: '2017',
+      sameAs: [
+        'https://rafitama.com',
+        'https://www.instagram.com/nabelsakha/',
+        'https://id.linkedin.com/company/rafitamawahyudi',
+        'https://www.youtube.com/@nabelsakhagroup',
+      ],
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Ruko Newton Timur No. 22, Jl. Scientia Square Timur, Curug Sangereng, Kec. Kelapa Dua',
+        streetAddress: 'Nabel Sakha Building, Jl. Scientia Garden T/07, Scientia Boulevard, Gading Serpong',
         addressLocality: 'Kab. Tangerang',
         addressRegion: 'Banten',
-        postalCode: '15810',
+        postalCode: '15334',
         addressCountry: 'ID',
       },
       contactPoint: [
@@ -116,7 +122,7 @@ const jsonLdRoot = {
           '@type': 'ContactPoint',
           telephone: '+62-811-1916-8752',
           contactType: 'sales & technical support',
-          email: 'sales@rafitama.com',
+          email: 'sales@belsa.id',
           areaServed: 'ID',
           availableLanguage: ['Indonesian', 'English'],
         },
@@ -129,21 +135,48 @@ const jsonLdRoot = {
       image: `${siteUrl}/images/prod_cylinder_clean.webp`,
       url: siteUrl,
       telephone: '+62-811-1916-8752',
-      email: 'sales@rafitama.com',
+      email: 'sales@belsa.id',
       priceRange: '$$$',
+      hasMap: 'https://www.google.com/maps/place/Nabel+Sakha+Building/@-6.2589089,106.6079929,17z',
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: -6.2589089,
+        longitude: 106.6079929,
+      },
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Ruko Newton Timur No. 22, Jl. Scientia Square Timur, Curug Sangereng, Kec. Kelapa Dua',
+        streetAddress: 'Nabel Sakha Building, Jl. Scientia Garden T/07, Scientia Boulevard, Gading Serpong',
         addressLocality: 'Kab. Tangerang',
         addressRegion: 'Banten',
-        postalCode: '15810',
+        postalCode: '15334',
         addressCountry: 'ID',
       },
+      department: [
+        {
+          '@type': 'LocalBusiness',
+          name: 'Workshop & Pabrik Fabrikasi BELSA (PT. Rafitama Millenial Wahyudi)',
+          telephone: '+62-811-1916-8752',
+          hasMap: 'https://maps.app.goo.gl/CPFtJNBygVUNbXiQ9',
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: -6.178381,
+            longitude: 106.562861,
+          },
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Kawasan Pergudangan Sunrise Bizpark, Jl. Raya Prabu Siliwangi Km 3,5, Pasar Kemis',
+            addressLocality: 'Kab. Tangerang',
+            addressRegion: 'Banten',
+            postalCode: '15560',
+            addressCountry: 'ID',
+          },
+        },
+      ],
       openingHoursSpecification: [
         {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: '08:00',
+          opens: '08:30',
           closes: '17:00',
         },
       ],
@@ -165,7 +198,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="id" data-scroll-behavior="smooth">
       <head>
         <script
           async

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { BELSA_CATALOGUE_FULL, BelsaProductSeries } from '@/data/belsaCatalogueFull';
+import { formatProductImageUrl } from '@/lib/imageUtils';
 import { CatalogueView } from '../page';
 
 interface Props {
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${product.series} - ${cleanSubId} (${product.category})`;
   const description = `Spesifikasi teknis, tabel kode pemesanan (How to Order), dan unduh PDF Datasheet ${product.series} (${cleanSubId} / ${cleanSubEn}) dari BELSA. Fitur: ${featSnippet || 'Standar Industri ISO 9001:2015'}.`;
-  const imgUrl = product.image && product.image.startsWith('/') ? product.image : '/images/prod_cylinder_clean.webp';
+  const formattedImg = formatProductImageUrl(product.image);
+  const imgUrl = formattedImg.startsWith('/') ? `https://belsa.id${formattedImg}` : formattedImg;
 
   return {
     title,
@@ -83,10 +85,10 @@ export default async function CatalogueSlugPage({ params }: Props) {
   const { slug } = await params;
   const product = findProductBySlug(slug);
   const cleanSubId = product?.subTitle?.id?.replace(/\s*\([^)]*\)/g, '').trim() || '';
-  const imgUrl =
-    product?.image && product.image.startsWith('/')
-      ? `https://belsa.id${product.image}`
-      : 'https://belsa.id/images/prod_cylinder_clean.webp';
+  const formattedImg = formatProductImageUrl(product?.image);
+  const imgUrl = formattedImg.startsWith('/')
+    ? `https://belsa.id${formattedImg}`
+    : formattedImg;
 
   const jsonLd = product
     ? {
@@ -123,6 +125,16 @@ export default async function CatalogueSlugPage({ params }: Props) {
               url: 'https://belsa.id',
             },
             url: `https://belsa.id/catalogue/${product.slug}`,
+            offers: {
+              '@type': 'Offer',
+              url: `https://belsa.id/catalogue/${product.slug}`,
+              priceCurrency: 'IDR',
+              availability: 'https://schema.org/InStock',
+              seller: {
+                '@type': 'Organization',
+                name: 'BELSA (PT. Rafitama Millenial Wahyudi)',
+              },
+            },
           },
         ],
       }
