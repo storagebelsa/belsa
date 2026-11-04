@@ -48,9 +48,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Medium Tie-Rod Aluminium",
-      "en": "Medium Cylinder (Standard Tie-Rod Aluminium Body)"
+      "en": "Medium Cylinder (Silinder Standar Tie-Rod Aluminium)",
     },
-    "image": "/images/cat_thumb_mpc1.png",
+    "image": "https://lh3.googleusercontent.com/d/18wHf3xcH9FIPEVd-Ju6g_RdUDEA73sZs",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -769,9 +769,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Bore Besar Ø125-300",
-      "en": "Large Bore Industrial Cylinder (Heavy Duty Ø125-300)"
+      "en": "Large Bore Industrial Cylinder (Silinder Beban Berat Ø125-300)",
     },
-    "image": "/images/cat_lpc1_large.png",
+    "image": "https://lh3.googleusercontent.com/d/1J7oQDwWwSZyT5IiUT8udeFwTa8hFDK5I",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -1443,9 +1443,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Bodi Bulat",
-      "en": "Round Body Cylinder (Shortened Compact Round Body)"
+      "en": "Round Body Cylinder (Silinder Bodi Bulat Kompak)",
     },
-    "image": "/images/cat_thumb_ncr.png",
+    "image": "https://lh3.googleusercontent.com/d/1umMOkikPk7Kb2g0i0dDcvlhPQs4sCOKl",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -1700,9 +1700,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kompak Bodi Kotak",
-      "en": "Compact Cylinder (Space-Saving Square Profile)"
+      "en": "Compact Cylinder (Silinder Bodi Kotak Ultra Ringkas)",
     },
-    "image": "/images/cat_thumb_rc.png",
+    "image": "https://lh3.googleusercontent.com/d/1P61eboZ_MXM4uJv735puakCnrJSmt-01",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -2281,9 +2281,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kecil Tabung Aluminium Ø20-40",
-      "en": "Small Precision Cylinder (Aluminium Tube Ø20-40)"
+      "en": "Small Precision Cylinder (Aluminium Tube Ø20-40)",
     },
-    "image": "/images/cat_thumb_spc1.png",
+    "image": "https://lh3.googleusercontent.com/d/1kSEwRlbto14RwCWl76SXq7z9rVNcIMJg",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -2913,9 +2913,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kecil Tabung Stainless Steel Ø20-40",
-      "en": "Small Stainless Steel Cylinder (SUS Tube Ø20-40)"
+      "en": "Small Stainless Steel Cylinder (SUS Tube Ø20-40)",
     },
-    "image": "/images/cat_thumb_spc2.png",
+    "image": "https://lh3.googleusercontent.com/d/1q13EW8KueKNXWybV23s1dsxfQjdZOefs",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -3511,9 +3511,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Ukuran Ekstra Besar Ø350-450",
-      "en": "Extra-Large Heavy Cylinder (Massive Bore Ø350-450)"
+      "en": "Extra-Large Heavy Cylinder (Silinder Raksasa Ø350-450)",
     },
-    "image": "/images/cat_lpc1_large.png",
+    "image": "https://lh3.googleusercontent.com/d/1ciWtz_2JtiQoYxNH83w-1z-ifDusPzQ0",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -3840,9 +3840,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Kompak Aluminium 125-160 kgf/cm²",
-      "en": "Aluminium Compact Hydraulic Cylinder (125-160 kgf/cm²)"
+      "en": "Aluminium Compact Hydraulic Cylinder (Tekanan 125-160 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1BNRydav5eXLgw_9XUCofBYgjBrBoPerK",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -4161,9 +4161,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Kompak Baja 140 kgf/cm²",
-      "en": "Steel Compact Hydraulic Cylinder (140 kgf/cm²)"
+      "en": "Steel Compact Hydraulic Cylinder (Tekanan 140 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1w83AZhNtBZPkZCGoppgtF7cTZ9wK-ZhB",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -4511,9 +4511,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Rotary Rack & Pinion 35 kgf/cm²",
-      "en": "Rotary Hydraulic Cylinder (Rack-and-Pinion 35 kgf/cm²)"
+      "en": "Rotary Actuator Hydraulic Cylinder (Putar Rack & Pinion 35 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1_LqlJu-Q8eSfEppwAb2bi-88M7OkJI3j",
     "symbolType": "rotary",
     "features": {
       "id": [
@@ -4825,9 +4825,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Teleskopik Single Acting",
-      "en": "Telescopic Single Acting Constant Speed Cylinder"
+      "en": "Telescopic Cylinder (Silinder Hidrolik Teleskopik Kerja Tunggal)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/14mk3gvLzXaAHwE-7tsaN7oZL6kWYJkze",
     "symbolType": "telescopic",
     "features": {
       "id": [
@@ -5254,9 +5254,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Belsa Telescopic Cylinder",
-      "en": "Belsa Telescopic Cylinder Series"
+      "en": "Belsa Telescopic Cylinder (Silinder Hidrolik Teleskopik Multitahap)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1Y7vmnJmwFuV9Nziw9B-RWuHOCaGmd717",
     "symbolType": "telescopic",
     "features": {
       "id": [
@@ -6105,9 +6105,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Industri Umum 100 kgf/cm²",
-      "en": "General Industry Hydraulic Cylinder (100 kgf/cm²)"
+      "en": "General Industry Hydraulic Cylinder (Tekanan 100 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1e7xvl_oFTX5tECQ2A95YkxNP_e_CFd-v",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -6461,9 +6461,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tie-Rod Standar 70 / 140 kgf/cm²",
-      "en": "Standard Tie-Rod Hydraulic Cylinder (70 / 140 kgf/cm²)"
+      "en": "Standard Tie-Rod Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/18w3J8Dcqw8UjQ6PxLO3JtK7bds17NynY",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -7110,9 +7110,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Mill Type 70 / 140 kgf/cm²",
-      "en": "Mill Type Heavy Machinery Cylinder (70 / 140 kgf/cm²)"
+      "en": "Mill Type Heavy Duty Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1NnXVSw2-utzPTXuxct5PClQyj1QKqGrK",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -7735,9 +7735,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Mill Type Tekanan Tinggi 210 kgf/cm²",
-      "en": "High-Pressure Mill Type Hydraulic Cylinder (210 kgf/cm²)"
+      "en": "High-Pressure Mill Type Hydraulic Cylinder (Tekanan 210 kgf/cm²)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1aEiJdbre-l_RPiVVFZYqfJtFifxHL3vw",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -8336,9 +8336,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Water Cylinder",
     "subTitle": {
       "id": "Silinder Air Ukuran Besar",
-      "en": "Water Cylinder Large Size"
+      "en": "Water Cylinder Large Size",
     },
-    "image": "/images/cat_thumb_wcl.png",
+    "image": "https://lh3.googleusercontent.com/d/1_J6GNDxVPhV9FkPOhnAG3DsqkEciwOgd",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -9125,9 +9125,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Water Cylinder",
     "subTitle": {
       "id": "Silinder Air Ukuran Medium",
-      "en": "Water Cylinder Medium Size"
+      "en": "Water Cylinder Medium Size",
     },
-    "image": "/images/cat_thumb_wcm.png",
+    "image": "https://lh3.googleusercontent.com/d/11R9wYxeBnxe-eNjEU--dMumhr2Lc6GkI",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -9973,7 +9973,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Hydraulic Power Pack & Power Unit (4L - 500L)",
-      "en": "Modular Hydraulic Power Pack & Power Unit (4L - 500L)"
+      "en": "Modular Hydraulic Power Pack & Power Unit (4L - 500L)",
     },
     "features": {
       "id": [
@@ -10426,9 +10426,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Hydraulic & Steam Hose Belsa",
-      "en": "Belsa Industrial Hydraulic & Steam Hose Series"
+      "en": "Industrial Hose (Hydraulic & Steam Hose Belsa)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1aqxalbtdWdvY257MIVv-VrG7yCaJmaMo",
     "symbolType": "hose",
     "features": {
       "id": [
@@ -11698,10 +11698,10 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "code": "BMGV",
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
-      "id": "Manual Gate Valve 1/2\" - 16\"",
-      "en": "Manual Gate Valve (Flanged Industrial Gate Valve)"
+      "id": "Manual Gate Valve 1/2 in - 16 in",
+      "en": "Manual Gate Valve 1/2 in - 16 in",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1HJgj3MIFgvAMsx3r6_c-NA8DYgRQ3dMi",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -12046,9 +12046,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Manual Ball Valve 1-Pc / 2-Pc / 3-Pc & Flange",
-      "en": "Manual Ball Valve (Screw, Flanged & Clamp DN8-DN250)"
+      "en": "Manual Ball Valve (Katup Bola 1-Pc / 2-Pc / 3-Pc & Flange)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1wN4lJnRIRAUXaWs2KgNX-njhYrgphEFM",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -12477,9 +12477,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Flange Safety Valve",
-      "en": "Flange Type Industrial Safety Valve (DN20 to DN400)"
+      "en": "Flange Safety Valve (Katup Pengaman Tekanan Berlebih)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1jbCh99aletzOJ36Q0MIkc2nF_INiMfmF",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -12784,9 +12784,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Manual Globe Valve Flange DN15-DN300",
-      "en": "Manual Globe Valve (Flow Control Valve 1/2\" - 12\")"
+      "en": "Manual Globe Valve (Katup Regulasi Aliran Flange DN15-DN300) - 12)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1OfAVUNsupBRlFfWSOj8fZ553SP4LEUST",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -13097,9 +13097,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Machine & Seal Kit",
     "subTitle": {
       "id": "Mesin Potong Karet Hidrolik Portabel",
-      "en": "Rubber Cutting Machine (Portable Hydraulic Rubber Bale Cutter)"
+      "en": "Rubber Cutting Machine (Mesin Pemotong Karet Hidrolik Portabel)",
     },
-    "image": "/images/cat_thumb_mrc.png",
+    "image": "https://lh3.googleusercontent.com/d/1JNi1mw_lTVipCL5DjRvYwhYXU_SFkC9h",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -13406,9 +13406,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Machine & Seal Kit",
     "subTitle": {
       "id": "Seal Kit Silinder Pneumatik / Hidrolik / Air",
-      "en": "Sealkit Cylinder (Complete Cylinder Seal Replacement Kit)"
+      "en": "Sealkit Cylinder (Kit Segel Seal Silinder Pneumatik / Hidrolik / Air)",
     },
-    "image": "/images/cat_thumb_bs.png",
+    "image": "https://lh3.googleusercontent.com/d/1ALOMkkPSussLvh-XKdTVJpLKtL5XoCn2",
     "symbolType": "seal",
     "features": {
       "id": [
@@ -13701,9 +13701,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial Brake & Clutch",
     "subTitle": {
       "id": "Air Brake Tipe Diaphragm",
-      "en": "Air Brakes (Diaphragm) (Heavy Duty Industrial Diaphragm Air Brakes)"
+      "en": "Air Brakes (Diaphragm) (Rem Angin Industri Tipe Diafragma)",
     },
-    "image": "/images/cat_thumb_ab.png",
+    "image": "https://lh3.googleusercontent.com/d/1hQ0TGkm-o5s9Rpszn6YDcyde8bsHeLPm",
     "symbolType": "none",
     "features": {
       "id": [
@@ -13944,9 +13944,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Profile Cylinder ISO15552",
-      "en": "Profile Cylinder ISO15552 (Official BELSA Industrial Component - ACI Series)"
+      "en": "Profile Cylinder ISO15552",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/16ZK1MKXuLevDVya8q6vF0S0ugAeBkk2A",
     "symbolType": "air_double",
     "features": {
       "id": [
@@ -14597,9 +14597,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Belsa Duplex Filter",
-      "en": "Belsa Duplex Filter"
+      "en": "Belsa Duplex Filter 150 bar (Filter Dupleks Tekanan Tinggi 150 Bar)",
     },
-    "image": "/images/cat_thumb_b150ld.png",
+    "image": "https://lh3.googleusercontent.com/d/1XJnIuVSOV7Z9NjbL4kLAWnLYXJSxtLPS",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -15040,9 +15040,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Low / Medium Pressure Duplex Filter",
-      "en": "Low / Medium Pressure Duplex Filter"
+      "en": "Low / Medium Pressure Duplex Filter",
     },
-    "image": "/images/cat_thumb_b160.png",
+    "image": "https://lh3.googleusercontent.com/d/1or9XX8c0cenA6wc-5TW-mrsBfuK3zpKl",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -16295,9 +16295,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Belsa Inline Filter 350 bar",
-      "en": "Belsa Inline Filter 350 bar (High Pressure Inline Hydraulic Filter)"
+      "en": "Belsa Inline Filter 350 bar (Filter Tekanan Tinggi Jalur Pipa 350 Bar)",
     },
-    "image": "/images/cat_thumb_b350le.png",
+    "image": "https://lh3.googleusercontent.com/d/1gFNwafpIiBusZ1SQS4xCvsiLYLK7WDYb",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -16742,9 +16742,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Pneumatic 3 Way Control Valve",
-      "en": "● Diaphragm, Pneumatic, Motorized, or Manual. (Official BELSA Industrial Component)"
+      "en": "Diaphragm, Pneumatic, Motorized, or Manual.",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1TxtX9qC2rbvo8au9gCQ8dKdvBbJozacA",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -17057,9 +17057,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve"
+            "en": "Belsa Directional Spool Valve",
         },
-        "image": "/images/cat_thumb_b4we.png",
+        "image": "https://lh3.googleusercontent.com/d/1iSWnCr8YLbVJpIKC-tIJD-lFtMAhzEl0",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -17556,9 +17556,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve"
+            "en": "Belsa Directional Spool Valve",
         },
-        "image": "/images/cat_thumb_b4we10.png",
+        "image": "https://lh3.googleusercontent.com/d/15CJutVzQMurl5TI7NhDsm5f4dtYypEaf",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -18075,9 +18075,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve"
+            "en": "Belsa Directional Spool Valve",
         },
-        "image": "/images/cat_thumb_b4we6.png",
+        "image": "https://lh3.googleusercontent.com/d/12BP3cmMSgiR2ujgvIxauXptn8SOjPVDA",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -18710,9 +18710,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Proportional Valves",
-            "en": "Belsa Proportional Valves"
+            "en": "Belsa Proportional Valves",
         },
-        "image": "/images/cat_thumb_b4wrp.png",
+        "image": "https://lh3.googleusercontent.com/d/1i5DOUpb-uqt-SK1kPqF4cE7XwBkZ9WmY",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -19181,9 +19181,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "24 VDC Coil with Embedded Proportional IR Amplifier",
-      "en": "24 VDC Coil with Embedded Proportional IR Amplifier (Proportional Solenoid Driver)"
+      "en": "24 VDC Coil with Embedded Proportional IR Amplifier (Koil Solenoid Proporsional)",
     },
-    "image": "/images/cat_thumb_b790.png",
+    "image": "https://lh3.googleusercontent.com/d/19iuF1r0j2W70mmZOxmYXiuJm7TxRxgXM",
     "symbolType": "none",
     "features": {
       "id": [
@@ -19298,7 +19298,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "BELSA Axial Piston Variable Pump",
-      "en": "BELSA Axial Piston Variable Pump"
+      "en": "BELSA Axial Piston Variable Pump (Pompa Piston Aksial Variabel)",
     },
     "features": {
       "id": [
@@ -19316,7 +19316,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Through drive capability for compact systems."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1FyQIyLV5TMhtJWVToUdENZ6XwuTAWRDd",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -19734,9 +19734,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Air Dryer",
-      "en": "Belsa Air Dryer (Refrigerated & Desiccant Industrial Air Dryer)"
+      "en": "Belsa Air Dryer (Pengering Udara Industri Refrigerasi & Desikan)",
     },
-    "image": "/images/cat_thumb_bad.png",
+    "image": "https://lh3.googleusercontent.com/d/13dnbICq1F2oREbL8oIJvm7GhH4_JYjcz",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -19949,9 +19949,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Air Cooled Oil Control",
-      "en": "Belsa Air Cooled Oil Control (Integrated Air Oil Cooler Unit)"
+      "en": "Belsa Air Cooled Oil Control (Pendingin Oli Udara Terintegrasi)",
     },
-    "image": "/images/cat_thumb_bad14.png",
+    "image": "https://lh3.googleusercontent.com/d/1tfhipU58FqVUwjfcFRXbIRBd5jTwsW7E",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -20080,9 +20080,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Air Actuated Atomizing Nozzle",
-      "en": "Belsa Air Actuated Atomizing Nozzle Series"
+      "en": "Belsa Air Actuated Atomizing (Nozel Atomisasi Udara Presisi)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/187hE6UU85KGAJ9R1LZsIjQ1zvyvuF-NV",
     "symbolType": "none",
     "features": {
       "id": [
@@ -20291,9 +20291,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Central Lubrication & Systems",
     "subTitle": {
       "id": "Belsa Autolube Series",
-      "en": "Belsa Autolube Series"
+      "en": "Belsa Autolube Series",
     },
-    "image": "/images/cat_thumb_bas.png",
+    "image": "https://lh3.googleusercontent.com/d/1GLVTOqBy4ELQ7FDZoxH26P67tcaSOIXh",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -20582,9 +20582,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Manual Butterfly Valve",
-      "en": "Belsa Manual Butterfly Valve Series"
+      "en": "Belsa Manual Butterfly Valve (Katup Kupu-kupu Industri)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1KKME2dI1RDKQi4u99jkE4Ny1fzhnJYJM",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -21113,9 +21113,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Ball Valve",
-      "en": "● Rated up to 40.0 MPa. (Official BELSA Industrial Component)"
+      "en": "Rated up to 40.0 MPa.",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1s-GkQNr4xnagP3K1pePJYsV7I1fiGypC",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -21428,9 +21428,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Connector Tube",
-      "en": "Belsa Connector Tube Series"
+      "en": "Connector Tube (Fitting Konektor Pipa Hidrolik)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1W44WhZ8kS5pS2X8nJie_IJ2RCEnDa8nj",
     "symbolType": "none",
     "features": {
       "id": [
@@ -21669,9 +21669,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Cylinder Valve Kit",
-      "en": "Belsa Compact Integrated Cylinder Valve Kit"
+      "en": "Belsa Cylinder Valve Kit (Silinder Integrasi Katup Kompak)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/18kIc_1-bUqKA2v0mCfF4g0TCdV_PLI7A",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -22059,9 +22059,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Double Nipple Hose to Tube",
-      "en": "Double Nipple Hose to Tube Connector Series"
+      "en": "Double Nipple Hose to Tube (Fitting Dobel Nipel Selang ke Pipa)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1aWJKpJGmTCRiq88spzjQuMmNQ_xpHCP-",
     "symbolType": "none",
     "features": {
       "id": [
@@ -22348,9 +22348,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Elbow Series",
-      "en": "Belsa Elbow Pipe Fitting Series"
+      "en": "Belsa Elbow Series (Sambungan Elbow Pipa Industri)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/158D3j31xMGhAyT80TUG-ZcocIxjLBfVd",
     "symbolType": "none",
     "features": {
       "id": [
@@ -22717,9 +22717,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial Brake & Clutch",
     "subTitle": {
       "id": "Belsa Electromagnetic Brake Motor Series",
-      "en": "Belsa Electromagnetic Brake Motor Series (Electromagnetic Brake Induction Motor)"
+      "en": "Belsa Electromagnetic Brake Motor Series (Motor Rem Elektromagnetik)",
     },
-    "image": "/images/cat_thumb_bebm.png",
+    "image": "https://lh3.googleusercontent.com/d/1BGaX5kiGVM7e9aBzfsRw5gnuNliCvaQZ",
     "symbolType": "rotary",
     "features": {
       "id": [
@@ -23308,9 +23308,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Shock Absorbers & Heavy Springs",
     "subTitle": {
       "id": "Shock Absorbers Mega-Line",
-      "en": "Shock Absorbers Mega-Line Series"
+      "en": "Shock Absorbers Mega-Line (Peredam Kejut Industri)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1eQ77XthzBY2N14Q97Yjz8tJKYC1BTsev",
     "symbolType": "none",
     "features": {
       "id": [
@@ -23543,9 +23543,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flange Series",
-      "en": "Belsa Industrial Flange Series"
+      "en": "Belsa Flange Series (Flens Pipa Industri Tekanan Tinggi)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1jYy2tae-6JdcHX-0FSe0Qp84-qvShkuq",
     "symbolType": "none",
     "features": {
       "id": [
@@ -23936,9 +23936,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Flow Control Valve",
-      "en": "Belsa Flow Control Valve (Hydraulic Throttle & Check Valve)"
+      "en": "Belsa Flow Control Valve (Katup Pengatur Kecepatan Aliran)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/15OkPgkrGeUTgKSSWFwlv2c6NzNWrc2YX",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -24143,9 +24143,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flow Meter Magnetic Inductive",
-      "en": "Belsa Magnetic Inductive Flow Meter Series"
+      "en": "Belsa Flow Meter Magnetic Inductive (Pengukur Aliran Magnetik)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1h3WZ0jHOjXIXmLmPfS-WesFs9gxU1jd0",
     "symbolType": "none",
     "features": {
       "id": [
@@ -24418,7 +24418,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Belsa Grease Pump",
-      "en": "Belsa Grease Pump (Centralized Lubrication Grease Pump)"
+      "en": "Belsa Grease Pump (Pompa Gemuk Pelumas Terpusat)",
     },
     "features": {
       "id": [
@@ -24436,7 +24436,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom made solution."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1aw6napq0I68YWuqV2vvtNwxznzQHwrgV",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -24634,9 +24634,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Pressure Transmitter 8700 Series",
-      "en": "Belsa Pressure Transmitter 8700 Series (Industrial Pressure Transmitter)"
+      "en": "Belsa Pressure Transmitter 8700 Series (Transmitter Tekanan Industri)",
     },
-    "image": "/images/cat_thumb_bhda.png",
+    "image": "https://lh3.googleusercontent.com/d/1cGJ6FYRECZ_p41YENinane5Ke4WpN8si",
     "symbolType": "none",
     "features": {
       "id": [
@@ -24925,9 +24925,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Pressure Transmitter",
-      "en": "Belsa Pressure Transmitter (Functional Safety Certified Transmitter)"
+      "en": "Belsa Pressure Transmitter (Transmitter Tekanan Keamanan Fungsional)",
     },
-    "image": "/images/cat_thumb_bhda87.png",
+    "image": "https://lh3.googleusercontent.com/d/18UpIYDP3JPgJ3bvUcBvgUXcJR6BgACH2",
     "symbolType": "none",
     "features": {
       "id": [
@@ -25164,9 +25164,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Oil Heat Exchanger Shell & Tube",
-      "en": "Belsa Oil Heat Exchanger Series (Shell & Tube Industrial Oil Heat Exchanger)"
+      "en": "Belsa Oil Heat Exchanger Series (Pendingin Oli Shell & Tube)",
     },
-    "image": "/images/cat_thumb_bhe.png",
+    "image": "https://lh3.googleusercontent.com/d/1GC5a80wbeagNPHEz3qTvuiuBzTL31Xm7",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -25657,9 +25657,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Piston Type Pressure Switch",
-      "en": "Piston Type Pressure Switch (Hydraulic Piston Pressure Switch)"
+      "en": "Piston Type Pressure Switch (Sakelar Tekanan Tipe Piston Hidrolik)",
     },
-    "image": "/images/cat_thumb_bhed.png",
+    "image": "https://lh3.googleusercontent.com/d/1UHAX4xOAG_oSmxsSOi0_xelF3uL-purv",
     "symbolType": "none",
     "features": {
       "id": [
@@ -25988,9 +25988,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Hydro-Electric Pressure Switch",
-      "en": "Hydro-Electric Pressure Switch (High Precision Pressure Switch)"
+      "en": "Hydro-Electric Pressure Switch (Sakelar Tekanan Hidro-Elektrik)",
     },
-    "image": "/images/cat_thumb_bhed8.png",
+    "image": "https://lh3.googleusercontent.com/d/1z-U2qqgbPTnhncnhrUFbK4vpSoAOeZGQ",
     "symbolType": "none",
     "features": {
       "id": [
@@ -26311,7 +26311,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Pompa Sentrifugal & Transfer Fluida",
-      "en": "Industrial Centrifugal & Fluid Transfer Pump (Heavy Duty)"
+      "en": "Pompa Sentrifugal Industri & Transfer Fluida (Industrial Centrifugal & Transfer Pump)",
     },
     "features": {
       "id": [
@@ -26329,7 +26329,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Heavy-duty construction for continuous industrial duty."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/13kZ_LiocruIGk0d3UXNasD7LcVmJ1qRA",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -26613,7 +26613,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Hydraulic Rod End Bearing Seri BHREB",
-      "en": "BHREB-20ES-1 (Official BELSA Industrial Component)"
+      "en": "BHREB-20ES-1 (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "none",
@@ -26768,9 +26768,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Hydraulic Stack Valve Modular Manifold",
-      "en": "Hydraulic Modular Stack Valve & Subplate Manifold"
+      "en": "Hydraulic Stack Valve (Modular Monoblock Manifold)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1WfMIGDeJcVE_ReoeX-E7Q5LRPfgEEUwq",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -26983,9 +26983,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Shock Absorbers & Heavy Springs",
     "subTitle": {
       "id": "Heavy-Duty Shock Absorbers",
-      "en": "Heavy-Duty Shock Absorbers (Heavy Industrial Hydraulic Buffer)"
+      "en": "Heavy-Duty Shock Absorbers (Peredam Kejut Beban Berat Industri)",
     },
-    "image": "/images/cat_thumb_blds.png",
+    "image": "/uploads/catalogue/blds_1790755016154.webp",
     "symbolType": "none",
     "features": {
       "id": [
@@ -27346,9 +27346,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Level Indicator with Transmitter",
-      "en": "Belsa Level Indicator with Transmitter (Continuous Liquid Level Transmitter)"
+      "en": "Belsa Level Indicator with Transmitter (Indikator Level Cairan & Transmitter)",
     },
-    "image": "/images/cat_thumb_blit.png",
+    "image": "https://lh3.googleusercontent.com/d/1nPqVsYdWt644BtqAzO1ztntdToZ0g1Tl",
     "symbolType": "none",
     "features": {
       "id": [
@@ -27645,9 +27645,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Limit Switch",
-      "en": "Belsa Limit Switch Series"
+      "en": "Belsa Limit Switch (Sakelar Batas Industri)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/14eXx9E4V8MldTx5OoVZaWduM0E3PibuC",
     "symbolType": "none",
     "features": {
       "id": [
@@ -27840,9 +27840,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Direct Operated Pressure Relief Valve",
-      "en": "Direct Operated Modular Pressure Relief Valve (ISO 4401-03)"
+      "en": "Direct Operated Pressure Relief Valve (Katup Pengurang Tekanan)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/168t8HmczizJkc-ZZcMIFsAOQ4l8gRBR8",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -28077,9 +28077,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Modifikasi Mesin Industri",
-      "en": "Belsa Machinery Modification Series"
+      "en": "Machinary Modification (Modifikasi Mesin Industri Belsa)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1BC9OsUrEfVTvDI0439Z_LuEc2GXCNTPr",
     "symbolType": "none",
     "features": {
       "id": [
@@ -28248,7 +28248,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Pompa Hidrolik Industri Seri Piston, Vane & Gear",
-      "en": "Belsa Pump Series (Industrial Piston, Vane, and Gear Pump)"
+      "en": "Belsa Pump Series (Pompa Hidrolik Industri Piston, Vane, & Gear Pump)",
     },
     "features": {
       "id": [
@@ -28268,7 +28268,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom Made dimensions and specifications available upon request."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1r5vpmXKu5DkTDO8pNhqmIPELIFT9EJwQ",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -28551,9 +28551,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Belsa Pneumatic Cylinder BF Type",
-      "en": "Belsa Pneumatic Cylinder BF Type (Official BELSA Industrial Component - BPCBF Series)"
+      "en": "Belsa Pneumatic Cylinder BF Type",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1w9_gsyaFn7tSfbYgymOUVdvY3P8Ljjo8",
     "symbolType": "air_single_double",
     "features": {
       "id": [
@@ -29089,9 +29089,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Pneumatic Clamping Unit",
-      "en": "Belsa Pneumatic & Hydraulic Clamping Unit"
+      "en": "Belsa Pneumatic Clamping Unit (Unit Penjepit Pneumatik)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1jUu4PMC2nLLZ4W925n_Vp-yjIzhz7hzz",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -29256,9 +29256,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Pressure Gauge",
-      "en": "Pressure Gauge (Heavy Duty Industrial Dial Pressure Gauge)"
+      "en": "Pressure Gauge (Manometer Pengukur Tekanan Jarum Industri)",
     },
-    "image": "/images/cat_thumb_bpg.png",
+    "image": "https://lh3.googleusercontent.com/d/1MV6OwJ_d9-wGVFeFbliVNHo4KYXZX_89",
     "symbolType": "none",
     "features": {
       "id": [
@@ -29787,7 +29787,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Belsa High Pressure Low Noise Gear Pumps",
-      "en": "Belsa High Pressure Low Noise Gear Pumps"
+      "en": "Belsa High Pressure Low Noise Gear Pumps (Pompa Roda Gigi Bertekanan Tinggi & Rendah Kebisingan)",
     },
     "features": {
       "id": [
@@ -29805,7 +29805,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Flexible mounting & port options."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1LFcRs3AjdMmVqW8P8W5hKxWA1dH5UEPE",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -30153,9 +30153,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "BELSA Pressure Line Filter",
-      "en": "BELSA Pressure Line Filter (In-Line High Pressure Hydraulic Filter)"
+      "en": "BELSA Pressure Line Filter (Filter Tekanan Tinggi Jalur Pipa)",
     },
-    "image": "/images/cat_thumb_bplf.png",
+    "image": "https://lh3.googleusercontent.com/d/1o7EKXalqoJvJe4KIEs52WT1gLWgFA3Ys",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -30396,9 +30396,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Pneumatic Operated Globe Valve, Aktuator Plastik",
-      "en": "Pneumatically Operated Industrial Globe Valve with Plastic Actuator"
+      "en": "Pneumatic Operated Globe Valve (Katup Globe Aktuator Plastik)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1I-UyIHq9j0YK9732KgWcv9lv1zJnx-X3",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -30597,9 +30597,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Proportional Relief Valve",
-      "en": "Proportional Relief Valve with Digital Electronic Interface"
+      "en": "Proportional Relief Valve (Katup Pengurang Tekanan Proporsional)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1wPOADz97xZHwjoo_c9E_GShCJTGPZflq",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -30772,9 +30772,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Piston Type Pressure Switch",
-      "en": "Belsa Piston Type Pressure Switch (Compact Hydraulic Pressure Switch)"
+      "en": "Belsa Piston Type Pressure Switch (Sakelar Tekanan Piston Kompak)",
     },
-    "image": "/images/cat_thumb_bps.png",
+    "image": "https://lh3.googleusercontent.com/d/1VE1ypci70kjnhSgWp1j25s-K1JT-ZVGJ",
     "symbolType": "none",
     "features": {
       "id": [
@@ -30955,9 +30955,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Quick Coupler ISO 7241",
-      "en": "Belsa Quick Coupler ISO 7241 Series"
+      "en": "Belsa Quick Coupler ISO 7241 (Kopling Cepat Hidrolik Standar ISO)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1Pb02LBpvBWqL5IpH1N-E4KlT1RM8Dt2N",
     "symbolType": "none",
     "features": {
       "id": [
@@ -31270,9 +31270,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Belsa Rodless Cylinder",
-      "en": "Belsa Rodless Cylinder Series"
+      "en": "Belsa Rodless Cylinder (Silinder Pneumatik Tanpa Batang)",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1wJeXtJ07YwE09ovo8ILTu1OHYIBVwGH3",
     "symbolType": "air_double",
     "features": {
       "id": [
@@ -31574,9 +31574,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flexible Rubber Joint",
-      "en": "Belsa Flexible Rubber Expansion Joint Series"
+      "en": "Belsa Flexible Rubber Joint (Sambungan Karet Fleksibel Flens)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1Qyr-MbEqguNKNNGQRxktuf_jDPo4krYN",
     "symbolType": "hose",
     "features": {
       "id": [
@@ -31959,9 +31959,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Silicon Fire Sleeve",
-      "en": "Belsa High Temperature Silicon Fire Sleeve Series"
+      "en": "Belsa Silicon Fire Sleeve (Pelindung Selang Tahan Api)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1vItL1aY9lsE0LoRnBM3ZwL49atekFI4d",
     "symbolType": "none",
     "features": {
       "id": [
@@ -32104,9 +32104,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Sight Glass",
-      "en": "Belsa Industrial Sight Glass Series"
+      "en": "Belsa Sight Glass (Kaca Pengamat Aliran Fluida)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1O0L0cQAnRaPL6QRlI71p0OoNCy8lBGdG",
     "symbolType": "none",
     "features": {
       "id": [
@@ -32363,7 +32363,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "BSP Series Centrifugal Pump",
-      "en": "BSP Series Centrifugal Pump (Inlet/Outlet 32 - 250 mm)"
+      "en": "BSP Series Centrifugal Pump (Inlet/Outlet 32 - 250 mm)",
     },
     "features": {
       "id": [
@@ -32665,7 +32665,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Low Noise Fixed Displacement Double Vane Pumps",
-      "en": "Fixed Displacement Vane Pumps (Low Noise Double Vane Pumps)"
+      "en": "Low Noise Fixed Displacement Double Vane Pumps (Pompa Vane Ganda Seri Rendah Kebisingan)",
     },
     "features": {
       "id": [
@@ -32683,7 +32683,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Available for BSQP(S)21, BSQP(S)31/32, and BSQP(S)41/42/43 series."
       ]
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1i5TX2vS8E2JAtiL-Pe8E-5Bl2qKRWFcn",
     "symbolType": "hydraulic",
     "boreSizes": [],
     "standardStrokes": [],
@@ -33369,9 +33369,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "High Pressure Thermodynamic Steam Trap with Replaceable Seat",
-      "en": "High Pressure Thermodynamic Steam Trap with Replaceable Seat (Severe Duty Thermodynamic Steam Trap)"
+      "en": "High Pressure Thermodynamic Steam Trap with Replaceable Seat (Steam Trap Termodinamik Tekanan Tinggi)",
     },
-    "image": "/images/cat_thumb_btd120m.png",
+    "image": "https://lh3.googleusercontent.com/d/1h0f3_ZoyLI1qc_XHXl5fs041tfcJJO9S",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -33524,9 +33524,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Pipa Hidrolik",
-      "en": "Belsa Precision Hydraulic Tube Series"
+      "en": "Tube Hydraulic (Pipa Hidrolik Presisi Tinggi)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1nR8vq8BNaU5USworRPCJ3M9MQ7FeGekA",
     "symbolType": "none",
     "features": {
       "id": [
@@ -33789,9 +33789,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Vee Ball Rotary Control Valves",
-            "en": "Belsa Vee Ball Rotary Control Valves"
+            "en": "Belsa Vee Ball Rotary Control Valves",
         },
-        "image": "/images/cat_thumb_bv150.png",
+        "image": "https://lh3.googleusercontent.com/d/1_IJftgIFGCzOrR9H-98dq_-LrkEs3kFZ",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -34084,9 +34084,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Vacuum Cup",
-      "en": "Belsa Industrial Vacuum Cup Series"
+      "en": "Vacuum Cup (Karet Pengisap Vakum Industri)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/16gU24ATZ0lGiP5O1_qBBjsPJbyseRmiw",
     "symbolType": "none",
     "features": {
       "id": [
@@ -34525,9 +34525,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flow Meter Guided Wave Radar",
-      "en": "Belsa Guided Wave Radar Flow Meter Series"
+      "en": "Belsa Flow Meter (Pengukur Aliran Gelombang Radar)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1xlA2625f-6vGhravf6qDMnIpsZ5yaQLD",
     "symbolType": "none",
     "features": {
       "id": [
@@ -34752,9 +34752,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Vacuum Hose",
-      "en": "Belsa Industrial Vacuum Hose Series"
+      "en": "Belsa Vacuum Hose (Selang Vakum Fleksibel Industri)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1xR3Y3mOgamjuL7ZvxPQDDGfb3o3RKvNq",
     "symbolType": "hose",
     "features": {
       "id": [
@@ -35119,7 +35119,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Shock Absorbers & Heavy Springs",
     "subTitle": {
       "id": "Industrial Shock Absorber Mega-Line",
-      "en": "Shock Absorbers Mega-Line (Official BELSA Industrial Component)"
+      "en": "Shock Absorbers Mega-Line (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_cylinder_clean.webp",
     "symbolType": "none",
@@ -35484,7 +35484,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
             "id": "Belsa Stack Reducing Valve",
-            "en": "Belsa Stack Reducing Valve"
+            "en": "Belsa Stack Reducing Valve",
         },
         "image": "/images/cat_thumb_bzw.png",
         "symbolType": "valve",
@@ -35770,10 +35770,10 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "code": "BZW-DM",
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
-            "id": "Belsa Pressure Reducing Valve",
-            "en": "Belsa Pressure Reducing Valve"
+            "id": "Belsa Pressure Reducing Valve, Sandwich Plate",
+            "en": "Belsa Pressure Reducing Valve, Sandwich Plate",
         },
-        "image": "/images/cat_thumb_bzw_dm.png",
+        "image": "https://lh3.googleusercontent.com/d/1QINuTC8mW6wr3CwpmXl_5vbP5JFvqu3A",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -36058,7 +36058,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Central Lubrication",
-      "en": "Central Lubrication (Central Lubrication Pump Unit 0,5 - 200 kW)"
+      "en": "Central Lubrication (Central Lubrication Pump Unit 0,5 - 200 kW)",
     },
     "features": {
       "id": [
@@ -36321,7 +36321,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Double Nipple Fitting",
-      "en": "Double Nipple Industrial & Hydraulic Adapter Fitting"
+      "en": "Double Nipple Industrial & Hydraulic Adapter Fitting",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "hose",
@@ -36784,7 +36784,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Fitting JIC Female Cone Seat Double Hexagon",
-      "en": "JIC FEMALE 37° CONE SEAT DOUBLE HEXAGON (Official BELSA Industrial Component)"
+      "en": "JIC FEMALE 37° CONE SEAT DOUBLE HEXAGON (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "none",
@@ -36939,9 +36939,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "2-Way High Pressure Ball Valve",
-      "en": "2-Way High Pressure Hydraulic Ball Valve"
+      "en": "2-Way High Pressure Ball Valve (Katup Bola Tekanan Tinggi)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1k4YtXprhWNQZVHDv-gG8PuHjqBTt07Nn",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -37154,9 +37154,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Oil Cooler Air Cooled Series",
-      "en": "Oil Cooler Air Cooled Series (Air-Cooled Hydraulic Oil Cooler)"
+      "en": "Oil Cooler Air Cooled Series (Pendingin Oli Pendingin Udara)",
     },
-    "image": "/images/cat_thumb_ocac.png",
+    "image": "https://lh3.googleusercontent.com/d/1hXRJqh1s2tBcqBacK_LqTK7_7W7TJdBg",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -37455,7 +37455,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Rubber Expansion Joint Seri REJ",
-      "en": "REJ series (Official BELSA Industrial Component)"
+      "en": "REJ series (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "none",
@@ -37883,7 +37883,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Central Lubrication & Systems",
     "subTitle": {
       "id": "Rotary Joint 55 Series",
-      "en": "55 Series (Official BELSA Industrial Component)"
+      "en": "55 Series (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_valve_clean.webp",
     "symbolType": "powerpack",
@@ -38141,7 +38141,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Double Nipple Hose to Tube",
-      "en": "BDNHT (Official BELSA Industrial Component)"
+      "en": "BDNHT (Official BELSA Industrial Component)",
     },
     "image": "/images/prod_valve_clean.webp",
     "symbolType": "valve",
@@ -38649,9 +38649,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 210 kgf/cm²",
-      "en": "High-Pressure Tie-Rod Hydraulic Cylinder 210 kgf/cm²"
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 210 kgf/cm²",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1Or6ZGD0kHUjk6IrBB02amfXt0suPTA6E",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -39385,9 +39385,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 250 kgf/cm²",
-      "en": "High-Pressure Tie-Rod Hydraulic Cylinder 250 kgf/cm²"
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 250 kgf/cm²",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1fWhv5pdHyyVPfH6yOoIcI3dz2ZDTMyJC",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -40121,9 +40121,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 300 kgf/cm²",
-      "en": "High-Pressure Tie-Rod Hydraulic Cylinder 300 kgf/cm²"
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 300 kgf/cm²",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1SBiC6GgBbq4U25WWSpTms_Cpqqtev144",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -40857,9 +40857,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "BELSA Hydraulic Rod Ends Bearing",
-      "en": "BELSA Hydraulic Rod Ends Bearing (Official BELSA Industrial Component - Rod Ends Bearing)"
+      "en": "BELSA Hydraulic Rod Ends Bearing",
     },
-    "image": "/images/prod_cylinder_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1BBoOMJjVhB54XeYlhfBX3zZTd_dubaPW",
     "symbolType": "hydraulic",
     "features": {
       "id": [
@@ -41086,9 +41086,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "3-Way Piston Process Valve SCS13",
-      "en": "3-Way Piston Process Valve SCS13"
+      "en": "Katup Piston 3-Way Stainless Steel SCS13 (3-Way Piston Process Valve)",
     },
-    "image": "/images/prod_valve_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/16XyL2Kru9eEHvcR010JTeEdA2QtU7ZJ7",
     "symbolType": "valve",
     "features": {
       "id": [
@@ -41323,10 +41323,10 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "code": "DV175-F",
         "category": "Industrial & Hydraulic Valve",
         "subTitle": {
-            "id": "Belsa Diverter Valve",
-            "en": "Belsa Diverter Valve"
+            "id": "Diverter Valve",
+            "en": "Diverter Valve",
         },
-        "image": "/images/cat_thumb_dv175f.png",
+        "image": "https://lh3.googleusercontent.com/d/1MZngPgH1X9U2wqCaymTI_r2AxKcKPji5",
         "symbolType": "valve",
         "features": {
             "id": [
@@ -41618,7 +41618,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Selang Hidrolik SAE 100 R1AT, 1 Lapis Kawat Baja",
-      "en": "SAE 100 R1AT 1-Wire Hydraulic Hose Series (1SN - DIN EN853)"
+      "en": "SAE 100 R1AT 1-Wire Hydraulic Hose Series (1SN - DIN EN853)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "hose",
@@ -41789,7 +41789,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Selang Hidrolik SAE 100 R2AT, 2 Lapis Kawat Baja",
-      "en": "SAE 100 R2AT 2-Wire Hydraulic Hose Series (2SN - DIN EN853)"
+      "en": "SAE 100 R2AT 2-Wire Hydraulic Hose Series (2SN - DIN EN853)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "hose",
@@ -41960,7 +41960,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Double Nipple Fitting",
-      "en": "Double Nipple Fitting (Official BELSA Industrial Component - Double Nipple Series)"
+      "en": "Double Nipple Fitting (Official BELSA Industrial Component - Double Nipple Series)",
     },
     "image": "/images/prod_hose_clean.webp",
     "symbolType": "hose",
@@ -42502,9 +42502,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Tube Clamp",
-      "en": "Belsa Tube Clamp (Official BELSA Industrial Component - Tube Clamp)"
+      "en": "Belsa Tube Clamp.pdf)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1KGXBRrn_XYYNHX_IRDGywiw8QqVWGrKO",
     "symbolType": "hose",
     "features": {
       "id": [
@@ -42715,9 +42715,9 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Rubber Expansion Joint",
-      "en": "Belsa Rubber Expansion Joint Series"
+      "en": "Rubber Expansion Joint (Sambungan Fleksibel Karet Flens)",
     },
-    "image": "/images/prod_hose_clean.webp",
+    "image": "https://lh3.googleusercontent.com/d/1eVM2Yi-acHqIgVusXZW_v_b41etbzLQ0",
     "symbolType": "hose",
     "features": {
       "id": [
