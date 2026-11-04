@@ -3390,45 +3390,26 @@ a.belsa-card:hover .belsa-brand-icon-box svg {
 }
 
 /* =======================================================
-   SCROLL-TRIGGERED SLIDE ("GESER SAAT DI-SCROLL") ENGINE
+   INITIAL ABOVE-THE-FOLD REVEAL (HYDRATION-SAFE)
    ======================================================= */
-.belsa-scroll-slide {
-  opacity: 0;
-  transition: opacity 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+.belsa-reveal {
+  animation: belsaFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.belsa-scroll-slide[data-slide-dir="up"] {
-  transform: translate3d(0, 32px, 0);
+.belsa-stagger-1 {
+  animation-delay: 0.06s;
 }
 
-.belsa-scroll-slide[data-slide-dir="left"] {
-  transform: translate3d(-32px, 16px, 0);
+.belsa-stagger-2 {
+  animation-delay: 0.12s;
 }
 
-.belsa-scroll-slide[data-slide-dir="right"] {
-  transform: translate3d(32px, 16px, 0);
+.belsa-stagger-3 {
+  animation-delay: 0.18s;
 }
 
-.belsa-scroll-slide.is-inview {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-.belsa-stagger-1.belsa-scroll-slide {
-  transition-delay: 0.05s;
-}
-
-.belsa-stagger-2.belsa-scroll-slide {
-  transition-delay: 0.1s;
-}
-
-.belsa-stagger-3.belsa-scroll-slide {
-  transition-delay: 0.15s;
-}
-
-.belsa-stagger-4.belsa-scroll-slide {
-  transition-delay: 0.2s;
+.belsa-stagger-4 {
+  animation-delay: 0.24s;
 }
 
 .belsa-hero-cylinder-anim {

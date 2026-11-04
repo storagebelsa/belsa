@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const SCROLL_TARGET_SELECTOR = [
@@ -22,9 +22,14 @@ const SCROLL_TARGET_SELECTOR = [
 
 export default function RootTemplate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isFirstMount = useRef(true);
   const [isRouteSwitching, setIsRouteSwitching] = useState(false);
 
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
     setIsRouteSwitching(true);
     const timer = setTimeout(() => {
       setIsRouteSwitching(false);
@@ -32,29 +37,81 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Global Scroll-Triggered Slide ("Geser saat di-scroll") Engine
+  // Global Scroll-Triggered Slide ("Geser saat di-scroll") Engine using Web Animations API
+  // Does NOT mutate className, style, or data-* attributes, preventing any React hydration mismatch!
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
+    if (
+      typeof window === 'undefined' ||
+      typeof IntersectionObserver === 'undefined' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       return;
     }
 
     const observedSet = new WeakSet<Element>();
+    const armedMap = new WeakMap<Element, Animation>();
+    const dirMap = new WeakMap<Element, 'left' | 'right' | 'up'>();
+
+    const getKeyframes = (dir: 'left' | 'right' | 'up'): Keyframe[] => {
+      if (dir === 'left') {
+        return [
+          { opacity: 0, transform: 'translate3d(-32px, 16px, 0)' },
+          { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+        ];
+      }
+      if (dir === 'right') {
+        return [
+          { opacity: 0, transform: 'translate3d(32px, 16px, 0)' },
+          { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+        ];
+      }
+      return [
+        { opacity: 0, transform: 'translate3d(0, 32px, 0)' },
+        { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+      ];
+    };
+
+    const armElement = (el: HTMLElement, dir: 'left' | 'right' | 'up') => {
+      if (typeof el.animate !== 'function') return;
+      const existing = armedMap.get(el);
+      if (existing) existing.cancel();
+
+      const anim = el.animate(getKeyframes(dir), {
+        duration: 620,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        fill: 'both',
+      });
+      anim.pause();
+      anim.currentTime = 0;
+      armedMap.set(el, anim);
+    };
 
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const el = entry.target as HTMLElement;
+          const dir = dirMap.get(el) || 'up';
+
           if (entry.isIntersecting) {
-            el.classList.add('is-inview');
+            const armed = armedMap.get(el);
+            if (armed) {
+              armed.play();
+              armed.onfinish = () => {
+                armed.cancel();
+                armedMap.delete(el);
+              };
+            }
           } else if (entry.boundingClientRect.top > window.innerHeight * 0.96) {
-            // Reset when scrolled back above the element so scrolling down replays the slide animation
-            el.classList.remove('is-inview');
+            // Re-arm when scrolled back above the element so scrolling down replays the slide
+            if (!armedMap.has(el)) {
+              armElement(el, dir);
+            }
           }
         });
       },
       {
         threshold: 0.08,
-        rootMargin: '0px 0px -24px 0px',
+        rootMargin: '0px 0px -20px 0px',
       }
     );
 
@@ -62,7 +119,6 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
       const elements = document.querySelectorAll<HTMLElement>(SCROLL_TARGET_SELECTOR);
       elements.forEach((el, idx) => {
         if (observedSet.has(el)) return;
-        // Skip anything inside sticky or fixed bars
         if (
           el.closest('.belsa-calc-mobile-monitor') ||
           el.closest('.belsa-calc-bottom-nav') ||
@@ -72,45 +128,46 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
         }
 
         observedSet.add(el);
-        el.classList.add('belsa-scroll-slide');
 
-        // Assign directional slide style if not already set
-        if (!el.dataset.slideDir) {
-          if (el.classList.contains('belsa-about-text')) {
-            el.dataset.slideDir = 'left';
-          } else if (el.classList.contains('belsa-about-img-wrap')) {
-            el.dataset.slideDir = 'right';
-          } else if (
-            el.classList.contains('belsa-card') ||
-            el.classList.contains('belsa-series-card') ||
-            el.classList.contains('belsa-project-card') ||
-            el.classList.contains('belsa-calc-card')
-          ) {
-            el.dataset.slideDir = idx % 2 === 0 ? 'left' : 'right';
-          } else {
-            el.dataset.slideDir = 'up';
-          }
+        let dir: 'left' | 'right' | 'up' = 'up';
+        if (el.classList.contains('belsa-about-text')) {
+          dir = 'left';
+        } else if (el.classList.contains('belsa-about-img-wrap')) {
+          dir = 'right';
+        } else if (
+          el.classList.contains('belsa-card') ||
+          el.classList.contains('belsa-series-card') ||
+          el.classList.contains('belsa-project-card') ||
+          el.classList.contains('belsa-calc-card')
+        ) {
+          dir = idx % 2 === 0 ? 'left' : 'right';
         }
+        dirMap.set(el, dir);
 
         const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.88) {
-          el.classList.add('is-inview');
+        if (rect.top >= window.innerHeight * 0.9) {
+          armElement(el, dir);
         }
 
         io.observe(el);
       });
     };
 
-    registerElements();
-    const initTimer = setTimeout(registerElements, 120);
+    // Wait until after React hydration completes before registering
+    const initTimer = setTimeout(() => {
+      requestAnimationFrame(registerElements);
+    }, 140);
 
     const mo = new MutationObserver(() => {
       registerElements();
     });
-    mo.observe(document.body, { childList: true, subtree: true });
+    const moTimer = setTimeout(() => {
+      mo.observe(document.body, { childList: true, subtree: true });
+    }, 200);
 
     return () => {
       clearTimeout(initTimer);
+      clearTimeout(moTimer);
       io.disconnect();
       mo.disconnect();
     };
