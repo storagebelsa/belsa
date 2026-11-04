@@ -6,6 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
 import { formatProductImageUrl } from '@/lib/imageUtils';
 import TwoToneTitle from '@/components/TwoToneTitle';
+import SkullShimmerImage from '@/components/SkullShimmerImage';
 
 export default function ProductsPage() {
   const { lang } = useLanguage();
@@ -141,15 +142,13 @@ export default function ProductsPage() {
           <div className="belsa-grid-3col">
             {t.items.map((p, idx) => (
               <Link key={idx} href={`/products/${p.slug}`} className={`belsa-card belsa-reveal belsa-stagger-${(idx % 3) + 1}`}>
-                <div className="belsa-card-img-wrap">
-                  <img
-                    src={formatProductImageUrl(productImages[p.slug])}
+                <div className="belsa-card-img-wrap" style={{ position: 'relative' }}>
+                  <SkullShimmerImage
+                    src={productImages[p.slug]}
                     alt={p.title}
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
                     width={320}
                     height={220}
+                    label={lang === 'id' ? 'Memuat Gambar...' : 'Loading Image...'}
                   />
                 </div>
                 <h3 className="heading-card belsa-prod-card-title" style={{ minHeight: '48px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
