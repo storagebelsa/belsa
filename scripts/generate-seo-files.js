@@ -10,7 +10,7 @@ const deleted = new Set([
   'bwe_series', 'tubing', 'rotary'
 ]);
 
-const itemRegex = /\{\s*id:\s*'([^']+)'[\s\S]*?slug:\s*'([^']+)'/g;
+const itemRegex = /"id":\s*"([^"]+)",\s*"slug":\s*"([^"]+)"/g;
 const slugs = [];
 let m;
 while ((m = itemRegex.exec(tsContent)) !== null) {
