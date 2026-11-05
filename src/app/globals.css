@@ -53,6 +53,15 @@ img {
   display: block;
 }
 
+/* Prevent global img { display: block } from breaking html2canvas FontMetrics baseline probe */
+img[src^="data:image/gif;base64,R0lGODlhAQAB"] {
+  display: inline !important;
+  width: 1px !important;
+  height: 2px !important;
+  max-width: none !important;
+  vertical-align: baseline !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;

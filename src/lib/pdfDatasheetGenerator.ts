@@ -276,29 +276,33 @@ async function getImageAsBase64(imageUrl: string, fallbackDomSelector?: string):
 }
 
 /**
- * Render a crisp numbered badge (1..20) that avoids blurry double-digit Unicode circled characters in html2canvas
+ * Render a crisp numbered badge (1..20) matching the web catalogue's outlined circle style (①..⑳)
+ * Uses inline SVG with exact cap-height geometry so digits are 100% centered and never clipped in html2canvas.
  */
 function renderSlotNumberBadge(num: number, size: 'sm' | 'md' = 'md'): string {
-  const dim = size === 'sm' ? 15 : 16;
-  const fontSize = num >= 10 ? (size === 'sm' ? '7.5px' : '8px') : (size === 'sm' ? '8.5px' : '9px');
+  const dim = size === 'sm' ? 16 : 18;
+  const fontSize = num >= 10 ? 9.4 : 11.2;
+  // Exact half-cap-height centering for digits (capHeight ≈ 0.72 * fontSize around cy = 10)
+  const textY = (10 + fontSize * 0.36).toFixed(2);
   return `
-    <span style="display: inline-block; width: ${dim}px; height: ${dim}px; border-radius: 50%; background: #0f172a; color: #ffffff; font-size: ${fontSize}; font-weight: 800; text-align: center; line-height: ${dim - 2}px; padding-bottom: 2px; box-sizing: border-box; flex-shrink: 0; vertical-align: middle;">
-      ${num}
-    </span>
+    <svg width="${dim}" height="${dim}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="display: block; flex-shrink: 0;">
+      <circle cx="10" cy="10" r="8.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.65" />
+      <text x="10" y="${textY}" text-anchor="middle" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="${fontSize}">${num}</text>
+    </svg>
   `;
 }
 
 /**
- * Render a code pill inside table cells with html2canvas baseline compensation
+ * Render a code pill inside table cells with true vertical centering
  */
-function renderCodePill(code: string, isSelected: boolean, compact = false): string {
+function renderCodePill(code: string, isSelected: boolean, compact = false, spacious = false): string {
   const bg = isSelected ? '#dc2626' : '#f1f5f9';
   const color = isSelected ? '#ffffff' : '#0f172a';
   const border = isSelected ? '1px solid #dc2626' : '1px solid #cbd5e1';
-  const fontSize = compact ? '7.8px' : '8px';
-  const minW = compact ? '24px' : '26px';
-  // Asymmetric top/bottom padding (1px top, 3.5px bottom) counteracts html2canvas font baseline drop
-  return `<span style="display: inline-block; min-width: ${minW}; text-align: center; padding: 0.5px 5px 3.5px 5px; border-radius: 4px; background: ${bg}; color: ${color}; border: ${border}; font-weight: 800; font-size: ${fontSize}; line-height: 1.1; box-sizing: border-box; vertical-align: middle;">${code || 'Nil'}</span>`;
+  const fontSize = spacious ? (compact ? '8.2px' : '8.5px') : (compact ? '7.8px' : '8px');
+  const minW = spacious ? (compact ? '26px' : '28px') : (compact ? '24px' : '26px');
+  const pillH = spacious ? '19px' : (compact ? '17px' : '18px');
+  return `<span style="display: inline-flex; align-items: center; justify-content: center; min-width: ${minW}; height: ${pillH}; padding: 0 5px; border-radius: 4px; background: ${bg}; color: ${color}; border: ${border}; font-weight: 800; font-size: ${fontSize}; line-height: 1; box-sizing: border-box; vertical-align: middle;"><span style="display: inline-block; line-height: 1;">${code || 'Nil'}</span></span>`;
 }
 
 /**
@@ -308,8 +312,11 @@ function renderBlockCard(
   block: any,
   selectedCode: string | undefined,
   lang: 'id' | 'en',
-  maxStrokeFallback?: number
+  maxStrokeFallback?: number,
+  density: 'spacious' | 'medium' | 'compact' = 'compact'
 ): string {
+  const isSpacious = density === 'spacious';
+  const isMedium = density === 'medium';
   const normSelected = selectedCode !== undefined && selectedCode !== null ? String(selectedCode).trim() : '';
 
   const isRowSelected = (code?: string) => {
@@ -330,16 +337,17 @@ function renderBlockCard(
   if (block.displayType === 'chips') {
     const chips: (string | number)[] = block.chipValues || [];
     selectedSummaryLabel = normSelected ? `Ø${normSelected} mm` : '';
+    const chipH = isSpacious ? '24px' : '21px';
     bodyHtml = `
-      <div style="padding: 7px 8px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center;">
+      <div style="padding: ${isSpacious ? '9px 10px' : '7px 8px'}; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; align-content: center; flex: 1;">
         ${chips.map((chip) => {
           const sel = String(chip).trim() === normSelected;
           const bg = sel ? '#dc2626' : '#f8fafc';
           const color = sel ? '#ffffff' : '#0f172a';
           const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
           return `
-            <div style="flex: 1 0 48px; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: 9px; font-weight: 800; text-align: center; padding: 2px 6px 5px 6px; line-height: 1.15; letter-spacing: 0.01em; box-sizing: border-box;">
-              Ø${chip}
+            <div style="flex: 1 0 48px; height: ${chipH}; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9.5px' : '9px'}; font-weight: 800; padding: 0 6px; line-height: 1; letter-spacing: 0.01em; box-sizing: border-box;">
+              <span style="display: inline-block; line-height: 1;">Ø${chip}</span>
             </div>
           `;
         }).join('')}
@@ -354,30 +362,31 @@ function renderBlockCard(
       !strokes.some((s) => String(s).trim() === normSelected);
 
     selectedSummaryLabel = normSelected ? `${normSelected} mm` : '';
+    const stkH = isSpacious ? '22px' : '19px';
 
     bodyHtml = `
-      <div style="padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 5px;">
+      <div style="padding: ${isSpacious ? '8px 10px' : '6px 8px'}; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: ${isSpacious ? '5px' : '4px'}; margin-bottom: 6px;">
           ${strokes.map((stk) => {
             const sel = String(stk).trim() === normSelected;
             const bg = sel ? '#dc2626' : '#f8fafc';
             const color = sel ? '#ffffff' : '#334155';
             const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
             return `
-              <div style="border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: 8.5px; font-weight: 800; text-align: center; padding: 1.5px 2px 4.5px 2px; line-height: 1.15; box-sizing: border-box;">
-                ${stk}
+              <div style="height: ${stkH}; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9px' : '8.5px'}; font-weight: 800; padding: 0 2px; line-height: 1; box-sizing: border-box;">
+                <span style="display: inline-block; line-height: 1;">${stk}</span>
               </div>
             `;
           }).join('')}
         </div>
-        <div style="border-top: 1px dashed #cbd5e1; padding: 3px 0 2px 0; display: flex; align-items: center; justify-content: space-between; font-size: 8px; color: #475569; line-height: 1.2;">
+        <div style="border-top: 1px dashed #cbd5e1; padding: 4px 0 2px 0; display: flex; align-items: center; justify-content: space-between; font-size: ${isSpacious ? '8.5px' : '8px'}; color: #475569; line-height: 1.2;">
           <span>
             <strong>${lang === 'id' ? 'Stroke Kustom' : 'Custom Stroke'}:</strong>
             ${lang === 'id' ? `Tersedia hingga maks. ${maxStk} mm` : `Available up to max. ${maxStk} mm`}
           </span>
           ${isCustomSelected ? `
-            <span style="display: inline-block; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 0.5px 6px 3px 6px; border-radius: 4px; line-height: 1.1;">
-              ${lang === 'id' ? 'Dipilih' : 'Selected'}: ${normSelected} mm
+            <span style="display: inline-flex; align-items: center; justify-content: center; height: 18px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 0 6px; border-radius: 4px; line-height: 1;">
+              <span style="display: inline-block; line-height: 1;">${lang === 'id' ? 'Dipilih' : 'Selected'}: ${normSelected} mm</span>
             </span>
           ` : ''}
         </div>
@@ -407,6 +416,12 @@ function renderBlockCard(
       selectedSummaryLabel = activeRow.code || 'Nil';
     }
 
+    const subTableFont = isSpacious ? '8.6px' : isMedium ? '8.4px' : '8.2px';
+    const singleTableFont = isSpacious ? '9px' : isMedium ? '8.6px' : '8.4px';
+    const subCellPad = isSpacious ? '3.5px 5px' : isMedium ? '3px 4px' : '2.5px 4px';
+    const singleCellPad = isSpacious ? '4px 6px' : isMedium ? '3.2px 5px' : '2.5px 5px';
+    const thPad = isSpacious ? '4px 5px' : '3px 4px';
+
     // Split tables with > 5 rows into 2 side-by-side compact sub-tables when there is only 1 description column
     if (rows.length > 5 && visibleColumns.length <= 1) {
       const mid = Math.ceil(rows.length / 2);
@@ -415,11 +430,11 @@ function renderBlockCard(
       const colHeader = visibleColumns.length > 0 ? cleanColumnLabel(visibleColumns[0].label, lang) : (lang === 'id' ? 'Deskripsi' : 'Description');
 
       const renderSubTable = (subRows: any[]) => `
-        <table style="width: 100%; border-collapse: collapse; font-size: 8.2px;">
+        <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${subTableFont};">
           <thead>
             <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-              <th style="padding: 2px 4px 4.5px 4px; text-align: left; width: 42px;">${codeColLabel}</th>
-              <th style="padding: 2px 4px 4.5px 4px; text-align: left;">${colHeader}</th>
+              <th style="padding: ${thPad}; text-align: left; width: 44px; vertical-align: middle;">${codeColLabel}</th>
+              <th style="padding: ${thPad}; text-align: left; vertical-align: middle;">${colHeader}</th>
             </tr>
           </thead>
           <tbody>
@@ -433,10 +448,10 @@ function renderBlockCard(
               const textColor = sel ? '#991b1b' : '#334155';
               return `
                 <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                  <td style="padding: 2.5px 4px; vertical-align: middle; width: 42px;">
-                    ${renderCodePill(r.code || 'Nil', sel, true)}
+                  <td style="padding: ${subCellPad}; vertical-align: middle; width: 44px;">
+                    ${renderCodePill(r.code || 'Nil', sel, true, isSpacious)}
                   </td>
-                  <td style="padding: 1.5px 4px 4px 4px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.2;">
+                  <td style="padding: ${subCellPad}; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
                     ${val}
                   </td>
                 </tr>
@@ -447,23 +462,23 @@ function renderBlockCard(
       `;
 
       bodyHtml = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 3px 6px; flex: 1;">
-          <div>${renderSubTable(leftRows)}</div>
-          <div style="border-left: 1px solid #e2e8f0; padding-left: 6px;">${renderSubTable(rightRows)}</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; align-items: stretch;">
+          <div style="display: flex; flex-direction: column; height: 100%;">${renderSubTable(leftRows)}</div>
+          <div style="border-left: 1px solid #e2e8f0; padding-left: 6px; display: flex; flex-direction: column; height: 100%;">${renderSubTable(rightRows)}</div>
         </div>
       `;
     } else {
       // Standard single table inside card (supports 1 or multiple visible columns)
       bodyHtml = `
-        <div style="padding: 3px 6px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-          <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: 8.4px;">
+        <div style="padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${singleTableFont};">
             <thead>
               <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-                <th style="padding: 2px 5px 4.5px 5px; text-align: left; width: 50px;">${codeColLabel}</th>
+                <th style="padding: ${thPad}; text-align: left; width: 52px; vertical-align: middle;">${codeColLabel}</th>
                 ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => `
-                  <th style="padding: 2px 5px 4.5px 5px; text-align: left;">${cleanColumnLabel(c.label, lang)}</th>
+                  <th style="padding: ${thPad}; text-align: left; vertical-align: middle;">${cleanColumnLabel(c.label, lang)}</th>
                 `).join('') : `
-                  <th style="padding: 2px 5px 4.5px 5px; text-align: left;">${lang === 'id' ? 'Deskripsi' : 'Description'}</th>
+                  <th style="padding: ${thPad}; text-align: left; vertical-align: middle;">${lang === 'id' ? 'Deskripsi' : 'Description'}</th>
                 `}
               </tr>
             </thead>
@@ -474,18 +489,18 @@ function renderBlockCard(
                 const textColor = sel ? '#991b1b' : '#334155';
                 return `
                   <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 2.5px 5px; vertical-align: middle; width: 50px;">
-                      ${renderCodePill(r.code || 'Nil', sel, false)}
+                    <td style="padding: ${singleCellPad}; vertical-align: middle; width: 52px;">
+                      ${renderCodePill(r.code || 'Nil', sel, false, isSpacious)}
                     </td>
                     ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => {
                       const rawCell = r.values?.[c.id] || r.label || '-';
                       return `
-                        <td style="padding: 1.5px 5px 4px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
+                        <td style="padding: ${singleCellPad}; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
                           ${localizeHtoText(rawCell, lang)}
                         </td>
                       `;
                     }).join('') : `
-                      <td style="padding: 1.5px 5px 4px 5px; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
+                      <td style="padding: ${singleCellPad}; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
                         ${localizeHtoText(r.label || '-', lang)}
                       </td>
                     `}
@@ -501,14 +516,14 @@ function renderBlockCard(
 
   return `
     <div style="border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
-      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: 3.5px 8px; display: flex; align-items: center; justify-content: space-between; gap: 6px;">
-        <div style="display: flex; align-items: center; gap: 6px;">
+      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: ${isSpacious ? '5px 10px' : '4px 8px'}; min-height: ${isSpacious ? '28px' : '25px'}; display: flex; align-items: center; justify-content: space-between; gap: 6px; box-sizing: border-box;">
+        <div style="display: inline-flex; align-items: center; gap: 6px;">
           ${numBadge}
-          <span style="font-size: 9px; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1.1; padding-bottom: 2px;">${blockTitle}</span>
+          <span style="font-size: ${isSpacious ? '9.6px' : '9px'}; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1; display: inline-block;">${blockTitle}</span>
         </div>
         ${selectedSummaryLabel ? `
-          <span style="font-size: 7.5px; font-weight: 700; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0.5px 5px 2.5px 5px; line-height: 1.1;">
-            ${selectedSummaryLabel}
+          <span style="display: inline-flex; align-items: center; justify-content: center; height: ${isSpacious ? '18px' : '16px'}; font-size: ${isSpacious ? '8px' : '7.5px'}; font-weight: 800; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0 6px; line-height: 1; box-sizing: border-box;">
+            <span style="display: inline-block; line-height: 1;">${selectedSummaryLabel}</span>
           </span>
         ` : ''}
       </div>
@@ -543,6 +558,11 @@ export async function generateProductDatasheetPdf({
   const slots = Array.from({ length: totalSlots }, (_, i) => i + 1);
   const isManySlots = totalSlots >= 10;
 
+  // Adaptive layout density based on number of HTO blocks so there is no large white void on 8-block series
+  const density: 'spacious' | 'medium' | 'compact' =
+    rawBlocks.length <= 8 ? 'spacious' : rawBlocks.length <= 10 ? 'medium' : 'compact';
+  const isSpacious = density === 'spacious';
+
   // Resolve active value for each slot
   const getSlotValue = (slotIdx: number): string => {
     if (dynamicSlots && dynamicSlots[slotIdx] !== undefined) {
@@ -575,13 +595,15 @@ export async function generateProductDatasheetPdf({
     .filter(Boolean)
     .join(' - ');
 
+  const slotBoxHeight = isManySlots ? '21px' : isSpacious ? '24px' : '22px';
+
   const howToOrderBarHtml = `
-    <div style="margin-bottom: 8px;">
-      <div style="background: #dc2626; color: #ffffff; display: inline-block; padding: 1.5px 14px 4.5px 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: 9px; letter-spacing: 0.03em; line-height: 1.15;">
-        How to Order
+    <div style="margin-bottom: ${isSpacious ? '10px' : '8px'};">
+      <div style="background: #dc2626; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; height: ${isSpacious ? '22px' : '20px'}; padding: 0 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: ${isSpacious ? '9.5px' : '9px'}; letter-spacing: 0.03em; line-height: 1; box-sizing: border-box;">
+        <span style="display: inline-block; line-height: 1;">How to Order</span>
       </div>
-      <div style="border: 1.5px solid #fca5a5; border-radius: 0 8px 8px 8px; background: #fffafa; padding: 7px 10px;">
-        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '3px' : '5px'}; flex-wrap: nowrap;">
+      <div style="border: 1.5px solid #fca5a5; border-radius: 0 8px 8px 8px; background: #fffafa; padding: ${isSpacious ? '9px 12px' : '7px 10px'};">
+        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '3px' : isSpacious ? '6px' : '5px'}; flex-wrap: nowrap;">
           ${slots.map((slotNum) => {
             const val = getSlotValue(slotNum);
             let delimiterAfter = '';
@@ -595,16 +617,16 @@ export async function generateProductDatasheetPdf({
             const hasVal = val !== undefined && val !== null && String(val).trim() !== '';
             return `
               <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">
-                <div style="min-width: ${isManySlots ? '28px' : '36px'}; padding: 1.5px ${isManySlots ? '5px' : '7px'} 4.5px ${isManySlots ? '5px' : '7px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : '9.5px'}; font-weight: 800; text-align: center; line-height: 1.15; box-sizing: border-box;">
-                  ${hasVal ? val : 'Nil'}
+                <div style="display: inline-flex; align-items: center; justify-content: center; min-width: ${isManySlots ? '28px' : isSpacious ? '38px' : '36px'}; height: ${slotBoxHeight}; padding: 0 ${isManySlots ? '5px' : '8px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : isSpacious ? '10px' : '9.5px'}; font-weight: 800; text-align: center; line-height: 1; box-sizing: border-box;">
+                  <span style="display: inline-block; line-height: 1;">${hasVal ? val : 'Nil'}</span>
                 </div>
-                <div style="margin-top: 3px;">
+                <div style="margin-top: 4px; display: flex; align-items: center; justify-content: center;">
                   ${renderSlotNumberBadge(slotNum, 'sm')}
                 </div>
               </div>
               ${delimiterAfter && delimiterAfter.trim() !== '' ? `
-                <div style="padding-top: 3px; font-size: 11px; font-weight: 900; color: #dc2626; padding-left: 1px; padding-right: 1px; flex-shrink: 0; line-height: 1;">
-                  ${delimiterAfter}
+                <div style="height: ${slotBoxHeight}; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 1px; flex-shrink: 0; line-height: 1;">
+                  <span style="display: inline-block; line-height: 1;">${delimiterAfter}</span>
                 </div>
               ` : ''}
             `;
@@ -623,12 +645,13 @@ export async function generateProductDatasheetPdf({
   host.id = 'belsa-pdf-export-host';
   host.style.cssText = 'position: fixed; top: 0; left: -9999px; z-index: -9999; pointer-events: none; background: #ffffff;';
 
-  const baseWidth = 820;
+  // Calibrate baseWidth to block density so A4 target height matches content naturally
+  const baseWidth = rawBlocks.length <= 6 ? 730 : rawBlocks.length <= 8 ? 765 : rawBlocks.length <= 10 ? 800 : 820;
   const page = document.createElement('div');
   page.style.cssText = `
     width: ${baseWidth}px;
     box-sizing: border-box;
-    padding: 20px 26px 16px 26px;
+    padding: ${isSpacious ? '20px 26px 16px 26px' : '18px 26px 15px 26px'};
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -637,18 +660,27 @@ export async function generateProductDatasheetPdf({
   `;
 
   page.innerHTML = `
+    <style>
+      img[src^="data:image/gif;base64,R0lGODlhAQAB"] {
+        display: inline !important;
+        width: 1px !important;
+        height: 2px !important;
+        max-width: none !important;
+        vertical-align: baseline !important;
+      }
+    </style>
     <!-- 1. Official Datasheet Header -->
-    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: 9px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: ${isSpacious ? '10px' : '9px'};">
       <div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.1; padding-bottom: 2px; letter-spacing: -0.02em;">
+          <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.1; letter-spacing: -0.02em;">
             ${product.series}
           </h1>
-          <span style="display: inline-block; font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 1.5px 8px 4px 8px; border-radius: 4px; letter-spacing: 0.05em; line-height: 1.1;">
-            ${product.category}
+          <span style="display: inline-flex; align-items: center; justify-content: center; height: 20px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 0 8px; border-radius: 4px; letter-spacing: 0.05em; line-height: 1; box-sizing: border-box;">
+            <span style="display: inline-block; line-height: 1;">${product.category}</span>
           </span>
-          <span style="display: inline-block; font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 1.5px 7px 4px 7px; border-radius: 4px; line-height: 1.1;">
-            ISO 9001:2015
+          <span style="display: inline-flex; align-items: center; justify-content: center; height: 20px; font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 0 7px; border-radius: 4px; line-height: 1; box-sizing: border-box;">
+            <span style="display: inline-block; line-height: 1;">ISO 9001:2015</span>
           </span>
         </div>
         <div style="font-size: 10.5px; color: #475569; font-weight: 600; margin-top: 3px;">
@@ -664,18 +696,18 @@ export async function generateProductDatasheetPdf({
     </div>
 
     <!-- 2. Top Showcase: 3D Product Image + Key Specifications -->
-    <div style="display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; margin-bottom: 9px;">
-      <div style="height: 92px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 4px;">
-        <img src="${prodImgBase64}" alt="${product.series}" style="max-height: 82px; max-width: 155px; object-fit: contain; display: block;" />
+    <div style="display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: center; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: ${isSpacious ? '9px 12px' : '8px 12px'}; margin-bottom: ${isSpacious ? '10px' : '9px'};">
+      <div style="height: ${isSpacious ? '100px' : '92px'}; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 4px;">
+        <img src="${prodImgBase64}" alt="${product.series}" style="max-height: ${isSpacious ? '90px' : '82px'}; max-width: 155px; object-fit: contain; display: block;" />
       </div>
       <div>
-        <div style="font-size: 10px; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em;">
+        <div style="font-size: ${isSpacious ? '10.5px' : '10px'}; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em;">
           ${lang === 'id' ? 'Fitur & Spesifikasi Utama' : 'Key Features & Specifications'}
         </div>
-        <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; gap: 2.5px;">
+        <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; gap: ${isSpacious ? '3.5px' : '2.5px'};">
           ${featureList.map((f: string) => `
-            <li style="display: flex; align-items: flex-start; gap: 6px; font-size: 8.6px; color: #334155; line-height: 1.3;">
-              <span style="color: #16a34a; font-weight: 900; font-size: 9px; line-height: 1.1;">✓</span>
+            <li style="display: flex; align-items: flex-start; gap: 6px; font-size: ${isSpacious ? '9px' : '8.6px'}; color: #334155; line-height: 1.35;">
+              <span style="color: #16a34a; font-weight: 900; font-size: 9px; line-height: 1.2;">✓</span>
               <span>${f}</span>
             </li>
           `).join('')}
@@ -687,15 +719,15 @@ export async function generateProductDatasheetPdf({
     ${howToOrderBarHtml}
 
     <!-- 4. Sequential 2-Column HTO Specification Matrix (Strict 1 -> 2 -> 3 -> 4 Order) -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; align-items: stretch; margin-bottom: 10px;">
+    <div style="flex: ${rawBlocks.length >= 5 ? '1' : '0 0 auto'}; display: grid; grid-template-columns: 1fr 1fr; gap: ${isSpacious ? '9px 11px' : '7px 10px'}; align-items: stretch; margin-bottom: ${isSpacious ? '11px' : '10px'};">
       ${rawBlocks.map((b) => {
         const selVal = getSlotValue(b.slotIndex);
-        return renderBlockCard(b, selVal, lang, product.maxStroke);
+        return renderBlockCard(b, selVal, lang, product.maxStroke, density);
       }).join('')}
     </div>
 
     <!-- 5. Bottom Summary: Print-Friendly Configured Model Code & Official Footer -->
-    <div style="margin-top: auto; padding-top: 4px;">
+    <div style="margin-top: auto; padding-top: 2px;">
       <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
         <!-- Print-Friendly Model Code Box -->
         <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 6px 12px 8px 12px; display: flex; flex-direction: column; justify-content: center;">
