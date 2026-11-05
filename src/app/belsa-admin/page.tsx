@@ -26,6 +26,7 @@ export default function BelsaAdminPage() {
   const [articleSearch, setArticleSearch] = useState('');
   const [isArticleFormOpen, setIsArticleFormOpen] = useState(false);
   const [editingArticleSlug, setEditingArticleSlug] = useState<string | null>(null);
+  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
 
   // Article Form Fields
   const [artSlug, setArtSlug] = useState('');
@@ -474,6 +475,7 @@ export default function BelsaAdminPage() {
   // Article Handlers
   const handleOpenNewArticle = () => {
     setEditingArticleSlug(null);
+    setEditingArticleId(null);
     setArtSlug('');
     setArtCategory('Hydraulic Engineering');
     setArtAuthor('Tim Engineering BELSA');
@@ -486,13 +488,14 @@ export default function BelsaAdminPage() {
     setArtContentId('');
     setArtContentEn('');
     setArtTags('Silinder, Hidrolik, Standar');
-    setArtImageUrl('/images/prod_cylinder_clean.webp');
-    setArtImagePreview('/images/prod_cylinder_clean.webp');
+    setArtImageUrl('/images/belsa_og_logo.png');
+    setArtImagePreview('/images/belsa_og_logo.png');
     setIsArticleFormOpen(true);
   };
 
   const handleEditArticle = (art: ArticleItem) => {
     setEditingArticleSlug(art.slug);
+    setEditingArticleId(art.id);
     setArtSlug(art.slug);
     setArtCategory(art.category);
     setArtAuthor(art.author || 'Tim Engineering BELSA');
@@ -508,6 +511,7 @@ export default function BelsaAdminPage() {
     setArtImageUrl(art.image);
     setArtImagePreview(art.image);
     setIsArticleFormOpen(true);
+    window.scrollTo({ top: 300, behavior: 'smooth' });
   };
 
   const handleDeleteArticle = async (art: ArticleItem) => {
@@ -575,7 +579,10 @@ export default function BelsaAdminPage() {
 
         ctx.drawImage(img, 0, 0, width, height);
         const compressedBase64 = canvas.toDataURL('image/webp', 0.85);
+
+        // Instantly assign to preview AND artImageUrl so saving will never miss the new image
         setArtImagePreview(compressedBase64);
+        setArtImageUrl(compressedBase64);
 
         // Upload to Google Drive via /api/upload
         try {
@@ -584,17 +591,17 @@ export default function BelsaAdminPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               image: compressedBase64,
-              name: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+              fileName: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
             })
           });
           const upData = await upRes.json();
-          if (upData.success && upData.url) {
-            setArtImageUrl(upData.url);
-          } else {
-            setArtImageUrl(compressedBase64);
+          const driveDirectUrl = upData.url || upData.imageUrl || upData.driveUrl;
+          if (upData.success && driveDirectUrl) {
+            setArtImageUrl(driveDirectUrl);
+            setArtImagePreview(driveDirectUrl);
           }
         } catch {
-          setArtImageUrl(compressedBase64);
+          // Keep compressedBase64 as fallback
         } finally {
           setIsCompressingArtImg(false);
         }
@@ -607,6 +614,10 @@ export default function BelsaAdminPage() {
 
   const handleSaveArticle = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isCompressingArtImg) {
+      alert('Foto masih dalam proses unggah ke Google Drive. Tunggu beberapa detik lalu klik simpan kembali.');
+      return;
+    }
     if (!artTitleId.trim()) {
       alert('Judul artikel (Bahasa Indonesia) wajib diisi.');
       return;
@@ -623,7 +634,7 @@ export default function BelsaAdminPage() {
       .filter(Boolean);
 
     const articlePayload: ArticleItem = {
-      id: editingArticleSlug || `art_${Date.now()}`,
+      id: editingArticleId || editingArticleSlug || `art_${Date.now()}`,
       slug: finalSlug,
       category: artCategory.trim() || 'Teknik Industri',
       author: artAuthor.trim() || 'Tim Engineering BELSA',
@@ -641,7 +652,7 @@ export default function BelsaAdminPage() {
       },
       date: artDate || new Date().toISOString().slice(0, 10),
       readTime: artReadTime.trim() || '5 min baca',
-      image: artImageUrl || '/images/prod_cylinder_clean.webp',
+      image: artImageUrl || '/images/belsa_og_logo.png',
       tags: parsedTags.length > 0 ? parsedTags : ['Teknik'],
     };
 
@@ -2500,7 +2511,7 @@ export default function BelsaAdminPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={isSavingArticle}
+                    disabled={isSavingArticle || isCompressingArtImg}
                     style={{
                       padding: '11px 24px',
                       borderRadius: '10px',
@@ -2509,12 +2520,16 @@ export default function BelsaAdminPage() {
                       border: 'none',
                       fontWeight: 800,
                       fontSize: '0.92rem',
-                      cursor: isSavingArticle ? 'not-allowed' : 'pointer',
-                      opacity: isSavingArticle ? 0.7 : 1,
+                      cursor: (isSavingArticle || isCompressingArtImg) ? 'not-allowed' : 'pointer',
+                      opacity: (isSavingArticle || isCompressingArtImg) ? 0.7 : 1,
                       boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
                     }}
                   >
-                    {isSavingArticle ? 'Menyimpan...' : '💾 Simpan Artikel ke Google Sheets & Web'}
+                    {isCompressingArtImg
+                      ? '⏳ Mengunggah Gambar...'
+                      : isSavingArticle
+                      ? 'Menyimpan...'
+                      : '💾 Simpan Artikel ke Google Sheets & Web'}
                   </button>
                 </div>
               </form>

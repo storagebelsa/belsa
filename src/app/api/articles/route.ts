@@ -38,19 +38,36 @@ export async function GET() {
       const json = await res.json();
       const rows = Array.isArray(json) ? json : json.data || [];
       if (Array.isArray(rows) && rows.length > 0) {
-        sheetArticles = rows.map((r: any, idx: number) => ({
-          id: r.id || `art_${idx + 1}`,
-          slug: r.slug || `artikel-${idx + 1}`,
-          category: r.category || 'Teknik Industri',
-          author: r.author || 'Tim Engineering BELSA',
-          title: { id: r.titleId || r.title || 'Artikel Teknik', en: r.titleEn || r.title || 'Technical Article' },
-          summary: { id: r.summaryId || r.summary || '', en: r.summaryEn || r.summary || '' },
-          content: { id: r.contentId || r.content || '', en: r.contentEn || r.content || '' },
-          date: r.date || new Date().toISOString().slice(0, 10),
-          readTime: r.readTime || '5 min baca',
-          image: r.imageUrl || r.image || '/images/prod_cylinder_clean.webp',
-          tags: r.tags ? (typeof r.tags === 'string' ? r.tags.split(',').map((t: string) => t.trim()) : r.tags) : ['Teknik']
-        }));
+        sheetArticles = rows.map((r: any, idx: number) => {
+          const matchDefault = DEFAULT_ARTICLES.find(
+            (d) =>
+              d.id === r.id ||
+              d.slug === r.id ||
+              d.slug === r.slug ||
+              (d.title.id && d.title.id === r.titleId)
+          );
+
+          const resolvedSlug =
+            r.slug ||
+            r[''] ||
+            (matchDefault ? matchDefault.slug : (r.id && !String(r.id).startsWith('art_') ? r.id : `artikel-${idx + 1}`));
+
+          const resolvedId = r.id || (matchDefault ? matchDefault.id : `art_${idx + 1}`);
+
+          return {
+            id: resolvedId,
+            slug: resolvedSlug,
+            category: r.category || 'Teknik Industri',
+            author: r.author || 'Tim Engineering BELSA',
+            title: { id: r.titleId || r.title || 'Artikel Teknik', en: r.titleEn || r.title || 'Technical Article' },
+            summary: { id: r.summaryId || r.summary || '', en: r.summaryEn || r.summary || '' },
+            content: { id: r.contentId || r.content || '', en: r.contentEn || r.content || '' },
+            date: r.date ? (typeof r.date === 'string' && r.date.includes('T') ? r.date.slice(0, 10) : String(r.date).slice(0, 10)) : new Date().toISOString().slice(0, 10),
+            readTime: r.readTime || '5 min baca',
+            image: r.imageUrl || r.image || '/images/belsa_og_logo.png',
+            tags: r.tags ? (typeof r.tags === 'string' ? r.tags.split(',').map((t: string) => t.trim()) : r.tags) : ['Teknik']
+          };
+        });
       }
     } catch {
       // Ignore sheet fetch error
@@ -61,8 +78,17 @@ export async function GET() {
     // Map by slug or id: default -> sheet -> localOverrides
     const map = new Map<string, ArticleItem>();
     DEFAULT_ARTICLES.forEach((a) => map.set(a.slug, a));
-    sheetArticles.forEach((a) => map.set(a.slug, a));
-    localOverrides.forEach((a) => map.set(a.slug, a));
+    sheetArticles.forEach((a) => {
+      // Filter out dummy/test rows
+      if (a.title.id && a.title.id !== 'Test' && a.id !== 'test') {
+        map.set(a.slug, a);
+      }
+    });
+    localOverrides.forEach((a) => {
+      if (a.title.id && a.title.id !== 'Test' && a.id !== 'test') {
+        map.set(a.slug, a);
+      }
+    });
 
     const finalArticles = Array.from(map.values());
 
