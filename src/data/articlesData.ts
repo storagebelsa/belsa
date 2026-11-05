@@ -122,9 +122,9 @@ Where:
 
 Calculate your exact tube wall thickness and safety margin instantly using the [BELSA Barlow Formula Calculator](/calculator).`
     },
-    date: '2026-11-03',
+    date: '2026-11-02',
     readTime: '6 min baca',
-    image: '/images/facility_lathe_machinists.webp',
+    image: 'https://lh3.googleusercontent.com/d/1yZEz3Q1avpVWBHAc8ey3m71OZ1PtxbZ9',
     tags: ['Hidrolik', 'Rumus Barlow', 'Honed Tube', 'Kalkulasi Teknik']
   },
   {

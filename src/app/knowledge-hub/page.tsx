@@ -1,335 +1,116 @@
-'use client';
-
-import React, { useState, useMemo, useEffect } from 'react';
-import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageContext';
+import type { Metadata } from 'next';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
-import { formatProductImageUrl } from '@/lib/imageUtils';
+import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
+import KnowledgeHubClient from './KnowledgeHubClient';
 
-export default function KnowledgeHubPage() {
-  const { lang } = useLanguage();
-  const isId = lang === 'id';
+export const metadata: Metadata = {
+  title: 'Engineering Knowledge Hub | Panduan & Standar Teknis Silinder Industri BELSA',
+  description:
+    'Pusat referensi teknik industri: perhitungan kekuatan silinder, rumus Barlow tebal tabung honed tube ST52, standar mounting ISO 15552, dan panduan interchangeability silinder hidrolik & pneumatik.',
+  alternates: {
+    canonical: '/knowledge-hub',
+  },
+  openGraph: {
+    title: 'Engineering Knowledge Hub | BELSA Hydraulic & Pneumatic',
+    description:
+      'Pusat referensi teknik industri: perhitungan kekuatan silinder, rumus Barlow tebal tabung honed tube ST52, standar mounting ISO 15552, dan panduan praktis.',
+    url: 'https://belsa.id/knowledge-hub',
+    siteName: 'BELSA',
+    images: [
+      {
+        url: 'https://belsa.id/images/belsa_og_logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'BELSA Engineering Knowledge Hub',
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
+};
 
-  const [articles, setArticles] = useState<ArticleItem[]>(DEFAULT_ARTICLES);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTag, setSelectedTag] = useState<string>('all');
-
-  // Live fetch from /api/articles (merges default articles, Google Sheets articles, and admin overrides)
-  useEffect(() => {
-    fetch('/api/articles')
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          setArticles(json.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const categories = useMemo(() => {
-    const set = new Set<string>();
-    articles.forEach((a) => {
-      if (a.category) set.add(a.category);
+async function getArticles(): Promise<ArticleItem[]> {
+  try {
+    const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=get_articles`, {
+      next: { revalidate: 60 },
     });
-    return ['all', ...Array.from(set)];
-  }, [articles]);
+    const json = await res.json();
+    const rows = Array.isArray(json) ? json : json.data || [];
 
-  const filteredArticles = useMemo(() => {
-    return articles.filter((art) => {
-      const matchCat = selectedTag === 'all' || art.category === selectedTag;
-      const q = searchQuery.toLowerCase().trim();
-      const matchQuery =
-        !q ||
-        art.title[lang].toLowerCase().includes(q) ||
-        art.summary[lang].toLowerCase().includes(q) ||
-        art.category.toLowerCase().includes(q) ||
-        art.tags.some((t) => t.toLowerCase().includes(q));
-      return matchCat && matchQuery;
-    });
-  }, [articles, selectedTag, searchQuery, lang]);
+    if (Array.isArray(rows) && rows.length > 0) {
+      const map = new Map<string, ArticleItem>();
 
-  return (
-    <main style={{ padding: '50px 0 80px', background: '#FAFAFA' }}>
-      
-      {/* 1. Page Header matching BELSA standard */}
-      <section className="belsa-page-header">
-        <div className="belsa-container">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '14px' }}>
-            <span
-              style={{
-                background: '#FEF2F2',
-                color: 'var(--belsa-red)',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                padding: '4px 14px',
-                borderRadius: '999px',
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-              Engineering Knowledge Hub
-            </span>
-            <span
-              style={{
-                background: '#F1F5F9',
-                color: '#475569',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                padding: '4px 12px',
-                borderRadius: '999px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              {articles.length} Panduan Teknis
-            </span>
-          </div>
+      // Seed with DEFAULT_ARTICLES
+      DEFAULT_ARTICLES.forEach((a) => {
+        map.set(a.slug, a);
+      });
 
-          <h1 className="heading-hero" style={{ maxWidth: '920px', margin: '0 auto 16px', lineHeight: 1.25 }}>
-            {isId ? (
-              <>
-                Pusat Rekayasa & Panduan Teknis <span style={{ color: 'var(--belsa-red)' }}>Silinder, Selang & Valve</span>
-              </>
-            ) : (
-              <>
-                Industrial Engineering <span style={{ color: 'var(--belsa-red)' }}>Knowledge & Technical Guides</span>
-              </>
-            )}
-          </h1>
+      // Merge Google Sheets data
+      rows.forEach((r: any, idx: number) => {
+        if (!r.titleId || r.titleId === 'Test' || r.id === 'test') return;
 
-          <p className="subhead" style={{ maxWidth: '780px', margin: '0 auto' }}>
-            {isId
-              ? 'Kumpulan artikel standar manufaktur, formula kalkulasi teknik, solusi kebocoran, dan panduan interchangeability komponen otomatisasi pabrik.'
-              : 'Technical standards, ISO dimension breakdowns, Barlow pressure formulas, and preventive maintenance guides for factory machinery.'}
-          </p>
+        const matchDefault = DEFAULT_ARTICLES.find(
+          (d) =>
+            d.id === r.id ||
+            d.slug === r.id ||
+            d.slug === r.slug ||
+            d.title.id === r.titleId
+        );
 
-          {/* Search Bar */}
-          <div style={{ maxWidth: '540px', margin: '28px auto 0', position: 'relative' }}>
-            <input
-              type="text"
-              placeholder={isId ? 'Cari panduan teknis, standar ISO, atau kata kunci...' : 'Search guides, ISO standards, or keywords...'}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '13px 20px 13px 44px',
-                borderRadius: '12px',
-                border: '1.5px solid #CBD5E1',
-                background: '#FFFFFF',
-                color: '#0F172A',
-                fontSize: '0.95rem',
-                outline: 'none',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-              }}
-            />
-            <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', fontSize: '1rem' }}>
-              🔍
-            </span>
-          </div>
-        </div>
-      </section>
+        const resolvedSlug =
+          r.slug ||
+          r[''] ||
+          (matchDefault ? matchDefault.slug : r.id || `artikel-${idx + 1}`);
+        const resolvedId = r.id || (matchDefault ? matchDefault.id : `art_${idx + 1}`);
 
-      {/* 2. Category Filter Pills */}
-      <section style={{ padding: '0 0 32px 0' }}>
-        <div className="belsa-container" style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', padding: '0 20px' }}>
-          {categories.map((cat) => {
-            const isSelected = selectedTag === cat;
-            const label = cat === 'all' ? (isId ? 'Semua Kategori' : 'All Categories') : cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setSelectedTag(cat)}
-                style={{
-                  padding: '7px 18px',
-                  borderRadius: '999px',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  border: isSelected ? '1px solid var(--belsa-red)' : '1px solid #E2E8F0',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  background: isSelected ? 'var(--belsa-red)' : '#FFFFFF',
-                  color: isSelected ? '#FFFFFF' : '#475569',
-                  boxShadow: isSelected ? '0 4px 12px rgba(220, 38, 38, 0.2)' : '0 1px 2px rgba(0,0,0,0.02)',
-                }}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+        const item: ArticleItem = {
+          id: resolvedId,
+          slug: resolvedSlug,
+          category: r.category || (matchDefault ? matchDefault.category : 'Teknik Industri'),
+          author: r.author || (matchDefault ? matchDefault.author : 'Tim Engineering BELSA'),
+          title: {
+            id: r.titleId || r.title || (matchDefault ? matchDefault.title.id : ''),
+            en: r.titleEn || r.title || (matchDefault ? matchDefault.title.en : ''),
+          },
+          summary: {
+            id: r.summaryId || r.summary || (matchDefault ? matchDefault.summary.id : ''),
+            en: r.summaryEn || r.summary || (matchDefault ? matchDefault.summary.en : ''),
+          },
+          content: {
+            id: r.contentId || r.content || (matchDefault ? matchDefault.content.id : ''),
+            en: r.contentEn || r.content || (matchDefault ? matchDefault.content.en : ''),
+          },
+          date: r.date
+            ? typeof r.date === 'string' && r.date.includes('T')
+              ? r.date.slice(0, 10)
+              : String(r.date).slice(0, 10)
+            : matchDefault
+            ? matchDefault.date
+            : new Date().toISOString().slice(0, 10),
+          readTime: r.readTime || (matchDefault ? matchDefault.readTime : '5 min baca'),
+          image: r.imageUrl || r.image || (matchDefault ? matchDefault.image : '/images/belsa_og_logo.png'),
+          tags: r.tags
+            ? typeof r.tags === 'string'
+              ? r.tags.split(',').map((t: string) => t.trim())
+              : r.tags
+            : matchDefault
+            ? matchDefault.tags
+            : ['Teknik'],
+        };
 
-      {/* 3. Articles Grid */}
-      <section style={{ padding: '10px 0 60px' }}>
-        <div className="belsa-container" style={{ padding: '0 20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '28px' }}>
-            {filteredArticles.map((art) => (
-              <div
-                key={art.slug}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: '18px',
-                  border: '1px solid #E2E8F0',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                }}
-              >
-                {/* Thumbnail Image */}
-                <div style={{ position: 'relative', height: '200px', background: '#F8FAFC', borderBottom: '1px solid #F1F5F9', overflow: 'hidden' }}>
-                  <img
-                    src={formatProductImageUrl(art.image)}
-                    alt={art.title[lang]}
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (target.src.includes('googleusercontent.com/d/')) {
-                        const fId = target.src.split('/d/')[1]?.split('?')[0];
-                        if (fId) {
-                          target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
-                          return;
-                        }
-                      }
-                      target.src = '/images/belsa_og_logo.png';
-                    }}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', display: 'block' }}
-                  />
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '12px',
-                      left: '12px',
-                      background: 'rgba(15, 23, 42, 0.85)',
-                      color: '#FFFFFF',
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      padding: '4px 10px',
-                      borderRadius: '6px',
-                      backdropFilter: 'blur(4px)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.03em',
-                    }}
-                  >
-                    {art.category}
-                  </span>
-                </div>
+        map.set(resolvedSlug, item);
+      });
 
-                <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.8rem', color: '#64748B', marginBottom: '12px' }}>
-                    <span>📅 {art.date}</span>
-                    <span>•</span>
-                    <span>⏱️ {art.readTime}</span>
-                  </div>
+      return Array.from(map.values());
+    }
+  } catch {
+    // Fallback directly to DEFAULT_ARTICLES if Google Sheets fails or times out
+  }
 
-                  <h2 style={{ fontSize: '1.22rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.4, margin: '0 0 10px 0' }}>
-                    <Link
-                      href={`/knowledge-hub/${art.slug}`}
-                      style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}
-                    >
-                      {art.title[lang]}
-                    </Link>
-                  </h2>
+  return DEFAULT_ARTICLES;
+}
 
-                  <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, margin: '0 0 18px 0', flex: 1 }}>
-                    {art.summary[lang]}
-                  </p>
-
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
-                    {art.tags.slice(0, 3).map((t) => (
-                      <span key={t} style={{ fontSize: '0.72rem', color: '#64748B', background: '#F1F5F9', padding: '3px 9px', borderRadius: '4px', fontWeight: 500 }}>
-                        #{t}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Direct Link to Dedicated Slug Page (NO POPUP) */}
-                  <Link
-                    href={`/knowledge-hub/${art.slug}`}
-                    className="btn-belsa-primary"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      width: '100%',
-                      padding: '11px 16px',
-                      borderRadius: '10px',
-                      fontSize: '0.9rem',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    {isId ? 'Baca Panduan Lengkap' : 'Read Full Guide'} &rarr;
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredArticles.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748B', background: '#FFFFFF', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
-              <p style={{ fontSize: '1.05rem', margin: 0 }}>
-                {isId ? 'Tidak ada artikel yang cocok dengan pencarian Anda.' : 'No articles matched your search query.'}
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 4. Bottom Engineering Consultation Banner */}
-      <section style={{ padding: '0 0 40px' }}>
-        <div className="belsa-container" style={{ padding: '0 20px' }}>
-          <div
-            style={{
-              background: '#0F172A',
-              color: '#FFFFFF',
-              borderRadius: '20px',
-              padding: '40px 36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '24px',
-            }}
-          >
-            <div style={{ maxWidth: '640px' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', color: '#FDBA74', letterSpacing: '0.04em' }}>
-                {isId ? 'Dukungan Rekayasa & Fabrikasi' : 'Custom Engineering & Fabrication'}
-              </span>
-              <h3 style={{ fontSize: '1.75rem', fontWeight: 800, margin: '8px 0 10px', letterSpacing: '-0.02em' }}>
-                {isId ? 'Punya Spesifikasi atau Problem Mesin Khusus?' : 'Have Bespoke Technical Specifications?'}
-              </h3>
-              <p style={{ color: '#94A3B8', fontSize: '0.95rem', margin: 0, lineHeight: 1.6 }}>
-                {isId
-                  ? 'Tim teknis PT. Rafitama Millenial Wahyudi siap membantu perhitungan kapasitas silinder, pemilihan selang, dan pembuatan unit custom di workshop Tangerang.'
-                  : 'Our engineering workshop in Tangerang assists with custom hydraulic cylinder design, seal kit selection, and pressure line crimping.'}
-              </p>
-            </div>
-
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <Link href="/contact-us" className="btn-belsa-primary">
-                {isId ? 'Hubungi Tim Teknis' : 'Contact Engineering'} &rarr;
-              </Link>
-              <Link
-                href="/calculator"
-                className="btn-belsa-outline"
-                style={{ color: '#FFFFFF', borderColor: '#334155' }}
-              >
-                {isId ? 'Kalkulator Silinder' : 'Cylinder Calculator'}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  );
+export default async function KnowledgeHubPage() {
+  const articles = await getArticles();
+  return <KnowledgeHubClient initialArticles={articles} />;
 }
