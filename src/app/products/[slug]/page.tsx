@@ -156,6 +156,100 @@ function SeriesCardImage({
   );
 }
 
+interface FaqItem {
+  qId: string;
+  qEn: string;
+  aId: string;
+  aEn: string;
+}
+
+const CATEGORY_FAQ_MAP: Record<string, FaqItem[]> = {
+  'silinder-hidrolik-pneumatik': [
+    {
+      qId: 'Berapa kapasitas tekanan kerja silinder hidrolik dan pneumatik BELSA?',
+      qEn: 'What is the working pressure capacity of BELSA hydraulic and pneumatic cylinders?',
+      aId: 'Silinder pneumatik BELSA (standar ISO 15552 seperti seri BMB, BMC, ACI) bekerja pada tekanan hingga 10 Bar, sedangkan silinder hidrolik BELSA (seri BMG70, BMG140, BMG180, BMG210, BHS, BKP) tersedia untuk tekanan kerja 70 Bar hingga 350 Bar.',
+      aEn: 'BELSA pneumatic cylinders (ISO 15552 standard such as BMB, BMC, ACI series) operate up to 10 Bar, while BELSA hydraulic cylinders (BMG70, BMG140, BMG180, BMG210, BHS, BKP series) are built for working pressures from 70 Bar up to 350 Bar.',
+    },
+    {
+      qId: 'Apakah BELSA melayani fabrikasi silinder hidrolik custom sesuai drawing atau sample?',
+      qEn: 'Does BELSA manufacture custom hydraulic cylinders based on CAD drawings or samples?',
+      aId: 'Ya, workshop PT. Rafitama Millenial Wahyudi (BELSA) di Tangerang melayani fabrikasi silinder hidrolik dan pneumatik custom menggunakan Honed Tube ST52/STKM13C, Hard Chrome Rod f7, dan seal kit NOK/Parker/Hallite sesuai drawing CAD maupun sample fisik.',
+      aEn: 'Yes, our workshop at PT. Rafitama Millenial Wahyudi (BELSA) in Tangerang manufactures bespoke hydraulic and pneumatic cylinders utilizing honed tube ST52/STKM13C, hard chrome rod f7, and NOK/Parker/Hallite seal kits according to CAD drawings or physical samples.',
+    },
+    {
+      qId: 'Apakah silinder BELSA kompatibel menggantikan silinder brand SMC, Festo, atau Parker?',
+      qEn: 'Are BELSA cylinders interchangeable with SMC, Festo, or Parker cylinders?',
+      aId: 'Ya, silinder pneumatik profil BELSA mengikuti standar internasional ISO 15552 dengan dimensi mounting, pitch baut, dan ulir rod yang 100% interchangeable langsung dengan brand SMC CP96, Festo DNC/DSBC, dan Parker P1D.',
+      aEn: 'Yes, BELSA profile pneumatic cylinders strictly adhere to the international ISO 15552 standard, ensuring mounting dimensions, bolt pitches, and rod threads are 100% directly interchangeable with SMC CP96, Festo DNC/DSBC, and Parker P1D.',
+    },
+    {
+      qId: 'Berapa lama estimasi pengerjaan (lead time) untuk silinder hidrolik custom?',
+      qEn: 'What is the estimated manufacturing lead time for custom hydraulic cylinders?',
+      aId: 'Untuk silinder custom baru berkisar antara 7 hingga 21 hari kerja tergantung ketersediaan material dan kompleksitas mounting. Untuk kebutuhan perbaikan darurat (emergency plant breakdown) dan seal kit replacement, kami menyediakan layanan jalur cepat.',
+      aEn: 'Standard lead time for new custom cylinders ranges from 7 to 21 working days depending on raw material stock and mounting complexity. For emergency factory downtime or seal replacements, express fast-track services are available.',
+    },
+    {
+      qId: 'Apakah setiap silinder BELSA dilengkapi garansi dan sertifikat uji tekanan?',
+      qEn: 'Does every BELSA cylinder come with warranty and hydrostatic pressure test certificates?',
+      aId: 'Ya, setiap unit silinder BELSA melalui pengujian tekanan uji hidrostatik 1.5x tekanan kerja di test stand workshop kami dan disertifikasi sesuai standar manajemen mutu ISO 9001:2015 serta bergaransi resmi.',
+      aEn: 'Yes, every BELSA cylinder undergoes hydrostatic pressure testing up to 1.5x nominal working pressure on our workshop test stand, certified under ISO 9001:2015 quality management and backed by manufacturer warranty.',
+    },
+  ],
+  'selang-hidrolik-industri': [
+    {
+      qId: 'Tipe selang hidrolik apa saja yang dirakit di workshop BELSA?',
+      qEn: 'What hydraulic hose types are assembled at the BELSA workshop?',
+      aId: 'BELSA menyediakan perakitan dan crimping selang hidrolik bertekanan tinggi tipe 1SN, 2SN, 4SP, dan 4SH (seri BHH), flexible metal hose (BMH), rotary joint (BRJ), dan quick coupling ISO 7241 (BQC) lengkap dengan sertifikat uji hidrostatik.',
+      aEn: 'BELSA offers precision assembly and crimping for high-pressure hydraulic hoses including 1SN, 2SN, 4SP, and 4SH (BHH series), flexible metal hoses (BMH), rotary joints (BRJ), and ISO 7241 quick disconnect couplings (BQC) with hydrostatic test reports.',
+    },
+    {
+      qId: 'Berapa tekanan kerja maksimal (Working Pressure) selang hidrolik BELSA?',
+      qEn: 'What is the maximum working pressure of BELSA hydraulic hoses?',
+      aId: 'Tekanan kerja selang hidrolik BELSA berkisar dari 100 Bar hingga di atas 450 Bar tergantung diameter dalam (ID) dan konstruksi kawat (wire braid vs multi-spiral steel wire).',
+      aEn: 'Working pressure ratings range from 100 Bar up to over 450 Bar depending on inside diameter (ID) and reinforcement structure (wire braid vs multi-spiral wire).',
+    },
+    {
+      qId: 'Apakah bisa memesan rakitan selang hidrolik langsung jadi (Hose Assembly) sesuai kebutuhan panjang dan fitting?',
+      qEn: 'Can I order custom complete hose assemblies with specific lengths and end fittings?',
+      aId: 'Ya, kami melayani perakitan hose assembly custom dengan pilihan fitting BSP, NPT, JIC, Metric, maupun Flange SAE Code 61/62 yang di-crimping menggunakan mesin presisi bersertifikat.',
+      aEn: 'Yes, we provide ready-to-install custom hose assemblies with BSP, NPT, JIC, Metric, or Flange SAE Code 61/62 end fittings crimped using high-precision certified machinery.',
+    },
+    {
+      qId: 'Apakah selang hidrolik BELSA tahan terhadap oli panas dan cuaca luar ruangan?',
+      qEn: 'Are BELSA hydraulic hoses resistant to hot oil and outdoor weathering?',
+      aId: 'Selang hidrolik BELSA menggunakan karet sintetis tahan oli abrasi tinggi dan ozon, dengan temperatur kerja operasional -40°C hingga +100°C (tersedia tipe khusus hingga +135°C).',
+      aEn: 'BELSA hydraulic hoses feature abrasion- and ozone-resistant synthetic rubber covers with working temperatures of -40°C to +100°C (with high-temperature variants up to +135°C available).',
+    },
+  ],
+  'process-valve': [
+    {
+      qId: 'Jenis katup industri (process & hydraulic valve) apa saja yang tersedia di BELSA?',
+      qEn: 'What types of industrial process and hydraulic valves are supplied by BELSA?',
+      aId: 'BELSA menyediakan Directional Solenoid Valve Cetop/ISO (B4WE6, B4WE10), Modular Valve, Proportional Valve, Ball Valve, Butterfly Valve, dan Pneumatic Rotary Actuator untuk otomasi pabrik.',
+      aEn: 'BELSA supplies CETOP/ISO directional solenoid valves (B4WE6, B4WE10), modular sandwich valves, proportional valves, industrial ball valves, butterfly valves, and pneumatic rotary actuators.',
+    },
+    {
+      qId: 'Apakah solenoid valve hidrolik BELSA kompatibel dengan standar subplate CETOP / ISO 4401?',
+      qEn: 'Are BELSA hydraulic solenoid valves compatible with standard CETOP / ISO 4401 subplates?',
+      aId: 'Ya, Directional Valve BELSA seri B4WE6 mengikuti standar CETOP 03 (ISO 4401-03) dan B4WE10 mengikuti standar CETOP 05 (ISO 4401-05), sehingga dapat langsung menggantikan valve Yuken, Rexroth, atau Vickers.',
+      aEn: 'Yes, BELSA B4WE6 series valves conform to CETOP 03 (ISO 4401-03) and B4WE10 series conform to CETOP 05 (ISO 4401-05), making them direct plug-and-play replacements for Yuken, Rexroth, or Vickers valves.',
+    },
+    {
+      qId: 'Pilihan voltase kumparan (coil) apa saja yang tersedia untuk solenoid valve BELSA?',
+      qEn: 'What coil voltages are available for BELSA solenoid valves?',
+      aId: 'Kumparan solenoid valve BELSA tersedia dalam voltase DC 24V, AC 110V, dan AC 220V dengan proteksi IP65 dan lampu indikator LED.',
+      aEn: 'Solenoid coils are available in 24V DC, 110V AC, and 220V AC configurations featuring IP65 ingress protection and LED illumination plugs.',
+    },
+    {
+      qId: 'Apakah katup industri BELSA memiliki garansi resmi pabrik?',
+      qEn: 'Do BELSA industrial valves come with an official factory warranty?',
+      aId: 'Semua unit katup hidrolik dan process valve BELSA dijamin keasliannya dan dilengkapi garansi operasional pabrik terhadap cacat produksi.',
+      aEn: 'All BELSA hydraulic valves and process automation valves carry genuine manufacturer warranties covering against manufacturing defects.',
+    },
+  ],
+};
+
 export default function ProductCategoryPage({ params }: Props) {
   const { slug } = use(params);
   const { lang } = useLanguage();
@@ -168,6 +262,9 @@ export default function ProductCategoryPage({ params }: Props) {
 
   // Mobile popup state when clicking Specifications
   const [desktopModalItem, setDesktopModalItem] = useState<BelsaProductSeries | null>(null);
+
+  // Interactive FAQ Accordion state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const handleSpecClick = (e: React.MouseEvent, item: BelsaProductSeries) => {
     if (typeof window !== 'undefined' && window.innerWidth <= 991) {
@@ -817,6 +914,129 @@ export default function ProductCategoryPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* FAQ Accordion Section for Rich Snippets & Engineering Clarity */}
+      {(() => {
+        const faqs = CATEGORY_FAQ_MAP[slug] || [];
+        if (faqs.length === 0) return null;
+        return (
+          <section style={{ padding: '0 0 90px 0', background: '#FAFAFA' }}>
+            <div className="container" style={{ maxWidth: '980px', margin: '0 auto', padding: '0 20px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
+                    padding: '6px 14px',
+                    borderRadius: '100px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    color: '#0F172A',
+                    marginBottom: '14px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#C2410C' }}></span>
+                  {isId ? 'Pertanyaan Teknis & Pengadaan' : 'Technical & Procurement FAQ'}
+                </div>
+                <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: 0 }}>
+                  {isId ? `FAQ Teknis ${productItem.title}` : `Technical FAQ: ${productItem.title}`}
+                </h2>
+                <p style={{ color: '#64748B', fontSize: '0.94rem', margin: '8px 0 0 0' }}>
+                  {isId
+                    ? 'Informasi seputar standar mutu, kompatibilitas interchange, dan fabrikasi workshop BELSA.'
+                    : 'Details on manufacturing quality standards, brand interchangeability, and workshop turnaround.'}
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {faqs.map((faq, index) => {
+                  const isOpen = openFaqIndex === index;
+                  const question = isId ? faq.qId : faq.qEn;
+                  const answer = isId ? faq.aId : faq.aEn;
+
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        border: isOpen ? '1px solid #FDBA74' : '1px solid #E2E8F0',
+                        borderRadius: '14px',
+                        background: '#FFFFFF',
+                        overflow: 'hidden',
+                        transition: 'all 0.25s ease',
+                        boxShadow: isOpen ? '0 8px 24px -4px rgba(194, 65, 12, 0.08)' : '0 2px 4px rgba(0,0,0,0.02)',
+                      }}
+                    >
+                      <button
+                        onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                        style={{
+                          width: '100%',
+                          padding: '20px 24px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          gap: '16px',
+                        }}
+                        aria-expanded={isOpen}
+                      >
+                        <span
+                          style={{
+                            fontSize: '1.02rem',
+                            fontWeight: 700,
+                            color: isOpen ? '#C2410C' : '#0F172A',
+                            lineHeight: 1.45,
+                          }}
+                        >
+                          {question}
+                        </span>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: isOpen ? '#FFF1EC' : '#F1F5F9',
+                            color: isOpen ? '#C2410C' : '#64748B',
+                            fontSize: '1rem',
+                            fontWeight: 700,
+                            flexShrink: 0,
+                            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          &#9662;
+                        </span>
+                      </button>
+                      {isOpen && (
+                        <div
+                          style={{
+                            padding: '0 24px 22px 24px',
+                            color: '#475569',
+                            fontSize: '0.94rem',
+                            lineHeight: 1.7,
+                            borderTop: '1px solid #F8FAFC',
+                          }}
+                        >
+                          {answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* Mobile Popup Modal for Specifications / Catalogue Feature */}
       {desktopModalItem && (

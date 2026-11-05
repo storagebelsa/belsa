@@ -8,6 +8,7 @@ export const translations = {
       projects: 'Proyek',
       catalogue: 'Katalog',
       calculator: 'Kalkulator',
+      knowledgeHub: 'Knowledge Hub',
       contactUs: 'Kontak Kami',
     },
     // Hero
@@ -344,6 +345,7 @@ export const translations = {
       projects: 'Projects',
       catalogue: 'Catalogue',
       calculator: 'Calculator',
+      knowledgeHub: 'Knowledge Hub',
       contactUs: 'Contact Us',
     },
     // Hero

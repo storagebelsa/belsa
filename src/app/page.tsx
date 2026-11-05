@@ -217,6 +217,83 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Factory Credentials, Precision CNC Machining & National Industrial Coverage */}
+      <section className="belsa-section" style={{ background: '#F8FAFC', borderTop: '1px solid #E2E8F0' }}>
+        <div className="belsa-container">
+          <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 40px' }} className="belsa-reveal">
+            <span className="belsa-page-eyebrow">
+              {lang === 'id' ? 'Kapasitas Manufaktur & Jangkauan Nasional' : 'Manufacturing Capacity & National Industrial Reach'}
+            </span>
+            <h2 className="heading-section" style={{ marginBottom: '14px' }}>
+              {lang === 'id' ? (
+                <>
+                  Pabrik & Workshop <span style={{ color: 'var(--belsa-red)' }}>Silinder Hidrolik Pneumatik</span> di Indonesia
+                </>
+              ) : (
+                <>
+                  Precision <span style={{ color: 'var(--belsa-red)' }}>Hydraulic & Pneumatic Cylinder</span> Workshop in Indonesia
+                </>
+              )}
+            </h2>
+            <p className="subhead">
+              {lang === 'id'
+                ? 'Didukung fasilitas permesinan CNC Lathe, Milling, Honing Tube ST52 berkapasitas besar, dan Pressure Test Station hingga 350 Bar. PT. Rafitama Millenial Wahyudi melayani kebutuhan OEM, fabrikasi custom per drawing, overhaul, dan penggantian komponen hidrolik di kawasan industri utama seluruh Indonesia.'
+                : 'Equipped with CNC turning, milling, high-precision ST52 tube honing, and 350 Bar hydrostatic pressure test stations. Delivering standard ISO cylinders, bespoke hydraulic fabrication, and plant overhaul services across Indonesia.'}
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '12px' }}>
+            <div className="belsa-card belsa-reveal" style={{ padding: '24px' }}>
+              <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>⚙️</div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--belsa-dark)', marginBottom: '8px' }}>
+                {lang === 'id' ? 'Bore & Stroke Kapasitas Besar' : 'Heavy-Duty Bore & Stroke'}
+              </h4>
+              <p style={{ fontSize: '0.88rem', color: 'var(--belsa-gray)', margin: 0, lineHeight: 1.6 }}>
+                {lang === 'id'
+                  ? 'Kemampuan fabrikasi silinder bore Ø20 mm hingga Ø400 mm dengan panjang langkah (stroke) hingga 6.000 mm untuk industri berat, pertambangan, dan press manufaktur.'
+                  : 'Machining capabilities from Ø20 mm up to Ø400 mm bore with strokes reaching 6,000 mm for heavy-duty press and mobile applications.'}
+              </p>
+            </div>
+
+            <div className="belsa-card belsa-reveal belsa-stagger-1" style={{ padding: '24px' }}>
+              <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>🛡️</div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--belsa-dark)', marginBottom: '8px' }}>
+                {lang === 'id' ? 'Standar Mutu ISO 9001:2015' : 'ISO 9001:2015 Quality Tested'}
+              </h4>
+              <p style={{ fontSize: '0.88rem', color: 'var(--belsa-gray)', margin: 0, lineHeight: 1.6 }}>
+                {lang === 'id'
+                  ? 'Setiap silinder melalui pengujian tekanan uji hidrostatik 1.5x tekanan kerja sebelum serah terima, lengkap dengan laporan inspeksi dimensi dan sertifikat uji pabrik.'
+                  : 'Every cylinder undergoes rigorous 1.5x working pressure hydrostatic testing with dimensional inspection reports and factory test certificates.'}
+              </p>
+            </div>
+
+            <div className="belsa-card belsa-reveal belsa-stagger-2" style={{ padding: '24px' }}>
+              <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>⚡</div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--belsa-dark)', marginBottom: '8px' }}>
+                {lang === 'id' ? 'Respons Cepat & Emergency Breakdown' : 'Rapid Turnaround & Breakdown Support'}
+              </h4>
+              <p style={{ fontSize: '0.88rem', color: 'var(--belsa-gray)', margin: 0, lineHeight: 1.6 }}>
+                {lang === 'id'
+                  ? 'Dukungan fabrikasi cepat dan overhaul darurat saat mesin pabrik Anda mati (downtime). Stok material Honed Tube dan Hard Chrome Rod selalu tersedia di gudang kami.'
+                  : 'Fast-track fabrication and emergency repair service to minimize plant downtime. Ready stock of ST52 honed tubes and induction-hardened chrome rods.'}
+              </p>
+            </div>
+
+            <div className="belsa-card belsa-reveal belsa-stagger-3" style={{ padding: '24px' }}>
+              <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>📍</div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--belsa-dark)', marginBottom: '8px' }}>
+                {lang === 'id' ? 'Pengiriman & Support Nasional' : 'National Industrial Coverage'}
+              </h4>
+              <p style={{ fontSize: '0.88rem', color: 'var(--belsa-gray)', margin: 0, lineHeight: 1.6 }}>
+                {lang === 'id'
+                  ? 'Pengiriman harian ke kawasan industri Jabodetabek, Cikarang, Karawang, Cilegon, Bandung, Semarang, Surabaya, Medan, Balikpapan, dan Batam.'
+                  : 'Daily logistics and on-site engineering consultations across major industrial corridors in Greater Jakarta, West Java, East Java, and outer islands.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

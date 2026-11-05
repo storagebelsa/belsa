@@ -22,11 +22,23 @@ const CATEGORY_FAQ: Record<string, { q: string; a: string }[]> = {
   'silinder-hidrolik-pneumatik': [
     {
       q: 'Berapa kapasitas tekanan kerja silinder hidrolik dan pneumatik BELSA?',
-      a: 'Silinder pneumatik BELSA (standar ISO 15552 seperti seri BMB dan BMC) bekerja pada tekanan hingga 10 Bar, sedangkan silinder hidrolik BELSA (seri BMG70, BMG140, BMG180, BMG210, BHS, BKP) tersedia untuk tekanan kerja 70 Bar hingga 300 Bar.',
+      a: 'Silinder pneumatik BELSA (standar ISO 15552 seperti seri BMB, BMC, ACI) bekerja pada tekanan hingga 10 Bar, sedangkan silinder hidrolik BELSA (seri BMG70, BMG140, BMG180, BMG210, BHS, BKP) tersedia untuk tekanan kerja 70 Bar hingga 350 Bar.',
     },
     {
       q: 'Apakah BELSA melayani fabrikasi silinder hidrolik custom sesuai drawing atau sample?',
-      a: 'Ya, workshop PT. Rafitama Millenial Wahyudi (BELSA) di Tangerang melayani fabrikasi silinder hidrolik dan pneumatik custom menggunakan Honed Tube ST52/STKM13C, Hard Chrome Rod, dan seal kit NOK/Parker/Hallite sesuai drawing CAD maupun sample fisik.',
+      a: 'Ya, workshop PT. Rafitama Millenial Wahyudi (BELSA) di Tangerang melayani fabrikasi silinder hidrolik dan pneumatik custom menggunakan Honed Tube ST52/STKM13C, Hard Chrome Rod f7, dan seal kit NOK/Parker/Hallite sesuai drawing CAD maupun sample fisik.',
+    },
+    {
+      q: 'Apakah silinder BELSA kompatibel menggantikan silinder brand SMC, Festo, atau Parker?',
+      a: 'Ya, silinder pneumatik profil BELSA mengikuti standar internasional ISO 15552 dengan dimensi mounting, pitch baut, dan ulir rod yang 100% interchangeable langsung dengan brand SMC CP96, Festo DNC/DSBC, dan Parker P1D.',
+    },
+    {
+      q: 'Berapa lama estimasi pengerjaan (lead time) untuk silinder hidrolik custom?',
+      a: 'Untuk silinder custom baru berkisar antara 7 hingga 21 hari kerja tergantung ketersediaan material dan kompleksitas mounting. Untuk kebutuhan perbaikan darurat (emergency plant breakdown) dan seal kit replacement, kami menyediakan layanan jalur cepat.',
+    },
+    {
+      q: 'Apakah setiap silinder BELSA dilengkapi garansi dan sertifikat uji tekanan?',
+      a: 'Ya, setiap unit silinder BELSA melalui pengujian tekanan uji hidrostatik 1.5x tekanan kerja di test stand workshop kami dan disertifikasi sesuai standar manajemen mutu ISO 9001:2015 serta bergaransi resmi.',
     },
   ],
   'selang-hidrolik-industri': [
@@ -34,11 +46,35 @@ const CATEGORY_FAQ: Record<string, { q: string; a: string }[]> = {
       q: 'Tipe selang hidrolik apa saja yang dirakit di workshop BELSA?',
       a: 'BELSA menyediakan perakitan dan crimping selang hidrolik bertekanan tinggi tipe 1SN, 2SN, 4SP, dan 4SH (seri BHH), flexible metal hose (BMH), rotary joint (BRJ), dan quick coupling ISO 7241 (BQC) lengkap dengan sertifikat uji hidrostatik.',
     },
+    {
+      q: 'Berapa tekanan kerja maksimal (Working Pressure) selang hidrolik BELSA?',
+      a: 'Tekanan kerja selang hidrolik BELSA berkisar dari 100 Bar hingga di atas 450 Bar tergantung diameter dalam (ID) dan konstruksi kawat (wire braid vs multi-spiral steel wire).',
+    },
+    {
+      q: 'Apakah bisa memesan rakitan selang hidrolik langsung jadi (Hose Assembly) sesuai kebutuhan panjang dan fitting?',
+      a: 'Ya, kami melayani perakitan hose assembly custom dengan pilihan fitting BSP, NPT, JIC, Metric, maupun Flange SAE Code 61/62 yang di-crimping menggunakan mesin presisi bersertifikat.',
+    },
+    {
+      q: 'Apakah selang hidrolik BELSA tahan terhadap oli panas dan cuaca luar ruangan?',
+      a: 'Selang hidrolik BELSA menggunakan karet sintetis tahan oli abrasi tinggi dan ozon, dengan temperatur kerja operasional -40°C hingga +100°C (tersedia tipe khusus hingga +135°C).',
+    },
   ],
   'process-valve': [
     {
       q: 'Jenis katup industri (process & hydraulic valve) apa saja yang tersedia di BELSA?',
       a: 'BELSA menyediakan Directional Solenoid Valve Cetop/ISO (B4WE6, B4WE10), Modular Valve, Proportional Valve, Ball Valve, Butterfly Valve, dan Pneumatic Rotary Actuator untuk otomasi pabrik.',
+    },
+    {
+      q: 'Apakah solenoid valve hidrolik BELSA kompatibel dengan standar subplate CETOP / ISO 4401?',
+      a: 'Ya, Directional Valve BELSA seri B4WE6 mengikuti standar CETOP 03 (ISO 4401-03) dan B4WE10 mengikuti standar CETOP 05 (ISO 4401-05), sehingga dapat langsung menggantikan valve Yuken, Rexroth, atau Vickers.',
+    },
+    {
+      q: 'Pilihan voltase kumparan (coil) apa saja yang tersedia untuk solenoid valve BELSA?',
+      a: 'Kumparan solenoid valve BELSA tersedia dalam voltase DC 24V, AC 110V, dan AC 220V dengan proteksi IP65 dan lampu indikator LED.',
+    },
+    {
+      q: 'Apakah katup industri BELSA memiliki garansi resmi pabrik?',
+      a: 'Semua unit katup hidrolik dan process valve BELSA dijamin keasliannya dan dilengkapi garansi operasional pabrik terhadap cacat produksi.',
     },
   ],
 };
