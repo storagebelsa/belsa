@@ -10,6 +10,7 @@ import {
   BelsaProductSeries,
   BELSA_CATALOGUE_FULL
 } from '@/data/belsaCatalogueFull';
+import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
 import Link from 'next/link';
 
 export default function BelsaAdminPage() {
@@ -17,8 +18,32 @@ export default function BelsaAdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinError, setPinError] = useState('');
 
-  // Tab: 'editor' | 'list'
-  const [activeTab, setActiveTab] = useState<'editor' | 'list'>('list');
+  // Tab: 'editor' | 'list' | 'articles'
+  const [activeTab, setActiveTab] = useState<'editor' | 'list' | 'articles'>('list');
+
+  // Articles Management State
+  const [articlesList, setArticlesList] = useState<ArticleItem[]>([]);
+  const [articleSearch, setArticleSearch] = useState('');
+  const [isArticleFormOpen, setIsArticleFormOpen] = useState(false);
+  const [editingArticleSlug, setEditingArticleSlug] = useState<string | null>(null);
+
+  // Article Form Fields
+  const [artSlug, setArtSlug] = useState('');
+  const [artCategory, setArtCategory] = useState('Hydraulic Engineering');
+  const [artAuthor, setArtAuthor] = useState('Tim Engineering BELSA');
+  const [artDate, setArtDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [artReadTime, setArtReadTime] = useState('5 min baca');
+  const [artTitleId, setArtTitleId] = useState('');
+  const [artTitleEn, setArtTitleEn] = useState('');
+  const [artSummaryId, setArtSummaryId] = useState('');
+  const [artSummaryEn, setArtSummaryEn] = useState('');
+  const [artContentId, setArtContentId] = useState('');
+  const [artContentEn, setArtContentEn] = useState('');
+  const [artTags, setArtTags] = useState('Silinder, Hidrolik, Standar');
+  const [artImageUrl, setArtImageUrl] = useState('/images/prod_cylinder_clean.webp');
+  const [artImagePreview, setArtImagePreview] = useState('/images/prod_cylinder_clean.webp');
+  const [isSavingArticle, setIsSavingArticle] = useState(false);
+  const [isCompressingArtImg, setIsCompressingArtImg] = useState(false);
 
   // Editing state: if non-null, admin is editing an existing product
   const [editingProduct, setEditingProduct] = useState<BelsaProductSeries | null>(null);
@@ -170,9 +195,25 @@ export default function BelsaAdminPage() {
     }
   };
 
+  // Fetch all active articles from /api/articles
+  const fetchArticlesData = async () => {
+    try {
+      const res = await fetch('/api/articles');
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        setArticlesList(json.data);
+      } else {
+        setArticlesList(DEFAULT_ARTICLES);
+      }
+    } catch {
+      setArticlesList(DEFAULT_ARTICLES);
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchCatalogueData();
+      fetchArticlesData();
     }
   }, [isAuthenticated]);
 
@@ -429,6 +470,223 @@ export default function BelsaAdminPage() {
       alert(`Error: ${err.message || err}`);
     }
   };
+
+  // Article Handlers
+  const handleOpenNewArticle = () => {
+    setEditingArticleSlug(null);
+    setArtSlug('');
+    setArtCategory('Hydraulic Engineering');
+    setArtAuthor('Tim Engineering BELSA');
+    setArtDate(new Date().toISOString().slice(0, 10));
+    setArtReadTime('5 min baca');
+    setArtTitleId('');
+    setArtTitleEn('');
+    setArtSummaryId('');
+    setArtSummaryEn('');
+    setArtContentId('');
+    setArtContentEn('');
+    setArtTags('Silinder, Hidrolik, Standar');
+    setArtImageUrl('/images/prod_cylinder_clean.webp');
+    setArtImagePreview('/images/prod_cylinder_clean.webp');
+    setIsArticleFormOpen(true);
+  };
+
+  const handleEditArticle = (art: ArticleItem) => {
+    setEditingArticleSlug(art.slug);
+    setArtSlug(art.slug);
+    setArtCategory(art.category);
+    setArtAuthor(art.author || 'Tim Engineering BELSA');
+    setArtDate(art.date);
+    setArtReadTime(art.readTime);
+    setArtTitleId(art.title.id);
+    setArtTitleEn(art.title.en);
+    setArtSummaryId(art.summary.id);
+    setArtSummaryEn(art.summary.en);
+    setArtContentId(art.content.id);
+    setArtContentEn(art.content.en);
+    setArtTags(art.tags.join(', '));
+    setArtImageUrl(art.image);
+    setArtImagePreview(art.image);
+    setIsArticleFormOpen(true);
+  };
+
+  const handleDeleteArticle = async (art: ArticleItem) => {
+    const confirmDel = window.confirm(
+      `HAPUS PANDUAN ARTIKEL:\n\nApakah Anda yakin ingin menghapus artikel "${art.title.id}"?\nArtikel ini akan dihapus dari web dan Google Sheets.`
+    );
+    if (!confirmDel) return;
+
+    try {
+      const res = await fetch('/api/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', slug: art.slug })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Artikel berhasil dihapus.');
+        await fetchArticlesData();
+      } else {
+        alert(`Gagal menghapus: ${data.message || data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Error saat menghapus artikel: ${err.message || err}`);
+    }
+  };
+
+  const handleArtImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('File harus berupa gambar (JPG, PNG, WebP).');
+      return;
+    }
+
+    setIsCompressingArtImg(true);
+    try {
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+
+      img.onload = async () => {
+        URL.revokeObjectURL(objectUrl);
+        const maxDim = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          setIsCompressingArtImg(false);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedBase64 = canvas.toDataURL('image/webp', 0.85);
+        setArtImagePreview(compressedBase64);
+
+        // Upload to Google Drive via /api/upload
+        try {
+          const upRes = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              image: compressedBase64,
+              name: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+            })
+          });
+          const upData = await upRes.json();
+          if (upData.success && upData.url) {
+            setArtImageUrl(upData.url);
+          } else {
+            setArtImageUrl(compressedBase64);
+          }
+        } catch {
+          setArtImageUrl(compressedBase64);
+        } finally {
+          setIsCompressingArtImg(false);
+        }
+      };
+      img.src = objectUrl;
+    } catch {
+      setIsCompressingArtImg(false);
+    }
+  };
+
+  const handleSaveArticle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!artTitleId.trim()) {
+      alert('Judul artikel (Bahasa Indonesia) wajib diisi.');
+      return;
+    }
+
+    const finalSlug = (artSlug.trim() || artTitleId.trim())
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    const parsedTags = artTags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    const articlePayload: ArticleItem = {
+      id: editingArticleSlug || `art_${Date.now()}`,
+      slug: finalSlug,
+      category: artCategory.trim() || 'Teknik Industri',
+      author: artAuthor.trim() || 'Tim Engineering BELSA',
+      title: {
+        id: artTitleId.trim(),
+        en: artTitleEn.trim() || artTitleId.trim(),
+      },
+      summary: {
+        id: artSummaryId.trim(),
+        en: artSummaryEn.trim() || artSummaryId.trim(),
+      },
+      content: {
+        id: artContentId.trim(),
+        en: artContentEn.trim() || artContentId.trim(),
+      },
+      date: artDate || new Date().toISOString().slice(0, 10),
+      readTime: artReadTime.trim() || '5 min baca',
+      image: artImageUrl || '/images/prod_cylinder_clean.webp',
+      tags: parsedTags.length > 0 ? parsedTags : ['Teknik'],
+    };
+
+    setIsSavingArticle(true);
+    try {
+      const res = await fetch('/api/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'save',
+          article: articlePayload
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsArticleFormOpen(false);
+        await fetchArticlesData();
+        setFeedbackModal({
+          isOpen: true,
+          type: 'success',
+          title: editingArticleSlug ? 'Artikel Berhasil Diperbarui' : 'Artikel Baru Berhasil Diterbitkan',
+          message: `Artikel "${articlePayload.title.id}" telah disimpan dan langsung aktif di /knowledge-hub/${articlePayload.slug}.`
+        });
+      } else {
+        alert(`Gagal menyimpan artikel: ${data.message || data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Error saat menyimpan artikel: ${err.message || err}`);
+    } finally {
+      setIsSavingArticle(false);
+    }
+  };
+
+  const filteredArticlesAdmin = useMemo(() => {
+    const q = articleSearch.toLowerCase().trim();
+    if (!q) return articlesList;
+    return articlesList.filter(
+      (a) =>
+        a.title.id.toLowerCase().includes(q) ||
+        a.title.en.toLowerCase().includes(q) ||
+        a.category.toLowerCase().includes(q) ||
+        a.slug.toLowerCase().includes(q) ||
+        a.tags.some((t) => t.toLowerCase().includes(q))
+    );
+  }, [articlesList, articleSearch]);
 
   // Block management
   const addBlock = (type: 'table' | 'chips' | 'stroke_matrix') => {
@@ -846,6 +1104,27 @@ export default function BelsaAdminPage() {
           >
             <span>{editingProduct ? '✏️' : '➕'}</span>
             <span>{editingProduct ? `Edit Seri: ${editingProduct.code}` : 'Tambah Produk Baru'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('articles')}
+            style={{
+              padding: '12px 22px',
+              borderRadius: '12px',
+              background: activeTab === 'articles' ? '#dc2626' : '#ffffff',
+              color: activeTab === 'articles' ? '#ffffff' : '#475569',
+              fontWeight: 800,
+              fontSize: '0.92rem',
+              border: activeTab === 'articles' ? 'none' : '1px solid #e2e8f0',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: activeTab === 'articles' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none'
+            }}
+          >
+            <span>📝</span> Kelola Artikel Knowledge Hub ({articlesList.length})
           </button>
         </div>
 
@@ -1753,6 +2032,645 @@ export default function BelsaAdminPage() {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* TAB 3: KNOWLEDGE HUB ARTICLES MANAGER                                      */}
+        {/* ========================================================================= */}
+        {activeTab === 'articles' && (
+          <div>
+            {/* Header / Subhead with Action Button */}
+            <div style={{
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '24px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '16px',
+              boxShadow: '0 4px 15px -3px rgba(0,0,0,0.03)'
+            }}>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 4px 0', color: '#0f172a' }}>
+                  Manajemen Artikel Knowledge Hub
+                </h3>
+                <p style={{ margin: 0, fontSize: '0.86rem', color: '#64748b' }}>
+                  Kelola seluruh artikel panduan teknis rekayasa industri di <code>/knowledge-hub</code> ({articlesList.length} Artikel Aktif)
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <Link
+                  href="/knowledge-hub"
+                  target="_blank"
+                  style={{
+                    padding: '10px 18px',
+                    borderRadius: '10px',
+                    background: '#f1f5f9',
+                    color: '#0f172a',
+                    fontWeight: 700,
+                    fontSize: '0.86rem',
+                    textDecoration: 'none',
+                    border: '1px solid #e2e8f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span>👁️</span> Buka /knowledge-hub ↗
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleOpenNewArticle}
+                  style={{
+                    padding: '10px 18px',
+                    borderRadius: '10px',
+                    background: '#dc2626',
+                    color: '#ffffff',
+                    fontWeight: 800,
+                    fontSize: '0.88rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+                  }}
+                >
+                  <span>➕</span> Tulis Artikel Baru
+                </button>
+              </div>
+            </div>
+
+            {/* If Article Form is Open */}
+            {isArticleFormOpen && (
+              <form onSubmit={handleSaveArticle} style={{
+                background: '#ffffff',
+                border: '1.5px solid #fca5a5',
+                borderRadius: '18px',
+                padding: '28px',
+                marginBottom: '28px',
+                boxShadow: '0 10px 25px -5px rgba(220,38,38,0.06)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '14px' }}>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>
+                      {editingArticleSlug ? `✏️ Edit Artikel: ${artTitleId || editingArticleSlug}` : '➕ Tulis Artikel / Panduan Teknis Baru'}
+                    </h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: '#64748b' }}>
+                      Data tersimpan langsung ke Google Sheets (tab Articles) dan terpublikasi ke web <code>/knowledge-hub/[slug]</code>.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsArticleFormOpen(false)}
+                    style={{
+                      background: '#f1f5f9',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '6px 14px',
+                      color: '#64748b',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Batal
+                  </button>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px', marginBottom: '18px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Kategori Artikel *
+                    </label>
+                    <input
+                      type="text"
+                      list="categorySuggestions"
+                      value={artCategory}
+                      onChange={(e) => setArtCategory(e.target.value)}
+                      placeholder="Contoh: Hydraulic Engineering"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                      }}
+                      required
+                    />
+                    <datalist id="categorySuggestions">
+                      <option value="Pneumatic Cylinder" />
+                      <option value="Hydraulic Engineering" />
+                      <option value="Seal Kit & Materials" />
+                      <option value="Troubleshooting & Maintenance" />
+                      <option value="Hose & Fittings" />
+                      <option value="Process Valve" />
+                    </datalist>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Slug URL * (Contoh: <code>rumus-pompa-hidrolik</code>)
+                    </label>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <input
+                        type="text"
+                        value={artSlug}
+                        onChange={(e) => setArtSlug(e.target.value)}
+                        placeholder="slug-artikel"
+                        style={{
+                          flex: 1,
+                          padding: '10px 14px',
+                          borderRadius: '10px',
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.9rem',
+                          outline: 'none',
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (artTitleId) {
+                            setArtSlug(artTitleId.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+                          }
+                        }}
+                        style={{
+                          padding: '0 12px',
+                          borderRadius: '10px',
+                          background: '#f1f5f9',
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.8rem',
+                          fontWeight: 700,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Auto Slug
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Estimasi Waktu Baca
+                    </label>
+                    <input
+                      type="text"
+                      value={artReadTime}
+                      onChange={(e) => setArtReadTime(e.target.value)}
+                      placeholder="Contoh: 5 min baca"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Tanggal Publikasi
+                    </label>
+                    <input
+                      type="date"
+                      value={artDate}
+                      onChange={(e) => setArtDate(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Titles */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px', marginBottom: '18px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Judul Artikel (Bahasa Indonesia) *
+                    </label>
+                    <input
+                      type="text"
+                      value={artTitleId}
+                      onChange={(e) => setArtTitleId(e.target.value)}
+                      placeholder="Contoh: Panduan Memilih Pompa Hidrolik Industri"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        outline: 'none',
+                      }}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Judul Artikel (English)
+                    </label>
+                    <input
+                      type="text"
+                      value={artTitleEn}
+                      onChange={(e) => setArtTitleEn(e.target.value)}
+                      placeholder="Example: Guide to Selecting Industrial Hydraulic Pumps"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        outline: 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Summaries */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px', marginBottom: '18px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Ringkasan Singkat (Bahasa Indonesia)
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={artSummaryId}
+                      onChange={(e) => setArtSummaryId(e.target.value)}
+                      placeholder="Ringkasan 1-2 kalimat untuk kartu artikel dan cuplikan Google SEO..."
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.88rem',
+                        outline: 'none',
+                        resize: 'vertical'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Ringkasan Singkat (English)
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={artSummaryEn}
+                      onChange={(e) => setArtSummaryEn(e.target.value)}
+                      placeholder="Brief 1-2 sentence excerpt for card overview and SEO description..."
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.88rem',
+                        outline: 'none',
+                        resize: 'vertical'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Markdown Content Fields */}
+                <div style={{ marginBottom: '18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
+                    <label style={{ fontSize: '0.84rem', fontWeight: 700, color: '#334155' }}>
+                      Isi Artikel Lengkap (Bahasa Indonesia)
+                    </label>
+                    <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                      Format: <code>### Subjudul</code> | <code>1. Poin</code> | <code>- List</code> | <code>**tebal**</code> | <code>[Link](/url)</code> | ```rumus```
+                    </span>
+                  </div>
+                  <textarea
+                    rows={8}
+                    value={artContentId}
+                    onChange={(e) => setArtContentId(e.target.value)}
+                    placeholder="Tulis artikel teknis lengkap di sini..."
+                    style={{
+                      width: '100%',
+                      padding: '12px 14px',
+                      borderRadius: '10px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.9rem',
+                      fontFamily: 'monospace',
+                      lineHeight: 1.6,
+                      outline: 'none',
+                      resize: 'vertical'
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: '18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
+                    <label style={{ fontSize: '0.84rem', fontWeight: 700, color: '#334155' }}>
+                      Isi Artikel Lengkap (English)
+                    </label>
+                    <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                      Full technical article body in English
+                    </span>
+                  </div>
+                  <textarea
+                    rows={8}
+                    value={artContentEn}
+                    onChange={(e) => setArtContentEn(e.target.value)}
+                    placeholder="Write full technical guide in English here..."
+                    style={{
+                      width: '100%',
+                      padding: '12px 14px',
+                      borderRadius: '10px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.9rem',
+                      fontFamily: 'monospace',
+                      lineHeight: 1.6,
+                      outline: 'none',
+                      resize: 'vertical'
+                    }}
+                  />
+                </div>
+
+                {/* Tags and Image Upload */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px', marginBottom: '22px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Tags / Kata Kunci (Dipisahkan koma)
+                    </label>
+                    <input
+                      type="text"
+                      value={artTags}
+                      onChange={(e) => setArtTags(e.target.value)}
+                      placeholder="Contoh: Hidrolik, Pompa, Perawatan, Tekanan"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Foto Artikel / Thumbnail
+                    </label>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleArtImageUpload}
+                        style={{ fontSize: '0.82rem' }}
+                      />
+                      {isCompressingArtImg && (
+                        <span style={{ fontSize: '0.78rem', color: '#dc2626', fontWeight: 700 }}>
+                          Mengunggah ke Drive...
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ marginTop: '8px' }}>
+                      <input
+                        type="text"
+                        value={artImageUrl}
+                        onChange={(e) => {
+                          setArtImageUrl(e.target.value);
+                          setArtImagePreview(e.target.value);
+                        }}
+                        placeholder="Atau tempel link gambar (Google Drive/URL)..."
+                        style={{
+                          width: '100%',
+                          padding: '7px 12px',
+                          borderRadius: '8px',
+                          border: '1px solid #cbd5e1',
+                          fontSize: '0.82rem',
+                          outline: 'none',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Image Preview thumbnail if available */}
+                {artImagePreview && (
+                  <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', padding: '10px 16px', borderRadius: '10px' }}>
+                    <img
+                      src={artImagePreview}
+                      alt="Preview"
+                      style={{ width: '60px', height: '50px', objectFit: 'contain', borderRadius: '6px', border: '1px solid #e2e8f0', background: '#fff' }}
+                    />
+                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                      <span style={{ fontWeight: 700, color: '#0f172a' }}>Preview Thumbnail Gambar</span>
+                      <div style={{ wordBreak: 'break-all', fontSize: '0.72rem' }}>{artImageUrl}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Form Buttons */}
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setIsArticleFormOpen(false)}
+                    style={{
+                      padding: '11px 22px',
+                      borderRadius: '10px',
+                      background: '#f1f5f9',
+                      color: '#475569',
+                      border: '1px solid #cbd5e1',
+                      fontWeight: 700,
+                      fontSize: '0.9rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSavingArticle}
+                    style={{
+                      padding: '11px 24px',
+                      borderRadius: '10px',
+                      background: '#dc2626',
+                      color: '#ffffff',
+                      border: 'none',
+                      fontWeight: 800,
+                      fontSize: '0.92rem',
+                      cursor: isSavingArticle ? 'not-allowed' : 'pointer',
+                      opacity: isSavingArticle ? 0.7 : 1,
+                      boxShadow: '0 4px 12px rgba(220,38,38,0.25)'
+                    }}
+                  >
+                    {isSavingArticle ? 'Menyimpan...' : '💾 Simpan Artikel ke Google Sheets & Web'}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* Articles Table Card */}
+            <div style={{
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 4px 15px -3px rgba(0,0,0,0.03)'
+            }}>
+              {/* Search & Filter Bar */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', gap: '14px', flexWrap: 'wrap' }}>
+                <div style={{ position: 'relative', maxWidth: '380px', width: '100%' }}>
+                  <input
+                    type="text"
+                    value={articleSearch}
+                    onChange={(e) => setArticleSearch(e.target.value)}
+                    placeholder="Cari judul, kategori, atau tag artikel..."
+                    style={{
+                      width: '100%',
+                      padding: '9px 14px 9px 36px',
+                      borderRadius: '10px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                    }}
+                  />
+                  <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}>
+                    🔍
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.84rem', color: '#64748b' }}>
+                  Menampilkan <strong>{filteredArticlesAdmin.length}</strong> dari {articlesList.length} artikel
+                </div>
+              </div>
+
+              {/* Table */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc', borderBottom: '1.5px solid #e2e8f0', color: '#475569', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      <th style={{ padding: '12px 14px', width: '70px' }}>Foto</th>
+                      <th style={{ padding: '12px 14px' }}>Judul & Slug</th>
+                      <th style={{ padding: '12px 14px', width: '180px' }}>Kategori & Tags</th>
+                      <th style={{ padding: '12px 14px', width: '140px' }}>Tanggal & Waktu</th>
+                      <th style={{ padding: '12px 14px', width: '180px', textAlign: 'right' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredArticlesAdmin.map((art) => (
+                      <tr key={art.slug} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.15s' }}>
+                        <td style={{ padding: '12px 14px' }}>
+                          <img
+                            src={art.image}
+                            alt={art.title.id}
+                            style={{ width: '54px', height: '46px', objectFit: 'contain', borderRadius: '6px', background: '#f8fafc', border: '1px solid #e2e8f0' }}
+                          />
+                        </td>
+                        <td style={{ padding: '12px 14px' }}>
+                          <div style={{ fontWeight: 700, color: '#0f172a', marginBottom: '3px' }}>
+                            {art.title.id}
+                          </div>
+                          <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                            <code>/knowledge-hub/{art.slug}</code>
+                          </div>
+                        </td>
+                        <td style={{ padding: '12px 14px' }}>
+                          <span style={{
+                            display: 'inline-block',
+                            background: '#fee2e2',
+                            color: '#dc2626',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            padding: '3px 8px',
+                            borderRadius: '4px',
+                            marginBottom: '4px'
+                          }}>
+                            {art.category}
+                          </span>
+                          <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                            {art.tags.slice(0, 2).map(t => `#${t}`).join(' ')}
+                          </div>
+                        </td>
+                        <td style={{ padding: '12px 14px', color: '#64748b', fontSize: '0.8rem' }}>
+                          <div>📅 {art.date}</div>
+                          <div>⏱️ {art.readTime}</div>
+                        </td>
+                        <td style={{ padding: '12px 14px', textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', gap: '6px' }}>
+                            <Link
+                              href={`/knowledge-hub/${art.slug}`}
+                              target="_blank"
+                              style={{
+                                padding: '5px 9px',
+                                borderRadius: '6px',
+                                background: '#f1f5f9',
+                                border: '1px solid #cbd5e1',
+                                color: '#0f172a',
+                                fontWeight: 700,
+                                fontSize: '0.75rem',
+                                textDecoration: 'none'
+                              }}
+                            >
+                              👁️ Lihat
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => handleEditArticle(art)}
+                              style={{
+                                padding: '5px 9px',
+                                borderRadius: '6px',
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                color: '#1d4ed8',
+                                fontWeight: 700,
+                                fontSize: '0.75rem',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteArticle(art)}
+                              style={{
+                                padding: '5px 9px',
+                                borderRadius: '6px',
+                                background: '#fee2e2',
+                                border: '1px solid #fca5a5',
+                                color: '#dc2626',
+                                fontWeight: 700,
+                                fontSize: '0.75rem',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              🗑️ Hapus
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {filteredArticlesAdmin.length === 0 && (
+                      <tr>
+                        <td colSpan={5} style={{ padding: '40px 20px', textAlign: 'center', color: '#64748b' }}>
+                          Tidak ada artikel yang cocok dengan pencarian.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
