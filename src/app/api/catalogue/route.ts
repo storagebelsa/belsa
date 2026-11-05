@@ -10,34 +10,69 @@ interface CatalogueOverrides {
 }
 
 const OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'catalogueOverrides.json');
+const TMP_OVERRIDES_FILE = path.join('/tmp', 'catalogueOverrides.json');
+
+// In-memory fallback cache for serverless environments
+let memoryOverrides: CatalogueOverrides | null = null;
 
 function getOverrides(): CatalogueOverrides {
+  if (memoryOverrides) return memoryOverrides;
+
   try {
-    if (fs.existsSync(OVERRIDES_FILE)) {
-      const content = fs.readFileSync(OVERRIDES_FILE, 'utf-8');
+    // Check tmp first if on serverless
+    if (fs.existsSync(TMP_OVERRIDES_FILE)) {
+      const content = fs.readFileSync(TMP_OVERRIDES_FILE, 'utf-8');
       const parsed = JSON.parse(content);
-      return {
+      memoryOverrides = {
         deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : [],
         customItems: Array.isArray(parsed.customItems) ? parsed.customItems : [],
         modifiedItems: parsed.modifiedItems && typeof parsed.modifiedItems === 'object' ? parsed.modifiedItems : {}
       };
+      return memoryOverrides;
+    }
+
+    if (fs.existsSync(OVERRIDES_FILE)) {
+      const content = fs.readFileSync(OVERRIDES_FILE, 'utf-8');
+      const parsed = JSON.parse(content);
+      memoryOverrides = {
+        deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : [],
+        customItems: Array.isArray(parsed.customItems) ? parsed.customItems : [],
+        modifiedItems: parsed.modifiedItems && typeof parsed.modifiedItems === 'object' ? parsed.modifiedItems : {}
+      };
+      return memoryOverrides;
     }
   } catch (err) {
-    console.error('Error reading catalogueOverrides.json:', err);
+    console.warn('Notice: Reading catalogueOverrides from disk:', err);
   }
-  return { deletedIds: [], customItems: [], modifiedItems: {} };
+
+  memoryOverrides = { deletedIds: [], customItems: [], modifiedItems: {} };
+  return memoryOverrides;
 }
 
 function saveOverrides(data: CatalogueOverrides) {
+  memoryOverrides = data;
+
+  // 1. Try writing to project folder (works in localhost/dev)
+  let savedLocal = false;
   try {
     const dir = path.dirname(OVERRIDES_FILE);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(OVERRIDES_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    savedLocal = true;
   } catch (err) {
-    console.error('Error writing catalogueOverrides.json:', err);
-    throw err;
+    // Read-only filesystem on Vercel/Netlify
+    console.warn('Local project filesystem is read-only. Falling back to /tmp buffer.');
+  }
+
+  // 2. If local filesystem is read-only, write to /tmp buffer (writable on Vercel/AWS Lambda)
+  if (!savedLocal) {
+    try {
+      fs.writeFileSync(TMP_OVERRIDES_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (tmpErr) {
+      console.warn('Could not write to /tmp buffer:', tmpErr);
+    }
   }
 }
 

@@ -29,26 +29,29 @@ export async function POST(req: NextRequest) {
     const base64Data = matches[2];
     const buffer = Buffer.from(base64Data, 'base64');
 
-    // 1. Target directory local fallback: public/uploads/<folder>
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder);
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
     const cleanPrefix = (fileName || 'prod')
       .toLowerCase()
       .replace(/[^a-z0-9_-]/g, '_')
       .replace(/_+/g, '_')
       .slice(0, 30);
     const uniqueName = `${cleanPrefix}_${Date.now()}.${ext}`;
-    const filePath = path.join(uploadDir, uniqueName);
 
-    // Save local copy
-    fs.writeFileSync(filePath, buffer);
-    const publicUrl = `/uploads/${folder}/${uniqueName}`;
+    // 1. Try local filesystem write (works in localhost/dev, safely caught in serverless read-only)
+    let publicUrl = '';
+    try {
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder);
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      const filePath = path.join(uploadDir, uniqueName);
+      fs.writeFileSync(filePath, buffer);
+      publicUrl = `/uploads/${folder}/${uniqueName}`;
+    } catch (fsErr) {
+      console.warn('Local file write skipped (serverless read-only filesystem):', fsErr);
+    }
 
     let driveUrl = '';
-    let storageType = 'local';
+    let storageType = publicUrl ? 'local' : 'google_drive';
 
     // 2. Upload to Google Drive via Google Apps Script (Auto-Sync)
     try {
@@ -78,8 +81,8 @@ export async function POST(req: NextRequest) {
       console.warn('Error uploading to Google Drive via Apps Script:', gasErr);
     }
 
-    // If Google Drive returned a direct CDN link, use it! Otherwise fallback to local publicUrl
-    const finalUrl = driveUrl || publicUrl;
+    // If Google Drive returned a direct CDN link, use it! Otherwise fallback to local publicUrl or data URI
+    const finalUrl = driveUrl || publicUrl || image;
 
     return NextResponse.json({
       success: true,

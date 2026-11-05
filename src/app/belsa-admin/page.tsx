@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { GOOGLE_SCRIPT_URL, ADMIN_PIN } from '@/lib/googleSheetsConfig';
+import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
 import { formatProductImageUrl } from '@/lib/imageUtils';
 import { HtoConfig, HtoBlock, HtoColumn, HtoRow } from '@/types/hto';
 import {
@@ -123,14 +123,25 @@ export default function BelsaAdminPage() {
     }
   }, []);
 
-  const handlePinSubmit = (e: React.FormEvent) => {
+  const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === ADMIN_PIN) {
-      setIsAuthenticated(true);
-      setPinError('');
-      sessionStorage.setItem('belsa_admin_auth', 'true');
-    } else {
-      setPinError('PIN salah. Masukkan 6 digit PIN admin BELSA.');
+    setPinError('');
+    try {
+      const res = await fetch('/api/admin-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: pinInput.trim() })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsAuthenticated(true);
+        setPinError('');
+        sessionStorage.setItem('belsa_admin_auth', 'true');
+      } else {
+        setPinError(data.message || 'PIN salah. Masukkan PIN admin BELSA.');
+      }
+    } catch {
+      setPinError('Gagal memverifikasi PIN. Silakan coba lagi.');
     }
   };
 
@@ -531,20 +542,54 @@ export default function BelsaAdminPage() {
         htoConfig: dynamicHtoConfig
       };
 
-      // 1. Save to /api/catalogue (instant, persistent local server database)
-      const resApi = await fetch('/api/catalogue', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: isEditing ? 'update' : 'create',
-          product: productPayload
-        })
-      });
-      const dataApi = await resApi.json();
+      // 1. Save to /api/catalogue (serverless buffer & local database)
+      let isSaved = false;
+      let errMsg = '';
 
-      if (dataApi.success) {
+      try {
+        const resApi = await fetch('/api/catalogue', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: isEditing ? 'update' : 'create',
+            product: productPayload
+          })
+        });
+        const dataApi = await resApi.json();
+        if (dataApi.success) {
+          isSaved = true;
+        } else {
+          errMsg = dataApi.message || '';
+        }
+      } catch (errApi: any) {
+        errMsg = errApi?.message || '';
+      }
+
+      // 2. Synchronize directly to Google Sheets & Google Drive
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'add_item',
+            series: sCode,
+            category,
+            name: sName,
+            tagline: taglineId,
+            htoConfig: JSON.stringify(dynamicHtoConfig),
+            imageBase64: '',
+            imageName: imageFile ? imageFile.name : '',
+            imageUrl: fallbackImageUrl.trim() || (imagePreview.startsWith('/') || imagePreview.startsWith('http') ? imagePreview : '')
+          })
+        });
+        isSaved = true;
+      } catch (gasErr) {
+        console.warn('Google Sheets sync notice:', gasErr);
+      }
+
+      if (isSaved) {
         const successTitle = isEditing ? 'Perubahan Berhasil Disimpan' : 'Produk Baru Berhasil Ditambahkan';
-        const successText = `${isEditing ? 'Perubahan pada seri' : 'Seri baru'} "${productPayload.series}" (${productPayload.category}) berhasil disimpan dan sudah tampil di katalog.`;
+        const successText = `${isEditing ? 'Perubahan pada seri' : 'Seri baru'} "${productPayload.series}" (${productPayload.category}) berhasil disimpan ke katalog dan Google Sheets.`;
 
         setSubmitMessage({
           type: 'success',
@@ -560,25 +605,6 @@ export default function BelsaAdminPage() {
           productSeries: productPayload.code
         });
 
-        // Background backup to Google Sheets (non-blocking)
-        try {
-          fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: 'add_item',
-              series: sCode,
-              category,
-              name: sName,
-              tagline: taglineId,
-              htoConfig: JSON.stringify(dynamicHtoConfig),
-              imageBase64: '',
-              imageName: imageFile ? imageFile.name : '',
-              imageUrl: fallbackImageUrl.trim() || (imagePreview.startsWith('/') || imagePreview.startsWith('http') ? imagePreview : '')
-            })
-          }).catch(() => {});
-        } catch (_) {}
-
         // Refresh list
         await fetchCatalogueData();
 
@@ -588,16 +614,16 @@ export default function BelsaAdminPage() {
           handleResetForm();
         }
       } else {
-        const errMsg = dataApi.message || 'Respons server tidak dikenal';
+        const displayErr = errMsg || 'Gagal menyimpan ke server atau Google Sheets';
         setSubmitMessage({
           type: 'error',
-          text: `Gagal menyimpan: ${errMsg}`
+          text: `Gagal menyimpan: ${displayErr}`
         });
         setFeedbackModal({
           isOpen: true,
           type: 'error',
           title: 'Gagal Menyimpan Produk',
-          message: errMsg
+          message: displayErr
         });
       }
     } catch (err: any) {
