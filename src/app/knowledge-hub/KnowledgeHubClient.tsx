@@ -173,6 +173,7 @@ export default function KnowledgeHubClient({ initialArticles }: { initialArticle
             {filteredArticles.map((art) => (
               <div
                 key={art.slug}
+                className="belsa-article-card"
                 style={{
                   background: '#FFFFFF',
                   borderRadius: '18px',
@@ -184,8 +185,19 @@ export default function KnowledgeHubClient({ initialArticles }: { initialArticle
                   boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                 }}
               >
-                {/* Thumbnail Image */}
-                <div style={{ position: 'relative', height: '200px', background: '#F8FAFC', borderBottom: '1px solid #F1F5F9', overflow: 'hidden' }}>
+                {/* Thumbnail Image - Full Canvas Edge-to-Edge */}
+                <Link
+                  href={`/knowledge-hub/${art.slug}`}
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '220px',
+                    background: '#F1F5F9',
+                    borderBottom: '1px solid #E2E8F0',
+                    overflow: 'hidden',
+                    display: 'block',
+                  }}
+                >
                   <img
                     src={formatProductImageUrl(art.image)}
                     alt={art.title[lang]}
@@ -201,7 +213,15 @@ export default function KnowledgeHubClient({ initialArticles }: { initialArticle
                       }
                       target.src = '/images/belsa_og_logo.png';
                     }}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', display: 'block' }}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                    className="belsa-article-thumb-img"
                   />
                   <span
                     style={{
@@ -212,16 +232,18 @@ export default function KnowledgeHubClient({ initialArticles }: { initialArticle
                       color: '#FFFFFF',
                       fontSize: '0.72rem',
                       fontWeight: 700,
-                      padding: '4px 10px',
-                      borderRadius: '6px',
-                      backdropFilter: 'blur(4px)',
+                      padding: '5px 12px',
+                      borderRadius: '8px',
+                      backdropFilter: 'blur(6px)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.03em',
+                      letterSpacing: '0.04em',
+                      zIndex: 2,
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
                     }}
                   >
                     {art.category}
                   </span>
-                </div>
+                </Link>
 
                 <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.8rem', color: '#64748B', marginBottom: '12px' }}>
@@ -329,6 +351,16 @@ export default function KnowledgeHubClient({ initialArticles }: { initialArticle
           </div>
         </div>
       </section>
+
+      <style jsx global>{`
+        .belsa-article-card:hover .belsa-article-thumb-img {
+          transform: scale(1.05);
+        }
+        .belsa-article-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.08) !important;
+        }
+      `}</style>
 
     </main>
   );

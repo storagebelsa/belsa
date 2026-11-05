@@ -378,22 +378,21 @@ export default function ArticleDetailClient({ initialArticle, initialArticles }:
           </div>
         </div>
 
-        {/* Featured Image Banner */}
+        {/* Featured Image Banner - Full Canvas */}
         {currentArticle.image && (
           <div
             style={{
               position: 'relative',
               width: '100%',
-              height: '340px',
-              background: '#FFFFFF',
+              height: '420px',
+              maxHeight: '52vw',
+              minHeight: '260px',
+              background: '#0F172A',
               borderRadius: '20px',
               border: '1px solid #E2E8F0',
               overflow: 'hidden',
               marginBottom: '32px',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
             }}
           >
             <img
@@ -405,17 +404,17 @@ export default function ArticleDetailClient({ initialArticle, initialArticles }:
                 if (target.src.includes('googleusercontent.com/d/')) {
                   const fId = target.src.split('/d/')[1]?.split('?')[0];
                   if (fId) {
-                    target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
+                    target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w1200`;
                     return;
                   }
                 }
                 target.src = '/images/belsa_og_logo.png';
               }}
               style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-                padding: '24px',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
                 display: 'block',
               }}
             />
