@@ -3,3 +3,7 @@ export const ADMIN_PIN = '241353';
 export const GOOGLE_DRIVE_FOLDER_ID = '1TZjb_Xp9I41rZFmQwZmWEH8a3EWhre8Z';
 export const GOOGLE_DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/1TZjb_Xp9I41rZFmQwZmWEH8a3EWhre8Z?usp=sharing';
 
+// Folder khusus gambar artikel Knowledge Hub
+export const GOOGLE_DRIVE_ARTICLES_FOLDER_ID = '1FDwGLrQlZM-YuCF6P173gf0n93jgYVgg';
+export const GOOGLE_DRIVE_ARTICLES_FOLDER_URL = 'https://drive.google.com/drive/folders/1FDwGLrQlZM-YuCF6P173gf0n93jgYVgg?usp=sharing';
+

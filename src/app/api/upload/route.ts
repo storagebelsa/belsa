@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { GOOGLE_SCRIPT_URL, GOOGLE_DRIVE_FOLDER_ID } from '@/lib/googleSheetsConfig';
+import { GOOGLE_SCRIPT_URL, GOOGLE_DRIVE_FOLDER_ID, GOOGLE_DRIVE_ARTICLES_FOLDER_ID } from '@/lib/googleSheetsConfig';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { image, fileName, folder = 'catalogue' } = body;
+    const { image, fileName, folder = 'catalogue', folderId } = body;
 
     if (!image || typeof image !== 'string') {
       return NextResponse.json(
@@ -54,13 +54,15 @@ export async function POST(req: NextRequest) {
     let storageType = publicUrl ? 'local' : 'google_drive';
 
     // 2. Upload to Google Drive via Google Apps Script (Auto-Sync)
+    const targetFolderId = folderId || (folder === 'articles' ? GOOGLE_DRIVE_ARTICLES_FOLDER_ID : GOOGLE_DRIVE_FOLDER_ID);
+
     try {
       const gasResponse = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           action: 'upload_to_drive',
-          folderId: GOOGLE_DRIVE_FOLDER_ID,
+          folderId: targetFolderId,
           fileName: uniqueName,
           imageBase64: base64Data,
           mimeType: `image/${ext === 'jpg' ? 'jpeg' : ext}`

@@ -591,7 +591,8 @@ export default function BelsaAdminPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               image: compressedBase64,
-              fileName: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+              fileName: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`,
+              folder: 'articles'
             })
           });
           const upData = await upRes.json();
