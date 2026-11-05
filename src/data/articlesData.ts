@@ -124,7 +124,7 @@ Calculate your exact tube wall thickness and safety margin instantly using the [
     },
     date: '2026-11-03',
     readTime: '6 min baca',
-    image: '/images/prod_cylinder_clean.webp',
+    image: '/images/facility_lathe_machinists.webp',
     tags: ['Hidrolik', 'Rumus Barlow', 'Honed Tube', 'Kalkulasi Teknik']
   },
   {
@@ -190,7 +190,7 @@ At BELSA, every cylinder series (such as BMG140, BMG210, and ACI) offers an opti
     },
     date: '2026-11-01',
     readTime: '4 min baca',
-    image: '/images/prod_cylinder_clean.webp',
+    image: '/images/culture_parts_warehouse.webp',
     tags: ['Seal Kit', 'Viton', 'Polyurethane', 'Maintenance']
   },
   {
@@ -252,7 +252,7 @@ For emergency overhaul consultation or bespoke replacement cylinders, reach our 
     },
     date: '2026-10-28',
     readTime: '5 min baca',
-    image: '/images/prod_cylinder_clean.webp',
+    image: '/images/facility_metrology_inspection.webp',
     tags: ['Troubleshooting', 'Maintenance', 'Overhaul', 'Silinder Hidrolik']
   },
   {
@@ -304,7 +304,7 @@ The BELSA workshop supplies custom crimped hydraulic hose assemblies complete wi
     },
     date: '2026-10-22',
     readTime: '4 min baca',
-    image: '/images/prod_hose_clean.webp',
+    image: '/images/facility_hose_warehouse.webp',
     tags: ['Selang Hidrolik', 'Fittings', 'Tekanan Tinggi', 'SAE 100']
   }
 ];

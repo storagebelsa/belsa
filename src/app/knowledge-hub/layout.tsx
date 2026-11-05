@@ -21,7 +21,14 @@ export const metadata: Metadata = {
     description:
       'Artikel teknis, panduan pemilihan komponen, dan rumus kalkulasi engineering dari tim teknis PT. Rafitama Millenial Wahyudi (BELSA).',
     url: 'https://belsa.id/knowledge-hub',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/belsa_og_logo.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Knowledge Hub & Panduan Teknis Hidrolik Pneumatik | BELSA',
+    description:
+      'Artikel teknis, panduan pemilihan komponen, dan rumus kalkulasi engineering dari tim teknis PT. Rafitama Millenial Wahyudi (BELSA).',
+    images: ['https://belsa.id/images/belsa_og_logo.png'],
   },
 };
 

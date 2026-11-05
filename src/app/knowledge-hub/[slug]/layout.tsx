@@ -1,14 +1,31 @@
 import { Metadata } from 'next';
-import { DEFAULT_ARTICLES } from '@/data/articlesData';
+import fs from 'fs';
+import path from 'path';
+import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
 
 interface Props {
   params: Promise<{ slug: string }>;
   children: React.ReactNode;
 }
 
+function findArticle(slug: string): ArticleItem | undefined {
+  const local = DEFAULT_ARTICLES.find((a) => a.slug === slug);
+  if (local) return local;
+
+  try {
+    const fPath = path.join('/tmp', 'articlesOverrides.json');
+    if (fs.existsSync(fPath)) {
+      const arr: ArticleItem[] = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+      return arr.find((a) => a.slug === slug);
+    }
+  } catch {}
+
+  return undefined;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = DEFAULT_ARTICLES.find((a) => a.slug === slug);
+  const article = findArticle(slug);
 
   if (!article) {
     return {
@@ -20,6 +37,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${article.title.id} | BELSA Engineering Knowledge Hub`;
   const description = article.summary.id;
   const url = `https://belsa.id/knowledge-hub/${slug}`;
+
+  const rawImg = article.image || '/images/belsa_og_logo.png';
+  const ogImageUrl = rawImg.startsWith('http')
+    ? rawImg
+    : `https://belsa.id${rawImg.startsWith('/') ? rawImg : `/${rawImg}`}`;
 
   return {
     title,
@@ -37,19 +59,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       tags: article.tags,
       images: [
         {
-          url: article.image.startsWith('http') ? article.image : `https://belsa.id${article.image}`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: article.title.id,
         },
       ],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 
 export default async function ArticleLayout({ params, children }: Props) {
   const { slug } = await params;
-  const article = DEFAULT_ARTICLES.find((a) => a.slug === slug);
+  const article = findArticle(slug);
+
+  const rawImg = article?.image || '/images/belsa_og_logo.png';
+  const ogImageUrl = rawImg.startsWith('http')
+    ? rawImg
+    : `https://belsa.id${rawImg.startsWith('/') ? rawImg : `/${rawImg}`}`;
 
   const breadcrumbsSchema = {
     '@context': 'https://schema.org',
@@ -82,7 +115,7 @@ export default async function ArticleLayout({ params, children }: Props) {
         '@type': 'Article',
         headline: article.title.id,
         description: article.summary.id,
-        image: article.image.startsWith('http') ? article.image : `https://belsa.id${article.image}`,
+        image: ogImageUrl,
         datePublished: article.date,
         dateModified: article.date,
         author: {
@@ -95,7 +128,7 @@ export default async function ArticleLayout({ params, children }: Props) {
           name: 'PT. Rafitama Millenial Wahyudi',
           logo: {
             '@type': 'ImageObject',
-            url: 'https://belsa.id/images/belsa_logo.webp',
+            url: 'https://belsa.id/images/belsa_og_logo.png',
           },
         },
         mainEntityOfPage: {

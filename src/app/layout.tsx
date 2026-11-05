@@ -58,10 +58,10 @@ export const metadata: Metadata = {
       'Fabrikasi silinder hidrolik & pneumatik standar maupun custom, perakitan selang hidrolik bertekanan tinggi, dan penyediaan process valve industri. Bersertifikat ISO 9001:2015.',
     images: [
       {
-        url: '/images/prod_cylinder_clean.webp',
+        url: 'https://belsa.id/images/belsa_og_logo.png',
         width: 1200,
         height: 630,
-        alt: 'BELSA Hydraulic and Pneumatic Cylinder Manufacturer Indonesia',
+        alt: 'BELSA Hydraulic and Pneumatic - PT. Rafitama Millenial Wahyudi',
       },
     ],
   },
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: 'BELSA - Produsen Silinder Hidrolik & Pneumatik Indonesia',
     description:
       'Fabrikasi silinder hidrolik, silinder pneumatik, selang hidrolik, dan process valve di Tangerang. Bersertifikat ISO 9001:2015.',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/belsa_og_logo.png'],
   },
   robots: {
     index: true,
