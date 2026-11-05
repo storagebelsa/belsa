@@ -62,7 +62,7 @@ To calculate cylinder thrust output and air consumption for your plant operating
     },
     date: '2026-11-04',
     readTime: '5 min baca',
-    image: '/images/prod_cylinder_clean.webp',
+    image: 'https://lh3.googleusercontent.com/d/1tjCeUMjsccQLkKuZgQX6bJXeBqAevPi7',
     tags: ['Pneumatik', 'ISO 15552', 'How to Order', 'Bore & Stroke']
   },
   {

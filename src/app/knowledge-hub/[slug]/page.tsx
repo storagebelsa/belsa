@@ -2,10 +2,10 @@
 
 import React, { use, useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
+import { formatProductImageUrl } from '@/lib/imageUtils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -356,15 +356,33 @@ export default function ArticleDetailPage({ params }: Props) {
               overflow: 'hidden',
               marginBottom: '32px',
               boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            <Image
-              src={currentArticle.image}
+            <img
+              src={formatProductImageUrl(currentArticle.image)}
               alt={title}
-              fill
-              sizes="(max-width: 1040px) 100vw, 1040px"
-              priority
-              style={{ objectFit: 'contain', padding: '24px' }}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src.includes('googleusercontent.com/d/')) {
+                  const fId = target.src.split('/d/')[1]?.split('?')[0];
+                  if (fId) {
+                    target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
+                    return;
+                  }
+                }
+                target.src = '/images/belsa_og_logo.png';
+              }}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                padding: '24px',
+                display: 'block'
+              }}
             />
           </div>
         )}

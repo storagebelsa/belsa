@@ -2,9 +2,9 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
+import { formatProductImageUrl } from '@/lib/imageUtils';
 
 export default function KnowledgeHubPage() {
   const { lang } = useLanguage();
@@ -185,13 +185,23 @@ export default function KnowledgeHubPage() {
                 }}
               >
                 {/* Thumbnail Image */}
-                <div style={{ position: 'relative', height: '200px', background: '#F8FAFC', borderBottom: '1px solid #F1F5F9' }}>
-                  <Image
-                    src={art.image}
+                <div style={{ position: 'relative', height: '200px', background: '#F8FAFC', borderBottom: '1px solid #F1F5F9', overflow: 'hidden' }}>
+                  <img
+                    src={formatProductImageUrl(art.image)}
                     alt={art.title[lang]}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    style={{ objectFit: 'contain', padding: '20px' }}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.includes('googleusercontent.com/d/')) {
+                        const fId = target.src.split('/d/')[1]?.split('?')[0];
+                        if (fId) {
+                          target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
+                          return;
+                        }
+                      }
+                      target.src = '/images/belsa_og_logo.png';
+                    }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', display: 'block' }}
                   />
                   <span
                     style={{
