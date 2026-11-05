@@ -45,6 +45,13 @@ export default function BelsaAdminPage() {
   const [artImagePreview, setArtImagePreview] = useState('/images/prod_cylinder_clean.webp');
   const [isSavingArticle, setIsSavingArticle] = useState(false);
   const [isCompressingArtImg, setIsCompressingArtImg] = useState(false);
+  const [artCompressionStats, setArtCompressionStats] = useState<{
+    originalSize: string;
+    compressedSize: string;
+    savedPercent: number;
+    format: string;
+    dimensions: string;
+  } | null>(null);
 
   // Editing state: if non-null, admin is editing an existing product
   const [editingProduct, setEditingProduct] = useState<BelsaProductSeries | null>(null);
@@ -490,6 +497,7 @@ export default function BelsaAdminPage() {
     setArtTags('Silinder, Hidrolik, Standar');
     setArtImageUrl('/images/belsa_og_logo.png');
     setArtImagePreview('/images/belsa_og_logo.png');
+    setArtCompressionStats(null);
     setIsArticleFormOpen(true);
   };
 
@@ -510,6 +518,7 @@ export default function BelsaAdminPage() {
     setArtTags(art.tags.join(', '));
     setArtImageUrl(art.image);
     setArtImagePreview(art.image);
+    setArtCompressionStats(null);
     setIsArticleFormOpen(true);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
@@ -548,7 +557,9 @@ export default function BelsaAdminPage() {
     }
 
     setIsCompressingArtImg(true);
+    setArtCompressionStats(null);
     try {
+      const origSize = file.size;
       const objectUrl = URL.createObjectURL(file);
       const img = new Image();
 
@@ -578,20 +589,44 @@ export default function BelsaAdminPage() {
         }
 
         ctx.drawImage(img, 0, 0, width, height);
-        const compressedBase64 = canvas.toDataURL('image/webp', 0.85);
+
+        let compressedBase64 = canvas.toDataURL('image/webp', 0.82);
+        let format = 'WebP';
+
+        if (!compressedBase64.startsWith('data:image/webp')) {
+          compressedBase64 = canvas.toDataURL('image/jpeg', 0.82);
+          format = 'JPEG';
+        }
+
+        // Calculate size & savings
+        const head = compressedBase64.indexOf(',') + 1;
+        const compBytes = Math.round(((compressedBase64.length - head) * 3) / 4);
+        const savedPercent = Math.max(0, Math.round((1 - compBytes / origSize) * 100));
+
+        setArtCompressionStats({
+          originalSize: formatFileSize(origSize),
+          compressedSize: formatFileSize(compBytes),
+          savedPercent,
+          format,
+          dimensions: `${width} × ${height} px`
+        });
 
         // Instantly assign to preview AND artImageUrl so saving will never miss the new image
         setArtImagePreview(compressedBase64);
         setArtImageUrl(compressedBase64);
 
         // Upload to Google Drive via /api/upload
+        const cleanName = (artSlug || file.name.replace(/\.[^/.]+$/, '') || 'art')
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]/g, '_');
+
         try {
           const upRes = await fetch('/api/upload', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               image: compressedBase64,
-              fileName: `art_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`,
+              fileName: `art_${Date.now()}_${cleanName}`,
               folder: 'articles'
             })
           });
@@ -607,6 +642,12 @@ export default function BelsaAdminPage() {
           setIsCompressingArtImg(false);
         }
       };
+
+      img.onerror = () => {
+        alert('Gagal memproses gambar. Pastikan file valid.');
+        setIsCompressingArtImg(false);
+      };
+
       img.src = objectUrl;
     } catch {
       setIsCompressingArtImg(false);
@@ -2442,26 +2483,66 @@ export default function BelsaAdminPage() {
                     <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
                       Foto Artikel / Thumbnail
                     </label>
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ marginBottom: '8px' }}>
                       <input
                         type="file"
                         accept="image/*"
                         onChange={handleArtImageUpload}
-                        style={{ fontSize: '0.82rem' }}
+                        disabled={isCompressingArtImg}
+                        style={{
+                          fontSize: '0.82rem',
+                          color: '#334155',
+                          padding: '6px 10px',
+                          border: '1px dashed #cbd5e1',
+                          borderRadius: '8px',
+                          width: '100%',
+                          background: '#fff',
+                          cursor: isCompressingArtImg ? 'wait' : 'pointer'
+                        }}
                       />
-                      {isCompressingArtImg && (
-                        <span style={{ fontSize: '0.78rem', color: '#dc2626', fontWeight: 700 }}>
-                          Mengunggah ke Drive...
-                        </span>
-                      )}
                     </div>
-                    <div style={{ marginTop: '8px' }}>
+
+                    {/* Compression status / stats pill */}
+                    {isCompressingArtImg && (
+                      <div style={{ padding: '8px 12px', borderRadius: '8px', background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                        <span style={{ animation: 'spin 1s linear infinite' }}>⏳</span> Mengompresi resolusi & mengunggah ke Google Drive...
+                      </div>
+                    )}
+
+                    {artCompressionStats && !isCompressingArtImg && (
+                      <div style={{
+                        padding: '10px 14px',
+                        borderRadius: '8px',
+                        background: '#ecfdf5',
+                        border: '1px solid #6ee7b7',
+                        marginBottom: '10px',
+                        fontSize: '0.78rem',
+                        color: '#065f46'
+                      }}>
+                        <div style={{ fontWeight: 800, marginBottom: '3px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>✅</span> Gambar artikel berhasil dikompres otomatis (format: {artCompressionStats.format})
+                        </div>
+                        <div style={{ color: '#047857', display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                          <span>Asli: <b>{artCompressionStats.originalSize}</b></span>
+                          <span>&rarr;</span>
+                          <span>WebP: <b>{artCompressionStats.compressedSize}</b></span>
+                          <span style={{ background: '#059669', color: '#fff', padding: '1px 6px', borderRadius: '4px', fontWeight: 700, fontSize: '0.72rem' }}>
+                            Hemat {artCompressionStats.savedPercent}%
+                          </span>
+                          <span>Dimensi: {artCompressionStats.dimensions}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
                       <input
                         type="text"
                         value={artImageUrl.startsWith('data:') ? '' : artImageUrl}
                         onChange={(e) => {
-                          setArtImageUrl(e.target.value);
-                          setArtImagePreview(e.target.value);
+                          const val = e.target.value;
+                          const formatted = formatProductImageUrl(val);
+                          setArtImageUrl(formatted);
+                          setArtImagePreview(formatted);
                         }}
                         placeholder={artImageUrl.startsWith('data:') ? '✓ Foto baru siap disimpan' : 'Atau tempel link gambar (Google Drive/URL)...'}
                         style={{
@@ -2479,18 +2560,57 @@ export default function BelsaAdminPage() {
 
                 {/* Image Preview thumbnail if available */}
                 {artImagePreview && (
-                  <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', padding: '10px 16px', borderRadius: '10px' }}>
-                    <img
-                      src={artImagePreview}
-                      alt="Preview"
-                      style={{ width: '60px', height: '50px', objectFit: 'contain', borderRadius: '6px', border: '1px solid #e2e8f0', background: '#fff' }}
-                    />
-                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                      <span style={{ fontWeight: 700, color: '#0f172a' }}>Preview Thumbnail Gambar</span>
-                      <div style={{ fontSize: '0.74rem', maxWidth: '480px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {artImageUrl.startsWith('data:') ? '✓ Foto baru terunggah (WebP)' : artImageUrl}
+                  <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', background: '#f8fafc', padding: '12px 16px', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <img
+                        src={formatProductImageUrl(artImagePreview)}
+                        alt="Preview"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src.includes('googleusercontent.com/d/')) {
+                            const fId = target.src.split('/d/')[1]?.split('?')[0];
+                            if (fId) {
+                              target.src = `https://drive.google.com/thumbnail?id=${fId}&sz=w800`;
+                              return;
+                            }
+                          }
+                          target.src = '/images/belsa_og_logo.png';
+                        }}
+                        style={{ width: '64px', height: '54px', objectFit: 'contain', borderRadius: '6px', border: '1px solid #cbd5e1', background: '#fff', padding: '2px' }}
+                      />
+                      <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                        <span style={{ fontWeight: 700, color: '#0f172a' }}>Preview Thumbnail Gambar</span>
+                        <div style={{ fontSize: '0.74rem', maxWidth: '420px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {artImageUrl.startsWith('data:') ? '✓ Foto baru terunggah (WebP)' : artImageUrl}
+                        </div>
+                        {artImageUrl.includes('googleusercontent.com') && (
+                          <div style={{ marginTop: '4px', fontSize: '0.72rem', color: '#059669', fontWeight: 700 }}>
+                            ☁️ Tersimpan di Google Drive CDN
+                          </div>
+                        )}
                       </div>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setArtImageUrl('/images/belsa_og_logo.png');
+                        setArtImagePreview('/images/belsa_og_logo.png');
+                        setArtCompressionStats(null);
+                      }}
+                      style={{
+                        fontSize: '0.72rem',
+                        color: '#dc2626',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: 700,
+                        textDecoration: 'underline'
+                      }}
+                    >
+                      Reset Foto
+                    </button>
                   </div>
                 )}
 
