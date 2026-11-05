@@ -10,7 +10,7 @@ interface Props {
 const DELETED_SERIES_IDS = new Set([
   'diverter_valve', 'bsp', 'cl_series', 'npp-nhpu', 'bhreb_20es_1',
   'd_nipple', 'double_nipple', 'fitting', 'r1at', 'r2at', 'rejseries',
-  'bwe_series', 'tubing', 'rotary'
+  'bwe_series', 'tubing', 'rotary', 'bzw'
 ]);
 
 function findProductBySlug(slug: string): BelsaProductSeries | undefined {
@@ -148,7 +148,7 @@ export default async function CatalogueSlugPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
-      <CatalogueView initialSeriesSlug={slug} />
+      <CatalogueView initialSeriesSlug={slug} initialProduct={product} />
     </>
   );
 }

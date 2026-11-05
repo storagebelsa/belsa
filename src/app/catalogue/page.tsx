@@ -80,11 +80,12 @@ export function preloadProductImage(url?: string) {
   img.src = formatted;
 }
 
-export function CatalogueView({ initialSeriesSlug }: { initialSeriesSlug?: string }) {
+export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSeriesSlug?: string; initialProduct?: BelsaProductSeries }) {
   const { lang } = useLanguage();
   const t = translations[lang].cataloguePage;
 
   const initialMatchedSeries = useMemo(() => {
+    if (initialProduct) return initialProduct;
     if (initialSeriesSlug) {
       const s = initialSeriesSlug.toLowerCase().trim();
       const found = BELSA_CATALOGUE_FULL.find(
@@ -100,7 +101,7 @@ export function CatalogueView({ initialSeriesSlug }: { initialSeriesSlug?: strin
       .filter((s) => s.category === 'Air Cylinder')
       .sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
     return airSeries[0] || BELSA_CATALOGUE_FULL[0];
-  }, [initialSeriesSlug]);
+  }, [initialProduct, initialSeriesSlug]);
 
   // Selected Category & Accordion Expanded State
   const [selectedCategory, setSelectedCategory] = useState<BelsaCategory>(

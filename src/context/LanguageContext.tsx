@@ -11,7 +11,7 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: 'en',
+  lang: 'id',
   setLang: () => {},
   toggleLang: () => {},
 });
@@ -19,7 +19,7 @@ const LanguageContext = createContext<LanguageContextType>({
 const LANG_STORAGE_KEY = 'belsa_lang_v2';
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>('en');
+  const [lang, setLangState] = useState<Language>('id');
 
   useEffect(() => {
     const saved = localStorage.getItem(LANG_STORAGE_KEY) as Language;
@@ -27,7 +27,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setLangState(saved);
       document.documentElement.lang = saved;
     } else {
-      document.documentElement.lang = 'en';
+      document.documentElement.lang = 'id';
     }
   }, []);
 

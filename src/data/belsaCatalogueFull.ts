@@ -1,25 +1,4 @@
-// src/data/belsaCatalogueFull.ts
-// Comprehensive BELSA Master Technical Catalogue dataset
-// Extracted and integrated from KATALOG BELSA.pdf and D:\KATALOG BELSA\PDF
-// Total 103 official product series across 13 categories.
-
 import { HtoConfig } from '@/types/hto';
-
-export interface BelsaProductSeries {
-  id: string;
-  slug: string;
-  series: string;
-  code: string;
-  category: string;
-  subTitle: { id: string; en: string };
-  image: string;
-  symbolType: 'air_single_double' | 'air_double' | 'hydraulic' | 'rotary' | 'telescopic' | 'valve' | 'powerpack' | 'hose' | 'seal' | 'none';
-  features: { id: string[]; en: string[] };
-  boreSizes: number[];
-  standardStrokes: number[];
-  maxStroke: number;
-  htoConfig: HtoConfig;
-}
 
 export const BELSA_CATEGORIES = [
   "Air Cylinder",
@@ -39,6 +18,22 @@ export const BELSA_CATEGORIES = [
 
 export type BelsaCategory = typeof BELSA_CATEGORIES[number];
 
+export interface BelsaProductSeries {
+  id: string;
+  slug?: string;
+  series: string;
+  code: string;
+  category: BelsaCategory | string;
+  subTitle: { id: string; en: string };
+  image: string;
+  symbolType: 'air_single_double' | 'air_double' | 'hydraulic' | 'rotary' | 'telescopic' | 'valve' | 'powerpack' | 'hose' | 'seal' | 'none' | string;
+  features: { id: string[]; en: string[] };
+  boreSizes?: number[];
+  standardStrokes?: number[];
+  maxStroke?: number;
+  htoConfig?: HtoConfig;
+}
+
 export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
   {
     "id": "mpc1",
@@ -48,7 +43,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Medium Tie-Rod Aluminium",
-      "en": "Medium Cylinder (Silinder Standar Tie-Rod Aluminium)",
+      "en": "Medium Cylinder (Silinder Standar Tie-Rod Aluminium)"
     },
     "image": "https://lh3.googleusercontent.com/d/18wHf3xcH9FIPEVd-Ju6g_RdUDEA73sZs",
     "symbolType": "air_single_double",
@@ -104,8 +99,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2950,
     "htoConfig": {
       "codePrefix": "MPC1",
-      "separator": " - ",
-      "totalSlots": 12,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -120,6 +114,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "11": "-",
         "12": ""
       },
+      "totalSlots": 12,
       "blocks": [
         {
           "id": "mpc1_b1",
@@ -769,7 +764,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Bore Besar Ø125-300",
-      "en": "Large Bore Industrial Cylinder (Silinder Beban Berat Ø125-300)",
+      "en": "Large Bore Industrial Cylinder (Silinder Beban Berat Ø125-300)"
     },
     "image": "https://lh3.googleusercontent.com/d/1J7oQDwWwSZyT5IiUT8udeFwTa8hFDK5I",
     "symbolType": "air_single_double",
@@ -818,8 +813,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2950,
     "htoConfig": {
       "codePrefix": "LPC1",
-      "separator": " - ",
-      "totalSlots": 14,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -836,6 +830,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "13": "-",
         "14": ""
       },
+      "totalSlots": 14,
       "blocks": [
         {
           "id": "lpc1_b1",
@@ -1443,7 +1438,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Bodi Bulat",
-      "en": "Round Body Cylinder (Silinder Bodi Bulat Kompak)",
+      "en": "Round Body Cylinder (Silinder Bodi Bulat Kompak)"
     },
     "image": "https://lh3.googleusercontent.com/d/1umMOkikPk7Kb2g0i0dDcvlhPQs4sCOKl",
     "symbolType": "air_single_double",
@@ -1485,8 +1480,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NCR",
-      "separator": " - ",
-      "totalSlots": 7,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -1496,6 +1490,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "ncr_b1",
@@ -1695,12 +1690,12 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
   {
     "id": "rc",
     "slug": "rc-rmc",
-    "series": "RC / RMC Series",
-    "code": "RC",
+    "series": "RC/RMC Series",
+    "code": "RC/RMC",
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kompak Bodi Kotak",
-      "en": "Compact Cylinder (Silinder Bodi Kotak Ultra Ringkas)",
+      "en": "Compact Cylinder (Silinder Bodi Kotak Ultra Ringkas)"
     },
     "image": "https://lh3.googleusercontent.com/d/1P61eboZ_MXM4uJv735puakCnrJSmt-01",
     "symbolType": "air_single_double",
@@ -1749,9 +1744,8 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     ],
     "maxStroke": 300,
     "htoConfig": {
-      "codePrefix": "RC",
-      "separator": " - ",
-      "totalSlots": 12,
+      "codePrefix": "RC/RMC",
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -1766,6 +1760,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "11": "-",
         "12": ""
       },
+      "totalSlots": 12,
       "blocks": [
         {
           "id": "rc_b1",
@@ -2281,7 +2276,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kecil Tabung Aluminium Ø20-40",
-      "en": "Small Precision Cylinder (Aluminium Tube Ø20-40)",
+      "en": "Small Precision Cylinder (Aluminium Tube Ø20-40)"
     },
     "image": "https://lh3.googleusercontent.com/d/1kSEwRlbto14RwCWl76SXq7z9rVNcIMJg",
     "symbolType": "air_single_double",
@@ -2335,8 +2330,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "SPC1",
-      "separator": " - ",
-      "totalSlots": 11,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -2350,6 +2344,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "10": "-",
         "11": ""
       },
+      "totalSlots": 11,
       "blocks": [
         {
           "id": "spc1_b1",
@@ -2913,7 +2908,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Kecil Tabung Stainless Steel Ø20-40",
-      "en": "Small Stainless Steel Cylinder (SUS Tube Ø20-40)",
+      "en": "Small Stainless Steel Cylinder (SUS Tube Ø20-40)"
     },
     "image": "https://lh3.googleusercontent.com/d/1q13EW8KueKNXWybV23s1dsxfQjdZOefs",
     "symbolType": "air_single_double",
@@ -2958,8 +2953,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 650,
     "htoConfig": {
       "codePrefix": "SPC2",
-      "separator": " - ",
-      "totalSlots": 11,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -2973,6 +2967,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "10": "-",
         "11": ""
       },
+      "totalSlots": 11,
       "blocks": [
         {
           "id": "spc2_b1",
@@ -3511,7 +3506,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Silinder Ukuran Ekstra Besar Ø350-450",
-      "en": "Extra-Large Heavy Cylinder (Silinder Raksasa Ø350-450)",
+      "en": "Extra-Large Heavy Cylinder (Silinder Raksasa Ø350-450)"
     },
     "image": "https://lh3.googleusercontent.com/d/1ciWtz_2JtiQoYxNH83w-1z-ifDusPzQ0",
     "symbolType": "air_single_double",
@@ -3549,8 +3544,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 1000,
     "htoConfig": {
       "codePrefix": "XPC1",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -3561,6 +3555,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "xpc1_b1",
@@ -3840,7 +3835,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Kompak Aluminium 125-160 kgf/cm²",
-      "en": "Aluminium Compact Hydraulic Cylinder (Tekanan 125-160 kgf/cm²)",
+      "en": "Aluminium Compact Hydraulic Cylinder (Tekanan 125-160 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1BNRydav5eXLgw_9XUCofBYgjBrBoPerK",
     "symbolType": "air_single_double",
@@ -3881,8 +3876,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 100,
     "htoConfig": {
       "codePrefix": "BCC140A",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -3893,6 +3887,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "bcc140a_b1",
@@ -4161,7 +4156,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Kompak Baja 140 kgf/cm²",
-      "en": "Steel Compact Hydraulic Cylinder (Tekanan 140 kgf/cm²)",
+      "en": "Steel Compact Hydraulic Cylinder (Tekanan 140 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1w83AZhNtBZPkZCGoppgtF7cTZ9wK-ZhB",
     "symbolType": "air_single_double",
@@ -4205,8 +4200,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 125,
     "htoConfig": {
       "codePrefix": "BCC140S",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -4217,6 +4211,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "bcc140s_b1",
@@ -4511,7 +4506,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Rotary Rack & Pinion 35 kgf/cm²",
-      "en": "Rotary Actuator Hydraulic Cylinder (Putar Rack & Pinion 35 kgf/cm²)",
+      "en": "Rotary Actuator Hydraulic Cylinder (Putar Rack & Pinion 35 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1_LqlJu-Q8eSfEppwAb2bi-88M7OkJI3j",
     "symbolType": "rotary",
@@ -4545,8 +4540,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 180,
     "htoConfig": {
       "codePrefix": "BRPC35R",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -4557,6 +4551,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "brpc35r_b1",
@@ -4825,7 +4820,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Teleskopik Single Acting",
-      "en": "Telescopic Cylinder (Silinder Hidrolik Teleskopik Kerja Tunggal)",
+      "en": "Telescopic Cylinder (Silinder Hidrolik Teleskopik Kerja Tunggal)"
     },
     "image": "https://lh3.googleusercontent.com/d/14mk3gvLzXaAHwE-7tsaN7oZL6kWYJkze",
     "symbolType": "telescopic",
@@ -4875,8 +4870,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 3100,
     "htoConfig": {
       "codePrefix": "BTC70HP",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -4887,6 +4881,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "btc_b1",
@@ -5254,7 +5249,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Belsa Telescopic Cylinder",
-      "en": "Belsa Telescopic Cylinder (Silinder Hidrolik Teleskopik Multitahap)",
+      "en": "Belsa Telescopic Cylinder (Silinder Hidrolik Teleskopik Multitahap)"
     },
     "image": "https://lh3.googleusercontent.com/d/1Y7vmnJmwFuV9Nziw9B-RWuHOCaGmd717",
     "symbolType": "telescopic",
@@ -5295,8 +5290,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 3000,
     "htoConfig": {
       "codePrefix": "BTC",
-      "separator": " - ",
-      "totalSlots": 14,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -5313,22 +5307,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "13": "-",
         "14": ""
       },
-      "defaultSlotValues": {
-        "1": "BTC",
-        "2": "Nil",
-        "3": "Nil",
-        "4": "F",
-        "5": "FC",
-        "6": "B",
-        "7": "160",
-        "8": "125",
-        "9": "1625",
-        "10": "L",
-        "11": "Nil",
-        "12": "Nil",
-        "13": "Nil",
-        "14": "M"
-      },
+      "totalSlots": 14,
       "blocks": [
         {
           "id": "btc_b1",
@@ -6105,7 +6084,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Industri Umum 100 kgf/cm²",
-      "en": "General Industry Hydraulic Cylinder (Tekanan 100 kgf/cm²)",
+      "en": "General Industry Hydraulic Cylinder (Tekanan 100 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1e7xvl_oFTX5tECQ2A95YkxNP_e_CFd-v",
     "symbolType": "air_single_double",
@@ -6162,8 +6141,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 3000,
     "htoConfig": {
       "codePrefix": "NH",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -6172,6 +6150,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "nh_b1",
@@ -6461,7 +6440,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tie-Rod Standar 70 / 140 kgf/cm²",
-      "en": "Standard Tie-Rod Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)",
+      "en": "Standard Tie-Rod Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/18w3J8Dcqw8UjQ6PxLO3JtK7bds17NynY",
     "symbolType": "air_single_double",
@@ -6512,8 +6491,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NHC140H",
-      "separator": " - ",
-      "totalSlots": 12,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -6522,6 +6500,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 12,
       "blocks": [
         {
           "id": "nhc_b1",
@@ -7105,12 +7084,12 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
   {
     "id": "nmc70h-140h",
     "slug": "nmc70h",
-    "series": "NMC70H / NMC140H Series",
+    "series": "NMC70H Series",
     "code": "NMC70H",
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Mill Type 70 / 140 kgf/cm²",
-      "en": "Mill Type Heavy Duty Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)",
+      "en": "Mill Type Heavy Duty Hydraulic Cylinder (Tekanan 70 / 140 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1NnXVSw2-utzPTXuxct5PClQyj1QKqGrK",
     "symbolType": "hydraulic",
@@ -7169,8 +7148,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NMC70H",
-      "separator": " - ",
-      "totalSlots": 14,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -7187,6 +7165,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "13": "-",
         "14": ""
       },
+      "totalSlots": 14,
       "blocks": [
         {
           "id": "nmc_b1",
@@ -7735,7 +7714,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Mill Type Tekanan Tinggi 210 kgf/cm²",
-      "en": "High-Pressure Mill Type Hydraulic Cylinder (Tekanan 210 kgf/cm²)",
+      "en": "High-Pressure Mill Type Hydraulic Cylinder (Tekanan 210 kgf/cm²)"
     },
     "image": "https://lh3.googleusercontent.com/d/1aEiJdbre-l_RPiVVFZYqfJtFifxHL3vw",
     "symbolType": "hydraulic",
@@ -7793,8 +7772,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NMC210H",
-      "separator": " - ",
-      "totalSlots": 12,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -7809,6 +7787,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "11": "-",
         "12": ""
       },
+      "totalSlots": 12,
       "blocks": [
         {
           "id": "nmc210_b1",
@@ -8336,7 +8315,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Water Cylinder",
     "subTitle": {
       "id": "Silinder Air Ukuran Besar",
-      "en": "Water Cylinder Large Size",
+      "en": "Water Cylinder Large Size"
     },
     "image": "https://lh3.googleusercontent.com/d/1_J6GNDxVPhV9FkPOhnAG3DsqkEciwOgd",
     "symbolType": "air_single_double",
@@ -8384,7 +8363,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "htoConfig": {
       "codePrefix": "WCL",
       "separator": "-",
-      "totalSlots": 11,
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -8398,19 +8376,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "10": "-",
         "11": ""
       },
-      "defaultSlotValues": {
-        "1": "WCL",
-        "2": "",
-        "3": "B",
-        "4": "125",
-        "5": "50",
-        "6": "",
-        "7": "",
-        "8": "A54",
-        "9": "2",
-        "10": "",
-        "11": ""
-      },
+      "totalSlots": 11,
       "blocks": [
         {
           "id": "wcl_b1",
@@ -9125,7 +9091,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Water Cylinder",
     "subTitle": {
       "id": "Silinder Air Ukuran Medium",
-      "en": "Water Cylinder Medium Size",
+      "en": "Water Cylinder Medium Size"
     },
     "image": "https://lh3.googleusercontent.com/d/11R9wYxeBnxe-eNjEU--dMumhr2Lc6GkI",
     "symbolType": "air_single_double",
@@ -9180,7 +9146,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "htoConfig": {
       "codePrefix": "WCM",
       "separator": "-",
-      "totalSlots": 12,
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -9195,20 +9160,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "11": "-",
         "12": ""
       },
-      "defaultSlotValues": {
-        "1": "WCM",
-        "2": "B",
-        "3": "40",
-        "4": "50",
-        "5": "",
-        "6": "",
-        "7": "",
-        "8": "A54",
-        "9": "2",
-        "10": "",
-        "11": "R",
-        "12": ""
-      },
+      "totalSlots": 12,
       "blocks": [
         {
           "id": "wcm_b1",
@@ -9966,467 +9918,14 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-    "id": "npp-nhpu",
-    "slug": "npp-nhpu",
-    "series": "NPP / NHPU Series",
-    "code": "NPP/NHPU",
-    "category": "Hydraulic Pump & Power Unit",
-    "subTitle": {
-      "id": "Hydraulic Power Pack & Power Unit (4L - 500L)",
-      "en": "Modular Hydraulic Power Pack & Power Unit (4L - 500L)",
-    },
-    "features": {
-      "id": [
-        "Tersedia pilihan seri NPP (kapasitas tangki ≤ 70 Liter) dan NHPU (> 70 Liter).",
-        "Kapasitas tangki 4 liter hingga 500 liter.",
-        "Pilihan motor listrik 0.2 kW hingga 15+ kW sesuai debit dan tekanan.",
-        "Pilihan pompa: Gear Pump (GP), Vane Pump (VP), atau Piston Pump (PP).",
-        "Manifold block modular hingga 10 stasiun katup (MBS1 - MBS10).",
-        "Dimensi dan sirkuit hidrolik dapat dibuat custom."
-      ],
-      "en": [
-        "Available as compact NPP power pack (tank ≤ 70L) or heavy-duty NHPU unit (tank > 70L).",
-        "Comprehensive tank capacities from 4 Liters up to 500 Liters.",
-        "Precision electric motor options from 0.2 kW up to 15+ kW.",
-        "Flexible hydraulic pump selection: Gear Pump (GP), Vane Pump (VP), or Piston Pump (PP).",
-        "Modular manifold block stations up to 10 valve stations (MBS1 to MBS10).",
-        "Custom-made engineering solutions available upon customer technical request."
-      ]
-    },
-    "image": "https://lh3.googleusercontent.com/d/16AgS6UhWm3giR5VHoJnd0ZYRlpOKMNa6",
-    "symbolType": "powerpack",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "NPP",
-      "separator": "-",
-      "totalSlots": 6,
-      "slotDelimiters": {
-        "1": "-",
-        "2": "-",
-        "3": "-",
-        "4": "-",
-        "5": "-",
-        "6": ""
-      },
-      "blocks": [
-        {
-          "id": "npp_b1",
-          "title": "Series",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "s_npp",
-              "code": "NPP",
-              "label": "NPP Power Pack",
-              "values": {
-                "desc": "Unit kompak tangki kapasitas ≤ 70 Liter"
-              }
-            },
-            {
-              "id": "s_nhpu",
-              "code": "NHPU",
-              "label": "NHPU Hydraulic Power Unit",
-              "values": {
-                "desc": "Unit tenaga hidrolik industri tangki kapasitas > 70 Liter"
-              }
-            }
-          ]
-        },
-        {
-          "id": "npp_b2",
-          "title": "Tank Capacity",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "vol",
-              "label": "Volume Tangki"
-            }
-          ],
-          "rows": [
-            {
-              "id": "tc_004",
-              "code": "004LT",
-              "label": "4 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 4 Liter"
-              }
-            },
-            {
-              "id": "tc_006",
-              "code": "006LT",
-              "label": "6 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 6 Liter"
-              }
-            },
-            {
-              "id": "tc_010",
-              "code": "010LT",
-              "label": "10 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 10 Liter"
-              }
-            },
-            {
-              "id": "tc_016",
-              "code": "016LT",
-              "label": "16 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 16 Liter"
-              }
-            },
-            {
-              "id": "tc_025",
-              "code": "025LT",
-              "label": "25 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 25 Liter"
-              }
-            },
-            {
-              "id": "tc_040",
-              "code": "040LT",
-              "label": "40 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 40 Liter"
-              }
-            },
-            {
-              "id": "tc_060",
-              "code": "060LT",
-              "label": "60 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 60 Liter"
-              }
-            },
-            {
-              "id": "tc_070",
-              "code": "070LT",
-              "label": "70 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 70 Liter"
-              }
-            },
-            {
-              "id": "tc_100",
-              "code": "100LT",
-              "label": "100 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 100 Liter"
-              }
-            },
-            {
-              "id": "tc_150",
-              "code": "150LT",
-              "label": "150 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 150 Liter"
-              }
-            },
-            {
-              "id": "tc_200",
-              "code": "200LT",
-              "label": "200 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 200 Liter"
-              }
-            },
-            {
-              "id": "tc_300",
-              "code": "300LT",
-              "label": "300 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 300 Liter"
-              }
-            },
-            {
-              "id": "tc_500",
-              "code": "500LT",
-              "label": "500 Liter",
-              "values": {
-                "vol": "Tangki minyak hidrolik 500 Liter"
-              }
-            }
-          ]
-        },
-        {
-          "id": "npp_b3",
-          "title": "Electric Motor Power",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "pwr",
-              "label": "Daya Motor Listrik"
-            }
-          ],
-          "rows": [
-            {
-              "id": "em_02",
-              "code": "0.2KW",
-              "label": "0.2 kW",
-              "values": {
-                "pwr": "0.2 kilo Watt (Single/3-Phase)"
-              }
-            },
-            {
-              "id": "em_04",
-              "code": "0.4KW",
-              "label": "0.4 kW",
-              "values": {
-                "pwr": "0.4 kilo Watt"
-              }
-            },
-            {
-              "id": "em_075",
-              "code": "0.75KW",
-              "label": "0.75 kW",
-              "values": {
-                "pwr": "0.75 kilo Watt"
-              }
-            },
-            {
-              "id": "em_15",
-              "code": "1.5KW",
-              "label": "1.5 kW",
-              "values": {
-                "pwr": "1.5 kilo Watt"
-              }
-            },
-            {
-              "id": "em_22",
-              "code": "2.2KW",
-              "label": "2.2 kW",
-              "values": {
-                "pwr": "2.2 kilo Watt"
-              }
-            },
-            {
-              "id": "em_37",
-              "code": "3.7KW",
-              "label": "3.7 kW",
-              "values": {
-                "pwr": "3.7 kilo Watt"
-              }
-            },
-            {
-              "id": "em_55",
-              "code": "5.5KW",
-              "label": "5.5 kW",
-              "values": {
-                "pwr": "5.5 kilo Watt"
-              }
-            },
-            {
-              "id": "em_75",
-              "code": "7.5KW",
-              "label": "7.5 kW",
-              "values": {
-                "pwr": "7.5 kilo Watt"
-              }
-            },
-            {
-              "id": "em_110",
-              "code": "11KW",
-              "label": "11.0 kW",
-              "values": {
-                "pwr": "11.0 kilo Watt"
-              }
-            },
-            {
-              "id": "em_150",
-              "code": "15KW",
-              "label": "15.0 kW",
-              "values": {
-                "pwr": "15.0 kilo Watt"
-              }
-            }
-          ]
-        },
-        {
-          "id": "npp_b4",
-          "title": "Hydraulic Pump Type",
-          "slotIndex": 4,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "pump",
-              "label": "Teknologi Pompa"
-            }
-          ],
-          "rows": [
-            {
-              "id": "hp_gp",
-              "code": "GP",
-              "label": "Gear Pump (GP)",
-              "values": {
-                "pump": "Pompa roda gigi eksternal"
-              }
-            },
-            {
-              "id": "hp_vp",
-              "code": "VP",
-              "label": "Vane Pump (VP)",
-              "values": {
-                "pump": "Pompa vane, kebisingan rendah"
-              }
-            },
-            {
-              "id": "hp_pp",
-              "code": "PP",
-              "label": "Piston Pump (PP)",
-              "values": {
-                "pump": "Pompa piston tekanan tinggi"
-              }
-            }
-          ]
-        },
-        {
-          "id": "npp_b5",
-          "title": "Manifold Block Stations",
-          "slotIndex": 5,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "st",
-              "label": "Jumlah Stasiun Valving"
-            }
-          ],
-          "rows": [
-            {
-              "id": "mbs_1",
-              "code": "MBS1",
-              "label": "MBS1 (1 Station)",
-              "values": {
-                "st": "1 valve manifold station"
-              }
-            },
-            {
-              "id": "mbs_2",
-              "code": "MBS2",
-              "label": "MBS2 (2 Stations)",
-              "values": {
-                "st": "2 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_3",
-              "code": "MBS3",
-              "label": "MBS3 (3 Stations)",
-              "values": {
-                "st": "3 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_4",
-              "code": "MBS4",
-              "label": "MBS4 (4 Stations)",
-              "values": {
-                "st": "4 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_5",
-              "code": "MBS5",
-              "label": "MBS5 (5 Stations)",
-              "values": {
-                "st": "5 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_6",
-              "code": "MBS6",
-              "label": "MBS6 (6 Stations)",
-              "values": {
-                "st": "6 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_7",
-              "code": "MBS7",
-              "label": "MBS7 (7 Stations)",
-              "values": {
-                "st": "7 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_8",
-              "code": "MBS8",
-              "label": "MBS8 (8 Stations)",
-              "values": {
-                "st": "8 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_9",
-              "code": "MBS9",
-              "label": "MBS9 (9 Stations)",
-              "values": {
-                "st": "9 valve manifold stations"
-              }
-            },
-            {
-              "id": "mbs_10",
-              "code": "MBS10",
-              "label": "MBS10 (10 Stations)",
-              "values": {
-                "st": "10 valve manifold stations"
-              }
-            }
-          ]
-        },
-        {
-          "id": "npp_b6",
-          "title": "Customization",
-          "slotIndex": 6,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "ds",
-              "label": "Spesifikasi Desain"
-            }
-          ],
-          "rows": [
-            {
-              "id": "ds_std",
-              "code": "STD",
-              "label": "Standard Factory Design",
-              "values": {
-                "ds": "Desain modular standar BELSA"
-              }
-            },
-            {
-              "id": "ds_m",
-              "code": "M",
-              "label": "Custom Made",
-              "values": {
-                "ds": "Dimensi, sirkuit, dan instrumen khusus"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
     "id": "bhh-bsh",
     "slug": "bhh",
-    "series": "BHH / BSH Series",
+    "series": "BHH Series",
     "code": "BHH",
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Hydraulic & Steam Hose Belsa",
-      "en": "Industrial Hose (Hydraulic & Steam Hose Belsa)",
+      "en": "Industrial Hose (Hydraulic & Steam Hose Belsa)"
     },
     "image": "https://lh3.googleusercontent.com/d/1aqxalbtdWdvY257MIVv-VrG7yCaJmaMo",
     "symbolType": "hose",
@@ -10444,13 +9943,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Comprehensive end fitting options: JIC, JIS, BSP, ORFS, SAE Flange, and Komatsu metric."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHH",
-      "separator": " - ",
-      "totalSlots": 13,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -10466,21 +9977,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "12": "-",
         "13": ""
       },
-      "defaultSlotValues": {
-        "1": "BHH",
-        "2": "A",
-        "3": "08",
-        "4": "1000",
-        "5": "A1",
-        "6": "",
-        "7": "",
-        "8": "A1",
-        "9": "",
-        "10": "",
-        "11": "",
-        "12": "",
-        "13": ""
-      },
+      "totalSlots": 13,
       "blocks": [
         {
           "id": "bhh_b1",
@@ -11698,8 +11195,8 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "code": "BMGV",
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
-      "id": "Manual Gate Valve 1/2 in - 16 in",
-      "en": "Manual Gate Valve 1/2 in - 16 in",
+      "id": "Manual Gate Valve 1/2\" - 16\"",
+      "en": "Manual Gate Valve (Katup Gerbang Industri 1/2\" - 16\")"
     },
     "image": "https://lh3.googleusercontent.com/d/1HJgj3MIFgvAMsx3r6_c-NA8DYgRQ3dMi",
     "symbolType": "valve",
@@ -11719,19 +11216,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Medium: Water, Oil, Gas (-10°C to 425°C)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BMGV",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bmgv_b1",
@@ -12046,7 +11556,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Manual Ball Valve 1-Pc / 2-Pc / 3-Pc & Flange",
-      "en": "Manual Ball Valve (Katup Bola 1-Pc / 2-Pc / 3-Pc & Flange)",
+      "en": "Manual Ball Valve (Katup Bola 1-Pc / 2-Pc / 3-Pc & Flange)"
     },
     "image": "https://lh3.googleusercontent.com/d/1wN4lJnRIRAUXaWs2KgNX-njhYrgphEFM",
     "symbolType": "valve",
@@ -12066,19 +11576,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Locking device handle option available."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BMBV",
-      "separator": " - ",
-      "totalSlots": 7,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "bmbv_b1",
@@ -12477,7 +12000,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Flange Safety Valve",
-      "en": "Flange Safety Valve (Katup Pengaman Tekanan Berlebih)",
+      "en": "Flange Safety Valve (Katup Pengaman Tekanan Berlebih)"
     },
     "image": "https://lh3.googleusercontent.com/d/1jbCh99aletzOJ36Q0MIkc2nF_INiMfmF",
     "symbolType": "valve",
@@ -12497,19 +12020,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Working temperature: -29°C to 450°C."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BSV-FL",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
-        "4": ""
+        "4": "-"
       },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bsv_b1",
@@ -12784,7 +12320,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Manual Globe Valve Flange DN15-DN300",
-      "en": "Manual Globe Valve (Katup Regulasi Aliran Flange DN15-DN300) - 12)",
+      "en": "Manual Globe Valve (Katup Regulasi Aliran Flange DN15-DN300)"
     },
     "image": "https://lh3.googleusercontent.com/d/1OfAVUNsupBRlFfWSOj8fZ553SP4LEUST",
     "symbolType": "valve",
@@ -12804,19 +12340,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom Made Solution."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BMGLV",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bmglv_b1",
@@ -13097,7 +12646,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Machine & Seal Kit",
     "subTitle": {
       "id": "Mesin Potong Karet Hidrolik Portabel",
-      "en": "Rubber Cutting Machine (Mesin Pemotong Karet Hidrolik Portabel)",
+      "en": "Rubber Cutting Machine (Mesin Pemotong Karet Hidrolik Portabel)"
     },
     "image": "https://lh3.googleusercontent.com/d/1JNi1mw_lTVipCL5DjRvYwhYXU_SFkC9h",
     "symbolType": "powerpack",
@@ -13137,7 +12686,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "htoConfig": {
       "codePrefix": "MRC",
       "separator": "-",
-      "totalSlots": 5,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -13145,13 +12693,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": "-"
       },
-      "defaultSlotValues": {
-        "1": "1.0",
-        "2": "C",
-        "3": "1000",
-        "4": "15",
-        "5": "M"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "mrc_b1",
@@ -13406,7 +12948,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Machine & Seal Kit",
     "subTitle": {
       "id": "Seal Kit Silinder Pneumatik / Hidrolik / Air",
-      "en": "Sealkit Cylinder (Kit Segel Seal Silinder Pneumatik / Hidrolik / Air)",
+      "en": "Sealkit Cylinder (Kit Segel Seal Silinder Pneumatik / Hidrolik / Air)"
     },
     "image": "https://lh3.googleusercontent.com/d/1ALOMkkPSussLvh-XKdTVJpLKtL5XoCn2",
     "symbolType": "seal",
@@ -13426,13 +12968,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom Made solutions available for non-standard cylinder bore sizes and gland dimensions."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BS",
       "separator": "-",
-      "totalSlots": 5,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -13440,13 +12994,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": "-"
       },
-      "defaultSlotValues": {
-        "1": "P",
-        "2": "MPC1-100",
-        "3": "Belsa",
-        "4": "",
-        "5": "M"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bs_b1",
@@ -13701,7 +13249,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial Brake & Clutch",
     "subTitle": {
       "id": "Air Brake Tipe Diaphragm",
-      "en": "Air Brakes (Diaphragm) (Rem Angin Industri Tipe Diafragma)",
+      "en": "Air Brakes (Diaphragm) (Rem Angin Industri Tipe Diafragma)"
     },
     "image": "https://lh3.googleusercontent.com/d/1hQ0TGkm-o5s9Rpszn6YDcyde8bsHeLPm",
     "symbolType": "none",
@@ -13721,25 +13269,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom made solution available for tailored push-rod stroke and tie rod PCD."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "AB",
       "separator": "-",
-      "totalSlots": 4,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": "-"
       },
-      "defaultSlotValues": {
-        "1": "2,5",
-        "2": "4,75",
-        "3": "MJS",
-        "4": "M"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "ab_b1",
@@ -13944,7 +13499,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Profile Cylinder ISO15552",
-      "en": "Profile Cylinder ISO15552",
+      "en": "Profile Cylinder ISO15552"
     },
     "image": "https://lh3.googleusercontent.com/d/16ZK1MKXuLevDVya8q6vF0S0ugAeBkk2A",
     "symbolType": "air_double",
@@ -13997,8 +13552,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 1000,
     "htoConfig": {
       "codePrefix": "ACI",
-      "separator": " - ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": " ",
@@ -14009,6 +13563,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "aci_b1",
@@ -14597,7 +14152,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Belsa Duplex Filter",
-      "en": "Belsa Duplex Filter 150 bar (Filter Dupleks Tekanan Tinggi 150 Bar)",
+      "en": "Belsa Duplex Filter 150 bar (Filter Dupleks Tekanan Tinggi 150 Bar)"
     },
     "image": "https://lh3.googleusercontent.com/d/1XJnIuVSOV7Z9NjbL4kLAWnLYXJSxtLPS",
     "symbolType": "valve",
@@ -14610,20 +14165,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Desain duplex: elemen filter dapat diganti tanpa menghentikan mesin."
       ],
       "en": [
-        "Highly efficient filter media",
-        "Fine particle absorption across wide pressure range",
-        "Large filter area for high dirt holding capacity",
-        "Strong chemical resistance of filter elements",
-        "Duplex design enables continuous operation"
+        "Highly efficient filter media for optimum fluid cleanliness.",
+        "Fine particle absorption across wide pressure differential ranges.",
+        "Large filter area ensuring high dirt holding capacity and long element lifespan.",
+        "Strong chemical resistance of filter elements across diverse hydraulic fluids.",
+        "Duplex design enables continuous uninterrupted operation during maintenance."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "B150LD",
       "separator": "-",
-      "totalSlots": 8,
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -14631,23 +14198,13 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": " ",
         "5": " - ",
         "6": " - ",
-        "7": " ",
-        "8": ""
+        "7": " "
       },
-      "defaultSlotValues": {
-        "1": "B150LD",
-        "2": "N",
-        "3": "0160",
-        "4": "H3XL",
-        "5": "A00",
-        "6": "V2.2",
-        "7": "M",
-        "8": "R6"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "b150ld_b1",
-          "title": "Series",
+          "title": "Filter Element Standard",
           "slotIndex": 1,
           "displayType": "table",
           "columns": [
@@ -14657,24 +14214,196 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "desc",
-              "label": "Keterangan"
+              "label": "Standar"
             }
           ],
           "rows": [
             {
-              "id": "b150ld_s1",
-              "code": "B150LD",
-              "label": "B150LD",
+              "id": "el_blank",
+              "code": "",
+              "label": "Blank (LD Type)",
               "values": {
-                "desc": "Belsa Duplex Filter 150 bar"
+                "desc": "Standard Element (Tipe LD)"
+              }
+            },
+            {
+              "id": "el_n",
+              "code": "N",
+              "label": "N (DIN 24550)",
+              "values": {
+                "desc": "With filter element according to DIN 24550 (LDN Type)"
               }
             }
           ]
         },
         {
           "id": "b150ld_b2",
-          "title": "Filter Element",
+          "title": "Size",
           "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Ukuran"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe & Kapasitas"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_0040",
+              "code": "0040",
+              "label": "0040 (LDN)",
+              "values": {
+                "desc": "Size 0040 (LDN Type DIN 24550)"
+              }
+            },
+            {
+              "id": "sz_0063",
+              "code": "0063",
+              "label": "0063 (LDN)",
+              "values": {
+                "desc": "Size 0063 (LDN Type DIN 24550)"
+              }
+            },
+            {
+              "id": "sz_0100",
+              "code": "0100",
+              "label": "0100 (LDN)",
+              "values": {
+                "desc": "Size 0100 (LDN Type DIN 24550)"
+              }
+            },
+            {
+              "id": "sz_0160",
+              "code": "0160",
+              "label": "0160 (LDN)",
+              "values": {
+                "desc": "Size 0160 (LDN Type DIN 24550 - Standar)"
+              }
+            },
+            {
+              "id": "sz_0250",
+              "code": "0250",
+              "label": "0250 (LDN)",
+              "values": {
+                "desc": "Size 0250 (LDN Type DIN 24550)"
+              }
+            },
+            {
+              "id": "sz_0400",
+              "code": "0400",
+              "label": "0400 (LDN)",
+              "values": {
+                "desc": "Size 0400 (LDN Type DIN 24550)"
+              }
+            },
+            {
+              "id": "sz_0130",
+              "code": "0130",
+              "label": "0130 (LD)",
+              "values": {
+                "desc": "Size 0130 (LD Type Standard)"
+              }
+            },
+            {
+              "id": "sz_0150",
+              "code": "0150",
+              "label": "0150 (LD)",
+              "values": {
+                "desc": "Size 0150 (LD Type Standard)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b150ld_b3",
+          "title": "Filtration Rating",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode Media"
+            },
+            {
+              "id": "desc",
+              "label": "Material & Akurasi (µm)"
+            }
+          ],
+          "rows": [
+            {
+              "id": "fr_h3xl",
+              "code": "H3XL",
+              "label": "H3XL (3 µm)",
+              "values": {
+                "desc": "Micro Glass, 3 µm"
+              }
+            },
+            {
+              "id": "fr_h6xl",
+              "code": "H6XL",
+              "label": "H6XL (6 µm)",
+              "values": {
+                "desc": "Micro Glass, 6 µm"
+              }
+            },
+            {
+              "id": "fr_h10x",
+              "code": "H10X",
+              "label": "H10X (10 µm)",
+              "values": {
+                "desc": "Micro Glass, 10 µm"
+              }
+            },
+            {
+              "id": "fr_h20x",
+              "code": "H20X",
+              "label": "H20X (20 µm)",
+              "values": {
+                "desc": "Micro Glass, 20 µm"
+              }
+            },
+            {
+              "id": "fr_g10",
+              "code": "G10",
+              "label": "G10 (10 µm)",
+              "values": {
+                "desc": "Stainless Steel Wire Mesh, 10 µm"
+              }
+            },
+            {
+              "id": "fr_g20",
+              "code": "G20",
+              "label": "G20 (20 µm)",
+              "values": {
+                "desc": "Stainless Steel Wire Mesh, 20 µm"
+              }
+            },
+            {
+              "id": "fr_g40",
+              "code": "G40",
+              "label": "G40 (40 µm)",
+              "values": {
+                "desc": "Stainless Steel Wire Mesh, 40 µm"
+              }
+            },
+            {
+              "id": "fr_g100",
+              "code": "G100",
+              "label": "G100 (100 µm)",
+              "values": {
+                "desc": "Stainless Steel Wire Mesh, 100 µm"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b150ld_b4",
+          "title": "Pressure Differential",
+          "slotIndex": 4,
           "displayType": "table",
           "columns": [
             {
@@ -14683,212 +14412,22 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "desc",
-              "label": "Keterangan"
+              "label": "Tekanan Diferensial & Katup Bypass"
             }
           ],
           "rows": [
             {
-              "id": "b150ld_fe_n",
-              "code": "N",
-              "label": "N",
-              "values": {
-                "desc": "With filter element according to DIN 24550 (only with size 0040–0100 + 0160–0400)"
-              }
-            }
-          ]
-        },
-        {
-          "id": "b150ld_b3",
-          "title": "Size",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Size"
-            },
-            {
-              "id": "desc",
-              "label": "Type"
-            }
-          ],
-          "rows": [
-            {
-              "id": "b150ld_sz_0040",
-              "code": "0040",
-              "label": "0040",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0063",
-              "code": "0063",
-              "label": "0063",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0100",
-              "code": "0100",
-              "label": "0100",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0160",
-              "code": "0160",
-              "label": "0160",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0250",
-              "code": "0250",
-              "label": "0250",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0400",
-              "code": "0400",
-              "label": "0400",
-              "values": {
-                "desc": "LDN Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0130",
-              "code": "0130",
-              "label": "0130",
-              "values": {
-                "desc": "LD Type"
-              }
-            },
-            {
-              "id": "b150ld_sz_0150",
-              "code": "0150",
-              "label": "0150",
-              "values": {
-                "desc": "LD Type"
-              }
-            }
-          ]
-        },
-        {
-          "id": "b150ld_b4",
-          "title": "Filtration Rating (µm)",
-          "slotIndex": 4,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Code"
-            },
-            {
-              "id": "desc",
-              "label": "Description"
-            }
-          ],
-          "rows": [
-            {
-              "id": "b150ld_fr_g10",
-              "code": "G10",
-              "label": "G10",
-              "values": {
-                "desc": "Stainless Steel Wire Mesh, 10 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_g20",
-              "code": "G20",
-              "label": "G20",
-              "values": {
-                "desc": "Stainless Steel Wire Mesh, 20 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_g40",
-              "code": "G40",
-              "label": "G40",
-              "values": {
-                "desc": "Stainless Steel Wire Mesh, 40 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_g100",
-              "code": "G100",
-              "label": "G100",
-              "values": {
-                "desc": "Stainless Steel Wire Mesh, 100 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_h3xl",
-              "code": "H3XL",
-              "label": "H3XL",
-              "values": {
-                "desc": "Micro Glass, 3 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_h6xl",
-              "code": "H6XL",
-              "label": "H6XL",
-              "values": {
-                "desc": "Micro Glass, 6 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_h10x",
-              "code": "H10X",
-              "label": "H10X",
-              "values": {
-                "desc": "Micro Glass, 10 µm"
-              }
-            },
-            {
-              "id": "b150ld_fr_h20x",
-              "code": "H20X",
-              "label": "H20X",
-              "values": {
-                "desc": "Micro Glass, 20 µm"
-              }
-            }
-          ]
-        },
-        {
-          "id": "b150ld_b5",
-          "title": "Pressure Differential",
-          "slotIndex": 5,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Code"
-            },
-            {
-              "id": "desc",
-              "label": "Description"
-            }
-          ],
-          "rows": [
-            {
-              "id": "b150ld_pd_a00",
+              "id": "pd_a00",
               "code": "A00",
-              "label": "A00",
+              "label": "A00 (30 bar)",
               "values": {
-                "desc": "30 bar [435 psi], with bypass valve"
+                "desc": "30 bar [435 psi], with bypass valve (Standar)"
               }
             },
             {
-              "id": "b150ld_pd_b00",
+              "id": "pd_b00",
               "code": "B00",
-              "label": "B00",
+              "label": "B00 (330 bar)",
               "values": {
                 "desc": "330 bar [4785 psi], without bypass valve"
               }
@@ -14896,23 +14435,23 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
           ]
         },
         {
-          "id": "b150ld_b6",
+          "id": "b150ld_b5",
           "title": "Maintenance Indicator",
-          "slotIndex": 6,
+          "slotIndex": 5,
           "displayType": "table",
           "columns": [
             {
               "id": "code",
-              "label": "Code"
+              "label": "Kode Indikator"
             },
             {
               "id": "desc",
-              "label": "Description"
+              "label": "Tekanan Pengalihan & Bypass"
             }
           ],
           "rows": [
             {
-              "id": "b150ld_mi_v22",
+              "id": "mi_v22",
               "code": "V2.2",
               "label": "V2.2",
               "values": {
@@ -14920,7 +14459,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
               }
             },
             {
-              "id": "b150ld_mi_v50",
+              "id": "mi_v50",
               "code": "V5.0",
               "label": "V5.0",
               "values": {
@@ -14930,101 +14469,101 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
           ]
         },
         {
-          "id": "b150ld_b7",
-          "title": "Seal",
-          "slotIndex": 7,
+          "id": "b150ld_b6",
+          "title": "Seal Material",
+          "slotIndex": 6,
           "displayType": "table",
           "columns": [
             {
               "id": "code",
-              "label": "Code"
+              "label": "Kode Seal"
             },
             {
               "id": "desc",
-              "label": "Description"
+              "label": "Material"
             }
           ],
           "rows": [
             {
-              "id": "b150ld_seal_m",
+              "id": "seal_m",
               "code": "M",
-              "label": "M",
+              "label": "M (NBR)",
               "values": {
-                "desc": "NBR Seal"
+                "desc": "NBR Seal (Minyak Mineral Standar)"
               }
             },
             {
-              "id": "b150ld_seal_v",
+              "id": "seal_v",
               "code": "V",
-              "label": "V",
+              "label": "V (FKM)",
               "values": {
-                "desc": "FKM Seal"
+                "desc": "FKM Seal (Viton, tahan panas dan kimia)"
               }
             }
           ]
         },
         {
-          "id": "b150ld_b8",
+          "id": "b150ld_b7",
           "title": "Port",
-          "slotIndex": 8,
+          "slotIndex": 7,
           "displayType": "table",
           "columns": [
             {
               "id": "code",
-              "label": "Code"
+              "label": "Kode Port"
             },
             {
               "id": "desc",
-              "label": "Description"
+              "label": "Ukuran & Standar Ulir / Flange"
             }
           ],
           "rows": [
             {
-              "id": "b150ld_p_r4",
+              "id": "p_r4",
               "code": "R4",
-              "label": "R4",
+              "label": "R4 (G1\")",
               "values": {
-                "desc": "G1 Inch"
+                "desc": "G 1 Inch (ISO 228)"
               }
             },
             {
-              "id": "b150ld_p_r5",
+              "id": "p_r5",
               "code": "R5",
-              "label": "R5",
+              "label": "R5 (G1 1/4\")",
               "values": {
-                "desc": "G1 1/4 Inch"
+                "desc": "G 1 1/4 Inch (ISO 228)"
               }
             },
             {
-              "id": "b150ld_p_r6",
+              "id": "p_r6",
               "code": "R6",
-              "label": "R6",
+              "label": "R6 (G1 1/2\")",
               "values": {
-                "desc": "G1 1/2 Inch"
+                "desc": "G 1 1/2 Inch (ISO 228 - Standar)"
               }
             },
             {
-              "id": "b150ld_p_u4",
+              "id": "p_u4",
               "code": "U4",
-              "label": "U4",
+              "label": "U4 (SAE 12)",
               "values": {
-                "desc": "SAE 12"
+                "desc": "SAE 12 (1 1/16-12 UN)"
               }
             },
             {
-              "id": "b150ld_p_s5",
+              "id": "p_s5",
               "code": "S5",
-              "label": "S5",
+              "label": "S5 (SAE 1 1/4\")",
               "values": {
-                "desc": "SAE 1 1/4 Inch"
+                "desc": "SAE Flange 1 1/4 Inch"
               }
             },
             {
-              "id": "b150ld_p_s6",
+              "id": "p_s6",
               "code": "S6",
-              "label": "S6",
+              "label": "S6 (SAE 1 1/2\")",
               "values": {
-                "desc": "SAE 1 1/2 Inch"
+                "desc": "SAE Flange 1 1/2 Inch"
               }
             }
           ]
@@ -15040,7 +14579,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Low / Medium Pressure Duplex Filter",
-      "en": "Low / Medium Pressure Duplex Filter",
+      "en": "Low / Medium Pressure Duplex Filter"
     },
     "image": "https://lh3.googleusercontent.com/d/1or9XX8c0cenA6wc-5TW-mrsBfuK3zpKl",
     "symbolType": "valve",
@@ -15060,13 +14599,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Longer life and easy servicing."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "B160",
       "separator": "-",
-      "totalSlots": 13,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -15082,21 +14633,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "12": "-",
         "13": ""
       },
-      "defaultSlotValues": {
-        "1": "B160",
-        "2": "LD",
-        "3": "0013",
-        "4": "H10XP",
-        "5": "A",
-        "6": "0P",
-        "7": "0",
-        "8": "9",
-        "9": "A5.0",
-        "10": "G06",
-        "11": "P",
-        "12": "0",
-        "13": "0"
-      },
+      "totalSlots": 13,
       "blocks": [
         {
           "id": "b160_b1",
@@ -16295,7 +15832,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "Belsa Inline Filter 350 bar",
-      "en": "Belsa Inline Filter 350 bar (Filter Tekanan Tinggi Jalur Pipa 350 Bar)",
+      "en": "Belsa Inline Filter 350 bar (Filter Tekanan Tinggi Jalur Pipa 350 Bar)"
     },
     "image": "https://lh3.googleusercontent.com/d/1gFNwafpIiBusZ1SQS4xCvsiLYLK7WDYb",
     "symbolType": "valve",
@@ -16315,13 +15852,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Visual and electrical differential clogging indicators for condition monitoring."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "B350LE",
-      "separator": " ",
-      "totalSlots": 7,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -16331,15 +15880,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": " - ",
         "7": " - "
       },
-      "defaultSlotValues": {
-        "1": "N",
-        "2": "0100",
-        "3": "H10XL",
-        "4": "A00",
-        "5": "V5.0",
-        "6": "M",
-        "7": "R4"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "b350le_b1",
@@ -16742,7 +16283,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Pneumatic 3 Way Control Valve",
-      "en": "Diaphragm, Pneumatic, Motorized, or Manual.",
+      "en": "Diaphragm, Pneumatic, Motorized, or Manual."
     },
     "image": "https://lh3.googleusercontent.com/d/1TxtX9qC2rbvo8au9gCQ8dKdvBbJozacA",
     "symbolType": "valve",
@@ -16759,16 +16300,28 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Offers sizes from DN25 (1 Inch) up to DN100 (4 Inch).",
         "Positioner, Potentiometer, or On/Off.",
         "pressures from PN10 (10 Bar) to PN40 (40 Bar).",
-        "Stainless Steel 304 or 316. B3WCV B3WCV Belsa Pneumatic 3 Way Control Valve Series B3WCV Belsa 3 Way Control Valve B3WCV DF- DN65- PS- - PN16 - SS304 Type Actuator DF Diafraghma Type P Pneumatic Type MR Motorized Type M Manual Type Size DN25 Size 1 Inch DN50 Size 2 Inch DN65 Size 1 1/2Inch DN75 Size 3 Inch DN100 Size 4 Inch Number Design PS With Positioner P Potensiometer O On/off Pressure Rating PN10 Pressure Rating 10 Bar PN16 Pressure Rating 16 Bar PN25 Pressure Rating 25 Bar PN40 Pressure Rating 40 Bar Material Stem / Disc / Ball SS304 Stainless Steel 304 SS316 Stailess Stell 316"
+        "Stainless Steel 304 or 316."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "B3WCV",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -16777,6 +16330,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "b3wcv_b1",
@@ -16796,14 +16350,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
               "label": "Belsa 3 Way Control Valve",
               "values": {
                 "desc": "Belsa 3 Way Control Valve"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "B3WCV",
-              "label": "DF- DN65- PS- - PN16 - SS304",
-              "values": {
-                "desc": "DF- DN65- PS- - PN16 - SS304"
               }
             }
           ]
@@ -17050,2129 +16596,2129 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-        "id": "b4we",
-        "slug": "b4we",
-        "series": "B4WE Series",
-        "code": "B4WE",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve",
-        },
-        "image": "https://lh3.googleusercontent.com/d/1iSWnCr8YLbVJpIKC-tIJD-lFtMAhzEl0",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Tersedia dalam versi 4/3, 4/2, atau 3/2-way.",
-                "Didesain untuk lingkungan atmosfer berpotensi ledakan (potentially explosive atmospheres).",
-                "Pola porting sesuai standar ISO 4401.",
-                "Dilengkapi wet-pin DC solenoid berdaya tinggi.",
-                "Solenoid coil dapat diputar hingga 90°."
-            ],
-            "en": [
-                "Available in 4/3, 4/2, or 3/2-way versions.",
-                "Designed for potentially explosive atmospheres.",
-                "Porting pattern according to ISO 4401.",
-                "Equipped with wet-pin DC solenoids.",
-                "Solenoid coil is rotatable by 90°."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "B4WE",
-            "separator": "",
-            "slotDelimiters": {
-                "1": "",
-                "2": "",
-                "3": "",
-                "4": "/",
-                "5": "",
-                "6": "",
-                "7": "",
-                "8": "",
-                "9": "/",
-                "10": ""
-            },
-            "totalSlots": 10,
-            "defaultSlotValues": {
-                "1": "B4WE",
-                "2": "10",
-                "3": "J",
-                "4": "50",
-                "5": "",
-                "6": "E",
-                "7": "G24",
-                "8": "N6",
-                "9": "K4",
-                "10": "M"
-            },
-            "blocks": [
-                {
-                    "id": "b4we_b1",
-                    "title": "Series",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_b4we",
-                            "code": "B4WE",
-                            "label": "B4WE",
-                            "values": {
-                                "desc": "Belsa Directional Spool Valves, Direct Operated with Solenoid Actuation"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b2",
-                    "title": "Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_06",
-                            "code": "06",
-                            "label": "Size 06",
-                            "values": {
-                                "desc": "Size 06 (CETOP 03 / NG6)"
-                            }
-                        },
-                        {
-                            "id": "sz_10",
-                            "code": "10",
-                            "label": "Size 10",
-                            "values": {
-                                "desc": "Size 10 (CETOP 05 / NG10)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b3",
-                    "title": "Spool Type",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Simbol Spool"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Konfigurasi Aliran"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sp_j",
-                            "code": "J",
-                            "label": "J",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool J (All Ports Closed / Center Position)"
-                            }
-                        },
-                        {
-                            "id": "sp_e",
-                            "code": "E",
-                            "label": "E",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool E (All Ports Closed)"
-                            }
-                        },
-                        {
-                            "id": "sp_g",
-                            "code": "G",
-                            "label": "G",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool G (P Closed, A & B to Tank)"
-                            }
-                        },
-                        {
-                            "id": "sp_h",
-                            "code": "H",
-                            "label": "H",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool H (All Ports to Tank)"
-                            }
-                        },
-                        {
-                            "id": "sp_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool D (4/2-way Operation)"
-                            }
-                        },
-                        {
-                            "id": "sp_c",
-                            "code": "C",
-                            "label": "C",
-                            "values": {
-                                "desc": "Symbols; Possible Version - Spool C (4/2-way Operation)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b4",
-                    "title": "Number Design",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Desain"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_50",
-                            "code": "50",
-                            "label": "50",
-                            "values": {
-                                "desc": "Component Series 50"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b5",
-                    "title": "Spring Type",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Pegas"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "spg_nil",
-                            "code": "",
-                            "label": "Nil",
-                            "values": {
-                                "desc": "With Spring Return (Standard)"
-                            }
-                        },
-                        {
-                            "id": "spg_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "With Reinforced Compression Spring (for quick switching off)"
-                            }
-                        },
-                        {
-                            "id": "spg_o",
-                            "code": "O",
-                            "label": "O",
-                            "values": {
-                                "desc": "Without Spring Return"
-                            }
-                        },
-                        {
-                            "id": "spg_of",
-                            "code": "OF",
-                            "label": "OF",
-                            "values": {
-                                "desc": "Without Spring Return With Detent"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b6",
-                    "title": "Power Type",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Karakteristik Solenoid"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "pwr_e",
-                            "code": "E",
-                            "label": "E",
-                            "values": {
-                                "desc": "High-Power Wet-Pin Solenoid with Detachable Coil"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b7",
-                    "title": "Electrical Voltages",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tegangan Coil"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "v_g12",
-                            "code": "G12",
-                            "label": "G12",
-                            "values": {
-                                "desc": "DC12V"
-                            }
-                        },
-                        {
-                            "id": "v_g24",
-                            "code": "G24",
-                            "label": "G24",
-                            "values": {
-                                "desc": "DC24V"
-                            }
-                        },
-                        {
-                            "id": "v_g110",
-                            "code": "G110",
-                            "label": "G110",
-                            "values": {
-                                "desc": "AC110V"
-                            }
-                        },
-                        {
-                            "id": "v_g220",
-                            "code": "G220",
-                            "label": "G220",
-                            "values": {
-                                "desc": "AC220V"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b8",
-                    "title": "Manual Override",
-                    "slotIndex": 8,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Fitur Manual Override"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "mo_nil",
-                            "code": "",
-                            "label": "Nil",
-                            "values": {
-                                "desc": "Without Manual Override"
-                            }
-                        },
-                        {
-                            "id": "mo_n5",
-                            "code": "N5",
-                            "label": "N5",
-                            "values": {
-                                "desc": "With Lockable Manual Override \"Mushroom Button\" (Large)"
-                            }
-                        },
-                        {
-                            "id": "mo_n6",
-                            "code": "N6",
-                            "label": "N6",
-                            "values": {
-                                "desc": "With Manual Override \"Mushroom Button\" (Large), Not Lockable"
-                            }
-                        },
-                        {
-                            "id": "mo_n8",
-                            "code": "N8",
-                            "label": "N8",
-                            "values": {
-                                "desc": "With Concealed Manual Override and Protective Cap"
-                            }
-                        },
-                        {
-                            "id": "mo_n9",
-                            "code": "N9",
-                            "label": "N9",
-                            "values": {
-                                "desc": "With Concealed Manual Override (Standard)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b9",
-                    "title": "Electrical Connection",
-                    "slotIndex": 9,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Konektor Elektrik"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "conn_k4",
-                            "code": "K4",
-                            "label": "K4",
-                            "values": {
-                                "desc": "Connector 3-pole (2+PE) according to DIN EN"
-                            }
-                        },
-                        {
-                            "id": "conn_k4k",
-                            "code": "K4K",
-                            "label": "K4K",
-                            "values": {
-                                "desc": "Connector 3-pole (2+PE) according to DIN EN 175301-803, With potted-in plug base and sealing element"
-                            }
-                        },
-                        {
-                            "id": "conn_k72l",
-                            "code": "K72L",
-                            "label": "K72L",
-                            "values": {
-                                "desc": "Connector, 4-pole, M12x1 according to DIN EN 61076-2-101 with suppressor diode, coding, Pin assignment according to DESINA"
-                            }
-                        },
-                        {
-                            "id": "conn_c4z",
-                            "code": "C4Z",
-                            "label": "C4Z",
-                            "values": {
-                                "desc": "Connector 2-pole (Junior-Timer type), Connector radial to the valve axis"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we_b10",
-                    "title": "Seal Material",
-                    "slotIndex": 10,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_m",
-                            "code": "M",
-                            "label": "M",
-                            "values": {
-                                "desc": "NBR Seals (Standard Mineral Oil)"
-                            }
-                        },
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "FKM Seals (Viton, High Temperature & Synthetic Fluids)"
-                            }
-                        },
-                        {
-                            "id": "seal_mh",
-                            "code": "MH",
-                            "label": "MH",
-                            "values": {
-                                "desc": "Recommended for Operation with HFC Hydraulic Fluids"
-                            }
-                        },
-                        {
-                            "id": "seal_mt",
-                            "code": "MT",
-                            "label": "MT",
-                            "values": {
-                                "desc": "Low-Temperature Version (Only with Version \"Without Manual Override\")"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+    "id": "b4we",
+    "slug": "b4we",
+    "series": "B4WE Series",
+    "code": "B4WE",
+    "category": "Industrial & Hydraulic Valve",
+    "subTitle": {
+      "id": "Belsa Directional Spool Valve",
+      "en": "Belsa Directional Spool Valve"
     },
+    "image": "https://lh3.googleusercontent.com/d/1iSWnCr8YLbVJpIKC-tIJD-lFtMAhzEl0",
+    "symbolType": "valve",
+    "features": {
+      "id": [
+        "Tersedia dalam versi 4/3, 4/2, atau 3/2-way.",
+        "Didesain untuk lingkungan atmosfer berpotensi ledakan (potentially explosive atmospheres).",
+        "Pola porting sesuai standar ISO 4401.",
+        "Dilengkapi wet-pin DC solenoid berdaya tinggi.",
+        "Solenoid coil dapat diputar hingga 90°."
+      ],
+      "en": [
+        "Available in 4/3, 4/2, or 3/2-way versions.",
+        "Designed for potentially explosive atmospheres.",
+        "Porting pattern according to ISO 4401.",
+        "Equipped with wet-pin DC solenoids.",
+        "Solenoid coil is rotatable by 90°."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "B4WE",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "/",
+        "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": "/",
+        "10": ""
+      },
+      "totalSlots": 10,
+      "blocks": [
+        {
+          "id": "b4we_b1",
+          "title": "Series",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "ser_b4we",
+              "code": "B4WE",
+              "label": "B4WE",
+              "values": {
+                "desc": "Belsa Directional Spool Valves, Direct Operated with Solenoid Actuation"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b2",
+          "title": "Size",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Ukuran"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_06",
+              "code": "06",
+              "label": "Size 06",
+              "values": {
+                "desc": "Size 06 (CETOP 03 / NG6)"
+              }
+            },
+            {
+              "id": "sz_10",
+              "code": "10",
+              "label": "Size 10",
+              "values": {
+                "desc": "Size 10 (CETOP 05 / NG10)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b3",
+          "title": "Spool Type",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Simbol Spool"
+            },
+            {
+              "id": "desc",
+              "label": "Konfigurasi Aliran"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sp_j",
+              "code": "J",
+              "label": "J",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool J (All Ports Closed / Center Position)"
+              }
+            },
+            {
+              "id": "sp_e",
+              "code": "E",
+              "label": "E",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool E (All Ports Closed)"
+              }
+            },
+            {
+              "id": "sp_g",
+              "code": "G",
+              "label": "G",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool G (P Closed, A & B to Tank)"
+              }
+            },
+            {
+              "id": "sp_h",
+              "code": "H",
+              "label": "H",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool H (All Ports to Tank)"
+              }
+            },
+            {
+              "id": "sp_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool D (4/2-way Operation)"
+              }
+            },
+            {
+              "id": "sp_c",
+              "code": "C",
+              "label": "C",
+              "values": {
+                "desc": "Symbols; Possible Version - Spool C (4/2-way Operation)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b4",
+          "title": "Number Design",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Desain"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_50",
+              "code": "50",
+              "label": "50",
+              "values": {
+                "desc": "Component Series 50"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b5",
+          "title": "Spring Type",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Pegas"
+            }
+          ],
+          "rows": [
+            {
+              "id": "spg_nil",
+              "code": "",
+              "label": "Nil",
+              "values": {
+                "desc": "With Spring Return (Standard)"
+              }
+            },
+            {
+              "id": "spg_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "With Reinforced Compression Spring (for quick switching off)"
+              }
+            },
+            {
+              "id": "spg_o",
+              "code": "O",
+              "label": "O",
+              "values": {
+                "desc": "Without Spring Return"
+              }
+            },
+            {
+              "id": "spg_of",
+              "code": "OF",
+              "label": "OF",
+              "values": {
+                "desc": "Without Spring Return With Detent"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b6",
+          "title": "Power Type",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Karakteristik Solenoid"
+            }
+          ],
+          "rows": [
+            {
+              "id": "pwr_e",
+              "code": "E",
+              "label": "E",
+              "values": {
+                "desc": "High-Power Wet-Pin Solenoid with Detachable Coil"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b7",
+          "title": "Electrical Voltages",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tegangan Coil"
+            }
+          ],
+          "rows": [
+            {
+              "id": "v_g12",
+              "code": "G12",
+              "label": "G12",
+              "values": {
+                "desc": "DC12V"
+              }
+            },
+            {
+              "id": "v_g24",
+              "code": "G24",
+              "label": "G24",
+              "values": {
+                "desc": "DC24V"
+              }
+            },
+            {
+              "id": "v_g110",
+              "code": "G110",
+              "label": "G110",
+              "values": {
+                "desc": "AC110V"
+              }
+            },
+            {
+              "id": "v_g220",
+              "code": "G220",
+              "label": "G220",
+              "values": {
+                "desc": "AC220V"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b8",
+          "title": "Manual Override",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Fitur Manual Override"
+            }
+          ],
+          "rows": [
+            {
+              "id": "mo_nil",
+              "code": "",
+              "label": "Nil",
+              "values": {
+                "desc": "Without Manual Override"
+              }
+            },
+            {
+              "id": "mo_n5",
+              "code": "N5",
+              "label": "N5",
+              "values": {
+                "desc": "With Lockable Manual Override \"Mushroom Button\" (Large)"
+              }
+            },
+            {
+              "id": "mo_n6",
+              "code": "N6",
+              "label": "N6",
+              "values": {
+                "desc": "With Manual Override \"Mushroom Button\" (Large), Not Lockable"
+              }
+            },
+            {
+              "id": "mo_n8",
+              "code": "N8",
+              "label": "N8",
+              "values": {
+                "desc": "With Concealed Manual Override and Protective Cap"
+              }
+            },
+            {
+              "id": "mo_n9",
+              "code": "N9",
+              "label": "N9",
+              "values": {
+                "desc": "With Concealed Manual Override (Standard)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b9",
+          "title": "Electrical Connection",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Konektor Elektrik"
+            }
+          ],
+          "rows": [
+            {
+              "id": "conn_k4",
+              "code": "K4",
+              "label": "K4",
+              "values": {
+                "desc": "Connector 3-pole (2+PE) according to DIN EN"
+              }
+            },
+            {
+              "id": "conn_k4k",
+              "code": "K4K",
+              "label": "K4K",
+              "values": {
+                "desc": "Connector 3-pole (2+PE) according to DIN EN 175301-803, With potted-in plug base and sealing element"
+              }
+            },
+            {
+              "id": "conn_k72l",
+              "code": "K72L",
+              "label": "K72L",
+              "values": {
+                "desc": "Connector, 4-pole, M12x1 according to DIN EN 61076-2-101 with suppressor diode, coding, Pin assignment according to DESINA"
+              }
+            },
+            {
+              "id": "conn_c4z",
+              "code": "C4Z",
+              "label": "C4Z",
+              "values": {
+                "desc": "Connector 2-pole (Junior-Timer type), Connector radial to the valve axis"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we_b10",
+          "title": "Seal Material",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Material Seal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "seal_m",
+              "code": "M",
+              "label": "M",
+              "values": {
+                "desc": "NBR Seals (Standard Mineral Oil)"
+              }
+            },
+            {
+              "id": "seal_v",
+              "code": "V",
+              "label": "V",
+              "values": {
+                "desc": "FKM Seals (Viton, High Temperature & Synthetic Fluids)"
+              }
+            },
+            {
+              "id": "seal_mh",
+              "code": "MH",
+              "label": "MH",
+              "values": {
+                "desc": "Recommended for Operation with HFC Hydraulic Fluids"
+              }
+            },
+            {
+              "id": "seal_mt",
+              "code": "MT",
+              "label": "MT",
+              "values": {
+                "desc": "Low-Temperature Version (Only with Version \"Without Manual Override\")"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   {
-        "id": "b4we10",
-        "slug": "b4we10",
-        "series": "B4WE10 Series",
-        "code": "B4WE10",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve",
-        },
-        "image": "https://lh3.googleusercontent.com/d/15CJutVzQMurl5TI7NhDsm5f4dtYypEaf",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Solenoid direct-acting dengan performa presisi.",
-                "Coil dapat diputar 360° dan diganti tanpa mengganggu sistem sirkuit.",
-                "Beragam opsi konektor elektrik (DIN EN 175301-803 A, Deutsch, Junior Timer).",
-                "Kapasitas aliran tinggi (high flow capacity) untuk aplikasi hidrolik berat.",
-                "Tersedia pilihan manual override (tombol tertutup standar, knurled nut)."
-            ],
-            "en": [
-                "Direct-Acting Solenoid System.",
-                "360° Rotatable, Replaceable Coil.",
-                "Multiple Electrical Connector Options.",
-                "High Flow Capacity.",
-                "Manual Override Options."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "B4WE",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "",
-                "2": "",
-                "3": "-",
-                "4": "",
-                "5": "-",
-                "6": "",
-                "7": "",
-                "8": "-",
-                "9": "-",
-                "10": "-",
-                "11": ""
-            },
-            "totalSlots": 11,
-            "defaultSlotValues": {
-                "1": "B4WE",
-                "2": "10",
-                "3": "J",
-                "4": "NIL",
-                "5": "A01",
-                "6": "24",
-                "7": "D",
-                "8": "G",
-                "9": "V",
-                "10": "NIL",
-                "11": "NIL"
-            },
-            "blocks": [
-                {
-                    "id": "b4we10_b1",
-                    "title": "Designation",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_b4we",
-                            "code": "B4WE",
-                            "label": "B4WE",
-                            "values": {
-                                "desc": "Belsa Solenoid-Operated Directional Valve with 4 Main Ports, Direct-Acting"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b2",
-                    "title": "Nominal Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_10",
-                            "code": "10",
-                            "label": "10",
-                            "values": {
-                                "desc": "Nominal Size 10"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b3",
-                    "title": "Symbol",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Simbol"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Konfigurasi Aliran"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sp_j",
-                            "code": "J",
-                            "label": "J",
-                            "values": {
-                                "desc": "Symbol J (4/3-Way, All Ports Closed in Center Position)"
-                            }
-                        },
-                        {
-                            "id": "sp_e",
-                            "code": "E",
-                            "label": "E",
-                            "values": {
-                                "desc": "Symbol E (4/3-Way, All Ports Closed)"
-                            }
-                        },
-                        {
-                            "id": "sp_g",
-                            "code": "G",
-                            "label": "G",
-                            "values": {
-                                "desc": "Symbol G (4/3-Way, P Closed, A & B to Tank)"
-                            }
-                        },
-                        {
-                            "id": "sp_h",
-                            "code": "H",
-                            "label": "H",
-                            "values": {
-                                "desc": "Symbol H (4/3-Way, All Ports to Tank / Open Center)"
-                            }
-                        },
-                        {
-                            "id": "sp_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "Symbol D (4/2-Way Operation)"
-                            }
-                        },
-                        {
-                            "id": "sp_c",
-                            "code": "C",
-                            "label": "C",
-                            "values": {
-                                "desc": "Symbol C (4/2-Way Operation)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b4",
-                    "title": "Design",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Keterangan Pegas"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "With Return Spring"
-                            }
-                        },
-                        {
-                            "id": "des_of",
-                            "code": "OF",
-                            "label": "OF",
-                            "values": {
-                                "desc": "Without Return Spring, With Detent"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b5",
-                    "title": "Series",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Desain Seri"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_a01",
-                            "code": "A01",
-                            "label": "A01",
-                            "values": {
-                                "desc": "Is Determined by the Manufacturer"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b6",
-                    "title": "Rated Voltage of The Solenoid Coil",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tegangan Coil"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "v_12",
-                            "code": "12",
-                            "label": "12",
-                            "values": {
-                                "desc": "12 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_24",
-                            "code": "24",
-                            "label": "24",
-                            "values": {
-                                "desc": "24 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_96",
-                            "code": "96",
-                            "label": "96",
-                            "values": {
-                                "desc": "96 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_205",
-                            "code": "205",
-                            "label": "205",
-                            "values": {
-                                "desc": "205 VDC (*Only in Combination with Electrical Connection G)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b7",
-                    "title": "Type of Voltage",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Tegangan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "vt_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "Direct Voltage (DC)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b8",
-                    "title": "Connection Type 50 – 2345",
-                    "slotIndex": 8,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Koneksi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "conn_g",
-                            "code": "G",
-                            "label": "G",
-                            "values": {
-                                "desc": "Device Plug, DIN EN 175301-803 A"
-                            }
-                        },
-                        {
-                            "id": "conn_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "Device Plug, Deutsch"
-                            }
-                        },
-                        {
-                            "id": "conn_n1",
-                            "code": "N1",
-                            "label": "N1",
-                            "values": {
-                                "desc": "Device Plug, Deutsch with Suppressor Diode"
-                            }
-                        },
-                        {
-                            "id": "conn_t",
-                            "code": "T",
-                            "label": "T",
-                            "values": {
-                                "desc": "Device Plug, Junior Timer"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b9",
-                    "title": "Seal Material",
-                    "slotIndex": 9,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "FKM"
-                            }
-                        },
-                        {
-                            "id": "seal_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "NBR"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b10",
-                    "title": "Manual Override",
-                    "slotIndex": 10,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Manual Override"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "mo_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "With Covered Manual Override (Standard)"
-                            }
-                        },
-                        {
-                            "id": "mo_m1",
-                            "code": "M1",
-                            "label": "M1",
-                            "values": {
-                                "desc": "With Manual Override"
-                            }
-                        },
-                        {
-                            "id": "mo_m4",
-                            "code": "M4",
-                            "label": "M4",
-                            "values": {
-                                "desc": "With Knurled Nut"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we10_b11",
-                    "title": "Insert Orifice",
-                    "slotIndex": 11,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Orifice Insert"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "orf_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "No Insert Orifice"
-                            }
-                        },
-                        {
-                            "id": "orf_yp08",
-                            "code": "/P08",
-                            "label": "/P08",
-                            "values": {
-                                "desc": "Port P, Ø 0.8 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yp10",
-                            "code": "/P10",
-                            "label": "/P10",
-                            "values": {
-                                "desc": "Port P, Ø 1.0 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yp12",
-                            "code": "/P12",
-                            "label": "/P12",
-                            "values": {
-                                "desc": "Port P, Ø 1.2 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb08",
-                            "code": "/B08",
-                            "label": "/B08",
-                            "values": {
-                                "desc": "Port B, Ø 0.8 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb10",
-                            "code": "/B10",
-                            "label": "/B10",
-                            "values": {
-                                "desc": "Port B, Ø 1.0 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb12",
-                            "code": "/B12",
-                            "label": "/B12",
-                            "values": {
-                                "desc": "Port B, Ø 1.2 mm"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+    "id": "b4we10",
+    "slug": "b4we10",
+    "series": "B4WE10 Series",
+    "code": "B4WE10",
+    "category": "Industrial & Hydraulic Valve",
+    "subTitle": {
+      "id": "Belsa Directional Spool Valve",
+      "en": "Belsa Directional Spool Valve"
     },
+    "image": "https://lh3.googleusercontent.com/d/15CJutVzQMurl5TI7NhDsm5f4dtYypEaf",
+    "symbolType": "valve",
+    "features": {
+      "id": [
+        "Solenoid direct-acting dengan performa presisi.",
+        "Coil dapat diputar 360° dan diganti tanpa mengganggu sistem sirkuit.",
+        "Beragam opsi konektor elektrik (DIN EN 175301-803 A, Deutsch, Junior Timer).",
+        "Kapasitas aliran tinggi (high flow capacity) untuk aplikasi hidrolik berat.",
+        "Tersedia pilihan manual override (tombol tertutup standar, knurled nut)."
+      ],
+      "en": [
+        "Direct-Acting Solenoid System.",
+        "360° Rotatable, Replaceable Coil.",
+        "Multiple Electrical Connector Options.",
+        "High Flow Capacity.",
+        "Manual Override Options."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "B4WE10",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "",
+        "2": "",
+        "3": "-",
+        "4": "",
+        "5": "-",
+        "6": "",
+        "7": "",
+        "8": "-",
+        "9": "-",
+        "10": "-",
+        "11": ""
+      },
+      "totalSlots": 11,
+      "blocks": [
+        {
+          "id": "b4we10_b1",
+          "title": "Designation",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_b4we",
+              "code": "B4WE",
+              "label": "B4WE",
+              "values": {
+                "desc": "Belsa Solenoid-Operated Directional Valve with 4 Main Ports, Direct-Acting"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b2",
+          "title": "Nominal Size",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Ukuran Nominal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_10",
+              "code": "10",
+              "label": "10",
+              "values": {
+                "desc": "Nominal Size 10"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b3",
+          "title": "Symbol",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Simbol"
+            },
+            {
+              "id": "desc",
+              "label": "Konfigurasi Aliran"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sp_j",
+              "code": "J",
+              "label": "J",
+              "values": {
+                "desc": "Symbol J (4/3-Way, All Ports Closed in Center Position)"
+              }
+            },
+            {
+              "id": "sp_e",
+              "code": "E",
+              "label": "E",
+              "values": {
+                "desc": "Symbol E (4/3-Way, All Ports Closed)"
+              }
+            },
+            {
+              "id": "sp_g",
+              "code": "G",
+              "label": "G",
+              "values": {
+                "desc": "Symbol G (4/3-Way, P Closed, A & B to Tank)"
+              }
+            },
+            {
+              "id": "sp_h",
+              "code": "H",
+              "label": "H",
+              "values": {
+                "desc": "Symbol H (4/3-Way, All Ports to Tank / Open Center)"
+              }
+            },
+            {
+              "id": "sp_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "Symbol D (4/2-Way Operation)"
+              }
+            },
+            {
+              "id": "sp_c",
+              "code": "C",
+              "label": "C",
+              "values": {
+                "desc": "Symbol C (4/2-Way Operation)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b4",
+          "title": "Design",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Keterangan Pegas"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "With Return Spring"
+              }
+            },
+            {
+              "id": "des_of",
+              "code": "OF",
+              "label": "OF",
+              "values": {
+                "desc": "Without Return Spring, With Detent"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b5",
+          "title": "Series",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Desain Seri"
+            }
+          ],
+          "rows": [
+            {
+              "id": "ser_a01",
+              "code": "A01",
+              "label": "A01",
+              "values": {
+                "desc": "Is Determined by the Manufacturer"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b6",
+          "title": "Rated Voltage of The Solenoid Coil",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tegangan Coil"
+            }
+          ],
+          "rows": [
+            {
+              "id": "v_12",
+              "code": "12",
+              "label": "12",
+              "values": {
+                "desc": "12 VDC"
+              }
+            },
+            {
+              "id": "v_24",
+              "code": "24",
+              "label": "24",
+              "values": {
+                "desc": "24 VDC"
+              }
+            },
+            {
+              "id": "v_96",
+              "code": "96",
+              "label": "96",
+              "values": {
+                "desc": "96 VDC"
+              }
+            },
+            {
+              "id": "v_205",
+              "code": "205",
+              "label": "205",
+              "values": {
+                "desc": "205 VDC (*Only in Combination with Electrical Connection G)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b7",
+          "title": "Type of Voltage",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Tegangan"
+            }
+          ],
+          "rows": [
+            {
+              "id": "vt_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "Direct Voltage (DC)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b8",
+          "title": "Connection Type 50 – 2345",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Koneksi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "conn_g",
+              "code": "G",
+              "label": "G",
+              "values": {
+                "desc": "Device Plug, DIN EN 175301-803 A"
+              }
+            },
+            {
+              "id": "conn_n",
+              "code": "N",
+              "label": "N",
+              "values": {
+                "desc": "Device Plug, Deutsch"
+              }
+            },
+            {
+              "id": "conn_n1",
+              "code": "N1",
+              "label": "N1",
+              "values": {
+                "desc": "Device Plug, Deutsch with Suppressor Diode"
+              }
+            },
+            {
+              "id": "conn_t",
+              "code": "T",
+              "label": "T",
+              "values": {
+                "desc": "Device Plug, Junior Timer"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b9",
+          "title": "Seal Material",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Material Seal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "seal_v",
+              "code": "V",
+              "label": "V",
+              "values": {
+                "desc": "FKM"
+              }
+            },
+            {
+              "id": "seal_n",
+              "code": "N",
+              "label": "N",
+              "values": {
+                "desc": "NBR"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b10",
+          "title": "Manual Override",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Manual Override"
+            }
+          ],
+          "rows": [
+            {
+              "id": "mo_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "With Covered Manual Override (Standard)"
+              }
+            },
+            {
+              "id": "mo_m1",
+              "code": "M1",
+              "label": "M1",
+              "values": {
+                "desc": "With Manual Override"
+              }
+            },
+            {
+              "id": "mo_m4",
+              "code": "M4",
+              "label": "M4",
+              "values": {
+                "desc": "With Knurled Nut"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we10_b11",
+          "title": "Insert Orifice",
+          "slotIndex": 11,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Orifice Insert"
+            }
+          ],
+          "rows": [
+            {
+              "id": "orf_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "No Insert Orifice"
+              }
+            },
+            {
+              "id": "orf_yp08",
+              "code": "/P08",
+              "label": "/P08",
+              "values": {
+                "desc": "Port P, Ø 0.8 mm"
+              }
+            },
+            {
+              "id": "orf_yp10",
+              "code": "/P10",
+              "label": "/P10",
+              "values": {
+                "desc": "Port P, Ø 1.0 mm"
+              }
+            },
+            {
+              "id": "orf_yp12",
+              "code": "/P12",
+              "label": "/P12",
+              "values": {
+                "desc": "Port P, Ø 1.2 mm"
+              }
+            },
+            {
+              "id": "orf_yb08",
+              "code": "/B08",
+              "label": "/B08",
+              "values": {
+                "desc": "Port B, Ø 0.8 mm"
+              }
+            },
+            {
+              "id": "orf_yb10",
+              "code": "/B10",
+              "label": "/B10",
+              "values": {
+                "desc": "Port B, Ø 1.0 mm"
+              }
+            },
+            {
+              "id": "orf_yb12",
+              "code": "/B12",
+              "label": "/B12",
+              "values": {
+                "desc": "Port B, Ø 1.2 mm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   {
-        "id": "b4we6",
-        "slug": "b4we6",
-        "series": "B4WE6 Series",
-        "code": "B4WE6",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Directional Spool Valve",
-            "en": "Belsa Directional Spool Valve",
-        },
-        "image": "https://lh3.googleusercontent.com/d/12BP3cmMSgiR2ujgvIxauXptn8SOjPVDA",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Solenoid direct-acting dengan respons cepat.",
-                "Coil dapat diputar 360°.",
-                "Beragam pilihan konektor elektrik (DIN, Deutsch, M12, Junior Timer, Terminal Box).",
-                "Ketahanan korosi tinggi (tersedia opsi pelapisan ZnNi).",
-                "Pilihan manual override lengkap (tombol tertutup, mushroom, lockable)."
-            ],
-            "en": [
-                "Direct-Acting Solenoid.",
-                "360° Rotatable Coil.",
-                "Multiple Electrical Connectors.",
-                "High Corrosion Resistance.",
-                "Manual Override Options."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "B4WE",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "",
-                "2": "",
-                "3": "-",
-                "4": "",
-                "5": "-",
-                "6": "",
-                "7": "",
-                "8": "-",
-                "9": "-",
-                "10": "-",
-                "11": "-",
-                "12": ""
-            },
-            "totalSlots": 12,
-            "defaultSlotValues": {
-                "1": "B4WE",
-                "2": "6",
-                "3": "J",
-                "4": "NIL",
-                "5": "A01",
-                "6": "24",
-                "7": "D",
-                "8": "G",
-                "9": "V",
-                "10": "NIL",
-                "11": "NIL",
-                "12": "NIL"
-            },
-            "blocks": [
-                {
-                    "id": "b4we6_b1",
-                    "title": "Designation",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_b4we",
-                            "code": "B4WE",
-                            "label": "B4WE",
-                            "values": {
-                                "desc": "Belsa 4/2- and 4/3 Directional Spool Valve, Solenoid Operated, Direct-Acting"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b2",
-                    "title": "Nominal Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_6",
-                            "code": "6",
-                            "label": "6",
-                            "values": {
-                                "desc": "Nominal Size 06"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b3",
-                    "title": "Spool Symbol",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Simbol"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Konfigurasi Aliran"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sp_j",
-                            "code": "J",
-                            "label": "J",
-                            "values": {
-                                "desc": "Symbol J (4/3-Way, All Ports Closed in Center Position)"
-                            }
-                        },
-                        {
-                            "id": "sp_e",
-                            "code": "E",
-                            "label": "E",
-                            "values": {
-                                "desc": "Symbol E (4/3-Way, All Ports Closed)"
-                            }
-                        },
-                        {
-                            "id": "sp_g",
-                            "code": "G",
-                            "label": "G",
-                            "values": {
-                                "desc": "Symbol G (4/3-Way, P Closed, A & B to Tank)"
-                            }
-                        },
-                        {
-                            "id": "sp_h",
-                            "code": "H",
-                            "label": "H",
-                            "values": {
-                                "desc": "Symbol H (4/3-Way, All Ports to Tank / Open Center)"
-                            }
-                        },
-                        {
-                            "id": "sp_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "Symbol D (4/2-Way Operation)"
-                            }
-                        },
-                        {
-                            "id": "sp_c",
-                            "code": "C",
-                            "label": "C",
-                            "values": {
-                                "desc": "Symbol C (4/2-Way Operation)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b4",
-                    "title": "Symbol",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Keterangan Pegas"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sym_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "With Return Spring"
-                            }
-                        },
-                        {
-                            "id": "sym_of",
-                            "code": "OF",
-                            "label": "OF",
-                            "values": {
-                                "desc": "Without Return Spring, With Detent"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b5",
-                    "title": "Design",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Desain"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_a01",
-                            "code": "A01",
-                            "label": "A01",
-                            "values": {
-                                "desc": "Is Determined by the Manufacturer"
-                            }
-                        },
-                        {
-                            "id": "des_a40",
-                            "code": "A40",
-                            "label": "A40",
-                            "values": {
-                                "desc": "With ZnNi Coating"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b6",
-                    "title": "Rated Voltage of The Solenoid Coil",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tegangan Coil"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "v_12",
-                            "code": "12",
-                            "label": "12",
-                            "values": {
-                                "desc": "12 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_24",
-                            "code": "24",
-                            "label": "24",
-                            "values": {
-                                "desc": "24 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_96",
-                            "code": "96",
-                            "label": "96",
-                            "values": {
-                                "desc": "96 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_205",
-                            "code": "205",
-                            "label": "205",
-                            "values": {
-                                "desc": "205 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_110",
-                            "code": "110",
-                            "label": "110",
-                            "values": {
-                                "desc": "110 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_120",
-                            "code": "120",
-                            "label": "120",
-                            "values": {
-                                "desc": "120 VDC"
-                            }
-                        },
-                        {
-                            "id": "v_230",
-                            "code": "230",
-                            "label": "230",
-                            "values": {
-                                "desc": "230 VDC"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b7",
-                    "title": "Type of Voltage",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Tegangan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "vt_d",
-                            "code": "D",
-                            "label": "D",
-                            "values": {
-                                "desc": "Direct Voltage (DC)"
-                            }
-                        },
-                        {
-                            "id": "vt_a",
-                            "code": "A",
-                            "label": "A",
-                            "values": {
-                                "desc": "Alternating Voltage (AC)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b8",
-                    "title": "Connection Type 50 – 2345",
-                    "slotIndex": 8,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Koneksi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "conn_g",
-                            "code": "G",
-                            "label": "G",
-                            "values": {
-                                "desc": "Plug A* DIN EN 175301-803, 3-Pole, Radial, IP65"
-                            }
-                        },
-                        {
-                            "id": "conn_l",
-                            "code": "L",
-                            "label": "L",
-                            "values": {
-                                "desc": "2 Free Strands 0.75 mm² x 457 mm (18\"), 2-Pole, Radial, IP65 / IP67, L02"
-                            }
-                        },
-                        {
-                            "id": "conn_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "DEUTSCH plug DT04-2P, 2-Pole, Axial IP67 / IP69, N01"
-                            }
-                        },
-                        {
-                            "id": "conn_o",
-                            "code": "O",
-                            "label": "O",
-                            "values": {
-                                "desc": "M12 Plug, 4-Pole, Radial, IP65"
-                            }
-                        },
-                        {
-                            "id": "conn_u",
-                            "code": "U",
-                            "label": "U",
-                            "values": {
-                                "desc": "AMP Junior Timer*, 2-Pole, Axial, IP65 / IP67, U01"
-                            }
-                        },
-                        {
-                            "id": "conn_x3",
-                            "code": "X3",
-                            "label": "X3",
-                            "values": {
-                                "desc": "Terminal Box"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b9",
-                    "title": "Seal Material",
-                    "slotIndex": 9,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "HFC (Standard)"
-                            }
-                        },
-                        {
-                            "id": "seal_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "NBR"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b10",
-                    "title": "Manual Override",
-                    "slotIndex": 10,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Manual Override"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "mo_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "With Covered Manual Override (Standard)"
-                            }
-                        },
-                        {
-                            "id": "mo_m1",
-                            "code": "M1",
-                            "label": "M1",
-                            "values": {
-                                "desc": "With Manual Override"
-                            }
-                        },
-                        {
-                            "id": "mo_m2",
-                            "code": "M2",
-                            "label": "M2",
-                            "values": {
-                                "desc": "With Covered Manual Override"
-                            }
-                        },
-                        {
-                            "id": "mo_m4",
-                            "code": "M4",
-                            "label": "M4",
-                            "values": {
-                                "desc": "With Knurled Nut"
-                            }
-                        },
-                        {
-                            "id": "mo_m5",
-                            "code": "M5",
-                            "label": "M5",
-                            "values": {
-                                "desc": "With Manual Override Mushroom-Type, Lockable"
-                            }
-                        },
-                        {
-                            "id": "mo_m6",
-                            "code": "M6",
-                            "label": "M6",
-                            "values": {
-                                "desc": "With Manual Override Mushroom-Type, Not Lockable"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b11",
-                    "title": "Insert Orifice",
-                    "slotIndex": 11,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Orifice Insert"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "orf_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "No Insert Orifice"
-                            }
-                        },
-                        {
-                            "id": "orf_yp08",
-                            "code": "/P08",
-                            "label": "/P08",
-                            "values": {
-                                "desc": "Port P, Ø 0.8 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yp10",
-                            "code": "/P10",
-                            "label": "/P10",
-                            "values": {
-                                "desc": "Port P, Ø 1.0 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yp12",
-                            "code": "/P12",
-                            "label": "/P12",
-                            "values": {
-                                "desc": "Port P, Ø 1.2 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb08",
-                            "code": "/B08",
-                            "label": "/B08",
-                            "values": {
-                                "desc": "Port B, Ø 0.8 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb10",
-                            "code": "/B10",
-                            "label": "/B10",
-                            "values": {
-                                "desc": "Port B, Ø 1.0 mm"
-                            }
-                        },
-                        {
-                            "id": "orf_yb12",
-                            "code": "/B12",
-                            "label": "/B12",
-                            "values": {
-                                "desc": "Port B, Ø 1.2 mm"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4we6_b12",
-                    "title": "Coil with UL Approval",
-                    "slotIndex": 12,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Standarisasi UL"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ul_nil",
-                            "code": "NIL",
-                            "label": "NIL",
-                            "values": {
-                                "desc": "With Standard Coil"
-                            }
-                        },
-                        {
-                            "id": "ul_v0",
-                            "code": "UL V0",
-                            "label": "UL V0",
-                            "values": {
-                                "desc": "Coil with UL Approval, only for Voltage Type \"D\" and Connector Types \"G\" and \"U\""
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+    "id": "b4we6",
+    "slug": "b4we6",
+    "series": "B4WE6 Series",
+    "code": "B4WE6",
+    "category": "Industrial & Hydraulic Valve",
+    "subTitle": {
+      "id": "Belsa Directional Spool Valve",
+      "en": "Belsa Directional Spool Valve"
     },
+    "image": "https://lh3.googleusercontent.com/d/12BP3cmMSgiR2ujgvIxauXptn8SOjPVDA",
+    "symbolType": "valve",
+    "features": {
+      "id": [
+        "Solenoid direct-acting dengan respons cepat.",
+        "Coil dapat diputar 360°.",
+        "Beragam pilihan konektor elektrik (DIN, Deutsch, M12, Junior Timer, Terminal Box).",
+        "Ketahanan korosi tinggi (tersedia opsi pelapisan ZnNi).",
+        "Pilihan manual override lengkap (tombol tertutup, mushroom, lockable)."
+      ],
+      "en": [
+        "Direct-Acting Solenoid.",
+        "360° Rotatable Coil.",
+        "Multiple Electrical Connectors.",
+        "High Corrosion Resistance.",
+        "Manual Override Options."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "B4WE6",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "",
+        "2": "",
+        "3": "-",
+        "4": "",
+        "5": "-",
+        "6": "",
+        "7": "",
+        "8": "-",
+        "9": "-",
+        "10": "-",
+        "11": "-",
+        "12": ""
+      },
+      "totalSlots": 12,
+      "blocks": [
+        {
+          "id": "b4we6_b1",
+          "title": "Designation",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_b4we",
+              "code": "B4WE",
+              "label": "B4WE",
+              "values": {
+                "desc": "Belsa 4/2- and 4/3 Directional Spool Valve, Solenoid Operated, Direct-Acting"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b2",
+          "title": "Nominal Size",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Ukuran Nominal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_6",
+              "code": "6",
+              "label": "6",
+              "values": {
+                "desc": "Nominal Size 06"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b3",
+          "title": "Spool Symbol",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Simbol"
+            },
+            {
+              "id": "desc",
+              "label": "Konfigurasi Aliran"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sp_j",
+              "code": "J",
+              "label": "J",
+              "values": {
+                "desc": "Symbol J (4/3-Way, All Ports Closed in Center Position)"
+              }
+            },
+            {
+              "id": "sp_e",
+              "code": "E",
+              "label": "E",
+              "values": {
+                "desc": "Symbol E (4/3-Way, All Ports Closed)"
+              }
+            },
+            {
+              "id": "sp_g",
+              "code": "G",
+              "label": "G",
+              "values": {
+                "desc": "Symbol G (4/3-Way, P Closed, A & B to Tank)"
+              }
+            },
+            {
+              "id": "sp_h",
+              "code": "H",
+              "label": "H",
+              "values": {
+                "desc": "Symbol H (4/3-Way, All Ports to Tank / Open Center)"
+              }
+            },
+            {
+              "id": "sp_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "Symbol D (4/2-Way Operation)"
+              }
+            },
+            {
+              "id": "sp_c",
+              "code": "C",
+              "label": "C",
+              "values": {
+                "desc": "Symbol C (4/2-Way Operation)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b4",
+          "title": "Symbol",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Keterangan Pegas"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sym_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "With Return Spring"
+              }
+            },
+            {
+              "id": "sym_of",
+              "code": "OF",
+              "label": "OF",
+              "values": {
+                "desc": "Without Return Spring, With Detent"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b5",
+          "title": "Design",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Desain"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_a01",
+              "code": "A01",
+              "label": "A01",
+              "values": {
+                "desc": "Is Determined by the Manufacturer"
+              }
+            },
+            {
+              "id": "des_a40",
+              "code": "A40",
+              "label": "A40",
+              "values": {
+                "desc": "With ZnNi Coating"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b6",
+          "title": "Rated Voltage of The Solenoid Coil",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tegangan Coil"
+            }
+          ],
+          "rows": [
+            {
+              "id": "v_12",
+              "code": "12",
+              "label": "12",
+              "values": {
+                "desc": "12 VDC"
+              }
+            },
+            {
+              "id": "v_24",
+              "code": "24",
+              "label": "24",
+              "values": {
+                "desc": "24 VDC"
+              }
+            },
+            {
+              "id": "v_96",
+              "code": "96",
+              "label": "96",
+              "values": {
+                "desc": "96 VDC"
+              }
+            },
+            {
+              "id": "v_205",
+              "code": "205",
+              "label": "205",
+              "values": {
+                "desc": "205 VDC"
+              }
+            },
+            {
+              "id": "v_110",
+              "code": "110",
+              "label": "110",
+              "values": {
+                "desc": "110 VDC"
+              }
+            },
+            {
+              "id": "v_120",
+              "code": "120",
+              "label": "120",
+              "values": {
+                "desc": "120 VDC"
+              }
+            },
+            {
+              "id": "v_230",
+              "code": "230",
+              "label": "230",
+              "values": {
+                "desc": "230 VDC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b7",
+          "title": "Type of Voltage",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Tegangan"
+            }
+          ],
+          "rows": [
+            {
+              "id": "vt_d",
+              "code": "D",
+              "label": "D",
+              "values": {
+                "desc": "Direct Voltage (DC)"
+              }
+            },
+            {
+              "id": "vt_a",
+              "code": "A",
+              "label": "A",
+              "values": {
+                "desc": "Alternating Voltage (AC)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b8",
+          "title": "Connection Type 50 – 2345",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Koneksi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "conn_g",
+              "code": "G",
+              "label": "G",
+              "values": {
+                "desc": "Plug A* DIN EN 175301-803, 3-Pole, Radial, IP65"
+              }
+            },
+            {
+              "id": "conn_l",
+              "code": "L",
+              "label": "L",
+              "values": {
+                "desc": "2 Free Strands 0.75 mm² x 457 mm (18\"), 2-Pole, Radial, IP65 / IP67, L02"
+              }
+            },
+            {
+              "id": "conn_n",
+              "code": "N",
+              "label": "N",
+              "values": {
+                "desc": "DEUTSCH plug DT04-2P, 2-Pole, Axial IP67 / IP69, N01"
+              }
+            },
+            {
+              "id": "conn_o",
+              "code": "O",
+              "label": "O",
+              "values": {
+                "desc": "M12 Plug, 4-Pole, Radial, IP65"
+              }
+            },
+            {
+              "id": "conn_u",
+              "code": "U",
+              "label": "U",
+              "values": {
+                "desc": "AMP Junior Timer*, 2-Pole, Axial, IP65 / IP67, U01"
+              }
+            },
+            {
+              "id": "conn_x3",
+              "code": "X3",
+              "label": "X3",
+              "values": {
+                "desc": "Terminal Box"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b9",
+          "title": "Seal Material",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Material Seal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "seal_v",
+              "code": "V",
+              "label": "V",
+              "values": {
+                "desc": "HFC (Standard)"
+              }
+            },
+            {
+              "id": "seal_n",
+              "code": "N",
+              "label": "N",
+              "values": {
+                "desc": "NBR"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b10",
+          "title": "Manual Override",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Manual Override"
+            }
+          ],
+          "rows": [
+            {
+              "id": "mo_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "With Covered Manual Override (Standard)"
+              }
+            },
+            {
+              "id": "mo_m1",
+              "code": "M1",
+              "label": "M1",
+              "values": {
+                "desc": "With Manual Override"
+              }
+            },
+            {
+              "id": "mo_m2",
+              "code": "M2",
+              "label": "M2",
+              "values": {
+                "desc": "With Covered Manual Override"
+              }
+            },
+            {
+              "id": "mo_m4",
+              "code": "M4",
+              "label": "M4",
+              "values": {
+                "desc": "With Knurled Nut"
+              }
+            },
+            {
+              "id": "mo_m5",
+              "code": "M5",
+              "label": "M5",
+              "values": {
+                "desc": "With Manual Override Mushroom-Type, Lockable"
+              }
+            },
+            {
+              "id": "mo_m6",
+              "code": "M6",
+              "label": "M6",
+              "values": {
+                "desc": "With Manual Override Mushroom-Type, Not Lockable"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b11",
+          "title": "Insert Orifice",
+          "slotIndex": 11,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Orifice Insert"
+            }
+          ],
+          "rows": [
+            {
+              "id": "orf_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "No Insert Orifice"
+              }
+            },
+            {
+              "id": "orf_yp08",
+              "code": "/P08",
+              "label": "/P08",
+              "values": {
+                "desc": "Port P, Ø 0.8 mm"
+              }
+            },
+            {
+              "id": "orf_yp10",
+              "code": "/P10",
+              "label": "/P10",
+              "values": {
+                "desc": "Port P, Ø 1.0 mm"
+              }
+            },
+            {
+              "id": "orf_yp12",
+              "code": "/P12",
+              "label": "/P12",
+              "values": {
+                "desc": "Port P, Ø 1.2 mm"
+              }
+            },
+            {
+              "id": "orf_yb08",
+              "code": "/B08",
+              "label": "/B08",
+              "values": {
+                "desc": "Port B, Ø 0.8 mm"
+              }
+            },
+            {
+              "id": "orf_yb10",
+              "code": "/B10",
+              "label": "/B10",
+              "values": {
+                "desc": "Port B, Ø 1.0 mm"
+              }
+            },
+            {
+              "id": "orf_yb12",
+              "code": "/B12",
+              "label": "/B12",
+              "values": {
+                "desc": "Port B, Ø 1.2 mm"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4we6_b12",
+          "title": "Coil with UL Approval",
+          "slotIndex": 12,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Standarisasi UL"
+            }
+          ],
+          "rows": [
+            {
+              "id": "ul_nil",
+              "code": "NIL",
+              "label": "NIL",
+              "values": {
+                "desc": "With Standard Coil"
+              }
+            },
+            {
+              "id": "ul_v0",
+              "code": "UL V0",
+              "label": "UL V0",
+              "values": {
+                "desc": "Coil with UL Approval, only for Voltage Type \"D\" and Connector Types \"G\" and \"U\""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   {
-        "id": "b4wrp",
-        "slug": "b4wrp",
-        "series": "B4WRP Series",
-        "code": "B4WRP",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Proportional Valves",
-            "en": "Belsa Proportional Valves",
-        },
-        "image": "https://lh3.googleusercontent.com/d/1i5DOUpb-uqt-SK1kPqF4cE7XwBkZ9WmY",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Kontrol aliran proporsional dengan akurasi tinggi.",
-                "Dilengkapi sensor umpan balik posisi terintegrasi (integrated position feedback).",
-                "Kapasitas aliran tinggi hingga 100 l/min.",
-                "Pilihan karakteristik kurva aliran linear atau non-linear.",
-                "Desain kokoh dan tangguh untuk pemakaian industri berat."
-            ],
-            "en": [
-                "Precise proportional flow control.",
-                "Integrated position feedback.",
-                "High flow capacity up to 100 l/min.",
-                "Linear or non-linear flow characteristics.",
-                "Robust design for industrial use."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "B4WRP",
-            "separator": "",
-            "slotDelimiters": {
-                "1": "",
-                "2": "",
-                "3": "",
-                "4": "",
-                "5": "",
-                "6": "",
-                "7": "",
-                "8": "",
-                "9": "",
-                "10": "/",
-                "11": ""
-            },
-            "totalSlots": 11,
-            "defaultSlotValues": {
-                "1": "B4WRP",
-                "2": "H",
-                "3": "10",
-                "4": "C4",
-                "5": "B",
-                "6": "100",
-                "7": "L",
-                "8": "20",
-                "9": "G24",
-                "10": "Z4",
-                "11": "M"
-            },
-            "blocks": [
-                {
-                    "id": "b4wrp_b1",
-                    "title": "Series",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_b4wrp",
-                            "code": "B4WRP",
-                            "label": "B4WRP",
-                            "values": {
-                                "desc": "BELSA Proportional Valves"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b2",
-                    "title": "Control Piston",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Piston"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "p_h",
-                            "code": "H",
-                            "label": "H",
-                            "values": {
-                                "desc": "Control Piston / Sleeve"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b3",
-                    "title": "Size",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_6",
-                            "code": "6",
-                            "label": "Size 6",
-                            "values": {
-                                "desc": "Size 6 (CETOP 03 / NG6)"
-                            }
-                        },
-                        {
-                            "id": "sz_10",
-                            "code": "10",
-                            "label": "Size 10",
-                            "values": {
-                                "desc": "Size 10 (CETOP 05 / NG10)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b4",
-                    "title": "Spool Type",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Simbol"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Bentuk Spool"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sp_c4",
-                            "code": "C4",
-                            "label": "C4",
-                            "values": {
-                                "desc": "Spool C4 (4/3-way, P-A-B-T closed in center position)"
-                            }
-                        },
-                        {
-                            "id": "sp_c1",
-                            "code": "C1",
-                            "label": "C1",
-                            "values": {
-                                "desc": "Spool C1 (4/3-way)"
-                            }
-                        },
-                        {
-                            "id": "sp_c3",
-                            "code": "C3",
-                            "label": "C3",
-                            "values": {
-                                "desc": "Spool C3 (4/3-way)"
-                            }
-                        },
-                        {
-                            "id": "sp_c5",
-                            "code": "C5",
-                            "label": "C5",
-                            "values": {
-                                "desc": "Spool C5 (4/3-way)"
-                            }
-                        },
-                        {
-                            "id": "sp_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "Spool V (4/3-way with overlap)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b5",
-                    "title": "Position Transducer",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Sensor Posisi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "pos_b",
-                            "code": "B",
-                            "label": "B",
-                            "values": {
-                                "desc": "Standard (Integrated Position Feedback Transducer)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b6",
-                    "title": "Nominal Flow Rate",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Laju Aliran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "fr_12",
-                            "code": "12",
-                            "label": "12",
-                            "values": {
-                                "desc": "12 l/min (Nominal Size 6)"
-                            }
-                        },
-                        {
-                            "id": "fr_15",
-                            "code": "15",
-                            "label": "15",
-                            "values": {
-                                "desc": "15 l/min (Nominal Size 6)"
-                            }
-                        },
-                        {
-                            "id": "fr_24",
-                            "code": "24",
-                            "label": "24",
-                            "values": {
-                                "desc": "24 l/min (Nominal Size 6)"
-                            }
-                        },
-                        {
-                            "id": "fr_25",
-                            "code": "25",
-                            "label": "25",
-                            "values": {
-                                "desc": "25 l/min (Nominal Size 6)"
-                            }
-                        },
-                        {
-                            "id": "fr_40",
-                            "code": "40",
-                            "label": "40",
-                            "values": {
-                                "desc": "40 l/min (Nominal Size 6)"
-                            }
-                        },
-                        {
-                            "id": "fr_50",
-                            "code": "50",
-                            "label": "50",
-                            "values": {
-                                "desc": "50 l/min (Nominal Size 10)"
-                            }
-                        },
-                        {
-                            "id": "fr_100",
-                            "code": "100",
-                            "label": "100",
-                            "values": {
-                                "desc": "100 l/min (Nominal Size 10)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b7",
-                    "title": "Flow Characteristic",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Karakteristik Kurva Aliran"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "fc_l",
-                            "code": "L",
-                            "label": "L",
-                            "values": {
-                                "desc": "Linear"
-                            }
-                        },
-                        {
-                            "id": "fc_p",
-                            "code": "P",
-                            "label": "P",
-                            "values": {
-                                "desc": "Non Linear Curve (Progressive)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b8",
-                    "title": "Series Design",
-                    "slotIndex": 8,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Seri Desain Komponen"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_20",
-                            "code": "20",
-                            "label": "20",
-                            "values": {
-                                "desc": "Unit Series 20 to 29 (Design 20)"
-                            }
-                        },
-                        {
-                            "id": "des_2x",
-                            "code": "2X",
-                            "label": "2X",
-                            "values": {
-                                "desc": "Unit Series 20 to 29 (Series 2X)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b9",
-                    "title": "Supply Voltage",
-                    "slotIndex": 9,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tegangan Suplai"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "v_g24",
-                            "code": "G24",
-                            "label": "G24",
-                            "values": {
-                                "desc": "DC24V"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b10",
-                    "title": "Electrical Connection",
-                    "slotIndex": 10,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Konektor Elektrik"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "conn_z4",
-                            "code": "Z4",
-                            "label": "Z4",
-                            "values": {
-                                "desc": "Plug-in connector, DIN EN 175301-803"
-                            }
-                        },
-                        {
-                            "id": "conn_k0",
-                            "code": "K0",
-                            "label": "K0",
-                            "values": {
-                                "desc": "Plug according to DIN 43563-AM6"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "b4wrp_b11",
-                    "title": "Seal Material",
-                    "slotIndex": 11,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_m",
-                            "code": "M",
-                            "label": "M",
-                            "values": {
-                                "desc": "NBR Seals"
-                            }
-                        },
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "FKM Seals (Viton)"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+    "id": "b4wrp",
+    "slug": "b4wrp",
+    "series": "B4WRP Series",
+    "code": "B4WRP",
+    "category": "Industrial & Hydraulic Valve",
+    "subTitle": {
+      "id": "Belsa Proportional Valves",
+      "en": "Belsa Proportional Valves"
     },
+    "image": "https://lh3.googleusercontent.com/d/1i5DOUpb-uqt-SK1kPqF4cE7XwBkZ9WmY",
+    "symbolType": "valve",
+    "features": {
+      "id": [
+        "Kontrol aliran proporsional dengan akurasi tinggi.",
+        "Dilengkapi sensor umpan balik posisi terintegrasi (integrated position feedback).",
+        "Kapasitas aliran tinggi hingga 100 l/min.",
+        "Pilihan karakteristik kurva aliran linear atau non-linear.",
+        "Desain kokoh dan tangguh untuk pemakaian industri berat."
+      ],
+      "en": [
+        "Precise proportional flow control.",
+        "Integrated position feedback.",
+        "High flow capacity up to 100 l/min.",
+        "Linear or non-linear flow characteristics.",
+        "Robust design for industrial use."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "B4WRP",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": "",
+        "10": "/",
+        "11": ""
+      },
+      "totalSlots": 11,
+      "blocks": [
+        {
+          "id": "b4wrp_b1",
+          "title": "Series",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "ser_b4wrp",
+              "code": "B4WRP",
+              "label": "B4WRP",
+              "values": {
+                "desc": "BELSA Proportional Valves"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b2",
+          "title": "Control Piston",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Piston"
+            }
+          ],
+          "rows": [
+            {
+              "id": "p_h",
+              "code": "H",
+              "label": "H",
+              "values": {
+                "desc": "Control Piston / Sleeve"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b3",
+          "title": "Size",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Ukuran Nominal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_6",
+              "code": "6",
+              "label": "Size 6",
+              "values": {
+                "desc": "Size 6 (CETOP 03 / NG6)"
+              }
+            },
+            {
+              "id": "sz_10",
+              "code": "10",
+              "label": "Size 10",
+              "values": {
+                "desc": "Size 10 (CETOP 05 / NG10)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b4",
+          "title": "Spool Type",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Simbol"
+            },
+            {
+              "id": "desc",
+              "label": "Bentuk Spool"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sp_c4",
+              "code": "C4",
+              "label": "C4",
+              "values": {
+                "desc": "Spool C4 (4/3-way, P-A-B-T closed in center position)"
+              }
+            },
+            {
+              "id": "sp_c1",
+              "code": "C1",
+              "label": "C1",
+              "values": {
+                "desc": "Spool C1 (4/3-way)"
+              }
+            },
+            {
+              "id": "sp_c3",
+              "code": "C3",
+              "label": "C3",
+              "values": {
+                "desc": "Spool C3 (4/3-way)"
+              }
+            },
+            {
+              "id": "sp_c5",
+              "code": "C5",
+              "label": "C5",
+              "values": {
+                "desc": "Spool C5 (4/3-way)"
+              }
+            },
+            {
+              "id": "sp_v",
+              "code": "V",
+              "label": "V",
+              "values": {
+                "desc": "Spool V (4/3-way with overlap)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b5",
+          "title": "Position Transducer",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Sensor Posisi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "pos_b",
+              "code": "B",
+              "label": "B",
+              "values": {
+                "desc": "Standard (Integrated Position Feedback Transducer)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b6",
+          "title": "Nominal Flow Rate",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Laju Aliran Nominal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "fr_12",
+              "code": "12",
+              "label": "12",
+              "values": {
+                "desc": "12 l/min (Nominal Size 6)"
+              }
+            },
+            {
+              "id": "fr_15",
+              "code": "15",
+              "label": "15",
+              "values": {
+                "desc": "15 l/min (Nominal Size 6)"
+              }
+            },
+            {
+              "id": "fr_24",
+              "code": "24",
+              "label": "24",
+              "values": {
+                "desc": "24 l/min (Nominal Size 6)"
+              }
+            },
+            {
+              "id": "fr_25",
+              "code": "25",
+              "label": "25",
+              "values": {
+                "desc": "25 l/min (Nominal Size 6)"
+              }
+            },
+            {
+              "id": "fr_40",
+              "code": "40",
+              "label": "40",
+              "values": {
+                "desc": "40 l/min (Nominal Size 6)"
+              }
+            },
+            {
+              "id": "fr_50",
+              "code": "50",
+              "label": "50",
+              "values": {
+                "desc": "50 l/min (Nominal Size 10)"
+              }
+            },
+            {
+              "id": "fr_100",
+              "code": "100",
+              "label": "100",
+              "values": {
+                "desc": "100 l/min (Nominal Size 10)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b7",
+          "title": "Flow Characteristic",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Karakteristik Kurva Aliran"
+            }
+          ],
+          "rows": [
+            {
+              "id": "fc_l",
+              "code": "L",
+              "label": "L",
+              "values": {
+                "desc": "Linear"
+              }
+            },
+            {
+              "id": "fc_p",
+              "code": "P",
+              "label": "P",
+              "values": {
+                "desc": "Non Linear Curve (Progressive)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b8",
+          "title": "Series Design",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Seri Desain Komponen"
+            }
+          ],
+          "rows": [
+            {
+              "id": "des_20",
+              "code": "20",
+              "label": "20",
+              "values": {
+                "desc": "Unit Series 20 to 29 (Design 20)"
+              }
+            },
+            {
+              "id": "des_2x",
+              "code": "2X",
+              "label": "2X",
+              "values": {
+                "desc": "Unit Series 20 to 29 (Series 2X)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b9",
+          "title": "Supply Voltage",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tegangan Suplai"
+            }
+          ],
+          "rows": [
+            {
+              "id": "v_g24",
+              "code": "G24",
+              "label": "G24",
+              "values": {
+                "desc": "DC24V"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b10",
+          "title": "Electrical Connection",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Konektor Elektrik"
+            }
+          ],
+          "rows": [
+            {
+              "id": "conn_z4",
+              "code": "Z4",
+              "label": "Z4",
+              "values": {
+                "desc": "Plug-in connector, DIN EN 175301-803"
+              }
+            },
+            {
+              "id": "conn_k0",
+              "code": "K0",
+              "label": "K0",
+              "values": {
+                "desc": "Plug according to DIN 43563-AM6"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b4wrp_b11",
+          "title": "Seal Material",
+          "slotIndex": 11,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Material Seal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "seal_m",
+              "code": "M",
+              "label": "M",
+              "values": {
+                "desc": "NBR Seals"
+              }
+            },
+            {
+              "id": "seal_v",
+              "code": "V",
+              "label": "V",
+              "values": {
+                "desc": "FKM Seals (Viton)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   {
     "id": "b790",
     "slug": "b790",
@@ -19181,7 +18727,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "24 VDC Coil with Embedded Proportional IR Amplifier",
-      "en": "24 VDC Coil with Embedded Proportional IR Amplifier (Koil Solenoid Proporsional)",
+      "en": "24 VDC Coil with Embedded Proportional IR Amplifier (Koil Solenoid Proporsional)"
     },
     "image": "https://lh3.googleusercontent.com/d/19iuF1r0j2W70mmZOxmYXiuJm7TxRxgXM",
     "symbolType": "none",
@@ -19203,21 +18749,30 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "CE approved with robust IP65 connector environment rating."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "B790",
       "separator": "-",
-      "totalSlots": 2,
       "slotDelimiters": {
         "1": "-",
         "2": "-"
       },
-      "defaultSlotValues": {
-        "1": "2B",
-        "2": "24V"
-      },
+      "totalSlots": 2,
       "blocks": [
         {
           "id": "b790_b1",
@@ -19298,7 +18853,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "BELSA Axial Piston Variable Pump",
-      "en": "BELSA Axial Piston Variable Pump (Pompa Piston Aksial Variabel)",
+      "en": "BELSA Axial Piston Variable Pump (Pompa Piston Aksial Variabel)"
     },
     "features": {
       "id": [
@@ -19318,19 +18873,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     },
     "image": "https://lh3.googleusercontent.com/d/1FyQIyLV5TMhtJWVToUdENZ6XwuTAWRDd",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BA10VS",
       "separator": "-",
-      "totalSlots": 11,
-      "defaultSlotValues": {
-        "1": "BA10VS",
-        "2": "O",
-        "5": "31",
-        "9": "A"
-      },
       "slotDelimiters": {
         "1": "",
         "2": "",
@@ -19344,6 +18905,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "10": "",
         "11": ""
       },
+      "totalSlots": 11,
       "blocks": [
         {
           "id": "ba10vs_b1",
@@ -19734,7 +19296,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Air Dryer",
-      "en": "Belsa Air Dryer (Pengering Udara Industri Refrigerasi & Desikan)",
+      "en": "Belsa Air Dryer (Pengering Udara Industri Refrigerasi & Desikan)"
     },
     "image": "https://lh3.googleusercontent.com/d/13dnbICq1F2oREbL8oIJvm7GhH4_JYjcz",
     "symbolType": "powerpack",
@@ -19754,23 +19316,31 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Industrial Application Ready (Engineered for compressed air plant reliability)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BAD",
       "separator": "-",
-      "totalSlots": 3,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-"
       },
-      "defaultSlotValues": {
-        "1": "RA",
-        "2": "100",
-        "3": "M"
-      },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "bad_b1",
@@ -19949,7 +19519,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Air Cooled Oil Control",
-      "en": "Belsa Air Cooled Oil Control (Pendingin Oli Udara Terintegrasi)",
+      "en": "Belsa Air Cooled Oil Control (Pendingin Oli Udara Terintegrasi)"
     },
     "image": "https://lh3.googleusercontent.com/d/1tfhipU58FqVUwjfcFRXbIRBd5jTwsW7E",
     "symbolType": "powerpack",
@@ -19969,21 +19539,30 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "G1/2'' and 3-G1 1/4'' port connections for smooth hydraulic fluid circulation."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BAD14",
       "separator": "-",
-      "totalSlots": 2,
       "slotDelimiters": {
         "1": "-",
         "2": "-"
       },
-      "defaultSlotValues": {
-        "1": "70T-CA",
-        "2": "DC24"
-      },
+      "totalSlots": 2,
       "blocks": [
         {
           "id": "bad14_b1",
@@ -20080,7 +19659,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Air Actuated Atomizing Nozzle",
-      "en": "Belsa Air Actuated Atomizing (Nozel Atomisasi Udara Presisi)",
+      "en": "Belsa Air Actuated Atomizing (Nozel Atomisasi Udara Presisi)"
     },
     "image": "https://lh3.googleusercontent.com/d/187hE6UU85KGAJ9R1LZsIjQ1zvyvuF-NV",
     "symbolType": "none",
@@ -20100,13 +19679,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Durable Industrial Construction"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BAN",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -20114,13 +19705,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "BAN",
-        "2": "02",
-        "3": "BSPT",
-        "4": "SS",
-        "5": "M"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "ban_b1",
@@ -20291,7 +19876,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Central Lubrication & Systems",
     "subTitle": {
       "id": "Belsa Autolube Series",
-      "en": "Belsa Autolube Series",
+      "en": "Belsa Autolube Series"
     },
     "image": "https://lh3.googleusercontent.com/d/1GLVTOqBy4ELQ7FDZoxH26P67tcaSOIXh",
     "symbolType": "powerpack",
@@ -20307,13 +19892,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Suitable for use with grease metering devices."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BAS",
       "separator": "-",
-      "totalSlots": 7,
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -20323,15 +19920,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
-      "defaultSlotValues": {
-        "1": "BAS",
-        "2": "1",
-        "3": "1",
-        "4": "1",
-        "5": "BP",
-        "6": "ACC",
-        "7": "M"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "bas_b1",
@@ -20582,7 +20171,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Manual Butterfly Valve",
-      "en": "Belsa Manual Butterfly Valve (Katup Kupu-kupu Industri)",
+      "en": "Belsa Manual Butterfly Valve (Katup Kupu-kupu Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/1KKME2dI1RDKQi4u99jkE4Ny1fzhnJYJM",
     "symbolType": "valve",
@@ -20602,13 +20191,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Durable body material options: Ductile Iron, Carbon Steel, SUS304, SUS316, and Cast CF8."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BBF",
-      "separator": " - ",
-      "totalSlots": 9,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -20620,17 +20221,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "8": "-",
         "9": ""
       },
-      "defaultSlotValues": {
-        "1": "BBF",
-        "2": "M",
-        "3": "WF",
-        "4": "DN200",
-        "5": "PN16",
-        "6": "CF8",
-        "7": "PTFE",
-        "8": "ACC",
-        "9": "M"
-      },
+      "totalSlots": 9,
       "blocks": [
         {
           "id": "bbf_b1",
@@ -21113,7 +20704,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Ball Valve",
-      "en": "Rated up to 40.0 MPa.",
+      "en": "Rated up to 40.0 MPa."
     },
     "image": "https://lh3.googleusercontent.com/d/1s-GkQNr4xnagP3K1pePJYsV7I1fiGypC",
     "symbolType": "valve",
@@ -21130,16 +20721,28 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Forged Stainless Steel body.",
         "German self-sealing technology.",
         "Compatible with gas, oil, and liquids.",
-        "Double or Single Acting options. Belsa Ball Valve Series BBV Belsa Ball Valve BBV P- DN50- PS- - PN16 - SS304 Type Actuator DF Diafraghma Type P Pneumatic Type MR Motorized Type M Manual Type Size DN25 Size 1 Inch DN50 Size 2 Inch DN65 Size 1 1/2Inch DN75 Size 3 Inch DN100 Size 4 Inch Number Design PS With Positioner P Potensiometer O On/off Pressure Rating PN10 Pressure Rating 10 Bar PN16 Pressure Rating 16 Bar PN25 Pressure Rating 25 Bar PN40 Pressure Rating 40 Bar Material Stem / Disc / Ball SS304 Stainless Steel 304 SS316 Stailess Stell 316"
+        "Double or Single Acting options."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BBV",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -21148,6 +20751,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bbv_b1",
@@ -21167,14 +20771,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
               "label": "Belsa Ball Valve",
               "values": {
                 "desc": "Belsa Ball Valve"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "BBV",
-              "label": "P- DN50- PS- - PN16 - SS304",
-              "values": {
-                "desc": "P- DN50- PS- - PN16 - SS304"
               }
             }
           ]
@@ -21428,7 +21024,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Connector Tube",
-      "en": "Connector Tube (Fitting Konektor Pipa Hidrolik)",
+      "en": "Connector Tube (Fitting Konektor Pipa Hidrolik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1W44WhZ8kS5pS2X8nJie_IJ2RCEnDa8nj",
     "symbolType": "none",
@@ -21446,25 +21042,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Wide range of tubing OD from 10mm to 30mm."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BCT",
-      "separator": " - ",
-      "totalSlots": 4,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
-      "defaultSlotValues": {
-        "1": "BCT",
-        "2": "SS",
-        "3": "10L",
-        "4": "STR"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bct_b1",
@@ -21669,7 +21272,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Cylinder Valve Kit",
-      "en": "Belsa Cylinder Valve Kit (Silinder Integrasi Katup Kompak)",
+      "en": "Belsa Cylinder Valve Kit (Silinder Integrasi Katup Kompak)"
     },
     "image": "https://lh3.googleusercontent.com/d/18kIc_1-bUqKA2v0mCfF4g0TCdV_PLI7A",
     "symbolType": "hydraulic",
@@ -21709,6 +21312,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "htoConfig": {
       "codePrefix": "BCV",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 9,
       "blocks": [
         {
@@ -22059,7 +21663,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Double Nipple Hose to Tube",
-      "en": "Double Nipple Hose to Tube (Fitting Dobel Nipel Selang ke Pipa)",
+      "en": "Double Nipple Hose to Tube (Fitting Dobel Nipel Selang ke Pipa)"
     },
     "image": "https://lh3.googleusercontent.com/d/1aWJKpJGmTCRiq88spzjQuMmNQ_xpHCP-",
     "symbolType": "none",
@@ -22077,25 +21681,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Precision engineered in SUS304, Galvanized Steel, Brass, and ST41."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BDNHT",
-      "separator": " - ",
-      "totalSlots": 4,
+      "codePrefix": "BDHNT",
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
-      "defaultSlotValues": {
-        "1": "BDNHT",
-        "2": "08",
-        "3": "15L",
-        "4": "SS"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bdhnt_b1",
@@ -22348,7 +21959,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Elbow Series",
-      "en": "Belsa Elbow Series (Sambungan Elbow Pipa Industri)",
+      "en": "Belsa Elbow Series (Sambungan Elbow Pipa Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/158D3j31xMGhAyT80TUG-ZcocIxjLBfVd",
     "symbolType": "none",
@@ -22366,13 +21977,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Seamless (SML) and Welded (WLD) options in carbon steel and 316L stainless steel."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BE",
-      "separator": " - ",
-      "totalSlots": 7,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": "-",
@@ -22382,15 +22005,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
-      "defaultSlotValues": {
-        "1": "BE",
-        "2": "90",
-        "3": "DN150",
-        "4": "SCH20",
-        "5": "SML",
-        "6": "BW",
-        "7": "SUS316L"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "be_b1",
@@ -22717,7 +22332,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial Brake & Clutch",
     "subTitle": {
       "id": "Belsa Electromagnetic Brake Motor Series",
-      "en": "Belsa Electromagnetic Brake Motor Series (Motor Rem Elektromagnetik)",
+      "en": "Belsa Electromagnetic Brake Motor Series (Motor Rem Elektromagnetik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1BGaX5kiGVM7e9aBzfsRw5gnuNliCvaQZ",
     "symbolType": "rotary",
@@ -22737,13 +22352,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "High safety and long-term durability in automated factory systems."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BEBM",
       "separator": "-",
-      "totalSlots": 9,
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -22755,17 +22382,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "8": " + ",
         "9": " "
       },
-      "defaultSlotValues": {
-        "1": "5",
-        "2": "R",
-        "3": "60",
-        "4": "GE",
-        "5": "CW",
-        "6": "",
-        "7": "",
-        "8": "5GE",
-        "9": "7.5"
-      },
+      "totalSlots": 9,
       "blocks": [
         {
           "id": "bebm_b1",
@@ -23308,7 +22925,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Shock Absorbers & Heavy Springs",
     "subTitle": {
       "id": "Shock Absorbers Mega-Line",
-      "en": "Shock Absorbers Mega-Line (Peredam Kejut Industri)",
+      "en": "Shock Absorbers Mega-Line (Peredam Kejut Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/1eQ77XthzBY2N14Q97Yjz8tJKYC1BTsev",
     "symbolType": "none",
@@ -23328,13 +22945,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Special Versions, Suitable for food-grade, cleanroom, and high-pressure applications"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BEW",
-      "separator": " - ",
-      "totalSlots": 5,
+      "codePrefix": "BWE",
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": " ",
@@ -23342,13 +22971,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "BEW",
-        "2": "1",
-        "3": "L",
-        "4": "LN",
-        "5": "WS"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bew_b1",
@@ -23543,7 +23166,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flange Series",
-      "en": "Belsa Flange Series (Flens Pipa Industri Tekanan Tinggi)",
+      "en": "Belsa Flange Series (Flens Pipa Industri Tekanan Tinggi)"
     },
     "image": "https://lh3.googleusercontent.com/d/1jYy2tae-6JdcHX-0FSe0Qp84-qvShkuq",
     "symbolType": "none",
@@ -23561,13 +23184,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Surface treatments include Hot Dip Galvanizing (HDG), Electro Galvanizing (EG), and Iron Galvanizing (GI)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BF",
-      "separator": " - ",
-      "totalSlots": 7,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -23577,15 +23212,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
-      "defaultSlotValues": {
-        "1": "BF",
-        "2": "LJ",
-        "3": "DN150",
-        "4": "PN16",
-        "5": "SCH40",
-        "6": "SUS316L",
-        "7": "NIL"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "bf_b1",
@@ -23936,7 +23563,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Flow Control Valve",
-      "en": "Belsa Flow Control Valve (Katup Pengatur Kecepatan Aliran)",
+      "en": "Belsa Flow Control Valve (Katup Pengatur Kecepatan Aliran)"
     },
     "image": "https://lh3.googleusercontent.com/d/15OkPgkrGeUTgKSSWFwlv2c6NzNWrc2YX",
     "symbolType": "hydraulic",
@@ -23956,12 +23583,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Full port size range: RC (BSPT), G (BSPP), and N (NPT) from 1/4\" to 1-1/2\"."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BFC",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 4,
       "blocks": [
         {
@@ -24143,7 +23784,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flow Meter Magnetic Inductive",
-      "en": "Belsa Flow Meter Magnetic Inductive (Pengukur Aliran Magnetik)",
+      "en": "Belsa Flow Meter Magnetic Inductive (Pengukur Aliran Magnetik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1h3WZ0jHOjXIXmLmPfS-WesFs9gxU1jd0",
     "symbolType": "none",
@@ -24163,13 +23804,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "IP68 rated"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BFM",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -24178,14 +23831,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
-      "defaultSlotValues": {
-        "1": "BFM",
-        "2": "DN50",
-        "3": "PN40",
-        "4": "F",
-        "5": "230VAC",
-        "6": "S"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bfm_b1",
@@ -24418,7 +24064,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Belsa Grease Pump",
-      "en": "Belsa Grease Pump (Pompa Gemuk Pelumas Terpusat)",
+      "en": "Belsa Grease Pump (Pompa Gemuk Pelumas Terpusat)"
     },
     "features": {
       "id": [
@@ -24438,22 +24084,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     },
     "image": "https://lh3.googleusercontent.com/d/1aw6napq0I68YWuqV2vvtNwxznzQHwrgV",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BGRP",
       "separator": "-",
-      "totalSlots": 4,
-      "defaultSlotValues": {
-        "1": "BGRP"
-      },
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bgrp_b1",
@@ -24634,7 +24290,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Pressure Transmitter 8700 Series",
-      "en": "Belsa Pressure Transmitter 8700 Series (Transmitter Tekanan Industri)",
+      "en": "Belsa Pressure Transmitter 8700 Series (Transmitter Tekanan Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/1cGJ6FYRECZ_p41YENinane5Ke4WpN8si",
     "symbolType": "none",
@@ -24654,13 +24310,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Broad connector selection (DIN EN 175301-803, Binder 714, M12x1 4-pole)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHDA",
-      "separator": " ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -24669,14 +24337,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": " - ",
         "6": " - "
       },
-      "defaultSlotValues": {
-        "1": "87",
-        "2": "4",
-        "3": "6",
-        "4": "A",
-        "5": "0100",
-        "6": "000"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bhda_b1",
@@ -24925,7 +24586,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Pressure Transmitter",
-      "en": "Belsa Pressure Transmitter (Transmitter Tekanan Keamanan Fungsional)",
+      "en": "Belsa Pressure Transmitter (Transmitter Tekanan Keamanan Fungsional)"
     },
     "image": "https://lh3.googleusercontent.com/d/18UpIYDP3JPgJ3bvUcBvgUXcJR6BgACH2",
     "symbolType": "none",
@@ -24945,13 +24606,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Strong Overload & Burst Pressure Resistance safeguarding against hydraulic spikes."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHDA87",
-      "separator": " ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -24959,13 +24632,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": " - ",
         "5": " - "
       },
-      "defaultSlotValues": {
-        "1": "4",
-        "2": "6",
-        "3": "A",
-        "4": "0100",
-        "5": "000"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bhda87_b1",
@@ -25164,7 +24831,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Belsa Oil Heat Exchanger Shell & Tube",
-      "en": "Belsa Oil Heat Exchanger Series (Pendingin Oli Shell & Tube)",
+      "en": "Belsa Oil Heat Exchanger Series (Pendingin Oli Shell & Tube)"
     },
     "image": "https://lh3.googleusercontent.com/d/1GC5a80wbeagNPHEz3qTvuiuBzTL31Xm7",
     "symbolType": "powerpack",
@@ -25186,13 +24853,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "100% Quality Tested for zero leakage and maximum reliability."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHE",
       "separator": "-",
-      "totalSlots": 8,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -25203,16 +24882,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": "-",
         "8": "-"
       },
-      "defaultSlotValues": {
-        "1": "1236",
-        "2": "T",
-        "3": "CN",
-        "4": "SS",
-        "5": "SW",
-        "6": "SC S212",
-        "7": "TC G114",
-        "8": "M"
-      },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "bhe_b1",
@@ -25657,7 +25327,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Piston Type Pressure Switch",
-      "en": "Piston Type Pressure Switch (Sakelar Tekanan Tipe Piston Hidrolik)",
+      "en": "Piston Type Pressure Switch (Sakelar Tekanan Tipe Piston Hidrolik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1UHAX4xOAG_oSmxsSOi0_xelF3uL-purv",
     "symbolType": "none",
@@ -25677,13 +25347,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Durable mechanical construction, UL approved with 5M+ operating cycles."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BHED8",
+      "codePrefix": "BHED",
       "separator": "-",
-      "totalSlots": 6,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -25692,14 +25374,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": "-"
       },
-      "defaultSlotValues": {
-        "1": "OH",
-        "2": "1X",
-        "3": "100",
-        "4": "K14",
-        "5": "S",
-        "6": "V"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bhed_b1",
@@ -25988,7 +25663,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Hydro-Electric Pressure Switch",
-      "en": "Hydro-Electric Pressure Switch (Sakelar Tekanan Hidro-Elektrik)",
+      "en": "Hydro-Electric Pressure Switch (Sakelar Tekanan Hidro-Elektrik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1z-U2qqgbPTnhncnhrUFbK4vpSoAOeZGQ",
     "symbolType": "none",
@@ -26008,13 +25683,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Lockable rotary knob option ensuring secure tamper-proof setting."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHED8",
-      "separator": " ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -26023,14 +25710,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": " ",
         "6": " "
       },
-      "defaultSlotValues": {
-        "1": "OA",
-        "2": "12",
-        "3": "100",
-        "4": "K14",
-        "5": "S",
-        "6": ""
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bhed8_b1",
@@ -26311,7 +25991,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Pompa Sentrifugal & Transfer Fluida",
-      "en": "Pompa Sentrifugal Industri & Transfer Fluida (Industrial Centrifugal & Transfer Pump)",
+      "en": "Pompa Sentrifugal Industri & Transfer Fluida (Industrial Centrifugal & Transfer Pump)"
     },
     "features": {
       "id": [
@@ -26331,18 +26011,31 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     },
     "image": "https://lh3.googleusercontent.com/d/13kZ_LiocruIGk0d3UXNasD7LcVmJ1qRA",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHGP",
       "separator": "-",
-      "totalSlots": 3,
       "slotDelimiters": {
         "1": "/",
         "2": "-",
         "3": ""
       },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "bhgp_b1",
@@ -26606,161 +26299,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-    "id": "bhreb_20es_1",
-    "slug": "bhreb-20es-1",
-    "series": "BHREB-20ES-1 Series",
-    "code": "BHREB-20ES-1",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Hydraulic Rod End Bearing Seri BHREB",
-      "en": "BHREB-20ES-1 (Official BELSA Industrial Component)",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "none",
-    "features": {
-      "id": [
-        "Bantalan spherical plain bearing untuk sambungan ujung silinder hidrolik.",
-        "Tahan beban dinamis dan momen ayun berat.",
-        "Dilengkapi lubang gemuk untuk relubrikasi berkala.",
-        "Pilihan material baja tempa standar industri."
-      ],
-      "en": [
-        "High reliability industrial BHREB-20ES-1 engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "BHREB-20ES-1",
-      "separator": " - ",
-      "totalSlots": 4,
-      "slotDelimiters": {
-        "1": "-",
-        "2": "-",
-        "3": "-",
-        "4": ""
-      },
-      "blocks": [
-        {
-          "id": "bhreb-20es-1_b1",
-          "title": "Series Designation",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "s1",
-              "code": "BHREB20ES1",
-              "label": "BHREB-20ES-1 Standard Model",
-              "values": {
-                "desc": "Model Resmi BHREB-20ES-1"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bhreb-20es-1_b2",
-          "title": "Size / Specification",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Spesifikasi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "sz1",
-              "code": "01",
-              "label": "Standard Capacity",
-              "values": {
-                "desc": "Kapasitas / Ukuran Standar"
-              }
-            },
-            {
-              "id": "sz2",
-              "code": "02",
-              "label": "Heavy-Duty Capacity",
-              "values": {
-                "desc": "Kapasitas / Ukuran Heavy Duty"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bhreb-20es-1_b3",
-          "title": "Material & Execution",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Material"
-            }
-          ],
-          "rows": [
-            {
-              "id": "m1",
-              "code": "",
-              "label": "Standard Material",
-              "values": {
-                "desc": "Material Standar Pabrik"
-              }
-            },
-            {
-              "id": "m2",
-              "code": "SS",
-              "label": "Stainless Steel / High Grade",
-              "values": {
-                "desc": "Bahan Anti-Korosi / Stainless"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bhreb-20es-1_b4",
-          "title": "Custom Specification",
-          "slotIndex": 4,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Kustomisasi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "c0",
-              "code": "",
-              "label": "Standard",
-              "values": {
-                "desc": "Standar Katalog"
-              }
-            },
-            {
-              "id": "c1",
-              "code": "M",
-              "label": "Custom Made",
-              "values": {
-                "desc": "Custom Made Solution BELSA"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
     "id": "bhsv",
     "slug": "bhsv",
     "series": "BHSV Series",
@@ -26768,7 +26306,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Hydraulic Stack Valve Modular Manifold",
-      "en": "Hydraulic Stack Valve (Modular Monoblock Manifold)",
+      "en": "Hydraulic Stack Valve (Modular Monoblock Manifold)"
     },
     "image": "https://lh3.googleusercontent.com/d/1WfMIGDeJcVE_ReoeX-E7Q5LRPfgEEUwq",
     "symbolType": "hydraulic",
@@ -26788,12 +26326,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "High flow and working pressure capacity for hydraulic power units."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHSV",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 4,
       "blocks": [
         {
@@ -26983,7 +26535,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Shock Absorbers & Heavy Springs",
     "subTitle": {
       "id": "Heavy-Duty Shock Absorbers",
-      "en": "Heavy-Duty Shock Absorbers (Peredam Kejut Beban Berat Industri)",
+      "en": "Heavy-Duty Shock Absorbers (Peredam Kejut Beban Berat Industri)"
     },
     "image": "/uploads/catalogue/blds_1790755016154.webp",
     "symbolType": "none",
@@ -27033,19 +26585,13 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "htoConfig": {
       "codePrefix": "BLDS",
       "separator": "-",
-      "totalSlots": 4,
       "slotDelimiters": {
         "1": "-",
         "2": " ",
         "3": "-",
         "4": "-"
       },
-      "defaultSlotValues": {
-        "1": "B",
-        "2": "25",
-        "3": "100",
-        "4": "WS"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "blds_b1",
@@ -27346,7 +26892,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Level Indicator with Transmitter",
-      "en": "Belsa Level Indicator with Transmitter (Indikator Level Cairan & Transmitter)",
+      "en": "Belsa Level Indicator with Transmitter (Indikator Level Cairan & Transmitter)"
     },
     "image": "https://lh3.googleusercontent.com/d/1nPqVsYdWt644BtqAzO1ztntdToZ0g1Tl",
     "symbolType": "none",
@@ -27366,13 +26912,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Broad chamber material selection (SS304, SS316, Titanium, Polypropylene)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BLIT",
       "separator": "-",
-      "totalSlots": 6,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -27381,14 +26939,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": "-"
       },
-      "defaultSlotValues": {
-        "1": "SS304",
-        "2": "550",
-        "3": "M",
-        "4": "SM",
-        "5": "ACC",
-        "6": "M"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "blit_b1",
@@ -27645,7 +27196,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Limit Switch",
-      "en": "Belsa Limit Switch (Sakelar Batas Industri)",
+      "en": "Belsa Limit Switch (Sakelar Batas Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/14eXx9E4V8MldTx5OoVZaWduM0E3PibuC",
     "symbolType": "none",
@@ -27665,25 +27216,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "High Durability"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BLS",
-      "separator": " ",
-      "totalSlots": 4,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
         "3": " ",
         "4": ""
       },
-      "defaultSlotValues": {
-        "1": "BLS",
-        "2": "NC",
-        "3": "P",
-        "4": "DC24"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bls_b1",
@@ -27840,7 +27398,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Direct Operated Pressure Relief Valve",
-      "en": "Direct Operated Pressure Relief Valve (Katup Pengurang Tekanan)",
+      "en": "Direct Operated Pressure Relief Valve (Katup Pengurang Tekanan)"
     },
     "image": "https://lh3.googleusercontent.com/d/168t8HmczizJkc-ZZcMIFsAOQ4l8gRBR8",
     "symbolType": "hydraulic",
@@ -27860,12 +27418,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Seal compatibility: NBR for mineral oils or FPM for special synthetic fluids."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BM",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 5,
       "blocks": [
         {
@@ -28077,7 +27649,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Modifikasi Mesin Industri",
-      "en": "Machinary Modification (Modifikasi Mesin Industri Belsa)",
+      "en": "Machinary Modification (Modifikasi Mesin Industri Belsa)"
     },
     "image": "https://lh3.googleusercontent.com/d/1BC9OsUrEfVTvDI0439Z_LuEc2GXCNTPr",
     "symbolType": "none",
@@ -28097,23 +27669,31 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Energy & Water Saving"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BMM",
-      "separator": " ",
-      "totalSlots": 3,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
         "3": ""
       },
-      "defaultSlotValues": {
-        "1": "BMM",
-        "2": "SS",
-        "3": "12"
-      },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "bmm_b1",
@@ -28248,7 +27828,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Pompa Hidrolik Industri Seri Piston, Vane & Gear",
-      "en": "Belsa Pump Series (Pompa Hidrolik Industri Piston, Vane, & Gear Pump)",
+      "en": "Belsa Pump Series (Pompa Hidrolik Industri Piston, Vane, & Gear Pump)"
     },
     "features": {
       "id": [
@@ -28270,16 +27850,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     },
     "image": "https://lh3.googleusercontent.com/d/1r5vpmXKu5DkTDO8pNhqmIPELIFT9EJwQ",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BP",
       "separator": "-",
-      "totalSlots": 7,
-      "defaultSlotValues": {
-        "1": "BP"
-      },
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -28289,6 +27878,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "bp_b1",
@@ -28551,7 +28141,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Air Cylinder",
     "subTitle": {
       "id": "Belsa Pneumatic Cylinder BF Type",
-      "en": "Belsa Pneumatic Cylinder BF Type",
+      "en": "Belsa Pneumatic Cylinder BF Type"
     },
     "image": "https://lh3.googleusercontent.com/d/1w9_gsyaFn7tSfbYgymOUVdvY3P8Ljjo8",
     "symbolType": "air_single_double",
@@ -28608,8 +28198,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 320,
     "htoConfig": {
       "codePrefix": "BPCBF",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -28618,6 +28207,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bpcbf_b1",
@@ -29089,7 +28679,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Belsa Pneumatic Clamping Unit",
-      "en": "Belsa Pneumatic Clamping Unit (Unit Penjepit Pneumatik)",
+      "en": "Belsa Pneumatic Clamping Unit (Unit Penjepit Pneumatik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1jUu4PMC2nLLZ4W925n_Vp-yjIzhz7hzz",
     "symbolType": "hydraulic",
@@ -29109,12 +28699,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Easy integration with manual or automated solenoid control valves."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPCU",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 4,
       "blocks": [
         {
@@ -29256,7 +28860,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Pressure Gauge",
-      "en": "Pressure Gauge (Manometer Pengukur Tekanan Jarum Industri)",
+      "en": "Pressure Gauge (Manometer Pengukur Tekanan Jarum Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/1MV6OwJ_d9-wGVFeFbliVNHo4KYXZX_89",
     "symbolType": "none",
@@ -29276,13 +28880,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Available in dry execution or vibration-dampening liquid-filled cases."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPG",
-      "separator": " ",
-      "totalSlots": 8,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -29293,16 +28909,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "7": " ",
         "8": " - "
       },
-      "defaultSlotValues": {
-        "1": "1",
-        "2": "2",
-        "3": "D",
-        "4": "2,5\"",
-        "5": "CBM",
-        "6": "NPT 1/4\"",
-        "7": "0-15.000",
-        "8": "M"
-      },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "bpg_b1",
@@ -29787,7 +29394,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Belsa High Pressure Low Noise Gear Pumps",
-      "en": "Belsa High Pressure Low Noise Gear Pumps (Pompa Roda Gigi Bertekanan Tinggi & Rendah Kebisingan)",
+      "en": "Belsa High Pressure Low Noise Gear Pumps (Pompa Roda Gigi Bertekanan Tinggi & Rendah Kebisingan)"
     },
     "features": {
       "id": [
@@ -29807,16 +29414,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     },
     "image": "https://lh3.googleusercontent.com/d/1LFcRs3AjdMmVqW8P8W5hKxWA1dH5UEPE",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPHS",
       "separator": "-",
-      "totalSlots": 6,
-      "defaultSlotValues": {
-        "1": "BPHS"
-      },
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -29825,6 +29441,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bphs_b1",
@@ -30153,7 +29770,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "BELSA Pressure Line Filter",
-      "en": "BELSA Pressure Line Filter (Filter Tekanan Tinggi Jalur Pipa)",
+      "en": "BELSA Pressure Line Filter (Filter Tekanan Tinggi Jalur Pipa)"
     },
     "image": "https://lh3.googleusercontent.com/d/1o7EKXalqoJvJe4KIEs52WT1gLWgFA3Ys",
     "symbolType": "valve",
@@ -30173,25 +29790,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Flexible connection alternatives: Thread connection or Flanged connection."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPLF",
       "separator": "-",
-      "totalSlots": 4,
       "slotDelimiters": {
         "1": "-",
         "2": "",
         "3": "-",
         "4": ""
       },
-      "defaultSlotValues": {
-        "1": "H",
-        "2": "30",
-        "3": "10",
-        "4": "F"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bplf_b1",
@@ -30396,7 +30020,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Pneumatic Operated Globe Valve, Aktuator Plastik",
-      "en": "Pneumatic Operated Globe Valve (Katup Globe Aktuator Plastik)",
+      "en": "Pneumatic Operated Globe Valve (Katup Globe Aktuator Plastik)"
     },
     "image": "https://lh3.googleusercontent.com/d/1I-UyIHq9j0YK9732KgWcv9lv1zJnx-X3",
     "symbolType": "valve",
@@ -30416,12 +30040,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Wide range of flange standards: EN 1092 (PN16, PN25, PN40), JIS 20K, and ANSI Class 125/150."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPOGV",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 5,
       "blocks": [
         {
@@ -30597,7 +30235,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "Proportional Relief Valve",
-      "en": "Proportional Relief Valve (Katup Pengurang Tekanan Proporsional)",
+      "en": "Proportional Relief Valve (Katup Pengurang Tekanan Proporsional)"
     },
     "image": "https://lh3.googleusercontent.com/d/1wPOADz97xZHwjoo_c9E_GShCJTGPZflq",
     "symbolType": "hydraulic",
@@ -30617,12 +30255,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Subplate mounting standard conforming to international hydraulic specs."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPRV",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 4,
       "blocks": [
         {
@@ -30772,7 +30424,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Instrumentation & Sensors",
     "subTitle": {
       "id": "Belsa Piston Type Pressure Switch",
-      "en": "Belsa Piston Type Pressure Switch (Sakelar Tekanan Piston Kompak)",
+      "en": "Belsa Piston Type Pressure Switch (Sakelar Tekanan Piston Kompak)"
     },
     "image": "https://lh3.googleusercontent.com/d/1VE1ypci70kjnhSgWp1j25s-K1JT-ZVGJ",
     "symbolType": "none",
@@ -30792,23 +30444,31 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Wide operational pressure spans covering 9.5 bar up to 500 bar."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPS",
       "separator": "-",
-      "totalSlots": 3,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-"
       },
-      "defaultSlotValues": {
-        "1": "P",
-        "2": "70",
-        "3": "HO"
-      },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "bps_b1",
@@ -30955,7 +30615,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Quick Coupler ISO 7241",
-      "en": "Belsa Quick Coupler ISO 7241 (Kopling Cepat Hidrolik Standar ISO)",
+      "en": "Belsa Quick Coupler ISO 7241 (Kopling Cepat Hidrolik Standar ISO)"
     },
     "image": "https://lh3.googleusercontent.com/d/1Pb02LBpvBWqL5IpH1N-E4KlT1RM8Dt2N",
     "symbolType": "none",
@@ -30975,13 +30635,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom-made dimensions and specifications available upon request"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BQC ISO 7241",
-      "separator": " - ",
-      "totalSlots": 7,
+      "codePrefix": "BQC",
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -30991,15 +30663,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "6": "-",
         "7": ""
       },
-      "defaultSlotValues": {
-        "1": "BQC ISO 7241",
-        "2": "MF",
-        "3": "12",
-        "4": "N",
-        "5": "1",
-        "6": "B",
-        "7": "M"
-      },
+      "totalSlots": 7,
       "blocks": [
         {
           "id": "bqc_b1",
@@ -31270,7 +30934,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Belsa Rodless Cylinder",
-      "en": "Belsa Rodless Cylinder (Silinder Pneumatik Tanpa Batang)",
+      "en": "Belsa Rodless Cylinder (Silinder Pneumatik Tanpa Batang)"
     },
     "image": "https://lh3.googleusercontent.com/d/1wJeXtJ07YwE09ovo8ILTu1OHYIBVwGH3",
     "symbolType": "air_double",
@@ -31316,8 +30980,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 5000,
     "htoConfig": {
       "codePrefix": "BRC",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -31326,14 +30989,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "-",
         "6": ""
       },
-      "defaultSlotValues": {
-        "1": "BRC",
-        "2": "80",
-        "3": "100",
-        "4": "NIL",
-        "5": "NIL",
-        "6": "M"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "brc_b1",
@@ -31574,7 +31230,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flexible Rubber Joint",
-      "en": "Belsa Flexible Rubber Joint (Sambungan Karet Fleksibel Flens)",
+      "en": "Belsa Flexible Rubber Joint (Sambungan Karet Fleksibel Flens)"
     },
     "image": "https://lh3.googleusercontent.com/d/1Qyr-MbEqguNKNNGQRxktuf_jDPo4krYN",
     "symbolType": "hose",
@@ -31592,13 +31248,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Flange materials in Ductile Iron, Carbon Steel, SUS304, and SUS316."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BRJ",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -31606,13 +31274,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "BRJ",
-        "2": "DN50",
-        "3": "PN16",
-        "4": "100",
-        "5": "SUS304"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "brj_b1",
@@ -31959,7 +31621,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Silicon Fire Sleeve",
-      "en": "Belsa Silicon Fire Sleeve (Pelindung Selang Tahan Api)",
+      "en": "Belsa Silicon Fire Sleeve (Pelindung Selang Tahan Api)"
     },
     "image": "https://lh3.googleusercontent.com/d/1vItL1aY9lsE0LoRnBM3ZwL49atekFI4d",
     "symbolType": "none",
@@ -31977,21 +31639,30 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "OEM customization."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BSFS",
-      "separator": " - ",
-      "totalSlots": 2,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": ""
       },
-      "defaultSlotValues": {
-        "1": "BSFS",
-        "2": "19"
-      },
+      "totalSlots": 2,
       "blocks": [
         {
           "id": "bsfs_b1",
@@ -32104,7 +31775,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Sight Glass",
-      "en": "Belsa Sight Glass (Kaca Pengamat Aliran Fluida)",
+      "en": "Belsa Sight Glass (Kaca Pengamat Aliran Fluida)"
     },
     "image": "https://lh3.googleusercontent.com/d/1O0L0cQAnRaPL6QRlI71p0OoNCy8lBGdG",
     "symbolType": "none",
@@ -32124,13 +31795,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Protective Steel Frame."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BSG",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -32138,13 +31821,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "BSG",
-        "2": "T",
-        "3": "08",
-        "4": "QG",
-        "5": "M"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bsg_b1",
@@ -32356,308 +32033,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-    "id": "bsp",
-    "slug": "bsp",
-    "series": "BSP Series",
-    "code": "BSP",
-    "category": "Hydraulic Pump & Power Unit",
-    "subTitle": {
-      "id": "BSP Series Centrifugal Pump",
-      "en": "BSP Series Centrifugal Pump (Inlet/Outlet 32 - 250 mm)",
-    },
-    "features": {
-      "id": [
-        "Diameter inlet 32 mm hingga 250 mm.",
-        "Diameter outlet 32 mm hingga 200 mm.",
-        "Pilihan diameter impeller: 16, 20, 25, 26, 32, 40, 48, dan 60 cm.",
-        "Impeller dan mechanical seal mudah diganti.",
-        "Untuk sirkulasi dan transfer fluida di industri."
-      ],
-      "en": [
-        "Various inlet diameter sizes (32 mm to 250 mm).",
-        "Various outlet diameter sizes (32 mm to 200 mm).",
-        "Multiple impeller diameters (16 cm to 60 cm).",
-        "Easy maintenance and quick seal/impeller replacement.",
-        "Engineered for continuous fluid transfer and industrial circulation."
-      ]
-    },
-    "image": "/images/prod_valve_clean.webp",
-    "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "BSP",
-      "separator": "-",
-      "totalSlots": 3,
-      "slotDelimiters": {
-        "1": "/",
-        "2": "-",
-        "3": ""
-      },
-      "blocks": [
-        {
-          "id": "bsp_b1",
-          "title": "Inlet Diameter (mm)",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "flange",
-              "label": "Ukuran Flensa Masuk"
-            }
-          ],
-          "rows": [
-            {
-              "id": "in_32",
-              "code": "32",
-              "label": "DN32 (32 mm)",
-              "values": {
-                "flange": "Inlet Diameter 32 mm"
-              }
-            },
-            {
-              "id": "in_40",
-              "code": "40",
-              "label": "DN40 (40 mm)",
-              "values": {
-                "flange": "Inlet Diameter 40 mm"
-              }
-            },
-            {
-              "id": "in_50",
-              "code": "50",
-              "label": "DN50 (50 mm)",
-              "values": {
-                "flange": "Inlet Diameter 50 mm"
-              }
-            },
-            {
-              "id": "in_65",
-              "code": "65",
-              "label": "DN65 (65 mm)",
-              "values": {
-                "flange": "Inlet Diameter 65 mm"
-              }
-            },
-            {
-              "id": "in_80",
-              "code": "80",
-              "label": "DN80 (80 mm)",
-              "values": {
-                "flange": "Inlet Diameter 80 mm"
-              }
-            },
-            {
-              "id": "in_100",
-              "code": "100",
-              "label": "DN100 (100 mm)",
-              "values": {
-                "flange": "Inlet Diameter 100 mm"
-              }
-            },
-            {
-              "id": "in_125",
-              "code": "125",
-              "label": "DN125 (125 mm)",
-              "values": {
-                "flange": "Inlet Diameter 125 mm"
-              }
-            },
-            {
-              "id": "in_150",
-              "code": "150",
-              "label": "DN150 (150 mm)",
-              "values": {
-                "flange": "Inlet Diameter 150 mm"
-              }
-            },
-            {
-              "id": "in_200",
-              "code": "200",
-              "label": "DN200 (200 mm)",
-              "values": {
-                "flange": "Inlet Diameter 200 mm"
-              }
-            },
-            {
-              "id": "in_250",
-              "code": "250",
-              "label": "DN250 (250 mm)",
-              "values": {
-                "flange": "Inlet Diameter 250 mm"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bsp_b2",
-          "title": "Outlet Diameter (mm)",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "flange",
-              "label": "Ukuran Flensa Keluar"
-            }
-          ],
-          "rows": [
-            {
-              "id": "out_32",
-              "code": "32",
-              "label": "DN32 (32 mm)",
-              "values": {
-                "flange": "Outlet Diameter 32 mm"
-              }
-            },
-            {
-              "id": "out_40",
-              "code": "40",
-              "label": "DN40 (40 mm)",
-              "values": {
-                "flange": "Outlet Diameter 40 mm"
-              }
-            },
-            {
-              "id": "out_50",
-              "code": "50",
-              "label": "DN50 (50 mm)",
-              "values": {
-                "flange": "Outlet Diameter 50 mm"
-              }
-            },
-            {
-              "id": "out_65",
-              "code": "65",
-              "label": "DN65 (65 mm)",
-              "values": {
-                "flange": "Outlet Diameter 65 mm"
-              }
-            },
-            {
-              "id": "out_80",
-              "code": "80",
-              "label": "DN80 (80 mm)",
-              "values": {
-                "flange": "Outlet Diameter 80 mm"
-              }
-            },
-            {
-              "id": "out_100",
-              "code": "100",
-              "label": "DN100 (100 mm)",
-              "values": {
-                "flange": "Outlet Diameter 100 mm"
-              }
-            },
-            {
-              "id": "out_125",
-              "code": "125",
-              "label": "DN125 (125 mm)",
-              "values": {
-                "flange": "Outlet Diameter 125 mm"
-              }
-            },
-            {
-              "id": "out_150",
-              "code": "150",
-              "label": "DN150 (150 mm)",
-              "values": {
-                "flange": "Outlet Diameter 150 mm"
-              }
-            },
-            {
-              "id": "out_200",
-              "code": "200",
-              "label": "DN200 (200 mm)",
-              "values": {
-                "flange": "Outlet Diameter 200 mm"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bsp_b3",
-          "title": "Impeller Diameter (cm)",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "dia",
-              "label": "Ukuran Impeller"
-            }
-          ],
-          "rows": [
-            {
-              "id": "imp_16",
-              "code": "16",
-              "label": "16 cm (160 mm)",
-              "values": {
-                "dia": "Impeller diameter 16 cm"
-              }
-            },
-            {
-              "id": "imp_20",
-              "code": "20",
-              "label": "20 cm (200 mm)",
-              "values": {
-                "dia": "Impeller diameter 20 cm"
-              }
-            },
-            {
-              "id": "imp_25",
-              "code": "25",
-              "label": "25 cm (250 mm)",
-              "values": {
-                "dia": "Impeller diameter 25 cm"
-              }
-            },
-            {
-              "id": "imp_26",
-              "code": "26",
-              "label": "26 cm (260 mm)",
-              "values": {
-                "dia": "Impeller diameter 26 cm"
-              }
-            },
-            {
-              "id": "imp_32",
-              "code": "32",
-              "label": "32 cm (320 mm)",
-              "values": {
-                "dia": "Impeller diameter 32 cm"
-              }
-            },
-            {
-              "id": "imp_40",
-              "code": "40",
-              "label": "40 cm (400 mm)",
-              "values": {
-                "dia": "Impeller diameter 40 cm"
-              }
-            },
-            {
-              "id": "imp_48",
-              "code": "48",
-              "label": "48 cm (480 mm)",
-              "values": {
-                "dia": "Impeller diameter 48 cm"
-              }
-            },
-            {
-              "id": "imp_60",
-              "code": "60",
-              "label": "60 cm (600 mm)",
-              "values": {
-                "dia": "Impeller diameter 60 cm"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
     "id": "bsqp",
     "slug": "bsqp",
     "series": "BSQP Series",
@@ -32665,7 +32040,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Pump & Power Unit",
     "subTitle": {
       "id": "Low Noise Fixed Displacement Double Vane Pumps",
-      "en": "Low Noise Fixed Displacement Double Vane Pumps (Pompa Vane Ganda Seri Rendah Kebisingan)",
+      "en": "Low Noise Fixed Displacement Double Vane Pumps (Pompa Vane Ganda Seri Rendah Kebisingan)"
     },
     "features": {
       "id": [
@@ -32676,104 +32051,111 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Tersedia seri BSQP(S)21, BSQP(S)31/32, dan BSQP(S)41/42/43."
       ],
       "en": [
-        "Low noise double fixed displacement vane pumps.",
+        "Low noise fixed displacement double vane pump design.",
+        "High volumetric efficiency and smooth fluid delivery.",
         "Flexible combination of shaft end pump and cover end pump displacements.",
-        "Flange mounting or flexible Foot mounting options with multiple port orientations.",
-        "Heavy duty construction with high volumetric efficiency.",
-        "Available for BSQP(S)21, BSQP(S)31/32, and BSQP(S)41/42/43 series."
+        "Flange or Foot mounting options with multiple port orientation choices.",
+        "Covers BSQP(S)21, BSQP(S)31/32, and BSQP(S)41/42/43 models."
       ]
     },
     "image": "https://lh3.googleusercontent.com/d/1i5TX2vS8E2JAtiL-Pe8E-5Bl2qKRWFcn",
     "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BSQP",
       "separator": "-",
-      "totalSlots": 9,
-      "defaultSlotValues": {
-        "1": "BSQP21",
-        "4": "80",
-        "9": "20"
-      },
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
-        "4": "",
-        "5": "",
-        "6": "",
+        "4": "-",
+        "5": "-",
+        "6": "-",
         "7": "-",
-        "8": "-",
-        "9": ""
+        "8": ""
       },
+      "totalSlots": 8,
       "blocks": [
         {
           "id": "bsqp_b1",
-          "title": "Low noise double fixed displacement vane pumps",
+          "title": "Double Pump Series Combination",
           "slotIndex": 1,
           "displayType": "table",
           "columns": [
             {
-              "id": "desc",
-              "label": "Kombinasi Rangka Seri Pompa Ganda"
+              "id": "series",
+              "label": "Kombinasi Rangka Pompa"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_ser_21",
-              "code": "BSQP21",
+              "id": "ser_21",
+              "code": "21",
               "label": "BSQP(S)21 Series",
               "values": {
-                "desc": "BSQP(S)21 Series"
+                "series": "Frame size 2 shaft end + size 1 cover end"
               }
             },
             {
-              "id": "bsqp_ser_31",
-              "code": "BSQP31",
+              "id": "ser_31",
+              "code": "31",
               "label": "BSQP(S)31 Series",
               "values": {
-                "desc": "BSQP(S)31 Series"
+                "series": "Frame size 3 shaft end + size 1 cover end"
               }
             },
             {
-              "id": "bsqp_ser_32",
-              "code": "BSQP32",
+              "id": "ser_32",
+              "code": "32",
               "label": "BSQP(S)32 Series",
               "values": {
-                "desc": "BSQP(S)32 Series"
+                "series": "Frame size 3 shaft end + size 2 cover end"
               }
             },
             {
-              "id": "bsqp_ser_41",
-              "code": "BSQP41",
+              "id": "ser_41",
+              "code": "41",
               "label": "BSQP(S)41 Series",
               "values": {
-                "desc": "BSQP(S)41 Series"
+                "series": "Frame size 4 shaft end + size 1 cover end"
               }
             },
             {
-              "id": "bsqp_ser_42",
-              "code": "BSQP42",
+              "id": "ser_42",
+              "code": "42",
               "label": "BSQP(S)42 Series",
               "values": {
-                "desc": "BSQP(S)42 Series"
+                "series": "Frame size 4 shaft end + size 2 cover end"
               }
             },
             {
-              "id": "bsqp_ser_43",
-              "code": "BSQP43",
+              "id": "ser_43",
+              "code": "43",
               "label": "BSQP(S)43 Series",
               "values": {
-                "desc": "BSQP(S)43 Series"
+                "series": "Frame size 4 shaft end + size 3 cover end"
               }
             }
           ]
         },
         {
           "id": "bsqp_b2",
-          "title": "Shaft end pump displacement",
+          "title": "Shaft End Pump Displacement Code",
           "slotIndex": 2,
           "displayType": "table",
           "columns": [
@@ -32783,150 +32165,141 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "flow",
-              "label": "Displacement Code (gpm)"
+              "label": "Debit / Aliran"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_sd_10",
+              "id": "sd_10",
               "code": "10",
               "label": "10 gpm",
               "values": {
                 "frame": "SQP(S)2*",
-                "flow": "10 gpm"
+                "flow": "Nominal 10 gpm"
               }
             },
             {
-              "id": "bsqp_sd_12",
+              "id": "sd_12",
               "code": "12",
               "label": "12 gpm",
               "values": {
                 "frame": "SQP(S)2*",
-                "flow": "12 gpm"
+                "flow": "Nominal 12 gpm"
               }
             },
             {
-              "id": "bsqp_sd_14",
+              "id": "sd_14",
               "code": "14",
               "label": "14 gpm",
               "values": {
                 "frame": "SQP(S)2*",
-                "flow": "14 gpm"
+                "flow": "Nominal 14 gpm"
               }
             },
             {
-              "id": "bsqp_sd_15",
+              "id": "sd_15",
               "code": "15",
               "label": "15 gpm",
               "values": {
                 "frame": "SQP(S)2*",
-                "flow": "15 gpm"
+                "flow": "Nominal 15 gpm"
               }
             },
             {
-              "id": "bsqp_sd_17",
+              "id": "sd_17",
               "code": "17",
               "label": "17 gpm",
               "values": {
                 "frame": "SQP(S)2*, 3*",
-                "flow": "17 gpm"
+                "flow": "Nominal 17 gpm"
               }
             },
             {
-              "id": "bsqp_sd_19",
-              "code": "19",
-              "label": "19 gpm",
-              "values": {
-                "frame": "SQP(S)2*",
-                "flow": "19 gpm"
-              }
-            },
-            {
-              "id": "bsqp_sd_21",
+              "id": "sd_21",
               "code": "21",
               "label": "21 gpm",
               "values": {
                 "frame": "SQP(S)2*, 3*",
-                "flow": "21 gpm"
+                "flow": "Nominal 21 gpm"
               }
             },
             {
-              "id": "bsqp_sd_25",
+              "id": "sd_25",
               "code": "25",
               "label": "25 gpm",
               "values": {
                 "frame": "SQP(S)3*",
-                "flow": "25 gpm"
+                "flow": "Nominal 25 gpm"
               }
             },
             {
-              "id": "bsqp_sd_30",
+              "id": "sd_30",
               "code": "30",
               "label": "30 gpm",
               "values": {
                 "frame": "SQP(S)3*, 4*",
-                "flow": "30 gpm"
+                "flow": "Nominal 30 gpm"
               }
             },
             {
-              "id": "bsqp_sd_32",
+              "id": "sd_32",
               "code": "32",
               "label": "32 gpm",
               "values": {
                 "frame": "SQP(S)3*",
-                "flow": "32 gpm"
+                "flow": "Nominal 32 gpm"
               }
             },
             {
-              "id": "bsqp_sd_35",
+              "id": "sd_35",
               "code": "35",
               "label": "35 gpm",
               "values": {
                 "frame": "SQP(S)3*, 4*",
-                "flow": "35 gpm"
+                "flow": "Nominal 35 gpm"
               }
             },
             {
-              "id": "bsqp_sd_38",
+              "id": "sd_38",
               "code": "38",
               "label": "38 gpm",
               "values": {
                 "frame": "SQP(S)3*, 4*",
-                "flow": "38 gpm"
+                "flow": "Nominal 38 gpm"
               }
             },
             {
-              "id": "bsqp_sd_42",
+              "id": "sd_42",
               "code": "42",
               "label": "42 gpm",
               "values": {
                 "frame": "SQP(S)4*",
-                "flow": "42 gpm"
+                "flow": "Nominal 42 gpm"
               }
             },
             {
-              "id": "bsqp_sd_50",
+              "id": "sd_50",
               "code": "50",
               "label": "50 gpm",
               "values": {
                 "frame": "SQP(S)4*",
-                "flow": "50 gpm"
+                "flow": "Nominal 50 gpm"
               }
             },
             {
-              "id": "bsqp_sd_60",
+              "id": "sd_60",
               "code": "60",
               "label": "60 gpm",
               "values": {
                 "frame": "SQP(S)4*",
-                "flow": "60 gpm"
+                "flow": "Nominal 60 gpm"
               }
             }
           ]
         },
         {
           "id": "bsqp_b3",
-          "title": "Cover end pump displacement",
+          "title": "Cover End Pump Displacement Code",
           "slotIndex": 3,
           "displayType": "table",
           "columns": [
@@ -32936,424 +32309,394 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "flow",
-              "label": "Displacement Code (gpm)"
+              "label": "Debit / Aliran"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_cd_2",
+              "id": "cd_2",
               "code": "2",
               "label": "2 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "2 gpm"
+                "flow": "Nominal 2 gpm"
               }
             },
             {
-              "id": "bsqp_cd_3",
+              "id": "cd_3",
               "code": "3",
               "label": "3 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "3 gpm"
+                "flow": "Nominal 3 gpm"
               }
             },
             {
-              "id": "bsqp_cd_4",
+              "id": "cd_4",
               "code": "4",
               "label": "4 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "4 gpm"
+                "flow": "Nominal 4 gpm"
               }
             },
             {
-              "id": "bsqp_cd_5",
+              "id": "cd_5",
               "code": "5",
               "label": "5 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "5 gpm"
+                "flow": "Nominal 5 gpm"
               }
             },
             {
-              "id": "bsqp_cd_6",
+              "id": "cd_6",
               "code": "6",
               "label": "6 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "6 gpm"
+                "flow": "Nominal 6 gpm"
               }
             },
             {
-              "id": "bsqp_cd_7",
+              "id": "cd_7",
               "code": "7",
               "label": "7 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "7 gpm"
+                "flow": "Nominal 7 gpm"
               }
             },
             {
-              "id": "bsqp_cd_8",
+              "id": "cd_8",
               "code": "8",
               "label": "8 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "8 gpm"
+                "flow": "Nominal 8 gpm"
               }
             },
             {
-              "id": "bsqp_cd_9",
+              "id": "cd_9",
               "code": "9",
               "label": "9 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "9 gpm"
+                "flow": "Nominal 9 gpm"
               }
             },
             {
-              "id": "bsqp_cd_11",
+              "id": "cd_11",
               "code": "11",
               "label": "11 gpm",
               "values": {
                 "frame": "SQP(S)*1",
-                "flow": "11 gpm"
+                "flow": "Nominal 11 gpm"
               }
             },
             {
-              "id": "bsqp_cd_12",
+              "id": "cd_12",
               "code": "12",
               "label": "12 gpm",
               "values": {
                 "frame": "SQP(S)*1, *2",
-                "flow": "12 gpm"
+                "flow": "Nominal 12 gpm"
               }
             },
             {
-              "id": "bsqp_cd_14",
+              "id": "cd_14",
               "code": "14",
               "label": "14 gpm",
               "values": {
                 "frame": "SQP(S)*1, *2",
-                "flow": "14 gpm"
+                "flow": "Nominal 14 gpm"
               }
             },
             {
-              "id": "bsqp_cd_15",
+              "id": "cd_15",
               "code": "15",
               "label": "15 gpm",
               "values": {
                 "frame": "SQP(S)*2",
-                "flow": "15 gpm"
+                "flow": "Nominal 15 gpm"
               }
             },
             {
-              "id": "bsqp_cd_17",
+              "id": "cd_17",
               "code": "17",
               "label": "17 gpm",
               "values": {
                 "frame": "SQP(S)*2, *3",
-                "flow": "17 gpm"
+                "flow": "Nominal 17 gpm"
               }
             },
             {
-              "id": "bsqp_cd_19",
+              "id": "cd_19",
               "code": "19",
               "label": "19 gpm",
               "values": {
                 "frame": "SQP(S)*2",
-                "flow": "19 gpm"
+                "flow": "Nominal 19 gpm"
               }
             },
             {
-              "id": "bsqp_cd_21",
+              "id": "cd_21",
               "code": "21",
               "label": "21 gpm",
               "values": {
                 "frame": "SQP(S)*2, *3",
-                "flow": "21 gpm"
+                "flow": "Nominal 21 gpm"
               }
             },
             {
-              "id": "bsqp_cd_25",
+              "id": "cd_25",
               "code": "25",
               "label": "25 gpm",
               "values": {
                 "frame": "SQP(S)*3",
-                "flow": "25 gpm"
+                "flow": "Nominal 25 gpm"
               }
             },
             {
-              "id": "bsqp_cd_30",
+              "id": "cd_30",
               "code": "30",
               "label": "30 gpm",
               "values": {
                 "frame": "SQP(S)*3",
-                "flow": "30 gpm"
+                "flow": "Nominal 30 gpm"
               }
             },
             {
-              "id": "bsqp_cd_32",
+              "id": "cd_32",
               "code": "32",
               "label": "32 gpm",
               "values": {
                 "frame": "SQP(S)*3",
-                "flow": "32 gpm"
+                "flow": "Nominal 32 gpm"
               }
             },
             {
-              "id": "bsqp_cd_35",
+              "id": "cd_35",
               "code": "35",
               "label": "35 gpm",
               "values": {
                 "frame": "SQP(S)*3",
-                "flow": "35 gpm"
+                "flow": "Nominal 35 gpm"
               }
             },
             {
-              "id": "bsqp_cd_38",
+              "id": "cd_38",
               "code": "38",
               "label": "38 gpm",
               "values": {
                 "frame": "SQP(S)*3",
-                "flow": "38 gpm"
+                "flow": "Nominal 38 gpm"
               }
             }
           ]
         },
         {
           "id": "bsqp_b4",
-          "title": "Shaft end configuration",
+          "title": "Pump Mounting & Foot Orientation",
           "slotIndex": 4,
           "displayType": "table",
           "columns": [
             {
-              "id": "desc",
-              "label": "Konfigurasi Poros"
+              "id": "pos",
+              "label": "Orientasi Port & Dudukan"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_sec_80",
-              "code": "80",
-              "label": "Parallel sq. key",
+              "id": "pm_flg",
+              "code": "FLG",
+              "label": "Flange Mounting",
               "values": {
-                "desc": "Parallel square key (Poros Silinder Pasak Persegi)"
+                "pos": "Flange mount standar"
+              }
+            },
+            {
+              "id": "pm_2",
+              "code": "2",
+              "label": "Foot Mounting Up (12 o'clock)",
+              "values": {
+                "pos": "Port keluar sisi shaft mengarah ke atas (jam 12)"
+              }
+            },
+            {
+              "id": "pm_23",
+              "code": "23",
+              "label": "Foot Mounting Right (3 o'clock)",
+              "values": {
+                "pos": "Port keluar sisi shaft mengarah ke kanan (jam 3)"
+              }
+            },
+            {
+              "id": "pm_26",
+              "code": "26",
+              "label": "Foot Mounting Down (6 o'clock)",
+              "values": {
+                "pos": "Port keluar sisi shaft mengarah ke bawah (jam 6)"
+              }
+            },
+            {
+              "id": "pm_29",
+              "code": "29",
+              "label": "Foot Mounting Left (9 o'clock)",
+              "values": {
+                "pos": "Port keluar sisi shaft mengarah ke kiri (jam 9)"
               }
             }
           ]
         },
         {
           "id": "bsqp_b5",
-          "title": "Shaft end delivery port position",
+          "title": "Shaft End Delivery Port Position",
           "slotIndex": 5,
           "displayType": "table",
           "columns": [
             {
-              "id": "pos",
-              "label": "Posisi Relatif ke Suction Port (Viewed from cover end)"
+              "id": "rel",
+              "label": "Posisi Relatif ke Port Hisap (Suction)"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_sep_a",
+              "id": "sp_a",
               "code": "A",
-              "label": "opposite suction port",
+              "label": "Opposite Suction Port",
               "values": {
-                "pos": "Opposite suction port (180° berlawanan)"
+                "rel": "180° berlawanan arah port hisap"
               }
             },
             {
-              "id": "bsqp_sep_b",
+              "id": "sp_b",
               "code": "B",
-              "label": "90° CCW from suction port",
+              "label": "90° CCW from Suction Port",
               "values": {
-                "pos": "90° CCW from suction port"
+                "rel": "90° berlawanan arah jarum jam"
               }
             },
             {
-              "id": "bsqp_sep_c",
+              "id": "sp_c",
               "code": "C",
-              "label": "inline with suction port",
+              "label": "Inline with Suction Port",
               "values": {
-                "pos": "Inline with suction port (Sejajar)"
+                "rel": "Sejajar segaris dengan port hisap"
               }
             },
             {
-              "id": "bsqp_sep_d",
+              "id": "sp_d",
               "code": "D",
-              "label": "90° CW from suction port",
+              "label": "90° CW from Suction Port",
               "values": {
-                "pos": "90° CW from suction port"
+                "rel": "90° searah jarum jam"
               }
             }
           ]
         },
         {
           "id": "bsqp_b6",
-          "title": "Cover end delivery port position",
+          "title": "Cover End Delivery Port Position",
           "slotIndex": 6,
           "displayType": "table",
           "columns": [
             {
-              "id": "pos",
-              "label": "Posisi Relatif ke Suction Port (Viewed from cover end)"
+              "id": "rel",
+              "label": "Posisi Relatif ke Port Hisap (Suction)"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_cep_a",
+              "id": "cp_a",
               "code": "A",
-              "label": "135° CCW from suction port (opposite suction port)",
+              "label": "Position A",
               "values": {
-                "pos": "135° CCW from suction port (Opposite on 43 series)"
+                "rel": "135° CCW from suction (Opposite on 43 series)"
               }
             },
             {
-              "id": "bsqp_cep_b",
+              "id": "cp_b",
               "code": "B",
-              "label": "45° CCW from suction port (90°)",
+              "label": "Position B",
               "values": {
-                "pos": "45° CCW from suction port (90° CCW on 43 series)"
+                "rel": "45° CCW from suction (90° CCW on 43 series)"
               }
             },
             {
-              "id": "bsqp_cep_c",
+              "id": "cp_c",
               "code": "C",
-              "label": "45° CW from suction port (inline with suction port)",
+              "label": "Position C",
               "values": {
-                "pos": "45° CW from suction port (Inline on 43 series)"
+                "rel": "45° CW from suction (Inline on 43 series)"
               }
             },
             {
-              "id": "bsqp_cep_d",
+              "id": "cp_d",
               "code": "D",
-              "label": "135° CW from suction port (90°)",
+              "label": "Position D",
               "values": {
-                "pos": "135° CW from suction port (90° CW on 43 series)"
+                "rel": "135° CW from suction (90° CW on 43 series)"
               }
             }
           ]
         },
         {
           "id": "bsqp_b7",
-          "title": "Pump mounting",
+          "title": "Shaft End Configuration",
           "slotIndex": 7,
           "displayType": "table",
           "columns": [
             {
-              "id": "mount",
-              "label": "Tipe Dudukan & Orientasi Port Delivery"
+              "id": "shaft",
+              "label": "Tipe Ujung Poros"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_pm_omit",
-              "code": "",
-              "label": "Flange mounting",
+              "id": "sec_80",
+              "code": "80",
+              "label": "Parallel Square Key (Standard)",
               "values": {
-                "mount": "Flange mounting (Omit)"
+                "shaft": "Poros silinder pasak persegi standar"
               }
             },
             {
-              "id": "bsqp_pm_2",
-              "code": "2",
-              "label": "Foot mounting - Up (12 o'clock)",
+              "id": "sec_86",
+              "code": "86",
+              "label": "Heavy Duty Keyed Shaft",
               "values": {
-                "mount": "Foot mounting - Up (12 o'clock)"
-              }
-            },
-            {
-              "id": "bsqp_pm_23",
-              "code": "23",
-              "label": "Foot mounting - Right (3 o'clock)",
-              "values": {
-                "mount": "Foot mounting - Right (3 o'clock)"
-              }
-            },
-            {
-              "id": "bsqp_pm_26",
-              "code": "26",
-              "label": "Foot mounting - Down (6 o'clock)",
-              "values": {
-                "mount": "Foot mounting - Down (6 o'clock)"
-              }
-            },
-            {
-              "id": "bsqp_pm_29",
-              "code": "29",
-              "label": "Foot mounting - Left (9 o'clock)",
-              "values": {
-                "mount": "Foot mounting - Left (9 o'clock)"
+                "shaft": "Poros pasak heavy duty"
               }
             }
           ]
         },
         {
           "id": "bsqp_b8",
-          "title": "Rotation",
+          "title": "Rotation Direction",
           "slotIndex": 8,
           "displayType": "table",
           "columns": [
             {
-              "id": "dir",
-              "label": "Arah Putaran"
+              "id": "rot",
+              "label": "Arah Putaran Poros"
             }
           ],
           "rows": [
             {
-              "id": "bsqp_rot_cw",
-              "code": "",
-              "label": "CW (Clockwise - Omitted)",
+              "id": "rot_cw",
+              "code": "CW",
+              "label": "Clockwise (Putar Kanan - Standar)",
               "values": {
-                "dir": "CW (Omitted / Standar Putar Kanan)"
+                "rot": "Right hand rotation (CW)"
               }
             },
             {
-              "id": "bsqp_rot_lh",
+              "id": "rot_lh",
               "code": "LH",
-              "label": "CCW (Counter-Clockwise / LH)",
+              "label": "Counter-Clockwise (Putar Kiri)",
               "values": {
-                "dir": "CCW (LH / Putar Kiri)"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bsqp_b9",
-          "title": "Design no,",
-          "slotIndex": 9,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Nomor Desain"
-            }
-          ],
-          "rows": [
-            {
-              "id": "bsqp_des_20",
-              "code": "20",
-              "label": "20",
-              "values": {
-                "desc": "Design no. 20 (Standard)"
-              }
-            },
-            {
-              "id": "bsqp_des_21",
-              "code": "21",
-              "label": "21",
-              "values": {
-                "desc": "Design no. 21"
-              }
-            },
-            {
-              "id": "bsqp_des_30",
-              "code": "30",
-              "label": "30",
-              "values": {
-                "desc": "Design no. 30"
+                "rot": "Left hand rotation (CCW)"
               }
             }
           ]
@@ -33369,7 +32712,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Filtration & Steam Traps",
     "subTitle": {
       "id": "High Pressure Thermodynamic Steam Trap with Replaceable Seat",
-      "en": "High Pressure Thermodynamic Steam Trap with Replaceable Seat (Steam Trap Termodinamik Tekanan Tinggi)",
+      "en": "High Pressure Thermodynamic Steam Trap with Replaceable Seat (Steam Trap Termodinamik Tekanan Tinggi)"
     },
     "image": "https://lh3.googleusercontent.com/d/1h0f3_ZoyLI1qc_XHXl5fs041tfcJJO9S",
     "symbolType": "valve",
@@ -33389,21 +32732,30 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Full connection spectrum: Butt Weld, Socket Weld, and high-pressure Flanges (PN100 to PN250, ANSI 600 to 1500)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BTD120M",
       "separator": "-",
-      "totalSlots": 2,
       "slotDelimiters": {
         "1": "-",
         "2": "-"
       },
-      "defaultSlotValues": {
-        "1": "DN25",
-        "2": "PN250"
-      },
+      "totalSlots": 2,
       "blocks": [
         {
           "id": "btd120m_b1",
@@ -33524,7 +32876,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Pipa Hidrolik",
-      "en": "Tube Hydraulic (Pipa Hidrolik Presisi Tinggi)",
+      "en": "Tube Hydraulic (Pipa Hidrolik Presisi Tinggi)"
     },
     "image": "https://lh3.googleusercontent.com/d/1nR8vq8BNaU5USworRPCJ3M9MQ7FeGekA",
     "symbolType": "none",
@@ -33542,25 +32894,32 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Available in Stainless Steel 304, Steel Galvanis, Brass, and ST41."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BTH",
-      "separator": " - ",
-      "totalSlots": 4,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
-      "defaultSlotValues": {
-        "1": "BTH",
-        "2": "15L",
-        "3": "2",
-        "4": "SS"
-      },
+      "totalSlots": 4,
       "blocks": [
         {
           "id": "bth_b1",
@@ -33782,300 +33141,306 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-        "id": "bv150",
-        "slug": "bv150",
-        "series": "BV150 Series",
-        "code": "BV150",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Vee Ball Rotary Control Valves",
-            "en": "Belsa Vee Ball Rotary Control Valves",
-        },
-        "image": "https://lh3.googleusercontent.com/d/1_IJftgIFGCzOrR9H-98dq_-LrkEs3kFZ",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Akurasi kontrol tinggi dengan desain bola V-notch.",
-                "Bebas penyumbatan (non-clogging) untuk media kotor, kental, atau slurry.",
-                "Kapasitas aliran tinggi dengan desain straight-through.",
-                "Masa pakai panjang dengan ball seal heavy-duty tahan aus.",
-                "Konfigurasi fleksibel untuk beragam aplikasi proses industri."
-            ],
-            "en": [
-                "High control accuracy with V-notch ball design.",
-                "Non-clogging operation for dirty or slurry media.",
-                "High flow capacity with straight-through design.",
-                "Long service life with heavy-duty ball seal.",
-                "Flexible configuration for various industrial applications."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "BV150",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "-",
-                "2": "-",
-                "3": "-",
-                "4": "-",
-                "5": ""
-            },
-            "totalSlots": 5,
-            "defaultSlotValues": {
-                "1": "BV150",
-                "2": "DN100",
-                "3": "WCC",
-                "4": "CL150",
-                "5": "2052"
-            },
-            "blocks": [
-                {
-                    "id": "bv150_b1",
-                    "title": "Series",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_bv150",
-                            "code": "BV150",
-                            "label": "BV150",
-                            "values": {
-                                "desc": "Belsa Vee Ball Rotary Control Valves Design 150"
-                            }
-                        },
-                        {
-                            "id": "ser_bv200",
-                            "code": "BV200",
-                            "label": "BV200",
-                            "values": {
-                                "desc": "Belsa Vee Ball Rotary Control Valves Design 200"
-                            }
-                        },
-                        {
-                            "id": "ser_bv300",
-                            "code": "BV300",
-                            "label": "BV300",
-                            "values": {
-                                "desc": "Belsa Vee Ball Rotary Control Valves Design 300"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bv150_b2",
-                    "title": "Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_dn25",
-                            "code": "DN25",
-                            "label": "DN25",
-                            "values": {
-                                "desc": "Size 1 Inch (DN25)"
-                            }
-                        },
-                        {
-                            "id": "sz_dn50",
-                            "code": "DN50",
-                            "label": "DN50",
-                            "values": {
-                                "desc": "Size 2 Inch (DN50)"
-                            }
-                        },
-                        {
-                            "id": "sz_dn80",
-                            "code": "DN80",
-                            "label": "DN80",
-                            "values": {
-                                "desc": "Size 3 Inch (DN80)"
-                            }
-                        },
-                        {
-                            "id": "sz_dn100",
-                            "code": "DN100",
-                            "label": "DN100",
-                            "values": {
-                                "desc": "Size 4 Inch (DN100)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bv150_b3",
-                    "title": "Material",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Bodi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "mat_wcc",
-                            "code": "WCC",
-                            "label": "WCC",
-                            "values": {
-                                "desc": "Wrought Carbon, Grade C"
-                            }
-                        },
-                        {
-                            "id": "mat_cf3m",
-                            "code": "CF3M",
-                            "label": "CF3M",
-                            "values": {
-                                "desc": "Cast Stainless Steel 316L"
-                            }
-                        },
-                        {
-                            "id": "mat_cf8m",
-                            "code": "CF8M",
-                            "label": "CF8M",
-                            "values": {
-                                "desc": "Cast Stainless Steel 316"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bv150_b4",
-                    "title": "Pressure Rating",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Rating Tekanan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "pr_cl150",
-                            "code": "CL150",
-                            "label": "CL150",
-                            "values": {
-                                "desc": "Class 150"
-                            }
-                        },
-                        {
-                            "id": "pr_cl300",
-                            "code": "CL300",
-                            "label": "CL300",
-                            "values": {
-                                "desc": "Class 300"
-                            }
-                        },
-                        {
-                            "id": "pr_cl600",
-                            "code": "CL600",
-                            "label": "CL600",
-                            "values": {
-                                "desc": "Class 600"
-                            }
-                        },
-                        {
-                            "id": "pr_pn10",
-                            "code": "PN10",
-                            "label": "PN10",
-                            "values": {
-                                "desc": "Pressure Nominal 10 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_pn16",
-                            "code": "PN16",
-                            "label": "PN16",
-                            "values": {
-                                "desc": "Pressure Nominal 16 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_pn25",
-                            "code": "PN25",
-                            "label": "PN25",
-                            "values": {
-                                "desc": "Pressure Nominal 25 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_pn40",
-                            "code": "PN40",
-                            "label": "PN40",
-                            "values": {
-                                "desc": "Pressure Nominal 40 bar"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bv150_b5",
-                    "title": "Type Actuator",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Aktuator"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "act_1061",
-                            "code": "1061",
-                            "label": "1061",
-                            "values": {
-                                "desc": "Type 1061"
-                            }
-                        },
-                        {
-                            "id": "act_2052",
-                            "code": "2052",
-                            "label": "2052",
-                            "values": {
-                                "desc": "Type 2052"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+    "id": "bv150",
+    "slug": "bv150",
+    "series": "BV150 Series",
+    "code": "BV150",
+    "category": "Industrial & Hydraulic Valve",
+    "subTitle": {
+      "id": "Belsa Vee Ball Rotary Control Valves",
+      "en": "Belsa Vee Ball Rotary Control Valves"
     },
+    "image": "https://lh3.googleusercontent.com/d/1_IJftgIFGCzOrR9H-98dq_-LrkEs3kFZ",
+    "symbolType": "valve",
+    "features": {
+      "id": [
+        "Akurasi kontrol tinggi dengan desain bola V-notch.",
+        "Bebas penyumbatan (non-clogging) untuk media kotor, kental, atau slurry.",
+        "Kapasitas aliran tinggi dengan desain straight-through.",
+        "Masa pakai panjang dengan ball seal heavy-duty tahan aus.",
+        "Konfigurasi fleksibel untuk beragam aplikasi proses industri."
+      ],
+      "en": [
+        "High control accuracy with V-notch ball design.",
+        "Non-clogging operation for dirty or slurry media.",
+        "High flow capacity with straight-through design.",
+        "Long service life with heavy-duty ball seal.",
+        "Flexible configuration for various industrial applications."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "BV150",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "-",
+        "2": "-",
+        "3": "-",
+        "4": "-",
+        "5": ""
+      },
+      "totalSlots": 5,
+      "blocks": [
+        {
+          "id": "bv150_b1",
+          "title": "Series",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "ser_bv150",
+              "code": "BV150",
+              "label": "BV150",
+              "values": {
+                "desc": "Belsa Vee Ball Rotary Control Valves Design 150"
+              }
+            },
+            {
+              "id": "ser_bv200",
+              "code": "BV200",
+              "label": "BV200",
+              "values": {
+                "desc": "Belsa Vee Ball Rotary Control Valves Design 200"
+              }
+            },
+            {
+              "id": "ser_bv300",
+              "code": "BV300",
+              "label": "BV300",
+              "values": {
+                "desc": "Belsa Vee Ball Rotary Control Valves Design 300"
+              }
+            }
+          ]
+        },
+        {
+          "id": "bv150_b2",
+          "title": "Size",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Ukuran Nominal"
+            }
+          ],
+          "rows": [
+            {
+              "id": "sz_dn25",
+              "code": "DN25",
+              "label": "DN25",
+              "values": {
+                "desc": "Size 1 Inch (DN25)"
+              }
+            },
+            {
+              "id": "sz_dn50",
+              "code": "DN50",
+              "label": "DN50",
+              "values": {
+                "desc": "Size 2 Inch (DN50)"
+              }
+            },
+            {
+              "id": "sz_dn80",
+              "code": "DN80",
+              "label": "DN80",
+              "values": {
+                "desc": "Size 3 Inch (DN80)"
+              }
+            },
+            {
+              "id": "sz_dn100",
+              "code": "DN100",
+              "label": "DN100",
+              "values": {
+                "desc": "Size 4 Inch (DN100)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "bv150_b3",
+          "title": "Material",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Material Bodi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "mat_wcc",
+              "code": "WCC",
+              "label": "WCC",
+              "values": {
+                "desc": "Wrought Carbon, Grade C"
+              }
+            },
+            {
+              "id": "mat_cf3m",
+              "code": "CF3M",
+              "label": "CF3M",
+              "values": {
+                "desc": "Cast Stainless Steel 316L"
+              }
+            },
+            {
+              "id": "mat_cf8m",
+              "code": "CF8M",
+              "label": "CF8M",
+              "values": {
+                "desc": "Cast Stainless Steel 316"
+              }
+            }
+          ]
+        },
+        {
+          "id": "bv150_b4",
+          "title": "Pressure Rating",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Rating Tekanan"
+            }
+          ],
+          "rows": [
+            {
+              "id": "pr_cl150",
+              "code": "CL150",
+              "label": "CL150",
+              "values": {
+                "desc": "Class 150"
+              }
+            },
+            {
+              "id": "pr_cl300",
+              "code": "CL300",
+              "label": "CL300",
+              "values": {
+                "desc": "Class 300"
+              }
+            },
+            {
+              "id": "pr_cl600",
+              "code": "CL600",
+              "label": "CL600",
+              "values": {
+                "desc": "Class 600"
+              }
+            },
+            {
+              "id": "pr_pn10",
+              "code": "PN10",
+              "label": "PN10",
+              "values": {
+                "desc": "Pressure Nominal 10 bar"
+              }
+            },
+            {
+              "id": "pr_pn16",
+              "code": "PN16",
+              "label": "PN16",
+              "values": {
+                "desc": "Pressure Nominal 16 bar"
+              }
+            },
+            {
+              "id": "pr_pn25",
+              "code": "PN25",
+              "label": "PN25",
+              "values": {
+                "desc": "Pressure Nominal 25 bar"
+              }
+            },
+            {
+              "id": "pr_pn40",
+              "code": "PN40",
+              "label": "PN40",
+              "values": {
+                "desc": "Pressure Nominal 40 bar"
+              }
+            }
+          ]
+        },
+        {
+          "id": "bv150_b5",
+          "title": "Type Actuator",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Kode"
+            },
+            {
+              "id": "desc",
+              "label": "Tipe Aktuator"
+            }
+          ],
+          "rows": [
+            {
+              "id": "act_1061",
+              "code": "1061",
+              "label": "1061",
+              "values": {
+                "desc": "Type 1061"
+              }
+            },
+            {
+              "id": "act_2052",
+              "code": "2052",
+              "label": "2052",
+              "values": {
+                "desc": "Type 2052"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
   {
     "id": "bvc_series",
     "slug": "bvc",
@@ -34084,7 +33449,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Vacuum Cup",
-      "en": "Vacuum Cup (Karet Pengisap Vakum Industri)",
+      "en": "Vacuum Cup (Karet Pengisap Vakum Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/16gU24ATZ0lGiP5O1_qBBjsPJbyseRmiw",
     "symbolType": "none",
@@ -34102,13 +33467,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom Made Solution available"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BVC-D",
-      "separator": " - ",
-      "totalSlots": 5,
+      "codePrefix": "BVC",
+      "separator": "-",
       "slotDelimiters": {
         "1": " - H",
         "2": " - d",
@@ -34116,13 +33493,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": " - ",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "50",
-        "2": "30",
-        "3": "10",
-        "4": "Standart",
-        "5": "M"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bvc_b1",
@@ -34525,7 +33896,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Flow Meter Guided Wave Radar",
-      "en": "Belsa Flow Meter (Pengukur Aliran Gelombang Radar)",
+      "en": "Belsa Flow Meter (Pengukur Aliran Gelombang Radar)"
     },
     "image": "https://lh3.googleusercontent.com/d/1xlA2625f-6vGhravf6qDMnIpsZ5yaQLD",
     "symbolType": "none",
@@ -34545,13 +33916,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Multiple communication options"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BVF81",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -34559,13 +33942,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "4": "-",
         "5": ""
       },
-      "defaultSlotValues": {
-        "1": "BVF81",
-        "2": "420MA",
-        "3": "2W",
-        "4": "316L",
-        "5": "FKM"
-      },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bvf81_b1",
@@ -34752,7 +34129,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Vacuum Hose",
-      "en": "Belsa Vacuum Hose (Selang Vakum Fleksibel Industri)",
+      "en": "Belsa Vacuum Hose (Selang Vakum Fleksibel Industri)"
     },
     "image": "https://lh3.googleusercontent.com/d/1xR3Y3mOgamjuL7ZvxPQDDGfb3o3RKvNq",
     "symbolType": "hose",
@@ -34768,13 +34145,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Wide range of material: PA, PE, PU, PVC, TPR, NEO"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BVH",
-      "separator": " ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": " ",
         "2": " ",
@@ -34783,14 +34172,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": " ",
         "6": ""
       },
-      "defaultSlotValues": {
-        "1": "BVH",
-        "2": "PU",
-        "3": "DS",
-        "4": "4",
-        "5": "10",
-        "6": "CL"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "bvh_b1",
@@ -35112,1713 +34494,63 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-    "id": "bwe_series",
-    "slug": "bwe-series",
-    "series": "BWE Series",
-    "code": "BWE",
-    "category": "Shock Absorbers & Heavy Springs",
+    "id": "bzw_dm",
+    "slug": "bzw-dm",
+    "series": "BZW-DM Series",
+    "code": "BZW-DM",
+    "category": "Industrial & Hydraulic Valve",
     "subTitle": {
-      "id": "Industrial Shock Absorber Mega-Line",
-      "en": "Shock Absorbers Mega-Line (Official BELSA Industrial Component)",
+      "id": "Belsa Pressure Reducing Valve, Sandwich Plate",
+      "en": "Belsa Pressure Reducing Valve, Sandwich Plate"
     },
-    "image": "/images/prod_cylinder_clean.webp",
-    "symbolType": "none",
+    "image": "https://lh3.googleusercontent.com/d/1QINuTC8mW6wr3CwpmXl_5vbP5JFvqu3A",
+    "symbolType": "valve",
     "features": {
       "id": [
-        "Meredam benturan kinetik pada sistem otomatisasi dan industri berat.",
-        "Bodi ulir kompak untuk kemudahan penyetelan posisi.",
-        "Struktur tahan beban impak dan siklus kerja tinggi.",
-        "Pilihan mounting bodi dan stop collar."
+        "Desain modular sandwich.",
+        "Beberapa fungsi katup.",
+        "Tekanan hingga 350 bar.",
+        "Kapasitas aliran hingga 120 l/min.",
+        "Interface mounting ISO 4401."
       ],
       "en": [
-        "High reliability industrial BWE Series engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
+        "Modular sandwich design",
+        "Multiple valve functions",
+        "High pressure up to 350 bar",
+        "Flow capacity up to 120 l/min",
+        "ISO 4401 mounting interface"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BWE",
-      "separator": " - ",
-      "totalSlots": 2,
-      "slotDelimiters": {
-        "1": "-",
-        "2": ""
-      },
-      "blocks": [
-        {
-          "id": "bwe_series_b1",
-          "title": "L LN",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "•",
-              "label": "Helix Principle, +300% energy absorption, -50%",
-              "values": {
-                "desc": "Helix Principle, +300% energy absorption, -50%"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "cost",
-              "label": "per Nm",
-              "values": {
-                "desc": "per Nm"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "•",
-              "label": "Pro Adjust, Protected damping adjustment for",
-              "values": {
-                "desc": "Pro Adjust, Protected damping adjustment for"
-              }
-            },
-            {
-              "id": "r_4",
-              "code": "precise",
-              "label": "tuning",
-              "values": {
-                "desc": "tuning"
-              }
-            },
-            {
-              "id": "r_5",
-              "code": "•",
-              "label": "Piston, Hardened with Aluminium-Titanium-Nitride",
-              "values": {
-                "desc": "Piston, Hardened with Aluminium-Titanium-Nitride"
-              }
-            },
-            {
-              "id": "r_6",
-              "code": "coating",
-              "label": "for durability",
-              "values": {
-                "desc": "for durability"
-              }
-            },
-            {
-              "id": "r_7",
-              "code": "•",
-              "label": "Integrated End Stop, Built-in safety stop to prevent",
-              "values": {
-                "desc": "Integrated End Stop, Built-in safety stop to prevent"
-              }
-            },
-            {
-              "id": "r_8",
-              "code": "•",
-              "label": "Special Versions, Suitable for food-grade,",
-              "values": {
-                "desc": "Special Versions, Suitable for food-grade,"
-              }
-            },
-            {
-              "id": "r_9",
-              "code": "cleanroom,",
-              "label": "and high-pressure applications",
-              "values": {
-                "desc": "and high-pressure applications"
-              }
-            },
-            {
-              "id": "r_10",
-              "code": "BWE",
-              "label": "Shock Absorbers Mega-Line",
-              "values": {
-                "desc": "Shock Absorbers Mega-Line"
-              }
-            }
-          ]
-        },
-        {
-          "id": "bwe_series_b2",
-          "title": "Type",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "1",
-              "label": "Option 1",
-              "values": {
-                "desc": "Tipe 1"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "2",
-              "label": "Option 2",
-              "values": {
-                "desc": "Tipe 2"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "4",
-              "label": "Option 4",
-              "values": {
-                "desc": "Tipe 4"
-              }
-            },
-            {
-              "id": "r_4",
-              "code": "6",
-              "label": "Option 6",
-              "values": {
-                "desc": "Tipe 6"
-              }
-            },
-            {
-              "id": "r_5",
-              "code": "M",
-              "label": "2.0 x 1",
-              "values": {
-                "desc": "2.0 x 1"
-              }
-            },
-            {
-              "id": "r_6",
-              "code": "M",
-              "label": "2.0 x 2",
-              "values": {
-                "desc": "2.0 x 2"
-              }
-            },
-            {
-              "id": "r_7",
-              "code": "M",
-              "label": "2.0 x 4",
-              "values": {
-                "desc": "2.0 x 4"
-              }
-            },
-            {
-              "id": "r_8",
-              "code": "M",
-              "label": "2.0 x 6",
-              "values": {
-                "desc": "2.0 x 6"
-              }
-            },
-            {
-              "id": "r_9",
-              "code": "Special",
-              "label": "Order",
-              "values": {
-                "desc": "Order"
-              }
-            },
-            {
-              "id": "r_10",
-              "code": "",
-              "label": "Standard",
-              "values": {
-                "desc": "Standard"
-              }
-            },
-            {
-              "id": "r_11",
-              "code": "WS",
-              "label": "Custom made dimensions",
-              "values": {
-                "desc": "Custom made dimensions"
-              }
-            },
-            {
-              "id": "r_12",
-              "code": "and",
-              "label": "specifications.",
-              "values": {
-                "desc": "specifications."
-              }
-            },
-            {
-              "id": "r_13",
-              "code": "L",
-              "label": "Option L",
-              "values": {
-                "desc": "Tipe L"
-              }
-            },
-            {
-              "id": "r_14",
-              "code": "2",
-              "label": "½ - 12 UNF",
-              "values": {
-                "desc": "½ - 12 UNF"
-              }
-            },
-            {
-              "id": "r_15",
-              "code": "M64x2",
-              "label": "Option M64x2",
-              "values": {
-                "desc": "Tipe M64x2"
-              }
-            },
-            {
-              "id": "r_16",
-              "code": "U",
-              "label": "Option U",
-              "values": {
-                "desc": "Tipe U"
-              }
-            },
-            {
-              "id": "r_17",
-              "code": "Special",
-              "label": "Thread",
-              "values": {
-                "desc": "Thread"
-              }
-            },
-            {
-              "id": "r_18",
-              "code": "LN",
-              "label": "Option LN",
-              "values": {
-                "desc": "Tipe LN"
-              }
-            },
-            {
-              "id": "r_19",
-              "code": "SLN",
-              "label": "Option SLN",
-              "values": {
-                "desc": "Tipe SLN"
-              }
-            },
-            {
-              "id": "r_20",
-              "code": "SF",
-              "label": "Option SF",
-              "values": {
-                "desc": "Tipe SF"
-              }
-            },
-            {
-              "id": "r_21",
-              "code": "F",
-              "label": "Option F",
-              "values": {
-                "desc": "Tipe F"
-              }
-            },
-            {
-              "id": "r_22",
-              "code": "C",
-              "label": "Option C",
-              "values": {
-                "desc": "Tipe C"
-              }
-            },
-            {
-              "id": "r_23",
-              "code": "Lock",
-              "label": "Nut",
-              "values": {
-                "desc": "Nut"
-              }
-            },
-            {
-              "id": "r_24",
-              "code": "Stop",
-              "label": "Limit Nut",
-              "values": {
-                "desc": "Limit Nut"
-              }
-            },
-            {
-              "id": "r_25",
-              "code": "Square",
-              "label": "Flange",
-              "values": {
-                "desc": "Flange"
-              }
-            },
-            {
-              "id": "r_26",
-              "code": "Foot",
-              "label": "Mounting",
-              "values": {
-                "desc": "Mounting"
-              }
-            },
-            {
-              "id": "r_27",
-              "code": "Clevis",
-              "label": "Mounting",
-              "values": {
-                "desc": "Mounting"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-        "id": "bzw",
-        "slug": "bzw",
-        "series": "BZW Series",
-        "code": "BZW",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Stack Reducing Valve",
-            "en": "Belsa Stack Reducing Valve",
-        },
-        "image": "/images/cat_thumb_bzw.png",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Katup pengurang tekanan tipe modular / sandwich plate (stack reducing valve).",
-                "Menjaga tekanan sekunder stabil pada port P, A, atau B secara independen.",
-                "Pilihan rentang tekanan operasional mulai dari 5 bar hingga 320 bar.",
-                "Dilengkapi baut penyetel presisi dengan penguncian aman.",
-                "Tersedia material seal NBR dan FKM (Viton) tahan fluida hidrolik."
-            ],
-            "en": [
-                "Sandwich plate / stack pressure reducing valve for modular hydraulic systems.",
-                "Maintains stable reduced secondary pressure in port P, A, or B.",
-                "Wide pressure adjustment ranges from 5 bar up to 320 bar.",
-                "Equipped with precision tool-adjustment spindle and locknut.",
-                "Available with durable NBR and high-temperature FKM (Viton) seals."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "BZW-DM",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "",
-                "2": "-",
-                "3": "-",
-                "4": "",
-                "5": "",
-                "6": "-",
-                "7": ""
-            },
-            "totalSlots": 7,
-            "defaultSlotValues": {
-                "1": "BZW-DM",
-                "2": "10",
-                "3": "01",
-                "4": "PT",
-                "5": "70",
-                "6": "V",
-                "7": "V"
-            },
-            "blocks": [
-                {
-                    "id": "bzw_b1",
-                    "title": "Series",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_bzw_dm",
-                            "code": "BZW-DM",
-                            "label": "BZW-DM",
-                            "values": {
-                                "desc": "Belsa Stack Reducing Valve"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b2",
-                    "title": "Nominal Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_10",
-                            "code": "10",
-                            "label": "10",
-                            "values": {
-                                "desc": "Nominal Size 10 (CETOP 05 / NG10)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b3",
-                    "title": "Series Design",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Desain Seri"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "des_01",
-                            "code": "01",
-                            "label": "01",
-                            "values": {
-                                "desc": "Standart Design (Component Series 01)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b4",
-                    "title": "Spool Symbol",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Simbol Spool"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sym_pt",
-                            "code": "PT",
-                            "label": "PT",
-                            "values": {
-                                "desc": "Pressure Reduction in Port P (Port P1 to P2, Drain to T)"
-                            }
-                        },
-                        {
-                            "id": "sym_pb",
-                            "code": "PB",
-                            "label": "PB",
-                            "values": {
-                                "desc": "Pressure Reduction in Port B"
-                            }
-                        },
-                        {
-                            "id": "sym_pa",
-                            "code": "PA",
-                            "label": "PA",
-                            "values": {
-                                "desc": "Pressure Reduction in Port A"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b5",
-                    "title": "Pressure Range",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Rentang Tekanan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "pr_70",
-                            "code": "70",
-                            "label": "70",
-                            "values": {
-                                "desc": "5 to 70 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_140",
-                            "code": "140",
-                            "label": "140",
-                            "values": {
-                                "desc": "8 to 140 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_210",
-                            "code": "210",
-                            "label": "210",
-                            "values": {
-                                "desc": "10 to 210 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_320",
-                            "code": "320",
-                            "label": "320",
-                            "values": {
-                                "desc": "15 to 320 bar (symbol PT only)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b6",
-                    "title": "Adjustment Type",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Penyetelan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "adj_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "Adjustable using tool (Baut penyetel dengan alat)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_b7",
-                    "title": "Sealing material",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "NBR"
-                            }
-                        },
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "FKM (standard)"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-  {
-        "id": "bzw_dm",
-        "slug": "bzw-dm",
-        "series": "BZW-DM Series",
-        "code": "BZW-DM",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Belsa Pressure Reducing Valve, Sandwich Plate",
-            "en": "Belsa Pressure Reducing Valve, Sandwich Plate",
-        },
-        "image": "https://lh3.googleusercontent.com/d/1QINuTC8mW6wr3CwpmXl_5vbP5JFvqu3A",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Desain modular sandwich plate untuk pemasangan kompak.",
-                "Mendukung beragam fungsi kontrol tekanan sirkuit cabang (port A, B, atau P/T).",
-                "Kemampuan tekanan tinggi hingga 350 bar.",
-                "Kapasitas aliran tinggi hingga 120 l/min.",
-                "Interface mounting sesuai standar internasional ISO 4401."
-            ],
-            "en": [
-                "Modular sandwich design.",
-                "Multiple valve functions.",
-                "High pressure up to 350 bar.",
-                "Flow capacity up to 120 l/min.",
-                "ISO 4401 mounting interface."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "BZW-DM",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "",
-                "2": "-",
-                "3": "-",
-                "4": "",
-                "5": "",
-                "6": "-",
-                "7": ""
-            },
-            "totalSlots": 7,
-            "defaultSlotValues": {
-                "1": "BZW-DM",
-                "2": "10",
-                "3": "01",
-                "4": "PT",
-                "5": "070",
-                "6": "V",
-                "7": "V"
-            },
-            "blocks": [
-                {
-                    "id": "bzw_dm_b1",
-                    "title": "Type",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "t_bzw_dm",
-                            "code": "BZW-DM",
-                            "label": "BZW-DM",
-                            "values": {
-                                "desc": "Belsa Pressure Reducing Valve in Sandwich Plate Design, Pilot-Operated"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b2",
-                    "title": "Nominal Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_10",
-                            "code": "10",
-                            "label": "10",
-                            "values": {
-                                "desc": "Nominal Size 10 (CETOP 05 / NG10)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b3",
-                    "title": "Series",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Seri Komponen"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "ser_01",
-                            "code": "01",
-                            "label": "01",
-                            "values": {
-                                "desc": "Spesified of Manufacturer (Series 01)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b4",
-                    "title": "Spool Symbol",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Fungsi Jalur Port"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sp_pa",
-                            "code": "PA",
-                            "label": "PA",
-                            "values": {
-                                "desc": "Pressure Control In Port A"
-                            }
-                        },
-                        {
-                            "id": "sp_pb",
-                            "code": "PB",
-                            "label": "PB",
-                            "values": {
-                                "desc": "Pressure Control In Port B"
-                            }
-                        },
-                        {
-                            "id": "sp_pt",
-                            "code": "PT",
-                            "label": "PT",
-                            "values": {
-                                "desc": "Pressure Control In Port T"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b5",
-                    "title": "Pressure Ranges",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Rentang Tekanan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "pr_070",
-                            "code": "070",
-                            "label": "070",
-                            "values": {
-                                "desc": "5 to 70 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_140",
-                            "code": "140",
-                            "label": "140",
-                            "values": {
-                                "desc": "8 to 140 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_210",
-                            "code": "210",
-                            "label": "210",
-                            "values": {
-                                "desc": "10 to 210 bar"
-                            }
-                        },
-                        {
-                            "id": "pr_320",
-                            "code": "320",
-                            "label": "320",
-                            "values": {
-                                "desc": "15 to 320 bar (Symbol PT Only)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b6",
-                    "title": "Modification Number",
-                    "slotIndex": 6,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Penyetelan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "mod_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "Adjustable Using Tool (Penyetelan dengan alat / baut & mur pengunci)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "bzw_dm_b7",
-                    "title": "Sealing Material",
-                    "slotIndex": 7,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Material Seal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "seal_n",
-                            "code": "N",
-                            "label": "N",
-                            "values": {
-                                "desc": "NBR"
-                            }
-                        },
-                        {
-                            "id": "seal_v",
-                            "code": "V",
-                            "label": "V",
-                            "values": {
-                                "desc": "FKM (Standard)"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-  {
-    "id": "cl_series",
-    "slug": "cl",
-    "series": "CL Series",
-    "code": "CL",
-    "category": "Hydraulic Pump & Power Unit",
-    "subTitle": {
-      "id": "Central Lubrication",
-      "en": "Central Lubrication (Central Lubrication Pump Unit 0,5 - 200 kW)",
-    },
-    "features": {
-      "id": [
-        "Kapasitas variabel.",
-        "Mudah dirawat.",
-        "Output variabel, satu atau banyak titik.",
-        "Dapat dibuat custom sesuai kebutuhan."
-      ],
-      "en": [
-        "Variable Capacity.",
-        "Easy Maintenance.",
-        "Variable Output (Single or Multiple).",
-        "Custom Made Solution."
-      ]
-    },
-    "image": "/images/prod_valve_clean.webp",
-    "symbolType": "hydraulic",
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "CL PUMP",
+      "codePrefix": "BZW-DM",
       "separator": "-",
-      "totalSlots": 3,
-      "defaultSlotValues": {
-        "1": "0,5"
-      },
-      "slotDelimiters": {
-        "1": " kW -",
-        "2": "-",
-        "3": ""
-      },
-      "blocks": [
-        {
-          "id": "cl_b1",
-          "title": "Motor Power",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "pwr",
-              "label": "Daya Motor Listrik"
-            }
-          ],
-          "rows": [
-            {
-              "id": "cl_mp_05",
-              "code": "0,5",
-              "label": "0,5 kW",
-              "values": {
-                "pwr": "0,5 kW"
-              }
-            },
-            {
-              "id": "cl_mp_075",
-              "code": "0,75",
-              "label": "0,75 kW",
-              "values": {
-                "pwr": "0,75 kW"
-              }
-            },
-            {
-              "id": "cl_mp_15",
-              "code": "1,5",
-              "label": "1,5 kW",
-              "values": {
-                "pwr": "1,5 kW"
-              }
-            },
-            {
-              "id": "cl_mp_22",
-              "code": "2,2",
-              "label": "2,2 kW",
-              "values": {
-                "pwr": "2,2 kW"
-              }
-            },
-            {
-              "id": "cl_mp_4",
-              "code": "4",
-              "label": "4 kW",
-              "values": {
-                "pwr": "4 kW"
-              }
-            },
-            {
-              "id": "cl_mp_55",
-              "code": "5,5",
-              "label": "5,5 kW",
-              "values": {
-                "pwr": "5,5 kW"
-              }
-            },
-            {
-              "id": "cl_mp_75",
-              "code": "7,5",
-              "label": "7,5 kW",
-              "values": {
-                "pwr": "7,5 kW"
-              }
-            },
-            {
-              "id": "cl_mp_11",
-              "code": "11",
-              "label": "11 kW",
-              "values": {
-                "pwr": "11 kW"
-              }
-            },
-            {
-              "id": "cl_mp_150",
-              "code": "15",
-              "label": "15 kW",
-              "values": {
-                "pwr": "15 kW"
-              }
-            },
-            {
-              "id": "cl_mp_220",
-              "code": "22",
-              "label": "22 kW",
-              "values": {
-                "pwr": "22 kW"
-              }
-            },
-            {
-              "id": "cl_mp_370",
-              "code": "37",
-              "label": "37 kW",
-              "values": {
-                "pwr": "37 kW"
-              }
-            },
-            {
-              "id": "cl_mp_550",
-              "code": "55",
-              "label": "55 kW",
-              "values": {
-                "pwr": "55 kW"
-              }
-            },
-            {
-              "id": "cl_mp_750",
-              "code": "75",
-              "label": "75 kW",
-              "values": {
-                "pwr": "75 kW"
-              }
-            },
-            {
-              "id": "cl_mp_1100",
-              "code": "110",
-              "label": "110 kW",
-              "values": {
-                "pwr": "110 kW"
-              }
-            },
-            {
-              "id": "cl_mp_2000",
-              "code": "200",
-              "label": "200 kW",
-              "values": {
-                "pwr": "200 kW"
-              }
-            },
-            {
-              "id": "cl_mp_custom",
-              "code": "...",
-              "label": "Other Power Convertion",
-              "values": {
-                "pwr": "..... Other Power Convertion"
-              }
-            }
-          ]
-        },
-        {
-          "id": "cl_b2",
-          "title": "Model",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Bentuk Dudukan & Tangki"
-            }
-          ],
-          "rows": [
-            {
-              "id": "cl_md_nil",
-              "code": "",
-              "label": "..... (Foot Model 0,5 - 4 kW)",
-              "values": {
-                "desc": "..... (Foot Model 0,5 - 4 kW)"
-              }
-            },
-            {
-              "id": "cl_md_b",
-              "code": "B",
-              "label": "Box Reservoir",
-              "values": {
-                "desc": "Box Reservoir"
-              }
-            },
-            {
-              "id": "cl_md_t",
-              "code": "T",
-              "label": "Tube Reservoir",
-              "values": {
-                "desc": "Tube Reservoir"
-              }
-            },
-            {
-              "id": "cl_md_other",
-              "code": "...",
-              "label": "..... Other Shape",
-              "values": {
-                "desc": "..... Other Shape (*Contact us for detail)"
-              }
-            }
-          ]
-        },
-        {
-          "id": "cl_b3",
-          "title": "Custom Based Request",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Tipe Kustomisasi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "cl_cbr_nil",
-              "code": "",
-              "label": "Standart (Without Reservoir)",
-              "values": {
-                "desc": "Standart (Without Reservoir)"
-              }
-            },
-            {
-              "id": "cl_cbr_m",
-              "code": "M",
-              "label": "Custom Made",
-              "values": {
-                "desc": "Custom Made (*Contact us for detail)"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "d_nipple",
-    "slug": "d-nipple",
-    "series": "D NIPPLE Series",
-    "code": "D NIPPLE",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Double Nipple Fitting",
-      "en": "Double Nipple Industrial & Hydraulic Adapter Fitting",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "hose",
-    "features": {
-      "id": [
-        "Heavy duty, tahan getaran dan tekanan tinggi.",
-        "Pilihan standar ulir: BSP, JIC 37°, JIS BSP, JIS Metric, ORFS, NPT/BSPT.",
-        "Konfigurasi male-male, male-female, atau swivel.",
-        "Pilihan sudut: lurus, elbow 45°, dan elbow 90°.",
-        "Material carbon steel lapis seng atau stainless steel."
-      ],
-      "en": [
-        "Heavy-duty precision design resistant to high vibration and pressure.",
-        "Available in multiple thread standards: BSP, JIC 37°, JIS BSP, JIS Metric, ORFS, NPT/BSPT.",
-        "Flexible Male-Male, Male-Female, or Swivel configurations.",
-        "Installation angle options: Straight, 45° Elbow, and 90° Elbow.",
-        "Zinc-plated carbon steel or high-grade stainless steel material."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "D",
-      "separator": "-",
-      "totalSlots": 8,
-      "blocks": [
-        {
-          "id": "dn_b1",
-          "title": "Connector Type Left Side",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Standar Koneksi Kiri"
-            }
-          ],
-          "rows": [
-            {
-              "id": "c_u",
-              "code": "U",
-              "label": "BSP",
-              "values": {
-                "desc": "British Standard Pipe"
-              }
-            },
-            {
-              "id": "c_j",
-              "code": "J",
-              "label": "JIC 37°",
-              "values": {
-                "desc": "Joint Industry Council 37° Flare"
-              }
-            },
-            {
-              "id": "c_fp",
-              "code": "FP",
-              "label": "JIS BSP",
-              "values": {
-                "desc": "Japanese Industrial Standard BSP"
-              }
-            },
-            {
-              "id": "c_m",
-              "code": "M",
-              "label": "JIS Metric",
-              "values": {
-                "desc": "Japanese Metric Parallel"
-              }
-            },
-            {
-              "id": "c_htc",
-              "code": "HTC",
-              "label": "ORFS",
-              "values": {
-                "desc": "O-Ring Face Seal"
-              }
-            },
-            {
-              "id": "c_b",
-              "code": "B",
-              "label": "NPT/BSPT",
-              "values": {
-                "desc": "National Pipe Taper / BSPT"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b2",
-          "title": "Thread Type Left Side",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Tipe Ulir Kiri"
-            }
-          ],
-          "rows": [
-            {
-              "id": "tm_l",
-              "code": "M",
-              "label": "Male (Drat Luar)",
-              "values": {
-                "desc": "Drat Luar / Jantan"
-              }
-            },
-            {
-              "id": "tf_l",
-              "code": "AERS",
-              "label": "Female (Drat Dalam)",
-              "values": {
-                "desc": "Drat Dalam / Betina"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b3",
-          "title": "Size Dash Left Side",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "inch",
-              "label": "Ukuran Nominal (Inch)"
-            }
-          ],
-          "rows": [
-            {
-              "id": "d04_l",
-              "code": "04",
-              "label": "1/4 Inch",
-              "values": {
-                "inch": "1/4\""
-              }
-            },
-            {
-              "id": "d06_l",
-              "code": "06",
-              "label": "3/8 Inch",
-              "values": {
-                "inch": "3/8\""
-              }
-            },
-            {
-              "id": "d08_l",
-              "code": "08",
-              "label": "1/2 Inch",
-              "values": {
-                "inch": "1/2\""
-              }
-            },
-            {
-              "id": "d10_l",
-              "code": "10",
-              "label": "5/8 Inch",
-              "values": {
-                "inch": "5/8\""
-              }
-            },
-            {
-              "id": "d12_l",
-              "code": "12",
-              "label": "3/4 Inch",
-              "values": {
-                "inch": "3/4\""
-              }
-            },
-            {
-              "id": "d16_l",
-              "code": "16",
-              "label": "1 Inch",
-              "values": {
-                "inch": "1\""
-              }
-            },
-            {
-              "id": "d20_l",
-              "code": "20",
-              "label": "1 1/4 Inch",
-              "values": {
-                "inch": "1 1/4\""
-              }
-            },
-            {
-              "id": "d24_l",
-              "code": "24",
-              "label": "1 1/2 Inch",
-              "values": {
-                "inch": "1 1/2\""
-              }
-            },
-            {
-              "id": "d32_l",
-              "code": "32",
-              "label": "2 Inch",
-              "values": {
-                "inch": "2\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b4",
-          "title": "Connector Type Right Side",
-          "slotIndex": 4,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Standar Koneksi Kanan"
-            }
-          ],
-          "rows": [
-            {
-              "id": "cr_u",
-              "code": "U",
-              "label": "BSP",
-              "values": {
-                "desc": "British Standard Pipe"
-              }
-            },
-            {
-              "id": "cr_j",
-              "code": "J",
-              "label": "JIC 37°",
-              "values": {
-                "desc": "Joint Industry Council 37° Flare"
-              }
-            },
-            {
-              "id": "cr_fp",
-              "code": "FP",
-              "label": "JIS BSP",
-              "values": {
-                "desc": "Japanese Industrial Standard BSP"
-              }
-            },
-            {
-              "id": "cr_m",
-              "code": "M",
-              "label": "JIS Metric",
-              "values": {
-                "desc": "Japanese Metric Parallel"
-              }
-            },
-            {
-              "id": "cr_htc",
-              "code": "HTC",
-              "label": "ORFS",
-              "values": {
-                "desc": "O-Ring Face Seal"
-              }
-            },
-            {
-              "id": "cr_b",
-              "code": "B",
-              "label": "NPT/BSPT",
-              "values": {
-                "desc": "National Pipe Taper / BSPT"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b5",
-          "title": "Thread Type Right Side",
-          "slotIndex": 5,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Tipe Ulir Kanan"
-            }
-          ],
-          "rows": [
-            {
-              "id": "tm_r",
-              "code": "M",
-              "label": "Male (Drat Luar)",
-              "values": {
-                "desc": "Drat Luar / Jantan"
-              }
-            },
-            {
-              "id": "tf_r",
-              "code": "AERS",
-              "label": "Female (Drat Dalam)",
-              "values": {
-                "desc": "Drat Dalam / Betina"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b6",
-          "title": "Size Dash Right Side",
-          "slotIndex": 6,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "inch",
-              "label": "Ukuran Nominal (Inch)"
-            }
-          ],
-          "rows": [
-            {
-              "id": "d04_r",
-              "code": "04",
-              "label": "1/4 Inch",
-              "values": {
-                "inch": "1/4\""
-              }
-            },
-            {
-              "id": "d06_r",
-              "code": "06",
-              "label": "3/8 Inch",
-              "values": {
-                "inch": "3/8\""
-              }
-            },
-            {
-              "id": "d08_r",
-              "code": "08",
-              "label": "1/2 Inch",
-              "values": {
-                "inch": "1/2\""
-              }
-            },
-            {
-              "id": "d10_r",
-              "code": "10",
-              "label": "5/8 Inch",
-              "values": {
-                "inch": "5/8\""
-              }
-            },
-            {
-              "id": "d12_r",
-              "code": "12",
-              "label": "3/4 Inch",
-              "values": {
-                "inch": "3/4\""
-              }
-            },
-            {
-              "id": "d16_r",
-              "code": "16",
-              "label": "1 Inch",
-              "values": {
-                "inch": "1\""
-              }
-            },
-            {
-              "id": "d20_r",
-              "code": "20",
-              "label": "1 1/4 Inch",
-              "values": {
-                "inch": "1 1/4\""
-              }
-            },
-            {
-              "id": "d24_r",
-              "code": "24",
-              "label": "1 1/2 Inch",
-              "values": {
-                "inch": "1 1/2\""
-              }
-            },
-            {
-              "id": "d32_r",
-              "code": "32",
-              "label": "2 Inch",
-              "values": {
-                "inch": "2\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b7",
-          "title": "Connector Angle",
-          "slotIndex": 7,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Sudut Fitting"
-            }
-          ],
-          "rows": [
-            {
-              "id": "ang_str",
-              "code": "",
-              "label": "Straight (Lurus)",
-              "values": {
-                "desc": "Lurus Standar"
-              }
-            },
-            {
-              "id": "ang_45",
-              "code": "45",
-              "label": "45° Elbow",
-              "values": {
-                "desc": "Siku 45 Derajat"
-              }
-            },
-            {
-              "id": "ang_90",
-              "code": "90",
-              "label": "90° Elbow",
-              "values": {
-                "desc": "Siku 90 Derajat"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b8",
-          "title": "Swivel Option",
-          "slotIndex": 8,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Karakteristik"
-            }
-          ],
-          "rows": [
-            {
-              "id": "sw_none",
-              "code": "",
-              "label": "Standard (Rigid)",
-              "values": {
-                "desc": "Fitting Standar Non-Swivel"
-              }
-            },
-            {
-              "id": "sw_yes",
-              "code": "SW",
-              "label": "Swivel Joint",
-              "values": {
-                "desc": "Swivel (Dapat Berputar)"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "fitting",
-    "slug": "fitting",
-    "series": "FITTING Series",
-    "code": "FITTING",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Fitting JIC Female Cone Seat Double Hexagon",
-      "en": "JIC FEMALE 37° CONE SEAT DOUBLE HEXAGON (Official BELSA Industrial Component)",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "none",
-    "features": {
-      "id": [
-        "Fitting adaptor hydraulic flare 37 derajat standar JIC.",
-        "Konstruksi double hexagon mempermudah pengencangan kunci.",
-        "Material carbon steel atau stainless steel.",
-        "Kerapatan sealing metal-to-metal tahan getaran dan tekanan tinggi."
-      ],
-      "en": [
-        "High reliability industrial FITTING engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "FITTING",
-      "separator": " - ",
-      "totalSlots": 4,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": "-",
         "4": ""
       },
+      "totalSlots": 4,
       "blocks": [
         {
-          "id": "fitting_b1",
-          "title": "Series Designation",
+          "id": "bzw-dm_b1",
+          "title": "Type",
           "slotIndex": 1,
           "displayType": "table",
           "columns": [
@@ -36829,84 +34561,220 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
           ],
           "rows": [
             {
-              "id": "s1",
-              "code": "FITTING",
-              "label": "FITTING Standard Model",
+              "id": "r_1",
+              "code": "BZW-DM",
+              "label": "Option BZW-DM",
               "values": {
-                "desc": "Model Resmi FITTING"
+                "desc": "Tipe BZW-DM"
+              }
+            },
+            {
+              "id": "r_2",
+              "code": "Belsa",
+              "label": "Pressure Reducing",
+              "values": {
+                "desc": "Pressure Reducing"
+              }
+            },
+            {
+              "id": "r_3",
+              "code": "Valve",
+              "label": "in Sandwich Plate",
+              "values": {
+                "desc": "in Sandwich Plate"
+              }
+            },
+            {
+              "id": "r_4",
+              "code": "Design,",
+              "label": "Pilot-Operated",
+              "values": {
+                "desc": "Pilot-Operated"
+              }
+            },
+            {
+              "id": "r_5",
+              "code": "Nominal",
+              "label": "Size",
+              "values": {
+                "desc": "Size"
+              }
+            },
+            {
+              "id": "r_6",
+              "code": "10",
+              "label": "10",
+              "values": {
+                "desc": "10"
+              }
+            },
+            {
+              "id": "r_7",
+              "code": "PA",
+              "label": "Option PA",
+              "values": {
+                "desc": "Tipe PA"
+              }
+            },
+            {
+              "id": "r_8",
+              "code": "PB",
+              "label": "Option PB",
+              "values": {
+                "desc": "Tipe PB"
               }
             }
           ]
         },
         {
-          "id": "fitting_b2",
-          "title": "Size / Specification",
+          "id": "bzw-dm_b2",
+          "title": "Pressure Control in Port B",
           "slotIndex": 2,
           "displayType": "table",
           "columns": [
             {
               "id": "desc",
-              "label": "Spesifikasi"
+              "label": "Deskripsi"
             }
           ],
           "rows": [
             {
-              "id": "sz1",
-              "code": "01",
-              "label": "Standard Capacity",
+              "id": "r_1",
+              "code": "Spool",
+              "label": "Symbol",
               "values": {
-                "desc": "Kapasitas / Ukuran Standar"
+                "desc": "Symbol"
               }
             },
             {
-              "id": "sz2",
-              "code": "02",
-              "label": "Heavy-Duty Capacity",
+              "id": "r_2",
+              "code": "PT",
+              "label": "Pressure Control in Port T",
               "values": {
-                "desc": "Kapasitas / Ukuran Heavy Duty"
+                "desc": "Pressure Control in Port T"
               }
             }
           ]
         },
         {
-          "id": "fitting_b3",
-          "title": "Material & Execution",
+          "id": "bzw-dm_b3",
+          "title": "Pressure Ranges",
           "slotIndex": 3,
           "displayType": "table",
           "columns": [
             {
               "id": "desc",
-              "label": "Material"
+              "label": "Deskripsi"
             }
           ],
           "rows": [
             {
-              "id": "m1",
-              "code": "",
-              "label": "Standard Material",
+              "id": "r_1",
+              "code": "070",
+              "label": "Option 070",
               "values": {
-                "desc": "Material Standar Pabrik"
+                "desc": "Tipe 070"
               }
             },
             {
-              "id": "m2",
-              "code": "SS",
-              "label": "Stainless Steel / High Grade",
+              "id": "r_2",
+              "code": "140",
+              "label": "Option 140",
               "values": {
-                "desc": "Bahan Anti-Korosi / Stainless"
+                "desc": "Tipe 140"
+              }
+            },
+            {
+              "id": "r_3",
+              "code": "5",
+              "label": "to 70 bar",
+              "values": {
+                "desc": "to 70 bar"
+              }
+            },
+            {
+              "id": "r_4",
+              "code": "8",
+              "label": "to 140 bar",
+              "values": {
+                "desc": "to 140 bar"
+              }
+            },
+            {
+              "id": "r_5",
+              "code": "210",
+              "label": "10 to 210 bar",
+              "values": {
+                "desc": "10 to 210 bar"
+              }
+            },
+            {
+              "id": "r_6",
+              "code": "320",
+              "label": "15 to 320 bar",
+              "values": {
+                "desc": "15 to 320 bar"
+              }
+            },
+            {
+              "id": "r_7",
+              "code": "(Symbol",
+              "label": "PT Only)",
+              "values": {
+                "desc": "PT Only)"
+              }
+            },
+            {
+              "id": "r_8",
+              "code": "Modification",
+              "label": "Number",
+              "values": {
+                "desc": "Number"
+              }
+            },
+            {
+              "id": "r_9",
+              "code": "V",
+              "label": "Adjustable Using Tool",
+              "values": {
+                "desc": "Adjustable Using Tool"
+              }
+            },
+            {
+              "id": "r_10",
+              "code": "Sealing",
+              "label": "Material",
+              "values": {
+                "desc": "Material"
+              }
+            },
+            {
+              "id": "r_11",
+              "code": "N",
+              "label": "NBR",
+              "values": {
+                "desc": "NBR"
+              }
+            },
+            {
+              "id": "r_12",
+              "code": "V",
+              "label": "FKM (Standard)",
+              "values": {
+                "desc": "FKM (Standard)"
               }
             }
           ]
         },
         {
-          "id": "fitting_b4",
+          "id": "bzw-dm_b4",
           "title": "Custom Specification",
           "slotIndex": 4,
           "displayType": "table",
           "columns": [
             {
               "id": "desc",
-              "label": "Kustomisasi"
+              "label": "Deskripsi"
             }
           ],
           "rows": [
@@ -36939,7 +34807,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "2-Way High Pressure Ball Valve",
-      "en": "2-Way High Pressure Ball Valve (Katup Bola Tekanan Tinggi)",
+      "en": "2-Way High Pressure Ball Valve (Katup Bola Tekanan Tinggi)"
     },
     "image": "https://lh3.googleusercontent.com/d/1k4YtXprhWNQZVHDv-gG8PuHjqBTt07Nn",
     "symbolType": "hydraulic",
@@ -36959,12 +34827,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "High performance seal choices: NBR, FKM (Viton), EPDM, and MVQ (Silicone)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "HPBV",
       "separator": "-",
+      "slotDelimiters": {},
       "totalSlots": 4,
       "blocks": [
         {
@@ -37154,7 +35036,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Oil Cooler & Heat Exchanger",
     "subTitle": {
       "id": "Oil Cooler Air Cooled Series",
-      "en": "Oil Cooler Air Cooled Series (Pendingin Oli Pendingin Udara)",
+      "en": "Oil Cooler Air Cooled Series (Pendingin Oli Pendingin Udara)"
     },
     "image": "https://lh3.googleusercontent.com/d/1hXRJqh1s2tBcqBacK_LqTK7_7W7TJdBg",
     "symbolType": "powerpack",
@@ -37176,13 +35058,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom made solution available for tailored industrial environments."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "OCAC",
       "separator": "-",
-      "totalSlots": 6,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
@@ -37191,14 +35085,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": "",
         "6": "-"
       },
-      "defaultSlotValues": {
-        "1": "32,8",
-        "2": "V",
-        "3": "R",
-        "4": "F",
-        "5": "4",
-        "6": "M"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "ocac_b1",
@@ -37448,1200 +35335,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-    "id": "rejseries",
-    "slug": "rejseries",
-    "series": "REJSeries",
-    "code": "REJSeries",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Rubber Expansion Joint Seri REJ",
-      "en": "REJ series (Official BELSA Industrial Component)",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "none",
-    "features": {
-      "id": [
-        "Menyerap getaran, ekspansi termal, dan misalignment pipa.",
-        "Material bellows elastis tahan tekanan fluida industri.",
-        "Koneksi flange standar JIS, ANSI, dan DIN.",
-        "Tersedia pilihan karet EPDM, NBR, dan Neoprene."
-      ],
-      "en": [
-        "High reliability industrial REJSeries engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "REJSeries",
-      "separator": " - ",
-      "totalSlots": 3,
-      "slotDelimiters": {
-        "1": "-",
-        "2": "-",
-        "3": ""
-      },
-      "blocks": [
-        {
-          "id": "rejseries_b1",
-          "title": "Size Range DN 2 – DN 80",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "Various",
-              "label": "material",
-              "values": {
-                "desc": "material"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "Various",
-              "label": "Flange",
-              "values": {
-                "desc": "Flange"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "Wide",
-              "label": "range",
-              "values": {
-                "desc": "range"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rejseries_b2",
-          "title": "Custom made solution",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "PTFE",
-              "label": "Option PTFE",
-              "values": {
-                "desc": "Tipe PTFE"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "REJ",
-              "label": "F 2 .... DN125 M",
-              "values": {
-                "desc": "F 2 .... DN125 M"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rejseries_b3",
-          "title": "Material Flange",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "Flange",
-              "label": "Model",
-              "values": {
-                "desc": "Model"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "Bellows",
-              "label": "Layer",
-              "values": {
-                "desc": "Layer"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "FE",
-              "label": "Option FE",
-              "values": {
-                "desc": "Tipe FE"
-              }
-            },
-            {
-              "id": "r_4",
-              "code": "SUS304",
-              "label": "Option SUS304",
-              "values": {
-                "desc": "Tipe SUS304"
-              }
-            },
-            {
-              "id": "r_5",
-              "code": "SUS316",
-              "label": "Option SUS316",
-              "values": {
-                "desc": "Tipe SUS316"
-              }
-            },
-            {
-              "id": "r_6",
-              "code": "PTFE",
-              "label": "Option PTFE",
-              "values": {
-                "desc": "Tipe PTFE"
-              }
-            },
-            {
-              "id": "r_7",
-              "code": "AL",
-              "label": "Option AL",
-              "values": {
-                "desc": "Tipe AL"
-              }
-            },
-            {
-              "id": "r_8",
-              "code": "Nil...",
-              "label": "Option Nil...",
-              "values": {
-                "desc": "Tipe Nil..."
-              }
-            },
-            {
-              "id": "r_9",
-              "code": "Steel",
-              "label": "Option Steel",
-              "values": {
-                "desc": "Tipe Steel"
-              }
-            },
-            {
-              "id": "r_10",
-              "code": "Stainless",
-              "label": "Steel 304",
-              "values": {
-                "desc": "Steel 304"
-              }
-            },
-            {
-              "id": "r_11",
-              "code": "Stainless",
-              "label": "Steel 316",
-              "values": {
-                "desc": "Steel 316"
-              }
-            },
-            {
-              "id": "r_12",
-              "code": "Speciality",
-              "label": "(Custom)",
-              "values": {
-                "desc": "(Custom)"
-              }
-            },
-            {
-              "id": "r_13",
-              "code": "F",
-              "label": "Option F",
-              "values": {
-                "desc": "Tipe F"
-              }
-            },
-            {
-              "id": "r_14",
-              "code": "FCA",
-              "label": "Option FCA",
-              "values": {
-                "desc": "Tipe FCA"
-              }
-            },
-            {
-              "id": "r_15",
-              "code": "FCB",
-              "label": "Option FCB",
-              "values": {
-                "desc": "Tipe FCB"
-              }
-            },
-            {
-              "id": "r_16",
-              "code": "Nil...",
-              "label": "Option Nil...",
-              "values": {
-                "desc": "Tipe Nil..."
-              }
-            },
-            {
-              "id": "r_17",
-              "code": "Flange",
-              "label": "Standart",
-              "values": {
-                "desc": "Standart"
-              }
-            },
-            {
-              "id": "r_18",
-              "code": "Flange",
-              "label": "with CA Mount",
-              "values": {
-                "desc": "with CA Mount"
-              }
-            },
-            {
-              "id": "r_19",
-              "code": "Flange",
-              "label": "with CB Mount",
-              "values": {
-                "desc": "with CB Mount"
-              }
-            },
-            {
-              "id": "r_20",
-              "code": "Speciality",
-              "label": "(Custom )",
-              "values": {
-                "desc": "(Custom )"
-              }
-            },
-            {
-              "id": "r_21",
-              "code": "1-4",
-              "label": "Option 1-4",
-              "values": {
-                "desc": "Tipe 1-4"
-              }
-            },
-            {
-              "id": "r_22",
-              "code": "Nil...",
-              "label": "Option Nil...",
-              "values": {
-                "desc": "Tipe Nil..."
-              }
-            },
-            {
-              "id": "r_23",
-              "code": "1",
-              "label": "until 4 layer Bellows",
-              "values": {
-                "desc": "until 4 layer Bellows"
-              }
-            },
-            {
-              "id": "r_24",
-              "code": "Speciality",
-              "label": "(Custom)",
-              "values": {
-                "desc": "(Custom)"
-              }
-            },
-            {
-              "id": "r_25",
-              "code": "JIS",
-              "label": "Option JIS",
-              "values": {
-                "desc": "Tipe JIS"
-              }
-            },
-            {
-              "id": "r_26",
-              "code": "ANSI",
-              "label": "Option ANSI",
-              "values": {
-                "desc": "Tipe ANSI"
-              }
-            },
-            {
-              "id": "r_27",
-              "code": "PN16",
-              "label": "Option PN16",
-              "values": {
-                "desc": "Tipe PN16"
-              }
-            },
-            {
-              "id": "r_28",
-              "code": "Nil...",
-              "label": "Option Nil...",
-              "values": {
-                "desc": "Tipe Nil..."
-              }
-            },
-            {
-              "id": "r_29",
-              "code": "JIS10K",
-              "label": "Option JIS10K",
-              "values": {
-                "desc": "Tipe JIS10K"
-              }
-            },
-            {
-              "id": "r_30",
-              "code": "ANSI",
-              "label": "150",
-              "values": {
-                "desc": "150"
-              }
-            },
-            {
-              "id": "r_31",
-              "code": "PN16",
-              "label": "Option PN16",
-              "values": {
-                "desc": "Tipe PN16"
-              }
-            },
-            {
-              "id": "r_32",
-              "code": "Speciality",
-              "label": "(Custom )",
-              "values": {
-                "desc": "(Custom )"
-              }
-            },
-            {
-              "id": "r_33",
-              "code": "Flange",
-              "label": "Standart",
-              "values": {
-                "desc": "Standart"
-              }
-            },
-            {
-              "id": "r_34",
-              "code": "Diameter",
-              "label": "Nominal Flange",
-              "values": {
-                "desc": "Nominal Flange"
-              }
-            },
-            {
-              "id": "r_35",
-              "code": "DN2",
-              "label": "- DN80 DN2 until DN80",
-              "values": {
-                "desc": "- DN80 DN2 until DN80"
-              }
-            },
-            {
-              "id": "r_36",
-              "code": "Nil...",
-              "label": "Option Nil...",
-              "values": {
-                "desc": "Tipe Nil..."
-              }
-            },
-            {
-              "id": "r_37",
-              "code": "M",
-              "label": "Option M",
-              "values": {
-                "desc": "Tipe M"
-              }
-            },
-            {
-              "id": "r_38",
-              "code": "Standart",
-              "label": "Option Standart",
-              "values": {
-                "desc": "Tipe Standar"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "rotary",
-    "slug": "rotary",
-    "series": "ROTARY Series",
-    "code": "ROTARY",
-    "category": "Central Lubrication & Systems",
-    "subTitle": {
-      "id": "Rotary Joint 55 Series",
-      "en": "55 Series (Official BELSA Industrial Component)",
-    },
-    "image": "/images/prod_valve_clean.webp",
-    "symbolType": "powerpack",
-    "features": {
-      "id": [
-        "Dirancang untuk media fluida air, oli hidrolik, dan uap.",
-        "Dibuat sesuai standar industri JIS / ISO.",
-        "Housing tahan tekanan dan lonjakan getaran.",
-        "Tersedia opsi koneksi ulir dan flange custom."
-      ],
-      "en": [
-        "High reliability industrial ROTARY engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "55",
-      "separator": "-",
-      "totalSlots": 5,
-      "slotDelimiters": {
-        "1": "-",
-        "2": "-",
-        "3": "-",
-        "4": "-",
-        "5": ""
-      },
-      "blocks": [
-        {
-          "id": "rot_b1",
-          "title": "Series & Model",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Tipe & Aplikasi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1",
-              "code": "55",
-              "label": "55 Series All Purpose (Water, Oil, Steam)",
-              "values": {
-                "desc": "All Purpose"
-              }
-            },
-            {
-              "id": "r2",
-              "code": "55-ELS",
-              "label": "55 Series E.L.S. (Extended Life Seal)",
-              "values": {
-                "desc": "Extended Life Seal"
-              }
-            },
-            {
-              "id": "r3",
-              "code": "57",
-              "label": "57 Series Water Service",
-              "values": {
-                "desc": "Water Service"
-              }
-            },
-            {
-              "id": "r4",
-              "code": "57-ELS",
-              "label": "57 Series Severe Duty Water",
-              "values": {
-                "desc": "Severe Water Service"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rot_b2",
-          "title": "Flow Design",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Desain Aliran"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1",
-              "code": "M",
-              "label": "Monoflow Design (Single Flow Passage)",
-              "values": {
-                "desc": "Monoflow"
-              }
-            },
-            {
-              "id": "r2",
-              "code": "D",
-              "label": "Duoflow Design (Supply & Return Passage)",
-              "values": {
-                "desc": "Duoflow"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rot_b3",
-          "title": "Port Size (NPT)",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Ukuran Port Koneksi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1",
-              "code": "1/4",
-              "label": "1/4\" NPT Thread",
-              "values": {
-                "desc": "1/4\" NPT"
-              }
-            },
-            {
-              "id": "r2",
-              "code": "3/8",
-              "label": "3/8\" NPT Thread",
-              "values": {
-                "desc": "3/8\" NPT"
-              }
-            },
-            {
-              "id": "r3",
-              "code": "1/2",
-              "label": "1/2\" NPT Thread",
-              "values": {
-                "desc": "1/2\" NPT"
-              }
-            },
-            {
-              "id": "r4",
-              "code": "3/4",
-              "label": "3/4\" NPT Thread",
-              "values": {
-                "desc": "3/4\" NPT"
-              }
-            },
-            {
-              "id": "r5",
-              "code": "1",
-              "label": "1\" NPT Thread",
-              "values": {
-                "desc": "1\" NPT"
-              }
-            },
-            {
-              "id": "r6",
-              "code": "1-1/4",
-              "label": "1-1/4\" NPT Thread",
-              "values": {
-                "desc": "1-1/4\" NPT"
-              }
-            },
-            {
-              "id": "r7",
-              "code": "1-1/2",
-              "label": "1-1/2\" NPT Thread",
-              "values": {
-                "desc": "1-1/2\" NPT"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rot_b4",
-          "title": "Rotor Thread Direction",
-          "slotIndex": 4,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Arah Ulir Rotor"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1",
-              "code": "RH",
-              "label": "Right Hand Thread (RH)",
-              "values": {
-                "desc": "Right Hand"
-              }
-            },
-            {
-              "id": "r2",
-              "code": "LH",
-              "label": "Left Hand Thread (LH)",
-              "values": {
-                "desc": "Left Hand"
-              }
-            }
-          ]
-        },
-        {
-          "id": "rot_b5",
-          "title": "Seal Combination",
-          "slotIndex": 5,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Kombinasi Seal Material"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1",
-              "code": "STD",
-              "label": "Carbon Graphite / Bronze (Standard Water)",
-              "values": {
-                "desc": "Standard Water"
-              }
-            },
-            {
-              "id": "r2",
-              "code": "ELS",
-              "label": "Silicon Carbide / Silicon Carbide (Poor Water)",
-              "values": {
-                "desc": "Poor Water Quality"
-              }
-            },
-            {
-              "id": "r3",
-              "code": "CER",
-              "label": "Carbon Graphite / Ceramic (Hot Oil / Steam)",
-              "values": {
-                "desc": "Hot Oil & Saturated Steam"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "tubing",
-    "slug": "tubing",
-    "series": "TUBING Series",
-    "code": "TUBING",
-    "category": "Filtration & Steam Traps",
-    "subTitle": {
-      "id": "Double Nipple Hose to Tube",
-      "en": "BDNHT (Official BELSA Industrial Component)",
-    },
-    "image": "/images/prod_valve_clean.webp",
-    "symbolType": "valve",
-    "features": {
-      "id": [
-        "Fitting konektor penghubung selang hidrolik ke pipa keras.",
-        "Material carbon steel lapis seng tahan korosi.",
-        "Ulir standar BSP, JIC, dan Metrik.",
-        "Mencegah kebocoran pada sambungan bertekanan tinggi."
-      ],
-      "en": [
-        "High reliability industrial TUBING engineered for severe operating duty.",
-        "Precision manufactured in accordance with international KS / JIS / ISO standards.",
-        "Robust materials resistant to surge pressure, vibration, and thermal stress.",
-        "Custom Made Solution available upon customer technical request."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "TUBING",
-      "separator": " - ",
-      "totalSlots": 3,
-      "slotDelimiters": {
-        "1": "-",
-        "2": "-",
-        "3": ""
-      },
-      "blocks": [
-        {
-          "id": "tubing_b1",
-          "title": "Series",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "Double",
-              "label": "Nipple Hose to Tube",
-              "values": {
-                "desc": "Nipple Hose to Tube"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "BDNHT",
-              "label": "Series",
-              "values": {
-                "desc": "Series"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "BDNHT",
-              "label": "Option BDNHT",
-              "values": {
-                "desc": "Tipe BDNHT"
-              }
-            },
-            {
-              "id": "r_4",
-              "code": "-",
-              "label": "-",
-              "values": {
-                "desc": "-"
-              }
-            },
-            {
-              "id": "r_5",
-              "code": "-",
-              "label": "Option -",
-              "values": {
-                "desc": "Tipe -"
-              }
-            },
-            {
-              "id": "r_6",
-              "code": "BDNHT",
-              "label": "Belsa Double Nipple",
-              "values": {
-                "desc": "Belsa Double Nipple"
-              }
-            },
-            {
-              "id": "r_7",
-              "code": "Hose",
-              "label": "To Tube",
-              "values": {
-                "desc": "To Tube"
-              }
-            }
-          ]
-        },
-        {
-          "id": "tubing_b2",
-          "title": "Material",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r_1",
-              "code": "SS",
-              "label": "Option SS",
-              "values": {
-                "desc": "Tipe SS"
-              }
-            },
-            {
-              "id": "r_2",
-              "code": "GLV",
-              "label": "Option GLV",
-              "values": {
-                "desc": "Tipe GLV"
-              }
-            },
-            {
-              "id": "r_3",
-              "code": "BRS",
-              "label": "Option BRS",
-              "values": {
-                "desc": "Tipe BRS"
-              }
-            },
-            {
-              "id": "r_4",
-              "code": "ST41",
-              "label": "Option ST41",
-              "values": {
-                "desc": "Tipe ST41"
-              }
-            },
-            {
-              "id": "r_5",
-              "code": "Stainless",
-              "label": "Steel 304",
-              "values": {
-                "desc": "Steel 304"
-              }
-            },
-            {
-              "id": "r_6",
-              "code": "Steel",
-              "label": "Galvanis",
-              "values": {
-                "desc": "Galvanis"
-              }
-            },
-            {
-              "id": "r_7",
-              "code": "Brass",
-              "label": "Option Brass",
-              "values": {
-                "desc": "Tipe Brass"
-              }
-            },
-            {
-              "id": "r_8",
-              "code": "Steel",
-              "label": "ST41",
-              "values": {
-                "desc": "ST41"
-              }
-            },
-            {
-              "id": "r_9",
-              "code": "Tile",
-              "label": "Dash Size",
-              "values": {
-                "desc": "Dash Size"
-              }
-            },
-            {
-              "id": "r_10",
-              "code": "04",
-              "label": "Option 04",
-              "values": {
-                "desc": "Tipe 04"
-              }
-            },
-            {
-              "id": "r_11",
-              "code": "06",
-              "label": "Option 06",
-              "values": {
-                "desc": "Tipe 06"
-              }
-            },
-            {
-              "id": "r_12",
-              "code": "08",
-              "label": "Option 08",
-              "values": {
-                "desc": "Tipe 08"
-              }
-            },
-            {
-              "id": "r_13",
-              "code": "10",
-              "label": "Option 10",
-              "values": {
-                "desc": "Tipe 10"
-              }
-            },
-            {
-              "id": "r_14",
-              "code": "1/4”",
-              "label": "Option 1/4”",
-              "values": {
-                "desc": "Tipe 1/4”"
-              }
-            },
-            {
-              "id": "r_15",
-              "code": "3/8”",
-              "label": "Option 3/8”",
-              "values": {
-                "desc": "Tipe 3/8”"
-              }
-            },
-            {
-              "id": "r_16",
-              "code": "1/2”",
-              "label": "Option 1/2”",
-              "values": {
-                "desc": "Tipe 1/2”"
-              }
-            },
-            {
-              "id": "r_17",
-              "code": "5/8”",
-              "label": "Option 5/8”",
-              "values": {
-                "desc": "Tipe 5/8”"
-              }
-            },
-            {
-              "id": "r_18",
-              "code": "12",
-              "label": "Option 12",
-              "values": {
-                "desc": "Tipe 12"
-              }
-            },
-            {
-              "id": "r_19",
-              "code": "16",
-              "label": "Option 16",
-              "values": {
-                "desc": "Tipe 16"
-              }
-            },
-            {
-              "id": "r_20",
-              "code": "20",
-              "label": "Option 20",
-              "values": {
-                "desc": "Tipe 20"
-              }
-            },
-            {
-              "id": "r_21",
-              "code": "24",
-              "label": "Option 24",
-              "values": {
-                "desc": "Tipe 24"
-              }
-            },
-            {
-              "id": "r_22",
-              "code": "3/4”",
-              "label": "Option 3/4”",
-              "values": {
-                "desc": "Tipe 3/4”"
-              }
-            },
-            {
-              "id": "r_23",
-              "code": "1”",
-              "label": "Option 1”",
-              "values": {
-                "desc": "Tipe 1”"
-              }
-            },
-            {
-              "id": "r_24",
-              "code": "1",
-              "label": "1/4”",
-              "values": {
-                "desc": "1/4”"
-              }
-            },
-            {
-              "id": "r_25",
-              "code": "1",
-              "label": "1/2”",
-              "values": {
-                "desc": "1/2”"
-              }
-            },
-            {
-              "id": "r_26",
-              "code": "32",
-              "label": "2”",
-              "values": {
-                "desc": "2”"
-              }
-            },
-            {
-              "id": "r_27",
-              "code": "OD",
-              "label": "Tubing",
-              "values": {
-                "desc": "Tubing"
-              }
-            },
-            {
-              "id": "r_28",
-              "code": "10L",
-              "label": "Option 10L",
-              "values": {
-                "desc": "Tipe 10L"
-              }
-            },
-            {
-              "id": "r_29",
-              "code": "12L",
-              "label": "Option 12L",
-              "values": {
-                "desc": "Tipe 12L"
-              }
-            },
-            {
-              "id": "r_30",
-              "code": "15L",
-              "label": "Option 15L",
-              "values": {
-                "desc": "Tipe 15L"
-              }
-            },
-            {
-              "id": "r_31",
-              "code": "18L",
-              "label": "Option 18L",
-              "values": {
-                "desc": "Tipe 18L"
-              }
-            },
-            {
-              "id": "r_32",
-              "code": "OD",
-              "label": "Tube 10mm",
-              "values": {
-                "desc": "Tube 10mm"
-              }
-            },
-            {
-              "id": "r_33",
-              "code": "OD",
-              "label": "Tube 12mm",
-              "values": {
-                "desc": "Tube 12mm"
-              }
-            },
-            {
-              "id": "r_34",
-              "code": "OD",
-              "label": "Tube 15mm",
-              "values": {
-                "desc": "Tube 15mm"
-              }
-            },
-            {
-              "id": "r_35",
-              "code": "OD",
-              "label": "Tube 18mm",
-              "values": {
-                "desc": "Tube 18mm"
-              }
-            },
-            {
-              "id": "r_36",
-              "code": "20L",
-              "label": "Option 20L",
-              "values": {
-                "desc": "Tipe 20L"
-              }
-            },
-            {
-              "id": "r_37",
-              "code": "22L",
-              "label": "Option 22L",
-              "values": {
-                "desc": "Tipe 22L"
-              }
-            },
-            {
-              "id": "r_38",
-              "code": "25L",
-              "label": "Option 25L",
-              "values": {
-                "desc": "Tipe 25L"
-              }
-            },
-            {
-              "id": "r_39",
-              "code": "28L",
-              "label": "Option 28L",
-              "values": {
-                "desc": "Tipe 28L"
-              }
-            },
-            {
-              "id": "r_40",
-              "code": "OD",
-              "label": "Tube 20mm",
-              "values": {
-                "desc": "Tube 20mm"
-              }
-            },
-            {
-              "id": "r_41",
-              "code": "OD",
-              "label": "Tube 22mm",
-              "values": {
-                "desc": "Tube 22mm"
-              }
-            },
-            {
-              "id": "r_42",
-              "code": "OD",
-              "label": "Tube 25mm",
-              "values": {
-                "desc": "Tube 25mm"
-              }
-            },
-            {
-              "id": "r_43",
-              "code": "OD",
-              "label": "Tube 28mm",
-              "values": {
-                "desc": "Tube 28mm"
-              }
-            },
-            {
-              "id": "r_44",
-              "code": "30L",
-              "label": "OD Tube 30mm",
-              "values": {
-                "desc": "OD Tube 30mm"
-              }
-            }
-          ]
-        },
-        {
-          "id": "tubing_b3",
-          "title": "Custom Specification",
-          "slotIndex": 3,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Deskripsi"
-            }
-          ],
-          "rows": [
-            {
-              "id": "c0",
-              "code": "",
-              "label": "Standard",
-              "values": {
-                "desc": "Standar Katalog"
-              }
-            },
-            {
-              "id": "c1",
-              "code": "M",
-              "label": "Custom Made",
-              "values": {
-                "desc": "Custom Made Solution BELSA"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
     "id": "nhc210h",
     "slug": "nhc210h",
     "series": "NHC210H Series",
@@ -38649,7 +35342,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 210 kgf/cm²",
-      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 210 kgf/cm²",
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 210 kgf/cm²"
     },
     "image": "https://lh3.googleusercontent.com/d/1Or6ZGD0kHUjk6IrBB02amfXt0suPTA6E",
     "symbolType": "hydraulic",
@@ -38705,8 +35398,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NHC210H",
-      "separator": " - ",
-      "totalSlots": 13,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -38722,6 +35414,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "12": "-",
         "13": ""
       },
+      "totalSlots": 13,
       "blocks": [
         {
           "id": "nhc210h_b1",
@@ -39385,7 +36078,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 250 kgf/cm²",
-      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 250 kgf/cm²",
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 250 kgf/cm²"
     },
     "image": "https://lh3.googleusercontent.com/d/1fWhv5pdHyyVPfH6yOoIcI3dz2ZDTMyJC",
     "symbolType": "hydraulic",
@@ -39441,8 +36134,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NHC250H",
-      "separator": " - ",
-      "totalSlots": 13,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -39458,6 +36150,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "12": "-",
         "13": ""
       },
+      "totalSlots": 13,
       "blocks": [
         {
           "id": "nhc250h_b1",
@@ -40121,7 +36814,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 300 kgf/cm²",
-      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 300 kgf/cm²",
+      "en": "Silinder Hidrolik Tekanan Tinggi Tie-Rod 300 kgf/cm²"
     },
     "image": "https://lh3.googleusercontent.com/d/1SBiC6GgBbq4U25WWSpTms_Cpqqtev144",
     "symbolType": "hydraulic",
@@ -40177,8 +36870,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "NHC300H",
-      "separator": " - ",
-      "totalSlots": 13,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
@@ -40194,6 +36886,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "12": "-",
         "13": ""
       },
+      "totalSlots": 13,
       "blocks": [
         {
           "id": "nhc300h_b1",
@@ -40857,7 +37550,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hydraulic Cylinder",
     "subTitle": {
       "id": "BELSA Hydraulic Rod Ends Bearing",
-      "en": "BELSA Hydraulic Rod Ends Bearing",
+      "en": "BELSA Hydraulic Rod Ends Bearing"
     },
     "image": "https://lh3.googleusercontent.com/d/1BBoOMJjVhB54XeYlhfBX3zZTd_dubaPW",
     "symbolType": "hydraulic",
@@ -40888,17 +37581,24 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       70,
       80
     ],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BHREB",
-      "separator": " - ",
-      "totalSlots": 3,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
         "3": ""
       },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "bhreb_b1",
@@ -41086,7 +37786,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Industrial & Hydraulic Valve",
     "subTitle": {
       "id": "3-Way Piston Process Valve SCS13",
-      "en": "Katup Piston 3-Way Stainless Steel SCS13 (3-Way Piston Process Valve)",
+      "en": "Katup Piston 3-Way Stainless Steel SCS13 (3-Way Piston Process Valve)"
     },
     "image": "https://lh3.googleusercontent.com/d/16XyL2Kru9eEHvcR010JTeEdA2QtU7ZJ7",
     "symbolType": "valve",
@@ -41116,18 +37816,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       40,
       50
     ],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "BPV",
-      "separator": " - ",
-      "totalSlots": 5,
+      "separator": "-",
       "slotDelimiters": {
         "1": "-",
         "2": "",
-        "3": "-",
+        "3": "",
         "4": "-"
       },
+      "totalSlots": 5,
       "blocks": [
         {
           "id": "bpv_b1",
@@ -41317,788 +38024,67 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     }
   },
   {
-        "id": "dv175f",
-        "slug": "dv175f",
-        "series": "DV175-F Series",
-        "code": "DV175-F",
-        "category": "Industrial & Hydraulic Valve",
-        "subTitle": {
-            "id": "Diverter Valve",
-            "en": "Diverter Valve",
-        },
-        "image": "https://lh3.googleusercontent.com/d/1MZngPgH1X9U2wqCaymTI_r2AxKcKPji5",
-        "symbolType": "valve",
-        "features": {
-            "id": [
-                "Fabrikasi carbon steel atau stainless steel seri 300 berkualitas tinggi.",
-                "Suhu kerja standar hingga 250 °F (121 °C).",
-                "Rating tekanan internal standar 2 PSIG.",
-                "Seal poros O-ring dengan diverter blade bertumpu ball bearing presisi.",
-                "Pilihan penggerak manual, pneumatic, atau electric actuator.",
-                "Blade dan housing hasil machining halus tanpa wiper, baut dalam, atau tonjolan (no internal ledges).",
-                "Kedap debu ke sisi luar (dust tight to exterior).",
-                "Pilihan koneksi flensa bulat (round) atau persegi (square)."
-            ],
-            "en": [
-                "Fabricated carbon steel, or 300 series stainless steel.",
-                "Standard operating temperature up to 250 degrees F.",
-                "Standard internal pressure rating of 2 PSIG.",
-                "O-ring shaft seal.",
-                "Ball bearing supported diverter blade.",
-                "Manual, Pneumatic, or Electric actuation.",
-                "Machined blade and housing (no internal wipers or fasteners) No internal ledges.",
-                "Dust tight to exterior.",
-                "Round or Square Flanges."
-            ]
-        },
-        "boreSizes": [],
-        "standardStrokes": [],
-        "maxStroke": 0,
-        "htoConfig": {
-            "codePrefix": "DV",
-            "separator": "-",
-            "slotDelimiters": {
-                "1": "",
-                "2": "-",
-                "3": "",
-                "4": "",
-                "5": ""
-            },
-            "totalSlots": 5,
-            "defaultSlotValues": {
-                "1": "DV",
-                "2": "175",
-                "3": "F",
-                "4": "",
-                "5": ""
-            },
-            "blocks": [
-                {
-                    "id": "dv175f_b1",
-                    "title": "Type",
-                    "slotIndex": 1,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Deskripsi"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "t_dv",
-                            "code": "DV",
-                            "label": "DV",
-                            "values": {
-                                "desc": "Diverter Valve"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "dv175f_b2",
-                    "title": "Size",
-                    "slotIndex": 2,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Ukuran Nominal"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "sz_50",
-                            "code": "50",
-                            "label": "50",
-                            "values": {
-                                "desc": "DN50"
-                            }
-                        },
-                        {
-                            "id": "sz_65",
-                            "code": "65",
-                            "label": "65",
-                            "values": {
-                                "desc": "DN65"
-                            }
-                        },
-                        {
-                            "id": "sz_80",
-                            "code": "80",
-                            "label": "80",
-                            "values": {
-                                "desc": "DN80"
-                            }
-                        },
-                        {
-                            "id": "sz_100",
-                            "code": "100",
-                            "label": "100",
-                            "values": {
-                                "desc": "DN100"
-                            }
-                        },
-                        {
-                            "id": "sz_150",
-                            "code": "150",
-                            "label": "150",
-                            "values": {
-                                "desc": "DN150"
-                            }
-                        },
-                        {
-                            "id": "sz_175",
-                            "code": "175",
-                            "label": "175",
-                            "values": {
-                                "desc": "DN175"
-                            }
-                        },
-                        {
-                            "id": "sz_200",
-                            "code": "200",
-                            "label": "200",
-                            "values": {
-                                "desc": "DN200"
-                            }
-                        },
-                        {
-                            "id": "sz_250",
-                            "code": "250",
-                            "label": "250",
-                            "values": {
-                                "desc": "DN250"
-                            }
-                        },
-                        {
-                            "id": "sz_300",
-                            "code": "300",
-                            "label": "300",
-                            "values": {
-                                "desc": "DN300"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "dv175f_b3",
-                    "title": "Connection",
-                    "slotIndex": 3,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Sambungan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "conn_f",
-                            "code": "F",
-                            "label": "F",
-                            "values": {
-                                "desc": "Flange Connection"
-                            }
-                        },
-                        {
-                            "id": "conn_w",
-                            "code": "W",
-                            "label": "W",
-                            "values": {
-                                "desc": "Welded Connection"
-                            }
-                        },
-                        {
-                            "id": "conn_c",
-                            "code": "C",
-                            "label": "C",
-                            "values": {
-                                "desc": "Clamp Connection"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "dv175f_b4",
-                    "title": "Actuator",
-                    "slotIndex": 4,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Tipe Aktuator"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "act_nil",
-                            "code": "",
-                            "label": "Nil",
-                            "values": {
-                                "desc": "Pneumatic Actuator (Standard)"
-                            }
-                        },
-                        {
-                            "id": "act_e",
-                            "code": "E",
-                            "label": "E",
-                            "values": {
-                                "desc": "Electric Actuator"
-                            }
-                        },
-                        {
-                            "id": "act_m",
-                            "code": "M",
-                            "label": "M",
-                            "values": {
-                                "desc": "Manual Actuator"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "dv175f_b5",
-                    "title": "Option",
-                    "slotIndex": 5,
-                    "displayType": "table",
-                    "columns": [
-                        {
-                            "id": "code",
-                            "label": "Kode"
-                        },
-                        {
-                            "id": "desc",
-                            "label": "Opsi Tambahan"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "id": "opt_nil",
-                            "code": "",
-                            "label": "Nil",
-                            "values": {
-                                "desc": "No Additional Option"
-                            }
-                        },
-                        {
-                            "id": "opt_frj",
-                            "code": "FRJ",
-                            "label": "FRJ",
-                            "values": {
-                                "desc": "Flexible Rubber Join"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-  {
-    "id": "r1at",
-    "slug": "r1at",
-    "series": "R1AT Series",
-    "code": "R1AT",
-    "category": "Hose, Fittings & Pipe Accessories",
+    "id": "dv175f",
+    "slug": "dv175f",
+    "series": "DV175-F Series",
+    "code": "DV175-F",
+    "category": "Industrial & Hydraulic Valve",
     "subTitle": {
-      "id": "Selang Hidrolik SAE 100 R1AT, 1 Lapis Kawat Baja",
-      "en": "SAE 100 R1AT 1-Wire Hydraulic Hose Series (1SN - DIN EN853)",
+      "id": "Diverter Valve",
+      "en": "Diverter Valve"
     },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "hose",
+    "image": "https://lh3.googleusercontent.com/d/1MZngPgH1X9U2wqCaymTI_r2AxKcKPji5",
+    "symbolType": "valve",
     "features": {
       "id": [
-        "Tube dalam: karet sintetis hitam tahan oli.",
-        "Penguat: 1 lapis anyaman kawat baja high tensile yang fleksibel.",
-        "Lapisan luar: karet sintetis hitam tahan oli, cuaca, dan abrasi.",
-        "Rentang suhu: -40°C hingga +100°C (-40°F hingga +212°F).",
-        "Aplikasi: oli hidrolik berbasis air, berbasis minyak bumi, dan biodegradable."
+        "Fabrikasi carbon steel atau stainless steel seri 300.",
+        "Suhu operasi standar hingga 250 °F.",
+        "Tekanan internal standar 2 PSIG.",
+        "Seal poros O-ring dan diverter blade bertumpu ball bearing.",
+        "Penggerak manual, pneumatic, atau electric.",
+        "Blade dan housing hasil machining, tanpa wiper, pengencang, atau tonjolan di bagian dalam."
       ],
       "en": [
-        "Inner Tube: black oil resistant synthetic rubber",
-        "Reinforcement: one braid of high tensile super flexible steel wire",
-        "Outer Layer: black oil, weather, and abrasion resistant synthetic rubber",
-        "Temperature Range: -40°C - + 100°C (-40°F - + 212°F)",
-        "Application: Suitable to convey water-based, petroleum-based, and biodegradable hydraulic oil."
+        "Fabricated carbon steel, or 300 series stainless steel.",
+        "Standard operating temperature up to 250 degrees F.",
+        "Standard internal pressure rating of 2 PSIG.",
+        "O-ring shaft seal and ball bearing supported diverter blade.",
+        "Manual, Pneumatic, or Electric actuation.",
+        "Machined blade and housing (no internal wipers or fasteners, no internal ledges)."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "R1AT",
-      "separator": " - ",
-      "totalSlots": 2,
-      "slotDelimiters": {
-        "1": "-",
-        "2": ""
-      },
-      "defaultSlotValues": {
-        "1": "R1AT",
-        "2": "08"
-      },
-      "blocks": [
-        {
-          "id": "r1at_b1",
-          "title": "Series",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Description"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1at_s1",
-              "code": "R1AT",
-              "label": "SAE 100 R1AT / 1SN Hydraulic Hose",
-              "values": {
-                "desc": "SAE 100 R1AT (DIN EN853 1SN)"
-              }
-            }
-          ]
-        },
-        {
-          "id": "r1at_b2",
-          "title": "Hose Size",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "ID / OD / Working Pressure"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r1at_sz_03",
-              "code": "03",
-              "label": "3/16\"",
-              "values": {
-                "desc": "ID 4.6-5.4mm | Max.WP 25.0 MPa | Min.BR 90mm"
-              }
-            },
-            {
-              "id": "r1at_sz_04",
-              "code": "04",
-              "label": "1/4\"",
-              "values": {
-                "desc": "ID 6.2-7.0mm | Max.WP 22.5 MPa | Min.BR 100mm"
-              }
-            },
-            {
-              "id": "r1at_sz_05",
-              "code": "05",
-              "label": "5/16\"",
-              "values": {
-                "desc": "ID 7.7-8.5mm | Max.WP 21.5 MPa | Min.BR 115mm"
-              }
-            },
-            {
-              "id": "r1at_sz_06",
-              "code": "06",
-              "label": "3/8\"",
-              "values": {
-                "desc": "ID 9.3-10.1mm | Max.WP 18.0 MPa | Min.BR 130mm"
-              }
-            },
-            {
-              "id": "r1at_sz_08",
-              "code": "08",
-              "label": "1/2\"",
-              "values": {
-                "desc": "ID 12.3-13.5mm | Max.WP 16.0 MPa | Min.BR 180mm"
-              }
-            },
-            {
-              "id": "r1at_sz_10",
-              "code": "10",
-              "label": "5/8\"",
-              "values": {
-                "desc": "ID 15.5-16.7mm | Max.WP 13.0 MPa | Min.BR 200mm"
-              }
-            },
-            {
-              "id": "r1at_sz_12",
-              "code": "12",
-              "label": "3/4\"",
-              "values": {
-                "desc": "ID 18.6-19.8mm | Max.WP 10.5 MPa | Min.BR 240mm"
-              }
-            },
-            {
-              "id": "r1at_sz_16",
-              "code": "16",
-              "label": "1\"",
-              "values": {
-                "desc": "ID 25.0-26.4mm | Max.WP 8.8 MPa | Min.BR 300mm"
-              }
-            },
-            {
-              "id": "r1at_sz_20",
-              "code": "20",
-              "label": "1 1/4\"",
-              "values": {
-                "desc": "ID 31.4-33.0mm | Max.WP 6.3 MPa | Min.BR 420mm"
-              }
-            },
-            {
-              "id": "r1at_sz_24",
-              "code": "24",
-              "label": "1 1/2\"",
-              "values": {
-                "desc": "ID 37.7-39.3mm | Max.WP 5.0 MPa | Min.BR 500mm"
-              }
-            },
-            {
-              "id": "r1at_sz_32",
-              "code": "32",
-              "label": "2\"",
-              "values": {
-                "desc": "ID 50.4-52.0mm | Max.WP 4.0 MPa | Min.BR 630mm"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "r2at",
-    "slug": "r2at",
-    "series": "R2AT Series",
-    "code": "R2AT",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Selang Hidrolik SAE 100 R2AT, 2 Lapis Kawat Baja",
-      "en": "SAE 100 R2AT 2-Wire Hydraulic Hose Series (2SN - DIN EN853)",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "hose",
-    "features": {
-      "id": [
-        "Tube dalam: karet sintetis hitam tahan oli.",
-        "Penguat: 2 lapis anyaman kawat baja high tensile yang fleksibel.",
-        "Lapisan luar: karet sintetis hitam tahan oli, cuaca, dan abrasi.",
-        "Rentang suhu: -40°C hingga +100°C (-40°F hingga +212°F).",
-        "Aplikasi: oli hidrolik berbasis air, berbasis minyak bumi, dan biodegradable."
-      ],
-      "en": [
-        "Inner Tube: black oil resistant synthetic rubber",
-        "Reinforcement: two braids of high tensile super flexible steel wire",
-        "Outer Layer: black oil, weather, and abrasion resistant synthetic rubber",
-        "Temperature Range: -40°C - + 100°C (-40°F - + 212°F)",
-        "Application: Suitable to convey water-based, petroleum-based, and biodegradable hydraulic oil."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "R2AT",
-      "separator": " - ",
-      "totalSlots": 2,
-      "slotDelimiters": {
-        "1": "-",
-        "2": ""
-      },
-      "defaultSlotValues": {
-        "1": "R2AT",
-        "2": "08"
-      },
-      "blocks": [
-        {
-          "id": "r2at_b1",
-          "title": "Series",
-          "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "Description"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r2at_s1",
-              "code": "R2AT",
-              "label": "SAE 100 R2AT / 2SN Hydraulic Hose",
-              "values": {
-                "desc": "SAE 100 R2AT (DIN EN853 2SN)"
-              }
-            }
-          ]
-        },
-        {
-          "id": "r2at_b2",
-          "title": "Hose Size",
-          "slotIndex": 2,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "desc",
-              "label": "ID / OD / Working Pressure"
-            }
-          ],
-          "rows": [
-            {
-              "id": "r2at_sz_03",
-              "code": "03",
-              "label": "3/16\"",
-              "values": {
-                "desc": "ID 4.6-5.4mm | Max.WP 41.5 MPa | Min.BR 90mm"
-              }
-            },
-            {
-              "id": "r2at_sz_04",
-              "code": "04",
-              "label": "1/4\"",
-              "values": {
-                "desc": "ID 6.1-7.0mm | Max.WP 40.0 MPa | Min.BR 100mm"
-              }
-            },
-            {
-              "id": "r2at_sz_05",
-              "code": "05",
-              "label": "5/16\"",
-              "values": {
-                "desc": "ID 7.7-8.5mm | Max.WP 35.0 MPa | Min.BR 115mm"
-              }
-            },
-            {
-              "id": "r2at_sz_06",
-              "code": "06",
-              "label": "3/8\"",
-              "values": {
-                "desc": "ID 9.3-10.1mm | Max.WP 33.0 MPa | Min.BR 130mm"
-              }
-            },
-            {
-              "id": "r2at_sz_08",
-              "code": "08",
-              "label": "1/2\"",
-              "values": {
-                "desc": "ID 12.3-13.5mm | Max.WP 27.5 MPa | Min.BR 180mm"
-              }
-            },
-            {
-              "id": "r2at_sz_10",
-              "code": "10",
-              "label": "5/8\"",
-              "values": {
-                "desc": "ID 15.5-16.7mm | Max.WP 25.0 MPa | Min.BR 200mm"
-              }
-            },
-            {
-              "id": "r2at_sz_12",
-              "code": "12",
-              "label": "3/4\"",
-              "values": {
-                "desc": "ID 18.6-19.8mm | Max.WP 21.5 MPa | Min.BR 240mm"
-              }
-            },
-            {
-              "id": "r2at_sz_16",
-              "code": "16",
-              "label": "1\"",
-              "values": {
-                "desc": "ID 25.0-26.4mm | Max.WP 16.5 MPa | Min.BR 300mm"
-              }
-            },
-            {
-              "id": "r2at_sz_20",
-              "code": "20",
-              "label": "1 1/4\"",
-              "values": {
-                "desc": "ID 31.4-33.0mm | Max.WP 12.5 MPa | Min.BR 420mm"
-              }
-            },
-            {
-              "id": "r2at_sz_24",
-              "code": "24",
-              "label": "1 1/2\"",
-              "values": {
-                "desc": "ID 37.7-39.3mm | Max.WP 9.0 MPa | Min.BR 500mm"
-              }
-            },
-            {
-              "id": "r2at_sz_32",
-              "code": "32",
-              "label": "2\"",
-              "values": {
-                "desc": "ID 50.4-52.0mm | Max.WP 8.0 MPa | Min.BR 630mm"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": "double_nipple",
-    "slug": "double-nipple",
-    "series": "Double Nipple Series",
-    "code": "BDN",
-    "category": "Hose, Fittings & Pipe Accessories",
-    "subTitle": {
-      "id": "Double Nipple Fitting",
-      "en": "Double Nipple Fitting (Official BELSA Industrial Component - Double Nipple Series)",
-    },
-    "image": "/images/prod_hose_clean.webp",
-    "symbolType": "hose",
-    "features": {
-      "id": [
-        "Double nipple untuk perpipaan hidrolik dan pneumatik.",
-        "Pilihan ulir BSP, JIC, JIS, ORFS, dan NPT/BSPT.",
-        "Tersedia sudut konektor lurus, 45°, dan 90°.",
-        "Tersedia tipe swivel untuk penyesuaian arah."
-      ],
-      "en": [
-        "Precision engineered double nipple connection for hydraulic & pneumatic piping.",
-        "Wide combination of BSP, JIC, JIS, ORFS, and NPT/BSPT threads.",
-        "Available with straight, 45 degree, and 90 degree connector angles.",
-        "Swivel mechanism available for flexible alignment."
-      ]
-    },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
-    "htoConfig": {
-      "codePrefix": "",
+      "codePrefix": "DV175-F",
       "separator": "-",
-      "totalSlots": 8,
       "slotDelimiters": {
-        "1": "",
-        "2": "",
-        "3": "-",
+        "1": " ",
+        "2": "-",
+        "3": "",
         "4": "",
-        "5": "",
-        "6": "-",
-        "7": "",
-        "8": ""
+        "5": ""
       },
+      "totalSlots": 5,
       "blocks": [
         {
-          "id": "dn_b1",
-          "title": "Tile Dash Left Side",
+          "id": "dv_b1",
+          "title": "Pneumatic Actuator / Series",
           "slotIndex": 1,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Dash Size"
-            },
-            {
-              "id": "desc",
-              "label": "Thread Size"
-            }
-          ],
-          "rows": [
-            {
-              "id": "dn_l_04",
-              "code": "04",
-              "label": "04 - 1/4\"",
-              "values": {
-                "code": "04",
-                "desc": "1/4\""
-              }
-            },
-            {
-              "id": "dn_l_06",
-              "code": "06",
-              "label": "06 - 3/8\"",
-              "values": {
-                "code": "06",
-                "desc": "3/8\""
-              }
-            },
-            {
-              "id": "dn_l_08",
-              "code": "08",
-              "label": "08 - 1/2\"",
-              "values": {
-                "code": "08",
-                "desc": "1/2\""
-              }
-            },
-            {
-              "id": "dn_l_10",
-              "code": "10",
-              "label": "10 - 5/8\"",
-              "values": {
-                "code": "10",
-                "desc": "5/8\""
-              }
-            },
-            {
-              "id": "dn_l_12",
-              "code": "12",
-              "label": "12 - 3/4\"",
-              "values": {
-                "code": "12",
-                "desc": "3/4\""
-              }
-            },
-            {
-              "id": "dn_l_16",
-              "code": "16",
-              "label": "16 - 1\"",
-              "values": {
-                "code": "16",
-                "desc": "1\""
-              }
-            },
-            {
-              "id": "dn_l_20",
-              "code": "20",
-              "label": "20 - 1 1/4\"",
-              "values": {
-                "code": "20",
-                "desc": "1 1/4\""
-              }
-            },
-            {
-              "id": "dn_l_24",
-              "code": "24",
-              "label": "24 - 1 1/2\"",
-              "values": {
-                "code": "24",
-                "desc": "1 1/2\""
-              }
-            },
-            {
-              "id": "dn_l_32",
-              "code": "32",
-              "label": "32 - 2\"",
-              "values": {
-                "code": "32",
-                "desc": "2\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b2",
-          "title": "Thread Type Left Side",
-          "slotIndex": 2,
           "displayType": "table",
           "columns": [
             {
@@ -42107,33 +38093,123 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "desc",
-              "label": "Thread Gender"
+              "label": "Description"
             }
           ],
           "rows": [
             {
-              "id": "dn_tl_m",
-              "code": "M",
-              "label": "M - Male",
+              "id": "dv_s1",
+              "code": "DV",
+              "label": "DV - Diverter Valve",
               "values": {
-                "code": "M",
-                "desc": "Male"
-              }
-            },
-            {
-              "id": "dn_tl_aers",
-              "code": "AERS",
-              "label": "AERS - Female",
-              "values": {
-                "code": "AERS",
-                "desc": "Female"
+                "code": "DV",
+                "desc": "Diverter Valve"
               }
             }
           ]
         },
         {
-          "id": "dn_b3",
-          "title": "Connector Type Left Side",
+          "id": "dv_b2",
+          "title": "Size",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "code",
+              "label": "Size Symbol"
+            },
+            {
+              "id": "desc",
+              "label": "Nominal Size"
+            }
+          ],
+          "rows": [
+            {
+              "id": "dv_sz_50",
+              "code": "50",
+              "label": "50 - DN50",
+              "values": {
+                "code": "50",
+                "desc": "DN50"
+              }
+            },
+            {
+              "id": "dv_sz_65",
+              "code": "65",
+              "label": "65 - DN65",
+              "values": {
+                "code": "65",
+                "desc": "DN65"
+              }
+            },
+            {
+              "id": "dv_sz_80",
+              "code": "80",
+              "label": "80 - DN80",
+              "values": {
+                "code": "80",
+                "desc": "DN80"
+              }
+            },
+            {
+              "id": "dv_sz_100",
+              "code": "100",
+              "label": "100 - DN100",
+              "values": {
+                "code": "100",
+                "desc": "DN100"
+              }
+            },
+            {
+              "id": "dv_sz_150",
+              "code": "150",
+              "label": "150 - DN150",
+              "values": {
+                "code": "150",
+                "desc": "DN150"
+              }
+            },
+            {
+              "id": "dv_sz_175",
+              "code": "175",
+              "label": "175 - DN175",
+              "values": {
+                "code": "175",
+                "desc": "DN175"
+              }
+            },
+            {
+              "id": "dv_sz_200",
+              "code": "200",
+              "label": "200 - DN200",
+              "values": {
+                "code": "200",
+                "desc": "DN200"
+              }
+            },
+            {
+              "id": "dv_sz_250",
+              "code": "250",
+              "label": "250 - DN250",
+              "values": {
+                "code": "250",
+                "desc": "DN250"
+              }
+            },
+            {
+              "id": "dv_sz_300",
+              "code": "300",
+              "label": "300 - DN300",
+              "values": {
+                "code": "300",
+                "desc": "DN300"
+              }
+            }
+          ]
+        },
+        {
+          "id": "dv_b3",
+          "title": "Connection",
           "slotIndex": 3,
           "displayType": "table",
           "columns": [
@@ -42143,168 +38219,87 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "desc",
-              "label": "Standard Type"
+              "label": "Connection Type"
             }
           ],
           "rows": [
             {
-              "id": "dn_cl_u",
-              "code": "U",
-              "label": "U - BSP",
+              "id": "dv_conn_f",
+              "code": "F",
+              "label": "F - Flange Connection",
               "values": {
-                "code": "U",
-                "desc": "BSP"
+                "code": "F",
+                "desc": "Flange Connection"
               }
             },
             {
-              "id": "dn_cl_j",
-              "code": "J",
-              "label": "J - JIC 37º",
+              "id": "dv_conn_w",
+              "code": "W",
+              "label": "W - Welded Connection",
               "values": {
-                "code": "J",
-                "desc": "JIC 37º"
+                "code": "W",
+                "desc": "Welded Connection"
               }
             },
             {
-              "id": "dn_cl_fp",
-              "code": "FP",
-              "label": "FP - JIS BSP",
+              "id": "dv_conn_c",
+              "code": "C",
+              "label": "C - Clamp Connection",
               "values": {
-                "code": "FP",
-                "desc": "JIS BSP"
-              }
-            },
-            {
-              "id": "dn_cl_m",
-              "code": "M",
-              "label": "M - JIS METRIC",
-              "values": {
-                "code": "M",
-                "desc": "JIS METRIC"
-              }
-            },
-            {
-              "id": "dn_cl_htc",
-              "code": "HTC",
-              "label": "HTC - ORFS",
-              "values": {
-                "code": "HTC",
-                "desc": "ORFS"
-              }
-            },
-            {
-              "id": "dn_cl_b",
-              "code": "B",
-              "label": "B - NPT/BSPT",
-              "values": {
-                "code": "B",
-                "desc": "NPT/BSPT"
+                "code": "C",
+                "desc": "Clamp Connection"
               }
             }
           ]
         },
         {
-          "id": "dn_b4",
-          "title": "Dash Size Right Side",
+          "id": "dv_b4",
+          "title": "Actuator",
           "slotIndex": 4,
           "displayType": "table",
           "columns": [
             {
               "id": "code",
-              "label": "Dash Size"
+              "label": "Symbol"
             },
             {
               "id": "desc",
-              "label": "Thread Size"
+              "label": "Actuator Type"
             }
           ],
           "rows": [
             {
-              "id": "dn_r_04",
-              "code": "04",
-              "label": "04 - 1/4\"",
+              "id": "dv_act_nil",
+              "code": "",
+              "label": "Nil - Pneumatic Actuator (Standard)",
               "values": {
-                "code": "04",
-                "desc": "1/4\""
+                "code": "Nil",
+                "desc": "Pneumatic Actuator"
               }
             },
             {
-              "id": "dn_r_06",
-              "code": "06",
-              "label": "06 - 3/8\"",
+              "id": "dv_act_e",
+              "code": "E",
+              "label": "E - Electric Actuator",
               "values": {
-                "code": "06",
-                "desc": "3/8\""
+                "code": "E",
+                "desc": "Electric Actuator"
               }
             },
             {
-              "id": "dn_r_08",
-              "code": "08",
-              "label": "08 - 1/2\"",
+              "id": "dv_act_m",
+              "code": "M",
+              "label": "M - Manual Actuator",
               "values": {
-                "code": "08",
-                "desc": "1/2\""
-              }
-            },
-            {
-              "id": "dn_r_10",
-              "code": "10",
-              "label": "10 - 5/8\"",
-              "values": {
-                "code": "10",
-                "desc": "5/8\""
-              }
-            },
-            {
-              "id": "dn_r_12",
-              "code": "12",
-              "label": "12 - 3/4\"",
-              "values": {
-                "code": "12",
-                "desc": "3/4\""
-              }
-            },
-            {
-              "id": "dn_r_16",
-              "code": "16",
-              "label": "16 - 1\"",
-              "values": {
-                "code": "16",
-                "desc": "1\""
-              }
-            },
-            {
-              "id": "dn_r_20",
-              "code": "20",
-              "label": "20 - 1 1/4\"",
-              "values": {
-                "code": "20",
-                "desc": "1 1/4\""
-              }
-            },
-            {
-              "id": "dn_r_24",
-              "code": "24",
-              "label": "24 - 1 1/2\"",
-              "values": {
-                "code": "24",
-                "desc": "1 1/2\""
-              }
-            },
-            {
-              "id": "dn_r_32",
-              "code": "32",
-              "label": "32 - 2\"",
-              "values": {
-                "code": "32",
-                "desc": "2\""
+                "code": "M",
+                "desc": "Manual Actuator"
               }
             }
           ]
         },
         {
-          "id": "dn_b5",
-          "title": "Thread Type Right Side",
+          "id": "dv_b5",
+          "title": "Option",
           "slotIndex": 5,
           "displayType": "table",
           "columns": [
@@ -42314,179 +38309,26 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             },
             {
               "id": "desc",
-              "label": "Thread Gender"
+              "label": "Option Description"
             }
           ],
           "rows": [
             {
-              "id": "dn_tr_m",
-              "code": "M",
-              "label": "M - Male",
-              "values": {
-                "code": "M",
-                "desc": "Male"
-              }
-            },
-            {
-              "id": "dn_tr_aers",
-              "code": "AERS",
-              "label": "AERS - Female",
-              "values": {
-                "code": "AERS",
-                "desc": "Female"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b6",
-          "title": "Connector Type Right Side",
-          "slotIndex": 6,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Symbol"
-            },
-            {
-              "id": "desc",
-              "label": "Standard Type"
-            }
-          ],
-          "rows": [
-            {
-              "id": "dn_cr_u",
-              "code": "U",
-              "label": "U - BSP",
-              "values": {
-                "code": "U",
-                "desc": "BSP"
-              }
-            },
-            {
-              "id": "dn_cr_j",
-              "code": "J",
-              "label": "J - JIC 37º",
-              "values": {
-                "code": "J",
-                "desc": "JIC 37º"
-              }
-            },
-            {
-              "id": "dn_cr_fp",
-              "code": "FP",
-              "label": "FP - JIS BSP",
-              "values": {
-                "code": "FP",
-                "desc": "JIS BSP"
-              }
-            },
-            {
-              "id": "dn_cr_m",
-              "code": "M",
-              "label": "M - JIS METRIC",
-              "values": {
-                "code": "M",
-                "desc": "JIS METRIC"
-              }
-            },
-            {
-              "id": "dn_cr_htc",
-              "code": "HTC",
-              "label": "HTC - ORFS",
-              "values": {
-                "code": "HTC",
-                "desc": "ORFS"
-              }
-            },
-            {
-              "id": "dn_cr_b",
-              "code": "B",
-              "label": "B - NPT/BSPT",
-              "values": {
-                "code": "B",
-                "desc": "NPT/BSPT"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b7",
-          "title": "Connector Angle",
-          "slotIndex": 7,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Symbol"
-            },
-            {
-              "id": "desc",
-              "label": "Angle"
-            }
-          ],
-          "rows": [
-            {
-              "id": "dn_ang_nil",
+              "id": "dv_opt_nil",
               "code": "",
-              "label": "Nil - Straight (180º)",
+              "label": "Nil - No Additional",
               "values": {
                 "code": "Nil",
-                "desc": "Straight"
+                "desc": "No Additional"
               }
             },
             {
-              "id": "dn_ang_45",
-              "code": "45",
-              "label": "45 - 45º Elbow",
+              "id": "dv_opt_frj",
+              "code": "FRJ",
+              "label": "FRJ - Flexible Rubber Join",
               "values": {
-                "code": "45",
-                "desc": "45º Elbow"
-              }
-            },
-            {
-              "id": "dn_ang_90",
-              "code": "90",
-              "label": "90 - 90º Elbow",
-              "values": {
-                "code": "90",
-                "desc": "90º Elbow"
-              }
-            }
-          ]
-        },
-        {
-          "id": "dn_b8",
-          "title": "Swivel / Connection Feature",
-          "slotIndex": 8,
-          "displayType": "table",
-          "columns": [
-            {
-              "id": "code",
-              "label": "Symbol"
-            },
-            {
-              "id": "desc",
-              "label": "Feature"
-            }
-          ],
-          "rows": [
-            {
-              "id": "dn_sw_nil",
-              "code": "",
-              "label": "Nil - Standard Fixed",
-              "values": {
-                "code": "Nil",
-                "desc": "Standard Fixed"
-              }
-            },
-            {
-              "id": "dn_sw_sw",
-              "code": "SW",
-              "label": "SW - Swivel",
-              "values": {
-                "code": "SW",
-                "desc": "Swivel Joint"
+                "code": "FRJ",
+                "desc": "Flexible Rubber Join"
               }
             }
           ]
@@ -42497,12 +38339,12 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
   {
     "id": "btc_clamp",
     "slug": "btc-clamp",
-    "series": "BTC Clamp Series",
+    "series": "BTC-CLAMP Series",
     "code": "BTC-CLAMP",
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Belsa Tube Clamp",
-      "en": "Belsa Tube Clamp.pdf)",
+      "en": "Belsa Tube Clamp.pdf)"
     },
     "image": "https://lh3.googleusercontent.com/d/1KGXBRrn_XYYNHX_IRDGywiw8QqVWGrKO",
     "symbolType": "hose",
@@ -42520,18 +38362,31 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Compatible with tubing outer diameter from 10mm to 30mm."
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
-      "codePrefix": "BTC",
+      "codePrefix": "BTC-CLAMP",
       "separator": "-",
-      "totalSlots": 3,
       "slotDelimiters": {
         "1": "-",
         "2": "-",
         "3": ""
       },
+      "totalSlots": 3,
       "blocks": [
         {
           "id": "btcc_b1",
@@ -42715,7 +38570,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
     "category": "Hose, Fittings & Pipe Accessories",
     "subTitle": {
       "id": "Rubber Expansion Joint",
-      "en": "Rubber Expansion Joint (Sambungan Fleksibel Karet Flens)",
+      "en": "Rubber Expansion Joint (Sambungan Fleksibel Karet Flens)"
     },
     "image": "https://lh3.googleusercontent.com/d/1eVM2Yi-acHqIgVusXZW_v_b41etbzLQ0",
     "symbolType": "hose",
@@ -42735,13 +38590,25 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "Custom made solution available"
       ]
     },
-    "boreSizes": [],
-    "standardStrokes": [],
-    "maxStroke": 0,
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
     "htoConfig": {
       "codePrefix": "REJ",
-      "separator": " - ",
-      "totalSlots": 6,
+      "separator": "-",
       "slotDelimiters": {
         "1": " - REJ - ",
         "2": " - ",
@@ -42750,14 +38617,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "5": " - ",
         "6": ""
       },
-      "defaultSlotValues": {
-        "1": "PTFE",
-        "2": "F",
-        "3": "2",
-        "4": "PN16",
-        "5": "DN125",
-        "6": "M"
-      },
+      "totalSlots": 6,
       "blocks": [
         {
           "id": "rej_b1",
@@ -43077,5 +38937,679 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         }
       ]
     }
+  },
+  {
+    "id": "b25v",
+    "series": "B25V Series",
+    "code": "B25V",
+    "category": "Hydraulic Pump & Power Unit",
+    "subTitle": {
+      "id": "Belsa Vane Pump Seri B20V - B45V",
+      "en": "Belsa Vane Pump (Pompa Vane Tunggal Industri B20V, B25V, B35V, B45V)"
+    },
+    "image": "https://lh3.googleusercontent.com/d/16WPYO5FAnZyVhwdxqPMcDmKbcBlRdyZf",
+    "symbolType": "hydraulic",
+    "features": {
+      "id": [
+        "Kompak, rasio daya terhadap bobot tinggi.",
+        "Kebisingan rendah.",
+        "Umur pakai panjang.",
+        "Hemat ruang dan biaya.",
+        "Mudah dipasang dan diservis."
+      ],
+      "en": [
+        "Compact and high power-to-weight ratio.",
+        "Low noise operation.",
+        "Long service life and reliability.",
+        "Space and cost saving.",
+        "Easy installation and service."
+      ]
+    },
+    "boreSizes": [
+      40,
+      50,
+      63,
+      80,
+      100
+    ],
+    "standardStrokes": [
+      25,
+      50,
+      75,
+      100,
+      150,
+      200
+    ],
+    "maxStroke": 2000,
+    "htoConfig": {
+      "codePrefix": "B25V",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "-",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "",
+        "7": "-",
+        "8": "",
+        "9": "",
+        "10": "",
+        "11": "-",
+        "12": ""
+      },
+      "totalSlots": 12,
+      "blocks": [
+        {
+          "id": "b25v_b1",
+          "title": "F3 - Viton Seals",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Deskripsi"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_s_omit",
+              "code": "",
+              "label": "Omit if not required",
+              "values": {
+                "desc": "Standard seals (Omit)"
+              }
+            },
+            {
+              "id": "b25v_s_f3",
+              "code": "F3",
+              "label": "F3 - Viton Seals",
+              "values": {
+                "desc": "Viton seals for special / synthetic fluids"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b2",
+          "title": "Series Designation",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "range",
+              "label": "Rentang Perpindahan (Displacement)"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_ser_b20v",
+              "code": "B20V",
+              "label": "B20V",
+              "values": {
+                "range": "7 to 45 cm³/r (0.43 to 2.78 in³/r)"
+              }
+            },
+            {
+              "id": "b25v_ser_b25v",
+              "code": "B25V",
+              "label": "B25V",
+              "values": {
+                "range": "33 to 67 cm³/r (2.0 to 4.1 in³/r)"
+              }
+            },
+            {
+              "id": "b25v_ser_b35v",
+              "code": "B35V",
+              "label": "B35V",
+              "values": {
+                "range": "81 to 121 cm³/r (4.9 to 7.4 in³/r)"
+              }
+            },
+            {
+              "id": "b25v_ser_b45v",
+              "code": "B45V",
+              "label": "B45V",
+              "values": {
+                "range": "138 to 193 cm³/r (8.4 to 11.6 in³/r)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b3",
+          "title": "Pilot Designation",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Standar Pilot"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_pd_omit",
+              "code": "",
+              "label": "Omit - Standard pilot",
+              "values": {
+                "desc": "Standard pilot"
+              }
+            },
+            {
+              "id": "b25v_pd_s",
+              "code": "S",
+              "label": "S - SAE per ISO 3019/1 (SAE J744)",
+              "values": {
+                "desc": "SAE per ISO 3019/1 (SAE J744)"
+              }
+            },
+            {
+              "id": "b25v_pd_m",
+              "code": "M",
+              "label": "M - Metric per ISO 3019/2 100A2HW codes",
+              "values": {
+                "desc": "Metric per ISO 3019/2 100A2HW codes"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b4",
+          "title": "Geometric Displacement",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "frame",
+              "label": "Frame Size"
+            },
+            {
+              "id": "usgpm",
+              "label": "Code (USgpm)"
+            },
+            {
+              "id": "cm3",
+              "label": "cm³/r"
+            },
+            {
+              "id": "in3",
+              "label": "in³/r"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_gd_20_2",
+              "code": "2",
+              "label": "2 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "2",
+                "cm3": "7",
+                "in3": "0.43"
+              }
+            },
+            {
+              "id": "b25v_gd_20_5",
+              "code": "5",
+              "label": "5 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "5",
+                "cm3": "18",
+                "in3": "1.10"
+              }
+            },
+            {
+              "id": "b25v_gd_20_8",
+              "code": "8",
+              "label": "8 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "8",
+                "cm3": "27",
+                "in3": "1.67"
+              }
+            },
+            {
+              "id": "b25v_gd_20_9",
+              "code": "9",
+              "label": "9 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "9",
+                "cm3": "30",
+                "in3": "1.85"
+              }
+            },
+            {
+              "id": "b25v_gd_20_11",
+              "code": "11",
+              "label": "11 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "11",
+                "cm3": "36",
+                "in3": "2.22"
+              }
+            },
+            {
+              "id": "b25v_gd_20_12",
+              "code": "12",
+              "label": "12 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "12",
+                "cm3": "40",
+                "in3": "2.47"
+              }
+            },
+            {
+              "id": "b25v_gd_20_14",
+              "code": "14",
+              "label": "14 USgpm",
+              "values": {
+                "frame": "B20V",
+                "usgpm": "14",
+                "cm3": "45",
+                "in3": "2.78"
+              }
+            },
+            {
+              "id": "b25v_gd_25_10",
+              "code": "10",
+              "label": "10 USgpm",
+              "values": {
+                "frame": "B25V",
+                "usgpm": "10",
+                "cm3": "33",
+                "in3": "2.01"
+              }
+            },
+            {
+              "id": "b25v_gd_25_12",
+              "code": "12",
+              "label": "12 USgpm",
+              "values": {
+                "frame": "B25V",
+                "usgpm": "12",
+                "cm3": "39",
+                "in3": "2.47"
+              }
+            },
+            {
+              "id": "b25v_gd_25_14",
+              "code": "14",
+              "label": "14 USgpm",
+              "values": {
+                "frame": "B25V",
+                "usgpm": "14",
+                "cm3": "45",
+                "in3": "2.78"
+              }
+            },
+            {
+              "id": "b25v_gd_25_17",
+              "code": "17",
+              "label": "17 USgpm",
+              "values": {
+                "frame": "B25V",
+                "usgpm": "17",
+                "cm3": "55",
+                "in3": "3.39"
+              }
+            },
+            {
+              "id": "b25v_gd_25_21",
+              "code": "21",
+              "label": "21 USgpm",
+              "values": {
+                "frame": "B25V",
+                "usgpm": "21",
+                "cm3": "57",
+                "in3": "4.13"
+              }
+            },
+            {
+              "id": "b25v_gd_35_25",
+              "code": "25",
+              "label": "25 USgpm",
+              "values": {
+                "frame": "B35V",
+                "usgpm": "25",
+                "cm3": "81",
+                "in3": "4.94"
+              }
+            },
+            {
+              "id": "b25v_gd_35_30",
+              "code": "30",
+              "label": "30 USgpm",
+              "values": {
+                "frame": "B35V",
+                "usgpm": "30",
+                "cm3": "97",
+                "in3": "5.91"
+              }
+            },
+            {
+              "id": "b25v_gd_35_35",
+              "code": "35",
+              "label": "35 USgpm",
+              "values": {
+                "frame": "B35V",
+                "usgpm": "35",
+                "cm3": "112",
+                "in3": "6.83"
+              }
+            },
+            {
+              "id": "b25v_gd_35_38",
+              "code": "38",
+              "label": "38 USgpm",
+              "values": {
+                "frame": "B35V",
+                "usgpm": "38",
+                "cm3": "121",
+                "in3": "7.37"
+              }
+            },
+            {
+              "id": "b25v_gd_45_42",
+              "code": "42",
+              "label": "42 USgpm",
+              "values": {
+                "frame": "B45V",
+                "usgpm": "42",
+                "cm3": "138",
+                "in3": "8.41"
+              }
+            },
+            {
+              "id": "b25v_gd_45_45",
+              "code": "45",
+              "label": "45 USgpm",
+              "values": {
+                "frame": "B45V",
+                "usgpm": "45",
+                "cm3": "147",
+                "in3": "8.95"
+              }
+            },
+            {
+              "id": "b25v_gd_45_50",
+              "code": "50",
+              "label": "50 USgpm",
+              "values": {
+                "frame": "B45V",
+                "usgpm": "50",
+                "cm3": "162",
+                "in3": "9.85"
+              }
+            },
+            {
+              "id": "b25v_gd_45_60",
+              "code": "60",
+              "label": "60 USgpm",
+              "values": {
+                "frame": "B45V",
+                "usgpm": "60",
+                "cm3": "193",
+                "in3": "11.75"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b5",
+          "title": "Port Connections",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Tipe Koneksi Port"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_pc_a",
+              "code": "A",
+              "label": "SAE 4-bolt flange",
+              "values": {
+                "desc": "SAE 4-bolt flange (N/A on 20V pump)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b6",
+          "title": "Port Connection Modifier",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Ulir Port Baut"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_pcm_omit",
+              "code": "",
+              "label": "Omit - Inch thread port connection (4-bolt flange)",
+              "values": {
+                "desc": "Inch thread port connection (4-bolt flange)"
+              }
+            },
+            {
+              "id": "b25v_pcm_m",
+              "code": "M",
+              "label": "Metric port connection (4-bolt flange – N/A on 20V)",
+              "values": {
+                "desc": "Metric port connection (4-bolt flange – N/A on 20V)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b7",
+          "title": "Mounting",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Tipe Dudukan"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_m_omit",
+              "code": "",
+              "label": "Omit - Flange mounting",
+              "values": {
+                "desc": "Flange mounting (Standar)"
+              }
+            },
+            {
+              "id": "b25v_m_f",
+              "code": "F",
+              "label": "Foot mounting",
+              "values": {
+                "desc": "Foot mounting (Dudukan kaki)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b8",
+          "title": "Shaft Type",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Konfigurasi Poros"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_sh_1",
+              "code": "1",
+              "label": "Straight with square key (standard)",
+              "values": {
+                "desc": "Straight with square key (standard)"
+              }
+            },
+            {
+              "id": "b25v_sh_86",
+              "code": "86",
+              "label": "Straight with square key heavy duty",
+              "values": {
+                "desc": "Straight with square key heavy duty"
+              }
+            },
+            {
+              "id": "b25v_sh_292n",
+              "code": "292N",
+              "label": "Straight with rectangular key",
+              "values": {
+                "desc": "Straight with rectangular key"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b9",
+          "title": "Outlet Positions",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "pos",
+              "label": "Posisi Relatif ke Port Inlet (Viewed from cover end)"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_op_a",
+              "code": "A",
+              "label": "Opposite inlet port",
+              "values": {
+                "pos": "Opposite inlet port (180° berlawanan)"
+              }
+            },
+            {
+              "id": "b25v_op_b",
+              "code": "B",
+              "label": "90° CCW from inlet",
+              "values": {
+                "pos": "90° berlawanan jarum jam (CCW)"
+              }
+            },
+            {
+              "id": "b25v_op_c",
+              "code": "C",
+              "label": "Inline with inlet",
+              "values": {
+                "pos": "Inline with inlet (Sejajar lurus)"
+              }
+            },
+            {
+              "id": "b25v_op_d",
+              "code": "D",
+              "label": "90° CW from inlet",
+              "values": {
+                "pos": "90° searah jarum jam (CW)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b10",
+          "title": "Design",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Nomor Desain"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_des_22",
+              "code": "22",
+              "label": "22",
+              "values": {
+                "desc": "Design series 22"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b11",
+          "title": "Rotation",
+          "slotIndex": 11,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "dir",
+              "label": "Arah Putaran (Viewed from shaft end)"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_rot_l",
+              "code": "L",
+              "label": "Left hand for counterclockwise",
+              "values": {
+                "dir": "Left hand for counterclockwise (CCW)"
+              }
+            },
+            {
+              "id": "b25v_rot_r",
+              "code": "R",
+              "label": "Right hand for clockwise",
+              "values": {
+                "dir": "Right hand for clockwise (CW)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "b25v_b12",
+          "title": "Special Suffix",
+          "slotIndex": 12,
+          "displayType": "table",
+          "columns": [
+            {
+              "id": "desc",
+              "label": "Keterangan Khusus"
+            }
+          ],
+          "rows": [
+            {
+              "id": "b25v_suf_omit",
+              "code": "",
+              "label": "Omit - Standard",
+              "values": {
+                "desc": "Standard (omit)"
+              }
+            },
+            {
+              "id": "b25v_suf_167",
+              "code": "167",
+              "label": "2-bolt, 5.00\" dia. pilot",
+              "values": {
+                "desc": "2-bolt, 5.00\" dia. pilot (25V only – N/A for VS or VM models)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "slug": "b25v"
   }
 ];
