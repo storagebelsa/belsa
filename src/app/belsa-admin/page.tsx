@@ -2458,12 +2458,12 @@ export default function BelsaAdminPage() {
                     <div style={{ marginTop: '8px' }}>
                       <input
                         type="text"
-                        value={artImageUrl}
+                        value={artImageUrl.startsWith('data:') ? '' : artImageUrl}
                         onChange={(e) => {
                           setArtImageUrl(e.target.value);
                           setArtImagePreview(e.target.value);
                         }}
-                        placeholder="Atau tempel link gambar (Google Drive/URL)..."
+                        placeholder={artImageUrl.startsWith('data:') ? '✓ Foto baru siap disimpan' : 'Atau tempel link gambar (Google Drive/URL)...'}
                         style={{
                           width: '100%',
                           padding: '7px 12px',
@@ -2487,7 +2487,9 @@ export default function BelsaAdminPage() {
                     />
                     <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
                       <span style={{ fontWeight: 700, color: '#0f172a' }}>Preview Thumbnail Gambar</span>
-                      <div style={{ wordBreak: 'break-all', fontSize: '0.72rem' }}>{artImageUrl}</div>
+                      <div style={{ fontSize: '0.74rem', maxWidth: '480px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {artImageUrl.startsWith('data:') ? '✓ Foto baru terunggah (WebP)' : artImageUrl}
+                      </div>
                     </div>
                   </div>
                 )}

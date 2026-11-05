@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     const targetFolderId = folderId || (folder === 'articles' ? GOOGLE_DRIVE_ARTICLES_FOLDER_ID : GOOGLE_DRIVE_FOLDER_ID);
 
     try {
-      const gasResponse = await fetch(GOOGLE_SCRIPT_URL, {
+      let gasResponse = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
@@ -69,26 +69,51 @@ export async function POST(req: NextRequest) {
         })
       });
 
-      const gasText = await gasResponse.text();
+      let gasJson: any = null;
       try {
-        const gasJson = JSON.parse(gasText);
-        if (gasJson.url || gasJson.imageUrl) {
-          driveUrl = gasJson.url || gasJson.imageUrl;
-          storageType = 'google_drive';
+        gasJson = await gasResponse.json();
+      } catch {
+        gasJson = null;
+      }
+
+      // If target folder failed (e.g. Access Denied permission error on new folder), fallback to working master folder!
+      if (!gasJson || gasJson.status === 'error' || (!gasJson.url && !gasJson.imageUrl)) {
+        if (targetFolderId !== GOOGLE_DRIVE_FOLDER_ID) {
+          console.warn('Target folder upload error, falling back to master drive folder:', gasJson?.message);
+          const fallbackRes = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'upload_to_drive',
+              folderId: GOOGLE_DRIVE_FOLDER_ID,
+              fileName: uniqueName,
+              imageBase64: base64Data,
+              mimeType: `image/${ext === 'jpg' ? 'jpeg' : ext}`
+            })
+          });
+          try {
+            gasJson = await fallbackRes.json();
+          } catch {
+            gasJson = null;
+          }
         }
-      } catch (parseErr) {
-        console.warn('Could not parse Google Apps Script upload response:', gasText);
+      }
+
+      if (gasJson && (gasJson.url || gasJson.imageUrl)) {
+        driveUrl = gasJson.url || gasJson.imageUrl;
+        storageType = 'google_drive';
       }
     } catch (gasErr) {
       console.warn('Error uploading to Google Drive via Apps Script:', gasErr);
     }
 
-    // If Google Drive returned a direct CDN link, use it! Otherwise fallback to local publicUrl or data URI
+    // Return the permanent Google Drive URL, localUrl, or fallback
     const finalUrl = driveUrl || publicUrl || image;
 
     return NextResponse.json({
       success: true,
       url: finalUrl,
+      imageUrl: finalUrl,
       driveUrl: driveUrl || null,
       localUrl: publicUrl,
       storageType,
