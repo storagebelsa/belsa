@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
 
 interface ArticleItem {
   id: string;
   slug: string;
-  title: { id: string; en: string };
   category: string;
+  title: { id: string; en: string };
   summary: { id: string; en: string };
   content: { id: string; en: string };
   date: string;
@@ -35,20 +36,35 @@ const DEFAULT_ARTICLES: ArticleItem[] = [
       id: `Standar ISO 15552 (menggantikan standar terdahulu ISO 6431) adalah standar internasional paling umum yang mengatur dimensi pemasangan (mounting dimensions), ukuran bore (Ø32 mm hingga Ø320 mm), serta tekanan operasional silinder profil pneumatik.
 
 ### Mengapa Standar ISO 15552 Sangat Penting Bagi Industri?
-1. **Interchangeability (Dapat Dipertukarkan)**: Silinder dengan standar ISO 15552 memiliki pitch baut dudukan (mounting hole centers), diameter rod, dan ulir rod yang identik di seluruh dunia. Artinya, silinder seri BELSA ACI/BMC dapat langsung menggantikan silinder brand internasional seperti SMC CP96/C96, Festo DNC/DSBC, atau Parker P1D tanpa perlu mengubah bracket mesin Anda.
+1. **Interchangeability (Dapat Dipertukarkan Langsung)**: Silinder dengan standar ISO 15552 memiliki pitch baut dudukan (mounting hole centers), diameter rod, dan ulir rod yang identik di seluruh dunia. Artinya, silinder seri BELSA ACI/BMC dapat langsung menggantikan silinder brand internasional seperti SMC CP96/C96, Festo DNC/DSBC, atau Parker P1D tanpa perlu mengubah bracket mesin Anda.
 2. **Profile Tube dengan Sensor Groove**: Tabung silinder dilengkapi celah sensor magnetik terintegrasi, memudahkan pemasangan auto-switch reed/solid-state tanpa bracket tambahan yang menonjol.
 3. **Cushioning Udara Kedua Sisi**: Dilengkapi adjustable cushion needle dengan seal peredam benturan kinetik di akhir langkah (stroke), memperpanjang usia pakai seal piston.
 
 ### Cara Membaca Kode Pemesanan (How to Order):
 Pada seri BELSA ACI, kode dipecah menjadi beberapa slot:
-- Slot 1: Seri Silinder (ACI = Profile ISO 15552)
-- Slot 2: Tipe Dudukan Mounting (FA = Flange depan, LB = Foot mounting, CA/CB = Clevis)
-- Slot 3: Ukuran Bore (Contoh: 100 = Ø100 mm)
-- Slot 4: Panjang Stroke (Contoh: 400 = 400 mm)
-- Slot 5 & 6: Material Rod & Seal (STS304 Stainless, Seal Viton tahan panas)
+- **Slot 1: Seri Silinder** (ACI = Profile ISO 15552)
+- **Slot 2: Tipe Dudukan Mounting** (FA = Flange depan, LB = Foot mounting, CA/CB = Clevis)
+- **Slot 3: Ukuran Bore** (Contoh: 100 = Ø100 mm)
+- **Slot 4: Panjang Stroke** (Contoh: 400 = 400 mm)
+- **Slot 5 & 6: Material Rod & Seal** (STS304 Stainless, Seal Viton tahan panas)
 
 Untuk menghitung gaya dorong silinder ISO 15552 pada tekanan pabrik Anda, gunakan [Kalkulator Silinder BELSA](/calculator).`,
-      en: `ISO 15552 standard defines interchangeability for pneumatic profile cylinders across international industrial machinery. BELSA ACI series provides 100% drop-in compatibility for Festo, SMC, and Parker profile cylinders.`
+      en: `The ISO 15552 international standard (succeeding the previous ISO 6431 standard) establishes universal mounting dimensions, standard bore diameters (Ø32 mm up to Ø320 mm), and operating pressure ratings for industrial pneumatic profile cylinders.
+
+### Why is ISO 15552 Critical for Plant Engineering?
+1. **Global Interchangeability (100% Direct Drop-in)**: Pneumatic cylinders conforming to ISO 15552 share identical mounting hole centers, rod diameters, thread pitches, and pin dimensions worldwide. This means BELSA ACI and BMC series profile cylinders can directly replace international brands such as SMC CP96/C96, Festo DNC/DSBC, and Parker P1D without needing any bracket or machine modifications.
+2. **Profile Aluminum Barrel with Integrated Sensor Slots**: The extrusion profile incorporates clean recessed grooves on multiple faces for flush-mounted magnetic reed and solid-state sensors, eliminating protruding sensor brackets.
+3. **Dual-End Adjustable Air Cushioning**: Both front and rear end-caps feature adjustable needle valves and elastomeric cushion seals that absorb kinetic impact at stroke ends, significantly extending piston seal operational life.
+
+### How to Decode the Order Code (How to Order):
+Taking the BELSA ACI series as an example, the model code is structured systematically:
+- **Code Segment 1: Cylinder Series** (ACI = Profile ISO 15552 Standard)
+- **Code Segment 2: Mounting Configuration** (FA = Front Flange, LB = Foot Brackets, CA/CB = Rear Clevis)
+- **Code Segment 3: Piston Bore Diameter** (e.g. 100 = Ø100 mm)
+- **Code Segment 4: Stroke Length** (e.g. 400 = 400 mm travel)
+- **Code Segment 5 & 6: Rod Material & Seal Options** (STS304 Stainless Rod, High-Temp Viton FKM seals)
+
+To calculate cylinder thrust output and air consumption for your plant operating pressure, use the [BELSA Pneumatic & Hydraulic Calculator](/calculator).`
     },
     date: '2026-11-04',
     readTime: '5 min baca',
@@ -89,7 +105,27 @@ Di mana:
   - Sangat tahan terhadap gesekan piston seal dan tekanan kejut hingga 350 Bar.
 
 Anda dapat menghitung ketebalan pipa honing dan mengecek batas keamanan secara instan di [Kalkulator Barlow BELSA](/calculator).`,
-      en: `Barlow formula calculates the required minimum wall thickness of honed hydraulic cylinder tubes based on internal pressure, diameter, and allowable stress of ST52/E355 steel.`
+      en: `Hydraulic cylinder barrels (seamless honed tubes) must reliably withstand extreme internal fluid pressures exerting continuous outward radial tension (hoop stress). Failing to calculate adequate wall thickness can result in tube swelling, internal bypass leakage, or catastrophic rupture under hydraulic pressure spikes.
+
+### Barlow Formula for Cylindrical Pressure Vessels:
+The industry-standard Barlow formula used by fluid power design engineers is:
+\`\`\`
+t_min = (P × OD) / (2 × σ_allow + P)
+\`\`\`
+Where:
+- **P**: Maximum design working pressure or test pressure (Bar / MPa)
+- **OD**: Tube outer diameter in mm
+- **σ_allow**: Material allowable tensile stress = Yield Strength (Re) / Safety Factor
+- **Safety Factor**: Recommended minimum 2.15 to 3.0 for heavy industrial and mobile machinery applications
+
+### Standard Material Characteristics at BELSA:
+- **DIN 2391 / EN 10305-1 Grade E355 (ST52 / ST52.4 BK+S)**:
+  - Yield Strength (Re): ≥ 520 N/mm²
+  - Tensile Strength (Rm): ≥ 600 N/mm²
+  - Internal Bore Roughness: Ra ≤ 0.4 µm (H8 Tolerance precision honed)
+  - Exceptional endurance against dynamic seal friction and pressure spikes up to 350 Bar.
+
+Calculate your exact tube wall thickness and safety margin instantly using the [BELSA Barlow Formula Calculator](/calculator).`
     },
     date: '2026-11-03',
     readTime: '6 min baca',
@@ -132,7 +168,29 @@ Anda dapat menghitung ketebalan pipa honing dan mengecek batas keamanan secara i
    - **Aplikasi Terbaik**: Silinder industri peleburan baja (steel mill), pabrik kaca, boiler, dan industri kimia.
 
 Di BELSA, semua seri silinder (seperti BMG140, BMG210, dan ACI) menyediakan opsi upgrade seal FKM (Viton) tahan panas secara langsung pada kode pemesanan.`,
-      en: `Choosing between PU, NBR, and Viton/FKM seal kits depends on hydraulic fluid operating temperatures and maximum line pressure.`
+      en: `More than 80% of hydraulic cylinder fluid leakage is directly attributable to improper seal material selection relative to fluid temperature, lubricant type, or rod velocity.
+
+### Comparison of the 3 Primary Industrial Seal Materials:
+
+1. **Polyurethane (PU / TPU)**:
+   - **Pressure Rating**: Superior (withstands up to 400 Bar without anti-extrusion backup rings).
+   - **Mechanical Wear Resistance**: Highest among elastomeric seals, resilient against abrasive grit.
+   - **Operating Temperature Range**: -30°C to +90°C.
+   - **Primary Application**: Dynamic piston seals and U-cup rod seals for standard industrial machinery and earthmoving equipment.
+
+2. **Nitrile Butadiene Rubber (NBR)**:
+   - **Pressure Rating**: Moderate (up to 160 Bar when paired with backup rings).
+   - **Fluid Compatibility**: Exceptional with petroleum-based mineral oils, water, and greases.
+   - **Operating Temperature Range**: -25°C to +100°C.
+   - **Primary Application**: Static O-rings, standard pneumatic cylinders, and elastomer wiper dust seals.
+
+3. **Fluoroelastomer (FKM / Viton®)**:
+   - **Temperature Capability**: Outstanding (continuous duty up to +200°C).
+   - **Chemical Resistance**: Immune to synthetic lubricants, phosphate esters (Skydrol), acids, and industrial chemicals.
+   - **Trade-off**: Lower mechanical tear resistance compared to PU under extreme pressure cycling.
+   - **Primary Application**: Cylinders in steel rolling mills, glass manufacturing, boilers, foundries, and chemical processing plants.
+
+At BELSA, every cylinder series (such as BMG140, BMG210, and ACI) offers an optional factory-installed FKM (Viton) seal kit upgrade directly selectable in the model code.`
     },
     date: '2026-11-01',
     readTime: '4 min baca',
@@ -173,7 +231,27 @@ Di BELSA, semua seri silinder (seperti BMG140, BMG210, dan ACI) menyediakan opsi
   - Kuras oli dan pasang filter hidrolik BELSA untuk memastikan kontaminasi partikel di bawah standar ISO 4406.
 
 Untuk konsultasi rekondisi atau pembuatan silinder pengganti darurat, hubungi tim teknis di [Kontak Kami](/contact-us).`,
-      en: `Learn how to diagnose internal piston bypass vs external rod seal leakage, and professional cylinder overhaul best practices.`
+      en: `Hydraulic cylinder leakage degrades mechanical efficiency, contaminates production environments, wastes expensive hydraulic oil, and risks catastrophic factory breakdown downtime.
+
+### 1. External Leakage (Fluid Weeping or Dripping at the Piston Rod)
+- **Root Causes**:
+  - Scoring or micro-pitting on the hard chrome rod surface caused by airborne contaminants bypassing a worn wiper seal.
+  - Rod deflection or bending caused by uncorrected lateral side loading.
+  - Rod seal embrittlement or hardening from oil operating temperatures exceeding material limits.
+- **Remedies**:
+  - Re-chrome and precision-grind the rod back to ISO f7 tolerance.
+  - Upgrade rod seals to high-temperature FKM or dual-lip polyurethane configurations.
+
+### 2. Internal Leakage (Piston Bypass Drift)
+- **Symptom**: The cylinder fails to hold its position and slowly creeps or drifts under load even when directional valves are locked in neutral.
+- **Root Causes**:
+  - Longitudinal scoring on the inner honed tube wall caused by metallic wear debris circulating in the oil.
+  - Piston seal rupture, extrusion, or permanent compression set from dry friction.
+- **Remedies**:
+  - Perform bore boroscope inspection. For deep scores, the BELSA workshop performs precision re-honing or replaces the tube with new ST52 honed stock.
+  - Flush the circuit and install BELSA pressure line filters to maintain particulate cleanliness below ISO 4406 standards.
+
+For emergency overhaul consultation or bespoke replacement cylinders, reach our engineering team via [Contact Us](/contact-us).`
     },
     date: '2026-10-28',
     readTime: '5 min baca',
@@ -209,7 +287,22 @@ Untuk konsultasi rekondisi atau pembuatan silinder pengganti darurat, hubungi ti
    - Kelebihan: Tahan terhadap kelelahan impuls (impulse fatigue) hingga jutaan siklus kerja.
 
 Workshop BELSA menyediakan perakitan selang hidrolik lengkap dengan crimping fitting presisi dan pengetesan uji hidrostatik. Kunjungi katalog selang di [Selang Hidrolik Industri](/products/selang-hidrolik-industri).`,
-      en: `A technical guide on wire braided R1/R2 and multi-spiral 4SP/4SH hydraulic hoses designed for heavy impulse pressure applications.`
+      en: `Selecting hydraulic hose assemblies solely by inside diameter (ID) is a critical error. Dynamic working pressure, peak impulse surges, and minimum bend radii must all be factored into the engineering specification.
+
+### Industry Hose Construction Classifications:
+1. **SAE 100 R1AT (1SN)**:
+   - Construction: Single high-tensile steel wire braid reinforcement.
+   - Application: Low-to-medium pressure return lines and auxiliary pilot circuits (up to 225 Bar for small bores).
+   - Key Advantage: High flexibility, compact outer diameter, and tight bend radius.
+2. **SAE 100 R2AT (2SN)**:
+   - Construction: Two braids of high-tensile steel wire.
+   - Application: The universal standard for primary plant machinery and mobile hydraulic circuits (up to 400 Bar).
+3. **EN 856 4SP & 4SH (Multi-Spiral Steel Wire)**:
+   - Construction: Four alternating spiral layers of heavy-gauge high-tensile steel wire.
+   - Application: Heavy-duty circuits subjected to severe pressure spikes and repetitive shock loading, such as forging presses, rock crushers, injection molding machines, and mining equipment.
+   - Key Advantage: Unmatched resistance to impulse fatigue over millions of operational pressure cycles.
+
+The BELSA workshop supplies custom crimped hydraulic hose assemblies complete with certified hydrostatic test pressure reports. Explore our full line at [Industrial Hydraulic Hoses](/products/selang-hidrolik-industri).`
     },
     date: '2026-10-22',
     readTime: '4 min baca',
@@ -217,6 +310,165 @@ Workshop BELSA menyediakan perakitan selang hidrolik lengkap dengan crimping fit
     tags: ['Selang Hidrolik', 'Fittings', 'Tekanan Tinggi', 'SAE 100']
   }
 ];
+
+// Rich Markdown Text Formatter
+function renderRichContent(rawText: string) {
+  if (!rawText) return null;
+
+  // Split into blocks by double newlines or triple backticks
+  const lines = rawText.split('\n');
+  const elements: React.ReactNode[] = [];
+  let inCodeBlock = false;
+  let codeBuffer: string[] = [];
+
+  const formatInline = (text: string) => {
+    // Replace **bold**
+    const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} style={{ color: '#0F172A', fontWeight: 700 }}>{part.slice(2, -2)}</strong>;
+      }
+      const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+      if (linkMatch) {
+        return (
+          <Link
+            key={i}
+            href={linkMatch[2]}
+            style={{ color: '#C2410C', fontWeight: 600, textDecoration: 'underline' }}
+          >
+            {linkMatch[1]}
+          </Link>
+        );
+      }
+      return part;
+    });
+  };
+
+  for (let idx = 0; idx < lines.length; idx++) {
+    const line = lines[idx];
+
+    if (line.trim().startsWith('```')) {
+      if (inCodeBlock) {
+        // End code block
+        elements.push(
+          <div
+            key={`code-${idx}`}
+            style={{
+              background: '#0F172A',
+              color: '#F8FAFC',
+              fontFamily: 'monospace',
+              fontSize: '0.9rem',
+              padding: '14px 18px',
+              borderRadius: '8px',
+              margin: '14px 0',
+              overflowX: 'auto',
+              borderLeft: '4px solid #EA580C',
+              lineHeight: 1.5
+            }}
+          >
+            {codeBuffer.join('\n')}
+          </div>
+        );
+        codeBuffer = [];
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeBuffer.push(line);
+      continue;
+    }
+
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      elements.push(<div key={`sp-${idx}`} style={{ height: '8px' }} />);
+      continue;
+    }
+
+    if (trimmed.startsWith('### ')) {
+      elements.push(
+        <h3
+          key={`h3-${idx}`}
+          style={{
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            color: '#0F172A',
+            letterSpacing: '-0.01em',
+            marginTop: '22px',
+            marginBottom: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <span style={{ width: '4px', height: '18px', background: '#C2410C', borderRadius: '2px', display: 'inline-block' }} />
+          {trimmed.replace('### ', '')}
+        </h3>
+      );
+      continue;
+    }
+
+    if (/^[0-9]+\.\s+/.test(trimmed)) {
+      elements.push(
+        <div
+          key={`num-${idx}`}
+          style={{
+            paddingLeft: '18px',
+            marginBottom: '8px',
+            color: '#334155',
+            lineHeight: 1.7,
+            fontSize: '0.96rem'
+          }}
+        >
+          {formatInline(trimmed)}
+        </div>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('- ')) {
+      elements.push(
+        <div
+          key={`bullet-${idx}`}
+          style={{
+            paddingLeft: '18px',
+            marginBottom: '6px',
+            color: '#334155',
+            lineHeight: 1.65,
+            fontSize: '0.95rem',
+            display: 'flex',
+            gap: '8px'
+          }}
+        >
+          <span style={{ color: '#EA580C', fontWeight: 'bold' }}>•</span>
+          <div>{formatInline(trimmed.slice(2))}</div>
+        </div>
+      );
+      continue;
+    }
+
+    // Regular paragraph
+    elements.push(
+      <p
+        key={`p-${idx}`}
+        style={{
+          color: '#334155',
+          fontSize: '0.98rem',
+          lineHeight: 1.75,
+          margin: '0 0 10px 0'
+        }}
+      >
+        {formatInline(line)}
+      </p>
+    );
+  }
+
+  return elements;
+}
 
 export default function KnowledgeHubPage() {
   const { lang } = useLanguage();
@@ -271,162 +523,175 @@ export default function KnowledgeHubPage() {
         !q ||
         art.title[lang].toLowerCase().includes(q) ||
         art.summary[lang].toLowerCase().includes(q) ||
-        art.category.toLowerCase().includes(q) ||
-        art.tags.some((t) => t.toLowerCase().includes(q));
+        art.category.toLowerCase().includes(q);
       return matchTag && matchQuery;
     });
   }, [articles, selectedTag, searchQuery, lang]);
 
   return (
-    <main style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '80px' }}>
-      {/* Hero Banner */}
-      <section style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)', borderBottom: '1px solid #e2e8f0', padding: '60px 0 45px' }}>
-        <div className="belsa-container" style={{ textAlign: 'center' }}>
-          <span className="belsa-page-eyebrow" style={{ display: 'inline-block', marginBottom: '10px' }}>
-            {isId ? 'Referensi Engineering & Manufaktur' : 'Engineering & Manufacturing Reference'}
-          </span>
-          <h1 className="heading-hero" style={{ fontSize: '2.4rem', color: '#0f172a', marginBottom: '14px', letterSpacing: '-0.02em' }}>
-            BELSA <span style={{ color: 'var(--belsa-red)' }}>Knowledge Hub</span>
-          </h1>
-          <p style={{ color: '#475569', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto 28px', lineHeight: 1.6 }}>
-            {isId
-              ? 'Pusat panduan teknis mendalam tentang silinder hidrolik & pneumatik, standar ISO 15552, rumus Barlow, material seal, dan solusi troubleshooting sistem otomasi pabrik.'
-              : 'Technical guides, engineering calculations, ISO standards, and troubleshooting solutions for industrial hydraulic and pneumatic power systems.'}
-          </p>
+    <main style={{ minHeight: '100vh', background: '#FAFAFA' }}>
+      {/* Hero Header */}
+      <section style={{ background: '#0F172A', color: '#FFFFFF', padding: '70px 0 50px 0', borderBottom: '1px solid #1E293B' }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{ maxWidth: '780px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.08)', padding: '6px 14px', borderRadius: '100px', fontSize: '0.82rem', fontWeight: 600, color: '#FDBA74', marginBottom: '18px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#EA580C' }}></span>
+              {isId ? 'Engineering Knowledge Hub & Panduan Teknis' : 'Engineering Knowledge Hub & Technical Guides'}
+            </div>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
+              {isId
+                ? 'Pusat Rekayasa Silinder, Selang & Valve Industri'
+                : 'Pneumatics, Hydraulics & Industrial Process Knowledge'}
+            </h1>
+            <p style={{ color: '#94A3B8', fontSize: '1.05rem', lineHeight: 1.6, margin: 0 }}>
+              {isId
+                ? 'Kumpulan artikel standar manufaktur, formula kalkulasi teknik, solusi kebocoran, dan panduan interchangeability komponen otomatisasi pabrik.'
+                : 'Technical references, ISO engineering standards, Barlow formula calculations, and component maintenance guides.'}
+            </p>
+          </div>
 
-          {/* Search Box */}
-          <div style={{ maxWidth: '540px', margin: '0 auto', position: 'relative' }}>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isId ? 'Cari panduan teknis (misal: ISO 15552, Barlow, Viton)...' : 'Search technical guides (e.g. ISO 15552, Barlow, Seals)...'}
-              style={{
-                width: '100%',
-                padding: '14px 20px 14px 44px',
-                borderRadius: '14px',
-                border: '1.5px solid #cbd5e1',
-                fontSize: '0.95rem',
-                outline: 'none',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
-                background: '#ffffff'
-              }}
-            />
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#64748b"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ position: 'absolute', left: '16px', top: '15px' }}
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+          {/* Search Bar */}
+          <div style={{ marginTop: '36px', maxWidth: '580px' }}>
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                placeholder={isId ? 'Cari panduan, standar ISO, atau kata kunci...' : 'Search guides, ISO standards, or keywords...'}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '14px 20px 14px 44px',
+                  borderRadius: '12px',
+                  border: '1px solid #334155',
+                  background: '#1E293B',
+                  color: '#FFFFFF',
+                  fontSize: '0.95rem',
+                  outline: 'none',
+                }}
+              />
+              <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }}>
+                🔍
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Filter Tabs by Tag */}
-      <section style={{ padding: '24px 0 16px' }}>
-        <div className="belsa-container">
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', WebkitOverflowScrolling: 'touch' }}>
-            {allTags.map((tag) => {
-              const active = selectedTag === tag;
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setSelectedTag(tag)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '24px',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    border: active ? '1.5px solid var(--belsa-red)' : '1px solid #cbd5e1',
-                    background: active ? '#fef2f2' : '#ffffff',
-                    color: active ? 'var(--belsa-red)' : '#475569',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
+      {/* Tag Filters */}
+      <section style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', padding: '16px 0' }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '8px', overflowX: 'auto' }}>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              style={{
+                padding: '6px 16px',
+                borderRadius: '100px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.2s ease',
+                background: selectedTag === tag ? '#0F172A' : '#F1F5F9',
+                color: selectedTag === tag ? '#FFFFFF' : '#475569',
+              }}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
       </section>
 
       {/* Articles Grid */}
-      <section style={{ padding: '10px 0 40px' }}>
-        <div className="belsa-container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+      <section style={{ padding: '50px 0 80px 0' }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '28px' }}>
             {filteredArticles.map((art) => (
               <article
                 key={art.id}
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  background: '#FFFFFF',
                   borderRadius: '16px',
+                  border: '1px solid #E2E8F0',
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.03)',
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                 }}
               >
-                <div style={{ padding: '24px 24px 16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--belsa-red)', background: '#fee2e2', padding: '3px 9px', borderRadius: '6px' }}>
-                      {art.category}
-                    </span>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: 600 }}>
-                      {art.readTime}
-                    </span>
+                {/* Thumbnail Image */}
+                <div style={{ position: 'relative', height: '190px', background: '#F8FAFC', borderBottom: '1px solid #F1F5F9' }}>
+                  <Image
+                    src={art.image}
+                    alt={art.title[lang]}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    style={{ objectFit: 'contain', padding: '16px' }}
+                  />
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      background: 'rgba(15, 23, 42, 0.85)',
+                      color: '#FFFFFF',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      backdropFilter: 'blur(4px)',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {art.category}
+                  </span>
+                </div>
+
+                <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.8rem', color: '#64748B', marginBottom: '10px' }}>
+                    <span>📅 {art.date}</span>
+                    <span>•</span>
+                    <span>⏱️ {art.readTime}</span>
                   </div>
 
-                  <h2 style={{ fontSize: '1.18rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.4, margin: '6px 0 10px', letterSpacing: '-0.01em' }}>
+                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.4, margin: '0 0 10px 0' }}>
                     {art.title[lang]}
                   </h2>
 
-                  <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, margin: 0, flex: 1 }}>
+                  <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, margin: '0 0 16px 0', flex: 1 }}>
                     {art.summary[lang]}
                   </p>
 
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '16px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
                     {art.tags.slice(0, 3).map((t) => (
-                      <span key={t} style={{ fontSize: '0.74rem', color: '#475569', background: '#f1f5f9', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                      <span key={t} style={{ fontSize: '0.72rem', color: '#64748B', background: '#F1F5F9', padding: '3px 8px', borderRadius: '4px' }}>
                         #{t}
                       </span>
                     ))}
                   </div>
-                </div>
 
-                <div style={{ borderTop: '1px solid #f1f5f9', padding: '14px 24px', background: '#fafbfc', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
-                    {art.date}
-                  </span>
                   <button
-                    type="button"
                     onClick={() => setActiveArticleModal(art)}
                     style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--belsa-red)',
-                      fontWeight: 800,
-                      fontSize: '0.88rem',
-                      cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '4px'
+                      justifyContent: 'center',
+                      gap: '8px',
+                      width: '100%',
+                      padding: '11px 16px',
+                      borderRadius: '10px',
+                      background: '#FFF7ED',
+                      color: '#C2410C',
+                      border: '1px solid #FFEDD5',
+                      fontWeight: 700,
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
                     }}
                   >
-                    {isId ? 'Baca Selengkapnya' : 'Read Article'} &rarr;
+                    {isId ? 'Baca Selengkapnya' : 'Read Full Article'} &rarr;
                   </button>
                 </div>
               </article>
@@ -434,84 +699,66 @@ export default function KnowledgeHubPage() {
           </div>
 
           {filteredArticles.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '16px', border: '1px dashed #cbd5e1' }}>
-              <p style={{ color: '#64748b', fontSize: '1rem', margin: 0 }}>
-                {isId ? 'Tidak ada artikel yang cocok dengan pencarian Anda.' : 'No articles match your search criteria.'}
+            <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748B' }}>
+              <p style={{ fontSize: '1.1rem', margin: 0 }}>
+                {isId ? 'Tidak ada artikel yang cocok dengan pencarian Anda.' : 'No articles matched your search query.'}
               </p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Quick Tools & CTAs */}
-      <section style={{ padding: '20px 0' }}>
-        <div className="belsa-container">
-          <div style={{ background: '#0f172a', borderRadius: '20px', padding: '36px 32px', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
-            <div>
-              <span style={{ color: '#fca5a5', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Engineering Calculator Suite
-              </span>
-              <h3 style={{ fontSize: '1.45rem', fontWeight: 800, margin: '6px 0 8px', color: '#ffffff' }}>
-                {isId ? 'Butuh Perhitungan Cepat Gaya Dorong & Tebal Pipa?' : 'Need Instant Hydraulic Cylinder Force & Tube Sizing?'}
-              </h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.94rem', margin: 0, maxWidth: '580px', lineHeight: 1.6 }}>
-                {isId
-                  ? 'Gunakan 5 kalkulator teknis BELSA gratis: Hitung tekanan kerja (Bar), beban dorong (Ton), ketebalan pipa honing ST52, keamanan baut tie-rod, dan torsi pengencangan.'
-                  : 'Explore 5 free engineering calculation tools built for hydraulic engineers and industrial designers.'}
-              </p>
-            </div>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <Link href="/calculator" className="btn-belsa-primary" style={{ padding: '12px 28px' }}>
-                {isId ? 'Buka Kalkulator Teknik' : 'Open Engineering Calculator'} &rarr;
-              </Link>
-              <Link href="/catalogue" className="btn-belsa-outline" style={{ padding: '12px 24px', borderColor: '#475569', color: '#ffffff' }}>
-                {isId ? 'Buka Katalog 103 Seri' : 'Explore 103 Series Catalogue'}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Modal Detailed Reading View */}
+      {/* Article Detail Reading Modal */}
       {activeArticleModal && (
         <div
-          role="dialog"
-          aria-modal="true"
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 9999,
+            zIndex: 99999,
             background: 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px'
+            padding: '20px',
           }}
           onClick={() => setActiveArticleModal(null)}
         >
           <div
             style={{
-              background: '#ffffff',
+              background: '#FFFFFF',
               borderRadius: '20px',
-              maxWidth: '760px',
+              maxWidth: '820px',
               width: '100%',
               maxHeight: '90vh',
               overflowY: 'auto',
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-              padding: '36px 32px'
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.35)',
+              padding: '36px 32px',
+              position: 'relative',
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Header / Category & Close Button */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--belsa-red)', background: '#fee2e2', padding: '3px 10px', borderRadius: '6px' }}>
+              <span
+                style={{
+                  fontSize: '0.8rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  color: '#C2410C',
+                  background: '#FFF7ED',
+                  border: '1px solid #FFEDD5',
+                  padding: '4px 12px',
+                  borderRadius: '6px',
+                }}
+              >
                 {activeArticleModal.category}
               </span>
               <button
                 type="button"
                 onClick={() => setActiveArticleModal(null)}
                 style={{
-                  background: '#f1f5f9',
+                  background: '#F1F5F9',
                   border: 'none',
                   borderRadius: '50%',
                   width: '36px',
@@ -520,31 +767,51 @@ export default function KnowledgeHubPage() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  color: '#475569'
+                  color: '#475569',
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
                 }}
+                aria-label="Close"
               >
                 ✕
               </button>
             </div>
 
-            <h1 style={{ fontSize: '1.65rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.35, marginBottom: '12px' }}>
+            {/* Title */}
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#0F172A', lineHeight: 1.35, marginBottom: '14px', letterSpacing: '-0.02em' }}>
               {activeArticleModal.title[lang]}
             </h1>
 
-            <div style={{ display: 'flex', gap: '14px', alignItems: 'center', fontSize: '0.82rem', color: '#64748b', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '14px' }}>
+            {/* Meta */}
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center', fontSize: '0.84rem', color: '#64748B', marginBottom: '22px', borderBottom: '1px solid #F1F5F9', paddingBottom: '14px', flexWrap: 'wrap' }}>
               <span>📅 {activeArticleModal.date}</span>
               <span>⏱️ {activeArticleModal.readTime}</span>
               <span>✍️ Tim Engineering BELSA</span>
             </div>
 
-            <div style={{ color: '#334155', fontSize: '0.98rem', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
-              {activeArticleModal.content[lang]}
+            {/* Featured Image Banner */}
+            {activeArticleModal.image && (
+              <div style={{ position: 'relative', width: '100%', height: '260px', background: '#F8FAFC', borderRadius: '14px', overflow: 'hidden', marginBottom: '24px', border: '1px solid #E2E8F0' }}>
+                <Image
+                  src={activeArticleModal.image}
+                  alt={activeArticleModal.title[lang]}
+                  fill
+                  sizes="(max-width: 820px) 100vw, 820px"
+                  style={{ objectFit: 'contain', padding: '20px' }}
+                />
+              </div>
+            )}
+
+            {/* Rendered Rich Content */}
+            <div style={{ marginBottom: '24px' }}>
+              {renderRichContent(activeArticleModal.content[lang])}
             </div>
 
-            <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+            {/* Footer with Tags and Action */}
+            <div style={{ marginTop: '36px', paddingTop: '20px', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px' }}>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {activeArticleModal.tags.map((t) => (
-                  <span key={t} style={{ fontSize: '0.75rem', color: '#64748b', background: '#f8fafc', border: '1px solid #e2e8f0', padding: '3px 9px', borderRadius: '6px' }}>
+                  <span key={t} style={{ fontSize: '0.78rem', color: '#64748B', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '4px 10px', borderRadius: '6px' }}>
                     #{t}
                   </span>
                 ))}
@@ -553,7 +820,7 @@ export default function KnowledgeHubPage() {
                 type="button"
                 onClick={() => setActiveArticleModal(null)}
                 className="btn-belsa-primary"
-                style={{ padding: '10px 24px', fontSize: '0.88rem' }}
+                style={{ padding: '10px 24px', fontSize: '0.9rem', cursor: 'pointer' }}
               >
                 {isId ? 'Tutup Artikel' : 'Close Article'}
               </button>
