@@ -58,6 +58,7 @@ export default function BelsaAdminPage() {
 
   // Form State: Basic Info
   const [series, setSeries] = useState('');
+  const [productSlug, setProductSlug] = useState('');
   const [category, setCategory] = useState<BelsaCategory>('Air Cylinder');
   const [name, setName] = useState('');
   const [taglineId, setTaglineId] = useState('');
@@ -235,6 +236,7 @@ export default function BelsaAdminPage() {
           !q ||
           p.series.toLowerCase().includes(q) ||
           p.code.toLowerCase().includes(q) ||
+          Boolean(p.slug && p.slug.toLowerCase().includes(q)) ||
           p.subTitle.id.toLowerCase().includes(q) ||
           p.subTitle.en.toLowerCase().includes(q) ||
           p.category.toLowerCase().includes(q);
@@ -367,6 +369,7 @@ export default function BelsaAdminPage() {
   const handleResetForm = () => {
     setEditingProduct(null);
     setSeries('');
+    setProductSlug('');
     setCategory('Air Cylinder');
     setName('');
     setTaglineId('');
@@ -402,6 +405,7 @@ export default function BelsaAdminPage() {
   const handleStartEdit = (prod: BelsaProductSeries) => {
     setEditingProduct(prod);
     setSeries(prod.code);
+    setProductSlug(prod.slug || prod.code.toLowerCase().replace(/[^a-z0-9]/g, '-'));
     setCategory(prod.category as BelsaCategory);
     setName(prod.subTitle.id || prod.subTitle.en || '');
     setTaglineId(prod.features.id ? prod.features.id.join('\n') : '');
@@ -818,6 +822,10 @@ export default function BelsaAdminPage() {
     try {
       const isEditing = Boolean(editingProduct);
       const sCode = series.toUpperCase().trim();
+      const sSlug = (productSlug.trim() || sCode)
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '') || sCode.toLowerCase();
       const sName = name.trim() || `${sCode} Series`;
 
       const featuresId = taglineId.split('\n').map(s => s.trim()).filter(Boolean);
@@ -836,7 +844,7 @@ export default function BelsaAdminPage() {
 
       const productPayload: BelsaProductSeries = {
         id: isEditing && editingProduct ? editingProduct.id : `custom_${sCode.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}`,
-        slug: isEditing && editingProduct?.slug ? editingProduct.slug : sCode.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''),
+        slug: sSlug,
         series: sCode.endsWith('Series') ? sCode : `${sCode} Series`,
         code: sCode,
         category,
@@ -884,6 +892,7 @@ export default function BelsaAdminPage() {
           body: JSON.stringify({
             action: 'add_item',
             series: sCode,
+            slug: sSlug,
             category,
             name: sName,
             tagline: taglineId,
@@ -1268,12 +1277,58 @@ export default function BelsaAdminPage() {
                     type="text"
                     required
                     value={series}
-                    onChange={(e) => setSeries(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setSeries(val);
+                      if (!editingProduct && (!productSlug || productSlug === series.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))) {
+                        setProductSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+                      }
+                    }}
                     placeholder="e.g. MPC1"
                     style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #cbd5e1', background: '#fff', color: '#0f172a', fontSize: '0.92rem', fontWeight: 700, boxSizing: 'border-box' }}
                   />
                 </div>
 
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <label style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 700 }}>
+                      Slug URL Produk * (Halaman: <code>/catalogue/[slug]</code>)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const target = series.trim() || name.trim() || 'produk';
+                        setProductSlug(target.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+                      }}
+                      style={{
+                        background: '#eff6ff',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: '6px',
+                        padding: '2px 8px',
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#1d4ed8',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      ⚡ Auto Slug
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={productSlug}
+                    onChange={(e) => setProductSlug(e.target.value)}
+                    placeholder="e.g. mpc1"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #cbd5e1', background: '#fff', color: '#0f172a', fontSize: '0.92rem', fontFamily: 'monospace', fontWeight: 600, boxSizing: 'border-box' }}
+                  />
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '4px' }}>
+                    URL Publik: <code style={{ color: '#dc2626' }}>https://belsa.id/catalogue/{productSlug || (series ? series.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'slug-produk')}</code>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginBottom: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.84rem', color: '#475569', marginBottom: '6px', fontWeight: 700 }}>
                     Kategori Produk *
@@ -1288,20 +1343,20 @@ export default function BelsaAdminPage() {
                     ))}
                   </select>
                 </div>
-              </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '0.84rem', color: '#475569', marginBottom: '6px', fontWeight: 700 }}>
-                  Nama Lengkap / Subtitle Produk (Bahasa Indonesia) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Medium Cylinder (Silinder Standar Tie-Rod Aluminium)"
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #cbd5e1', background: '#fff', color: '#0f172a', fontSize: '0.92rem', boxSizing: 'border-box' }}
-                />
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.84rem', color: '#475569', marginBottom: '6px', fontWeight: 700 }}>
+                    Nama Lengkap / Subtitle Produk (Bahasa Indonesia) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Medium Cylinder (Silinder Standar Tie-Rod Aluminium)"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #cbd5e1', background: '#fff', color: '#0f172a', fontSize: '0.92rem', boxSizing: 'border-box' }}
+                  />
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
@@ -1971,10 +2026,10 @@ export default function BelsaAdminPage() {
                     <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0', color: '#475569' }}>
                       <th style={{ padding: '12px 14px', width: '50px' }}>Foto</th>
                       <th style={{ padding: '12px 14px', width: '120px' }}>Kode Seri</th>
-                      <th style={{ padding: '12px 14px' }}>Nama / Spesifikasi</th>
+                      <th style={{ padding: '12px 14px' }}>Nama, Subtitle & Slug URL</th>
                       <th style={{ padding: '12px 14px', width: '180px' }}>Kategori</th>
                       <th style={{ padding: '12px 14px', width: '130px' }}>How To Order</th>
-                      <th style={{ padding: '12px 14px', width: '150px', textAlign: 'right' }}>Aksi</th>
+                      <th style={{ padding: '12px 14px', width: '180px', textAlign: 'right' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2006,13 +2061,19 @@ export default function BelsaAdminPage() {
                             </div>
                           </td>
 
-                          {/* Name & Subtitle */}
+                          {/* Name & Subtitle & Slug */}
                           <td style={{ padding: '10px 14px' }}>
                             <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.88rem' }}>
                               {prod.series}
                             </div>
                             <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: '2px' }}>
                               {prod.subTitle.id}
+                            </div>
+                            <div style={{ marginTop: '5px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Slug:</span>
+                              <code style={{ fontSize: '0.74rem', background: '#f1f5f9', color: '#0f172a', padding: '2px 6px', borderRadius: '4px', fontFamily: 'monospace' }}>
+                                /catalogue/{prod.slug || prod.code.toLowerCase()}
+                              </code>
                             </div>
                           </td>
 
@@ -2042,7 +2103,29 @@ export default function BelsaAdminPage() {
 
                           {/* Actions */}
                           <td style={{ padding: '10px 14px', textAlign: 'right' }}>
-                            <div style={{ display: 'inline-flex', gap: '6px' }}>
+                            <div style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
+                              <a
+                                href={`/catalogue/${prod.slug || prod.code.toLowerCase()}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title={`Buka katalog publik /catalogue/${prod.slug || prod.code.toLowerCase()}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  padding: '5px 9px',
+                                  borderRadius: '6px',
+                                  background: '#f8fafc',
+                                  border: '1px solid #cbd5e1',
+                                  color: '#334155',
+                                  fontWeight: 700,
+                                  fontSize: '0.78rem',
+                                  textDecoration: 'none'
+                                }}
+                              >
+                                🔗 Lihat
+                              </a>
+
                               <button
                                 onClick={() => handleStartEdit(prod)}
                                 title="Edit Spesifikasi & Tabel"
@@ -2266,6 +2349,9 @@ export default function BelsaAdminPage() {
                       >
                         Auto Slug
                       </button>
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '4px' }}>
+                      URL Publik: <code style={{ color: '#dc2626' }}>https://belsa.id/knowledge-hub/{artSlug || 'slug-artikel'}</code>
                     </div>
                   </div>
 
