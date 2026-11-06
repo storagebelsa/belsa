@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { BELSA_CATALOGUE_FULL, BelsaProductSeries } from '@/data/belsaCatalogueFull';
+import { BelsaProductSeries } from '@/data/belsaCatalogueFull';
+import { INITIAL_CATALOGUE } from '@/data/initialCatalogue';
 import { formatProductImageUrl } from '@/lib/imageUtils';
 import { CatalogueView } from '../page';
 
@@ -7,28 +8,19 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-const DELETED_SERIES_IDS = new Set([
-  'diverter_valve', 'bsp', 'cl_series', 'npp-nhpu', 'bhreb_20es_1',
-  'd_nipple', 'double_nipple', 'fitting', 'r1at', 'r2at', 'rejseries',
-  'bwe_series', 'tubing', 'rotary', 'bzw'
-]);
-
 function findProductBySlug(slug: string): BelsaProductSeries | undefined {
   const s = decodeURIComponent(slug).toLowerCase().trim();
-  return BELSA_CATALOGUE_FULL.find(
+  return INITIAL_CATALOGUE.find(
     (item) =>
-      !DELETED_SERIES_IDS.has(item.id) &&
-      (item.slug?.toLowerCase() === s ||
-        item.id.toLowerCase() === s ||
-        item.code.toLowerCase() === s ||
-        item.series.toLowerCase() === s)
+      item.slug?.toLowerCase() === s ||
+      item.id.toLowerCase() === s ||
+      item.code.toLowerCase() === s ||
+      item.series.toLowerCase() === s
   );
 }
 
 export async function generateStaticParams() {
-  return BELSA_CATALOGUE_FULL.filter(
-    (item) => !DELETED_SERIES_IDS.has(item.id) && Boolean(item.slug)
-  ).map((item) => ({
+  return INITIAL_CATALOGUE.filter((item) => Boolean(item.slug)).map((item) => ({
     slug: item.slug,
   }));
 }

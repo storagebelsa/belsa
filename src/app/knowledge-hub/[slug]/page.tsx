@@ -32,6 +32,7 @@ async function fetchLiveArticles(): Promise<ArticleItem[]> {
             d.id === r.id ||
             d.slug === r.id ||
             d.slug === r.slug ||
+            d.slug === r[''] ||
             d.title.id === r.titleId
         );
 

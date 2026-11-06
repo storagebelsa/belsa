@@ -12,6 +12,7 @@ import {
   BelsaCategory,
   BelsaProductSeries
 } from '@/data/belsaCatalogueFull';
+import { INITIAL_CATALOGUE } from '@/data/initialCatalogue';
 import { useRfq } from '@/context/RfqContext';
 import { generateProductDatasheetPdf } from '@/lib/pdfDatasheetGenerator';
 
@@ -88,7 +89,7 @@ export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSe
     if (initialProduct) return initialProduct;
     if (initialSeriesSlug) {
       const s = initialSeriesSlug.toLowerCase().trim();
-      const found = BELSA_CATALOGUE_FULL.find(
+      const found = INITIAL_CATALOGUE.find(
         (item) =>
           item.slug?.toLowerCase() === s ||
           item.id.toLowerCase() === s ||
@@ -97,10 +98,10 @@ export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSe
       );
       if (found) return found;
     }
-    const airSeries = BELSA_CATALOGUE_FULL
+    const airSeries = INITIAL_CATALOGUE
       .filter((s) => s.category === 'Air Cylinder')
       .sort((a, b) => a.series.localeCompare(b.series, undefined, { numeric: true, sensitivity: 'base' }));
-    return airSeries[0] || BELSA_CATALOGUE_FULL[0];
+    return airSeries[0] || INITIAL_CATALOGUE[0];
   }, [initialProduct, initialSeriesSlug]);
 
   // Selected Category & Accordion Expanded State
@@ -115,8 +116,8 @@ export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSe
   // Custom Series from Google Sheets
   const [sheetSeries, setSheetSeries] = useState<BelsaProductSeries[]>([]);
 
-  // Live Catalog loaded from /api/catalogue (defaults to master BELSA_CATALOGUE_FULL)
-  const [activeCatalogue, setActiveCatalogue] = useState<BelsaProductSeries[]>(BELSA_CATALOGUE_FULL);
+  // Live Catalog loaded from /api/catalogue (defaults to master INITIAL_CATALOGUE)
+  const [activeCatalogue, setActiveCatalogue] = useState<BelsaProductSeries[]>(INITIAL_CATALOGUE);
 
   // Combined Active Series - sorted alphabetically by series (A-Z)
   const allSeries = useMemo(() => {
@@ -150,7 +151,7 @@ export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSe
     const params = new URLSearchParams(window.location.search);
     const urlSlug = (params.get('series') || params.get('product') || params.get('slug'))?.toLowerCase().trim();
     if (urlSlug) {
-      const match = BELSA_CATALOGUE_FULL.find(
+      const match = INITIAL_CATALOGUE.find(
         (item: BelsaProductSeries) =>
           item.slug?.toLowerCase() === urlSlug ||
           item.id.toLowerCase() === urlSlug ||

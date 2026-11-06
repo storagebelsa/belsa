@@ -62,7 +62,7 @@ To calculate cylinder thrust output and air consumption for your plant operating
     },
     date: '2026-11-04',
     readTime: '5 min baca',
-    image: 'https://lh3.googleusercontent.com/d/1tjCeUMjsccQLkKuZgQX6bJXeBqAevPi7',
+    image: 'https://lh3.googleusercontent.com/d/1i0vhNCezAjfrZ-FGfT6-HZ1mOORNbJAE',
     tags: ['Pneumatik', 'ISO 15552', 'How to Order', 'Bore & Stroke']
   },
   {
@@ -124,7 +124,7 @@ Calculate your exact tube wall thickness and safety margin instantly using the [
     },
     date: '2026-11-02',
     readTime: '6 min baca',
-    image: 'https://lh3.googleusercontent.com/d/1yZEz3Q1avpVWBHAc8ey3m71OZ1PtxbZ9',
+    image: 'https://lh3.googleusercontent.com/d/1XmMk5r0WKdVUlpsb013c2w7LdYeegg9g',
     tags: ['Hidrolik', 'Rumus Barlow', 'Honed Tube', 'Kalkulasi Teknik']
   },
   {
@@ -190,7 +190,7 @@ At BELSA, every cylinder series (such as BMG140, BMG210, and ACI) offers an opti
     },
     date: '2026-11-01',
     readTime: '4 min baca',
-    image: '/images/culture_parts_warehouse.webp',
+    image: 'https://lh3.googleusercontent.com/d/1il_9N4p6AyZ5Co3OIB6l79ps0JyMF1sZ',
     tags: ['Seal Kit', 'Viton', 'Polyurethane', 'Maintenance']
   },
   {
@@ -252,7 +252,7 @@ For emergency overhaul consultation or bespoke replacement cylinders, reach our 
     },
     date: '2026-10-28',
     readTime: '5 min baca',
-    image: '/images/facility_metrology_inspection.webp',
+    image: 'https://lh3.googleusercontent.com/d/1r6twZMcqbx_Ryf_wCPQkB4ET_jyK1RLs',
     tags: ['Troubleshooting', 'Maintenance', 'Overhaul', 'Silinder Hidrolik']
   },
   {
@@ -304,7 +304,7 @@ The BELSA workshop supplies custom crimped hydraulic hose assemblies complete wi
     },
     date: '2026-10-22',
     readTime: '4 min baca',
-    image: '/images/facility_hose_warehouse.webp',
+    image: 'https://lh3.googleusercontent.com/d/1p_ICSV5H2nAQG2NxHKR-_Qe0AHW_OYeE',
     tags: ['Selang Hidrolik', 'Fittings', 'Tekanan Tinggi', 'SAE 100']
   },
   {
@@ -372,7 +372,7 @@ Request custom HPU CAD modeling and fabrication engineering at [Contact BELSA](/
     },
     date: '2026-10-18',
     readTime: '6 min baca',
-    image: '/images/facility_workshop_machining_fleet.webp',
+    image: 'https://lh3.googleusercontent.com/d/1z_QPFUWjKDYGOG9Xo7ulDVAOqV44l_5M',
     tags: ['HPU', 'Power Unit', 'Tangki Hidrolik', 'Pompa Hidrolik', 'Flow Rate']
   },
   {
@@ -460,7 +460,7 @@ Calculate exact cylinder thrust, pull, and volume requirements instantly using t
     },
     date: '2026-10-15',
     readTime: '5 min baca',
-    image: '/images/facility_material_warehouse.webp',
+    image: 'https://lh3.googleusercontent.com/d/1iJadJ5b6K0Jn5NVv5NK4pSGYKIhcT1Gb',
     tags: ['Kalkulasi Gaya', 'Bore & Stroke', 'Thrust Force', 'Pull Force', 'Silinder Industri']
   },
   {
@@ -518,7 +518,7 @@ Explore bespoke chrome rod fabrication or induction hardening solutions at [BELS
     },
     date: '2026-10-11',
     readTime: '5 min baca',
-    image: '/images/facility_cnc_mazak.webp',
+    image: 'https://lh3.googleusercontent.com/d/1ksm3b6TwwI70Czbvz53ER6xZ78s53-Xc',
     tags: ['Hard Chrome', 'Piston Rod', 'Salt Spray Test', 'Korosi', 'ASTM B117']
   },
   {
@@ -596,7 +596,7 @@ Explore full industrial valve datasheets, coil voltages, and subplate options in
     },
     date: '2026-10-06',
     readTime: '6 min baca',
-    image: '/images/facility_production_floor.webp',
+    image: 'https://lh3.googleusercontent.com/d/1_TO-ZSwKWrfSWLYeQOg5PrnSQOlqABfp',
     tags: ['Solenoid Valve', 'Directional Valve', 'ISO 1219', 'Spool Center', 'Hidrolik']
   }
 ];

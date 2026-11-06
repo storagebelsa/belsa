@@ -4,27 +4,50 @@ import path from 'path';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
 import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
 
-const OVERRIDES_FILE = path.join('/tmp', 'articlesOverrides.json');
+import os from 'os';
+
+const LOCAL_OVERRIDES_FILE = path.join(process.cwd(), 'src', 'data', 'articlesOverrides.json');
+const TMP_OVERRIDES_FILE = path.join(os.tmpdir(), 'articlesOverrides.json');
 
 function getLocalOverrides(): ArticleItem[] {
   try {
-    if (fs.existsSync(OVERRIDES_FILE)) {
-      const data = fs.readFileSync(OVERRIDES_FILE, 'utf-8');
+    if (fs.existsSync(LOCAL_OVERRIDES_FILE)) {
+      const data = fs.readFileSync(LOCAL_OVERRIDES_FILE, 'utf-8');
       return JSON.parse(data);
     }
   } catch (err) {
-    console.warn('Error reading articles overrides:', err);
+    console.warn('Error reading local articles overrides:', err);
+  }
+  try {
+    if (fs.existsSync(TMP_OVERRIDES_FILE)) {
+      const data = fs.readFileSync(TMP_OVERRIDES_FILE, 'utf-8');
+      return JSON.parse(data);
+    }
+  } catch (err) {
+    console.warn('Error reading tmp articles overrides:', err);
   }
   return [];
 }
 
 function saveLocalOverrides(articles: ArticleItem[]): boolean {
+  let savedLocal = false;
   try {
-    fs.writeFileSync(OVERRIDES_FILE, JSON.stringify(articles, null, 2), 'utf-8');
+    const dir = path.dirname(LOCAL_OVERRIDES_FILE);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(LOCAL_OVERRIDES_FILE, JSON.stringify(articles, null, 2), 'utf-8');
+    savedLocal = true;
+  } catch {
+    // Read-only filesystem in serverless production
+  }
+
+  try {
+    fs.writeFileSync(TMP_OVERRIDES_FILE, JSON.stringify(articles, null, 2), 'utf-8');
     return true;
   } catch (err) {
-    console.warn('Error saving articles overrides:', err);
-    return false;
+    console.warn('Error saving articles overrides to tmp:', err);
+    return savedLocal;
   }
 }
 
@@ -44,6 +67,7 @@ export async function GET() {
               d.id === r.id ||
               d.slug === r.id ||
               d.slug === r.slug ||
+              d.slug === r[''] ||
               (d.title.id && d.title.id === r.titleId)
           );
 
