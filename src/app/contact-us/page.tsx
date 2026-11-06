@@ -16,6 +16,21 @@ export default function ContactUsPage() {
   const [activeMapTab, setActiveMapTab] = useState<'workshop' | 'office'>('workshop');
   const [isMapLoading, setIsMapLoading] = useState(true);
 
+  // Form Fields State
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    phone: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleMapTabChange = (tab: 'workshop' | 'office') => {
     if (tab === activeMapTab) return;
     setIsMapLoading(true);
@@ -30,9 +45,36 @@ export default function ContactUsPage() {
     { id: 'general', labelId: 'Penawaran Umum / Tender', labelEn: 'General RFQ / Tender' },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const matchedTopic = topics.find((t) => t.id === selectedTopic);
+    const categoryLabel = matchedTopic ? (isId ? matchedTopic.labelId : matchedTopic.labelEn) : selectedTopic;
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          topic: selectedTopic,
+          topicLabel: categoryLabel,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.message || 'Gagal mengirim pesan. Silakan coba kembali.');
+      }
+    } catch {
+      setSubmitError('Terjadi kesalahan koneksi. Silakan hubungi kami via WhatsApp atau coba lagi.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -377,6 +419,8 @@ export default function ContactUsPage() {
                       <input
                         type="text"
                         required
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder={isId ? 'Nama Lengkap Anda' : 'Full Name'}
                         style={{
                           width: '100%',
@@ -395,6 +439,8 @@ export default function ContactUsPage() {
                       </label>
                       <input
                         type="text"
+                        value={formData.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
                         placeholder={isId ? 'Nama perusahaan Anda' : 'Company Name'}
                         style={{
                           width: '100%',
@@ -421,6 +467,8 @@ export default function ContactUsPage() {
                       <input
                         type="tel"
                         required
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="08xxxxxxxxxx / +62..."
                         style={{
                           width: '100%',
@@ -440,6 +488,8 @@ export default function ContactUsPage() {
                       <input
                         type="email"
                         required
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="nama@perusahaan.com"
                         style={{
                           width: '100%',
@@ -462,6 +512,8 @@ export default function ContactUsPage() {
                     <textarea
                       rows={4}
                       required
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
                       placeholder={isId
                         ? 'Tuliskan ukuran bore/stroke, tekanan kerja (bar), jenis fluida, suhu kerja, atau keterangan drawing yang ingin dibuat...'
                         : 'Specify cylinder bore/stroke, working pressure (bar), fluid type, operating temperature, or custom drawing fabrication requirements...'}
@@ -479,9 +531,23 @@ export default function ContactUsPage() {
                     />
                   </div>
 
+                  {submitError && (
+                    <div style={{
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      background: '#FEF2F2',
+                      border: '1px solid #FCA5A5',
+                      color: '#DC2626',
+                      fontSize: '0.88rem'
+                    }}>
+                      ⚠️ {submitError}
+                    </div>
+                  )}
+
                   {/* Submit Button */}
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="btn-belsa-primary"
                     style={{
                       width: '100%',
@@ -489,10 +555,11 @@ export default function ContactUsPage() {
                       fontSize: '0.95rem',
                       justifyContent: 'center',
                       borderRadius: '10px',
-                      cursor: 'pointer'
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                      opacity: isSubmitting ? 0.75 : 1
                     }}
                   >
-                    <span>{t.formSubmit}</span>
+                    <span>{isSubmitting ? (isId ? 'Mengirim Penawaran...' : 'Sending RFQ...') : t.formSubmit}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="5" y1="12" x2="19" y2="12" />
                       <polyline points="12 5 19 12 12 19" />
