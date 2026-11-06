@@ -21,6 +21,24 @@ export default function BelsaAdminPage() {
   // Tab: 'editor' | 'list' | 'articles'
   const [activeTab, setActiveTab] = useState<'editor' | 'list' | 'articles'>('list');
 
+  // Helper to switch tab and synchronize browser URL slug
+  const switchTab = (tab: 'list' | 'editor' | 'articles', targetEditSlug?: string) => {
+    setActiveTab(tab);
+    if (typeof window !== 'undefined') {
+      const slugMap: Record<string, string> = {
+        list: 'daftar-produk',
+        editor: 'tambah-produk',
+        articles: 'kelola-artikel'
+      };
+      const slug = slugMap[tab] || 'daftar-produk';
+      let url = `/belsa-admin/${slug}`;
+      if (targetEditSlug) {
+        url += `?edit=${encodeURIComponent(targetEditSlug)}`;
+      }
+      window.history.pushState({ tab }, '', url);
+    }
+  };
+
   // Articles Management State
   const [articlesList, setArticlesList] = useState<ArticleItem[]>([]);
   const [articleSearch, setArticleSearch] = useState('');
@@ -155,6 +173,33 @@ export default function BelsaAdminPage() {
         setIsAuthenticated(true);
       }
     }
+  }, []);
+
+  // Synchronize active tab from URL slug / query param on mount and popstate
+  useEffect(() => {
+    const syncTabFromUrl = () => {
+      if (typeof window === 'undefined') return;
+      const pathname = window.location.pathname.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab')?.toLowerCase();
+      const hash = window.location.hash.toLowerCase().replace('#', '');
+
+      const parts = pathname.split('/').filter(Boolean);
+      const pathSlug = parts.length >= 2 && parts[0] === 'belsa-admin' ? parts[1] : '';
+      const identifier = pathSlug || tabParam || hash || '';
+
+      if (identifier === 'tambah-produk' || identifier === 'editor' || identifier === 'new-product') {
+        setActiveTab('editor');
+      } else if (identifier === 'kelola-artikel' || identifier === 'artikel' || identifier === 'articles' || identifier === 'knowledge-hub') {
+        setActiveTab('articles');
+      } else if (identifier === 'daftar-produk' || identifier === 'list' || identifier === 'products') {
+        setActiveTab('list');
+      }
+    };
+
+    syncTabFromUrl();
+    window.addEventListener('popstate', syncTabFromUrl);
+    return () => window.removeEventListener('popstate', syncTabFromUrl);
   }, []);
 
   const handlePinSubmit = async (e: React.FormEvent) => {
@@ -430,7 +475,7 @@ export default function BelsaAdminPage() {
       setHtoBlocks([]);
     }
 
-    setActiveTab('editor');
+    switchTab('editor', prod.slug || prod.code);
     setSubmitMessage(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1119,11 +1164,14 @@ export default function BelsaAdminPage() {
           </div>
         </header>
 
-        {/* Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '22px' }}>
-          <button
-            type="button"
-            onClick={() => setActiveTab('list')}
+        {/* Navigation Tabs with Dedicated Slugs */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '22px', flexWrap: 'wrap' }}>
+          <Link
+            href="/belsa-admin/daftar-produk"
+            onClick={(e) => {
+              e.preventDefault();
+              switchTab('list');
+            }}
             style={{
               padding: '12px 22px',
               borderRadius: '12px',
@@ -1136,17 +1184,23 @@ export default function BelsaAdminPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: activeTab === 'list' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none'
+              textDecoration: 'none',
+              boxShadow: activeTab === 'list' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
-            <span>📋</span> Daftar Semua Produk ({allCatalogueProducts.length})
-          </button>
+            <span>📋</span>
+            <span>Daftar Semua Produk ({allCatalogueProducts.length})</span>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => {
-              if (activeTab !== 'editor') {
-                setActiveTab('editor');
+          <Link
+            href="/belsa-admin/tambah-produk"
+            onClick={(e) => {
+              e.preventDefault();
+              if (editingProduct) {
+                switchTab('editor', editingProduct.slug || editingProduct.code);
+              } else {
+                switchTab('editor');
               }
             }}
             style={{
@@ -1161,16 +1215,21 @@ export default function BelsaAdminPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: activeTab === 'editor' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none'
+              textDecoration: 'none',
+              boxShadow: activeTab === 'editor' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
             <span>{editingProduct ? '✏️' : '➕'}</span>
             <span>{editingProduct ? `Edit Seri: ${editingProduct.code}` : 'Tambah Produk Baru'}</span>
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => setActiveTab('articles')}
+          <Link
+            href="/belsa-admin/kelola-artikel"
+            onClick={(e) => {
+              e.preventDefault();
+              switchTab('articles');
+            }}
             style={{
               padding: '12px 22px',
               borderRadius: '12px',
@@ -1183,11 +1242,14 @@ export default function BelsaAdminPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: activeTab === 'articles' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none'
+              textDecoration: 'none',
+              boxShadow: activeTab === 'articles' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
-            <span>📝</span> Kelola Artikel Knowledge Hub ({articlesList.length})
-          </button>
+            <span>📝</span>
+            <span>Kelola Artikel Knowledge Hub ({articlesList.length})</span>
+          </Link>
         </div>
 
         {/* Global Feedback Banner */}
@@ -1978,7 +2040,7 @@ export default function BelsaAdminPage() {
                 <button
                   onClick={() => {
                     handleResetForm();
-                    setActiveTab('editor');
+                    switchTab('editor');
                   }}
                   style={{ padding: '8px 16px', borderRadius: '8px', background: '#dc2626', color: '#fff', border: 'none', fontSize: '0.84rem', cursor: 'pointer', fontWeight: 700 }}
                 >
@@ -3028,7 +3090,7 @@ export default function BelsaAdminPage() {
                     type="button"
                     onClick={() => {
                       setFeedbackModal(null);
-                      setActiveTab('list');
+                      switchTab('list');
                     }}
                     style={{
                       flex: 1,
