@@ -26,7 +26,7 @@ export const CYLINDER_MATERIALS: Record<string, CylinderMaterial> = {
     description: 'Aluminium Alloy 6063 / 6061-T6 Pneumatic Profile Cylinder Tube'
   },
   'st52_toko': {
-    name: 'ST-52 Toko 17',
+    name: 'ST-52',
     tensileStrength: 17.0,
     description: 'Commercial Grade ST-52 Carbon Steel'
   },
