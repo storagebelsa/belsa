@@ -684,6 +684,8 @@ export default function BelsaAdminPage() {
           if (upData.success && driveDirectUrl) {
             setArtImageUrl(driveDirectUrl);
             setArtImagePreview(driveDirectUrl);
+          } else if (!upData.success && upData.message) {
+            alert(`Peringatan Unggah Google Drive:\n\n${upData.message}`);
           }
         } catch {
           // Keep compressedBase64 as fallback

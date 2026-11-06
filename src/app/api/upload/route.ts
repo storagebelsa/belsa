@@ -76,32 +76,15 @@ export async function POST(req: NextRequest) {
         gasJson = null;
       }
 
-      // If target folder failed (e.g. Access Denied permission error on new folder), fallback to working master folder!
-      if (!gasJson || gasJson.status === 'error' || (!gasJson.url && !gasJson.imageUrl)) {
-        if (targetFolderId !== GOOGLE_DRIVE_FOLDER_ID) {
-          console.warn('Target folder upload error, falling back to master drive folder:', gasJson?.message);
-          const fallbackRes = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: 'upload_to_drive',
-              folderId: GOOGLE_DRIVE_FOLDER_ID,
-              fileName: uniqueName,
-              imageBase64: base64Data,
-              mimeType: `image/${ext === 'jpg' ? 'jpeg' : ext}`
-            })
-          });
-          try {
-            gasJson = await fallbackRes.json();
-          } catch {
-            gasJson = null;
-          }
-        }
-      }
-
       if (gasJson && (gasJson.url || gasJson.imageUrl)) {
         driveUrl = gasJson.url || gasJson.imageUrl;
         storageType = 'google_drive';
+      } else if (gasJson && gasJson.status === 'error') {
+        console.error('Google Drive folder upload error:', gasJson.message);
+        return NextResponse.json({
+          success: false,
+          message: `Akses folder Google Drive ditolak (${gasJson.message}). Pastikan folder '${folder === 'articles' ? 'Gambar_Artikel' : 'Gambar_Produk'}' (${targetFolderId}) telah dibagikan dengan akses 'Editor' ke akun nabel.sakha.gemilang@gmail.com.`
+        }, { status: 403 });
       }
     } catch (gasErr) {
       console.warn('Error uploading to Google Drive via Apps Script:', gasErr);
