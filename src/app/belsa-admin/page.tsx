@@ -178,6 +178,14 @@ export default function BelsaAdminPage() {
     }
   }, []);
 
+  const getAdminAuthHeaders = () => {
+    const pin = typeof window !== 'undefined' ? (sessionStorage.getItem('belsa_admin_pin') || pinInput.trim()) : pinInput.trim();
+    return {
+      'Content-Type': 'application/json',
+      'x-admin-pin': pin
+    };
+  };
+
   const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPinError('');
@@ -192,6 +200,7 @@ export default function BelsaAdminPage() {
         setIsAuthenticated(true);
         setPinError('');
         sessionStorage.setItem('belsa_admin_auth', 'true');
+        sessionStorage.setItem('belsa_admin_pin', pinInput.trim());
       } else {
         setPinError(data.message || 'PIN salah. Masukkan PIN admin BELSA.');
       }
@@ -203,6 +212,7 @@ export default function BelsaAdminPage() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('belsa_admin_auth');
+    sessionStorage.removeItem('belsa_admin_pin');
     setPinInput('');
   };
 
@@ -355,7 +365,7 @@ export default function BelsaAdminPage() {
         try {
           const uploadRes = await fetch('/api/upload', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAdminAuthHeaders(),
             body: JSON.stringify({
               image: compressedDataUrl,
               fileName: prefix,
@@ -516,7 +526,7 @@ export default function BelsaAdminPage() {
     try {
       const res = await fetch('/api/catalogue', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminAuthHeaders(),
         body: JSON.stringify({ action: 'delete', id: prod.id })
       });
       const data = await res.json();
@@ -541,7 +551,7 @@ export default function BelsaAdminPage() {
     try {
       const res = await fetch('/api/catalogue', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminAuthHeaders(),
         body: JSON.stringify({ action: 'reset', id: prod.id })
       });
       const data = await res.json();
@@ -607,7 +617,7 @@ export default function BelsaAdminPage() {
     try {
       const res = await fetch('/api/articles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminAuthHeaders(),
         body: JSON.stringify({ action: 'delete', slug: art.slug })
       });
       const data = await res.json();
@@ -698,7 +708,7 @@ export default function BelsaAdminPage() {
         try {
           const upRes = await fetch('/api/upload', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAdminAuthHeaders(),
             body: JSON.stringify({
               image: compressedBase64,
               fileName: `art_${Date.now()}_${cleanName}`,
@@ -779,7 +789,7 @@ export default function BelsaAdminPage() {
     try {
       const res = await fetch('/api/articles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminAuthHeaders(),
         body: JSON.stringify({
           action: 'save',
           article: articlePayload
@@ -941,7 +951,7 @@ export default function BelsaAdminPage() {
       try {
         const resApi = await fetch('/api/catalogue', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminAuthHeaders(),
           body: JSON.stringify({
             action: isEditing ? 'update' : 'create',
             product: productPayload

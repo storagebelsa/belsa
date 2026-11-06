@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
 import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
+import { isAuthorizedAdmin } from '@/lib/adminAuth';
 
 import os from 'os';
 
@@ -124,6 +125,13 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    if (!isAuthorizedAdmin(req)) {
+      return NextResponse.json(
+        { success: false, message: 'Akses ditolak: Autentikasi Admin diperlukan.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { action, article, slug } = body;
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { BELSA_CATALOGUE_FULL, BelsaProductSeries } from '@/data/belsaCatalogueFull';
+import { isAuthorizedAdmin } from '@/lib/adminAuth';
 
 interface CatalogueOverrides {
   deletedIds: string[];
@@ -123,6 +124,13 @@ export async function GET() {
 // POST /api/catalogue - Handles Create, Update, Delete, and Reset
 export async function POST(req: NextRequest) {
   try {
+    if (!isAuthorizedAdmin(req)) {
+      return NextResponse.json(
+        { success: false, message: 'Akses ditolak: Autentikasi Admin diperlukan.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { action, product, id } = body;
     const overrides = getOverrides();

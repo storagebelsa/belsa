@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { GOOGLE_SCRIPT_URL, GOOGLE_DRIVE_FOLDER_ID, GOOGLE_DRIVE_ARTICLES_FOLDER_ID } from '@/lib/googleSheetsConfig';
+import { isAuthorizedAdmin } from '@/lib/adminAuth';
 
 export async function POST(req: NextRequest) {
   try {
+    if (!isAuthorizedAdmin(req)) {
+      return NextResponse.json(
+        { success: false, message: 'Akses ditolak: Autentikasi Admin diperlukan untuk mengunggah file.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { image, fileName, folder = 'catalogue', folderId } = body;
 
@@ -26,7 +34,23 @@ export async function POST(req: NextRequest) {
 
     let ext = matches[1].toLowerCase();
     if (ext === 'jpeg') ext = 'jpg';
+
+    const ALLOWED_EXTS = ['webp', 'png', 'jpg'];
+    if (!ALLOWED_EXTS.includes(ext)) {
+      return NextResponse.json(
+        { success: false, message: 'Format gambar tidak diizinkan. Hanya WebP, PNG, dan JPG yang diperbolehkan.' },
+        { status: 400 }
+      );
+    }
+
     const base64Data = matches[2];
+    if (base64Data.length > 15 * 1024 * 1024) {
+      return NextResponse.json(
+        { success: false, message: 'Ukuran file melebihi batas maksimum 10MB.' },
+        { status: 400 }
+      );
+    }
+
     const buffer = Buffer.from(base64Data, 'base64');
 
     const cleanPrefix = (fileName || 'prod')
