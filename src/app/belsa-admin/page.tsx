@@ -25,15 +25,18 @@ export default function BelsaAdminPage() {
   const switchTab = (tab: 'list' | 'editor' | 'articles', targetEditSlug?: string) => {
     setActiveTab(tab);
     if (typeof window !== 'undefined') {
-      const slugMap: Record<string, string> = {
-        list: 'daftar-produk',
-        editor: 'tambah-produk',
-        articles: 'kelola-artikel'
-      };
-      const slug = slugMap[tab] || 'daftar-produk';
+      let slug = 'daftar-produk';
+      if (tab === 'list') {
+        slug = 'daftar-produk';
+      } else if (tab === 'articles') {
+        slug = 'kelola-artikel';
+      } else if (tab === 'editor') {
+        slug = (targetEditSlug || editingProduct) ? 'edit-produk' : 'tambah-produk';
+      }
       let url = `/belsa-admin/${slug}`;
-      if (targetEditSlug) {
-        url += `?edit=${encodeURIComponent(targetEditSlug)}`;
+      const editIdentifier = targetEditSlug || (editingProduct ? (editingProduct.slug || editingProduct.id || editingProduct.code) : null);
+      if (slug === 'edit-produk' && editIdentifier) {
+        url += `?id=${encodeURIComponent(editIdentifier)}`;
       }
       window.history.pushState({ tab }, '', url);
     }
@@ -173,33 +176,6 @@ export default function BelsaAdminPage() {
         setIsAuthenticated(true);
       }
     }
-  }, []);
-
-  // Synchronize active tab from URL slug / query param on mount and popstate
-  useEffect(() => {
-    const syncTabFromUrl = () => {
-      if (typeof window === 'undefined') return;
-      const pathname = window.location.pathname.toLowerCase();
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get('tab')?.toLowerCase();
-      const hash = window.location.hash.toLowerCase().replace('#', '');
-
-      const parts = pathname.split('/').filter(Boolean);
-      const pathSlug = parts.length >= 2 && parts[0] === 'belsa-admin' ? parts[1] : '';
-      const identifier = pathSlug || tabParam || hash || '';
-
-      if (identifier === 'tambah-produk' || identifier === 'editor' || identifier === 'new-product') {
-        setActiveTab('editor');
-      } else if (identifier === 'kelola-artikel' || identifier === 'artikel' || identifier === 'articles' || identifier === 'knowledge-hub') {
-        setActiveTab('articles');
-      } else if (identifier === 'daftar-produk' || identifier === 'list' || identifier === 'products') {
-        setActiveTab('list');
-      }
-    };
-
-    syncTabFromUrl();
-    window.addEventListener('popstate', syncTabFromUrl);
-    return () => window.removeEventListener('popstate', syncTabFromUrl);
   }, []);
 
   const handlePinSubmit = async (e: React.FormEvent) => {
@@ -447,14 +423,14 @@ export default function BelsaAdminPage() {
   };
 
   // Trigger Edit Mode for a product
-  const handleStartEdit = (prod: BelsaProductSeries) => {
+  const handleStartEdit = (prod: BelsaProductSeries, updateUrl = true) => {
     setEditingProduct(prod);
-    setSeries(prod.code);
-    setProductSlug(prod.slug || prod.code.toLowerCase().replace(/[^a-z0-9]/g, '-'));
+    setSeries(prod.code || prod.series || '');
+    setProductSlug(prod.slug || (prod.code || prod.id || '').toLowerCase().replace(/[^a-z0-9]/g, '-'));
     setCategory(prod.category as BelsaCategory);
-    setName(prod.subTitle.id || prod.subTitle.en || '');
-    setTaglineId(prod.features.id ? prod.features.id.join('\n') : '');
-    setTaglineEn(prod.features.en ? prod.features.en.join('\n') : '');
+    setName(prod.subTitle?.id || prod.subTitle?.en || '');
+    setTaglineId(prod.features?.id ? (Array.isArray(prod.features.id) ? prod.features.id.join('\n') : String(prod.features.id)) : '');
+    setTaglineEn(prod.features?.en ? (Array.isArray(prod.features.en) ? prod.features.en.join('\n') : String(prod.features.en)) : '');
     setBoreSizes(prod.boreSizes ? prod.boreSizes.join(', ') : '');
     setStandardStrokes(prod.standardStrokes ? prod.standardStrokes.join(', ') : '');
     setMaxStroke(prod.maxStroke ? prod.maxStroke.toString() : '2000');
@@ -475,10 +451,60 @@ export default function BelsaAdminPage() {
       setHtoBlocks([]);
     }
 
-    switchTab('editor', prod.slug || prod.code);
+    if (updateUrl) {
+      switchTab('editor', prod.slug || prod.id || prod.code);
+    } else {
+      setActiveTab('editor');
+    }
     setSubmitMessage(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Synchronize active tab & auto-load edit product from URL slug / query param on mount and popstate
+  useEffect(() => {
+    const syncTabFromUrl = () => {
+      if (typeof window === 'undefined') return;
+      const pathname = window.location.pathname.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab')?.toLowerCase();
+      const hash = window.location.hash.toLowerCase().replace('#', '');
+      const editId = params.get('id') || params.get('edit') || '';
+
+      const parts = pathname.split('/').filter(Boolean);
+      const pathSlug = parts.length >= 2 && parts[0] === 'belsa-admin' ? parts[1] : '';
+      const identifier = pathSlug || tabParam || hash || '';
+
+      if (identifier === 'edit-produk' || identifier === 'edit' || (editId && (identifier === 'tambah-produk' || identifier === 'editor'))) {
+        setActiveTab('editor');
+        if (editId) {
+          const clean = editId.toLowerCase().trim();
+          const sourceList = allCatalogueProducts.length > 0 ? allCatalogueProducts : BELSA_CATALOGUE_FULL;
+          const found = sourceList.find(
+            (p) =>
+              (p.id && p.id.toLowerCase() === clean) ||
+              (p.slug && p.slug.toLowerCase() === clean) ||
+              (p.code && p.code.toLowerCase() === clean)
+          );
+          if (found) {
+            handleStartEdit(found, false);
+          }
+        }
+      } else if (identifier === 'tambah-produk' || identifier === 'editor' || identifier === 'new-product') {
+        setActiveTab('editor');
+        if (!editId) {
+          handleResetForm();
+        }
+      } else if (identifier === 'kelola-artikel' || identifier === 'artikel' || identifier === 'articles' || identifier === 'knowledge-hub') {
+        setActiveTab('articles');
+      } else if (identifier === 'daftar-produk' || identifier === 'list' || identifier === 'products') {
+        setActiveTab('list');
+      }
+    };
+
+    syncTabFromUrl();
+    window.addEventListener('popstate', syncTabFromUrl);
+    return () => window.removeEventListener('popstate', syncTabFromUrl);
+  }, [allCatalogueProducts]);
 
   // Delete product handler
   const handleDeleteProduct = async (prod: BelsaProductSeries) => {
@@ -1199,32 +1225,90 @@ export default function BelsaAdminPage() {
             href="/belsa-admin/tambah-produk"
             onClick={(e) => {
               e.preventDefault();
-              if (editingProduct) {
-                switchTab('editor', editingProduct.slug || editingProduct.code);
-              } else {
-                switchTab('editor');
-              }
+              handleResetForm();
+              switchTab('editor');
             }}
             style={{
               padding: '12px 22px',
               borderRadius: '12px',
-              background: activeTab === 'editor' ? '#dc2626' : '#ffffff',
-              color: activeTab === 'editor' ? '#ffffff' : '#475569',
+              background: (activeTab === 'editor' && !editingProduct) ? '#dc2626' : '#ffffff',
+              color: (activeTab === 'editor' && !editingProduct) ? '#ffffff' : '#475569',
               fontWeight: 800,
               fontSize: '0.92rem',
-              border: activeTab === 'editor' ? 'none' : '1px solid #e2e8f0',
+              border: (activeTab === 'editor' && !editingProduct) ? 'none' : '1px solid #e2e8f0',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
               textDecoration: 'none',
-              boxShadow: activeTab === 'editor' ? '0 4px 14px rgba(220,38,38,0.25)' : 'none',
+              boxShadow: (activeTab === 'editor' && !editingProduct) ? '0 4px 14px rgba(220,38,38,0.25)' : 'none',
               transition: 'all 0.2s ease',
             }}
           >
-            <span>{editingProduct ? '✏️' : '➕'}</span>
-            <span>{editingProduct ? `Edit Seri: ${editingProduct.code}` : 'Tambah Produk Baru'}</span>
+            <span>➕</span>
+            <span>Tambah Produk Baru</span>
           </Link>
+
+          {/* Dedicated Tab for Active Edit Mode */}
+          {editingProduct && (
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '4px 8px 4px 18px',
+                borderRadius: '12px',
+                background: (activeTab === 'editor' && editingProduct) ? '#1d4ed8' : '#eff6ff',
+                color: (activeTab === 'editor' && editingProduct) ? '#ffffff' : '#1d4ed8',
+                border: (activeTab === 'editor' && editingProduct) ? 'none' : '1.5px solid #93c5fd',
+                boxShadow: (activeTab === 'editor' && editingProduct) ? '0 4px 14px rgba(29,78,216,0.3)' : 'none',
+                gap: '8px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Link
+                href={`/belsa-admin/edit-produk?id=${encodeURIComponent(editingProduct.slug || editingProduct.id || editingProduct.code)}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchTab('editor', editingProduct.slug || editingProduct.id || editingProduct.code);
+                }}
+                style={{
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  fontWeight: 800,
+                  fontSize: '0.92rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  cursor: 'pointer'
+                }}
+              >
+                <span>✏️</span>
+                <span>Edit Produk: {editingProduct.series || editingProduct.code}</span>
+              </Link>
+              <button
+                type="button"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  handleResetForm();
+                  switchTab('list');
+                }}
+                title="Batal edit dan kembali ke daftar"
+                style={{
+                  background: (activeTab === 'editor' && editingProduct) ? 'rgba(255,255,255,0.2)' : '#dbeafe',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '3px 7px',
+                  fontSize: '0.78rem',
+                  color: (activeTab === 'editor' && editingProduct) ? '#ffffff' : '#1e40af',
+                  cursor: 'pointer',
+                  fontWeight: 700
+                }}
+              >
+                ✕ Batal
+              </button>
+            </div>
+          )}
 
           <Link
             href="/belsa-admin/kelola-artikel"
@@ -1285,46 +1369,107 @@ export default function BelsaAdminPage() {
         {activeTab === 'editor' && (
           <form onSubmit={handleFormSubmit}>
             
-            {/* Active Edit Mode Banner */}
-            {editingProduct && (
-              <div style={{
-                background: '#eff6ff',
-                border: '1.5px solid #93c5fd',
-                borderRadius: '14px',
-                padding: '14px 18px',
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                gap: '10px'
-              }}>
-                <div>
-                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#1d4ed8' }}>
-                    ✏️ Sedang Mengedit Seri: {editingProduct.series} ({editingProduct.category})
+            {/* Header / Mode Indicator */}
+            <div style={{
+              background: editingProduct ? '#eff6ff' : '#ffffff',
+              border: editingProduct ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '18px 22px',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '12px',
+              boxShadow: editingProduct ? '0 4px 18px rgba(59,130,246,0.15)' : '0 2px 8px rgba(0,0,0,0.03)'
+            }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <span style={{
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                    background: editingProduct ? '#2563eb' : '#dc2626',
+                    color: '#ffffff',
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    {editingProduct ? '✏️ MODE EDIT PRODUK' : '➕ MODE TAMBAH PRODUK BARU'}
                   </span>
-                  <p style={{ margin: '2px 0 0', fontSize: '0.8rem', color: '#3b82f6' }}>
-                    ID: <code>{editingProduct.id}</code> — Perubahan akan langsung terlihat di katalog publik.
-                  </p>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+                    {editingProduct ? `Edit Seri ${editingProduct.series}` : 'Tambah Produk Baru ke Katalog'}
+                  </h2>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleResetForm}
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: '8px',
-                    background: '#ffffff',
-                    border: '1px solid #cbd5e1',
-                    color: '#475569',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  ✕ Batal Edit & Buat Produk Baru
-                </button>
+                <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>
+                  {editingProduct
+                    ? `Sedang mengedit produk "${editingProduct.code}" (${editingProduct.category}) — ID: ${editingProduct.id}. Perubahan akan langsung disimpan ke katalog publik.`
+                    : 'Lengkapi spesifikasi teknis dan tabel konfigurasi HTO (How-To-Order) untuk mempublikasikan produk baru.'}
+                </p>
               </div>
-            )}
+
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {editingProduct ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleResetForm();
+                        switchTab('list');
+                      }}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: '8px',
+                        background: '#ffffff',
+                        border: '1px solid #cbd5e1',
+                        color: '#475569',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      📋 Kembali ke Daftar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleResetForm();
+                        switchTab('editor');
+                      }}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: '8px',
+                        background: '#ffffff',
+                        border: '1px solid #dc2626',
+                        color: '#dc2626',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      ➕ Buat Produk Baru Saja
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => switchTab('list')}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '8px',
+                      background: '#ffffff',
+                      border: '1px solid #cbd5e1',
+                      color: '#475569',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    📋 Lihat Daftar Produk
+                  </button>
+                )}
+              </div>
+            </div>
 
             {/* 1. Basic Product Information */}
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', marginBottom: '22px', boxShadow: '0 4px 20px -4px rgba(0,0,0,0.04)' }}>
