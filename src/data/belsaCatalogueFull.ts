@@ -39622,7 +39622,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       "id": "Hydraulic Power Unit & Plunger Pump",
       "en": "Hydraulic Power Unit & Plunger Pump"
     },
-    "image": "/images/facility_production_floor.webp",
+    "image": "https://lh3.googleusercontent.com/d/1xEfAyttJS1T3TF3qx0iEkqGOYbYH8Y8o",
     "symbolType": "powerpack",
     "features": {
       "id": [
