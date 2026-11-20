@@ -598,5 +598,183 @@ Explore full industrial valve datasheets, coil voltages, and subplate options in
     readTime: '6 min baca',
     image: 'https://lh3.googleusercontent.com/d/1_TO-ZSwKWrfSWLYeQOg5PrnSQOlqABfp',
     tags: ['Solenoid Valve', 'Directional Valve', 'ISO 1219', 'Spool Center', 'Hidrolik']
+  },
+  {
+    id: 'mounting-silinder-hidrolik-cegah-buckling-rod',
+    slug: 'panduan-memilih-mounting-silinder-hidrolik-mencegah-buckling',
+    category: 'Hydraulic Engineering',
+    author: 'Tim Engineering BELSA',
+    title: {
+      id: 'Panduan Memilih Mounting Silinder Hidrolik (Flange, Clevis, Trunnion) & Cara Mencegah Buckling Rod',
+      en: 'Guide to Hydraulic Cylinder Mountings (Flange, Clevis, Trunnion) and Preventing Rod Buckling'
+    },
+    summary: {
+      id: 'Kesalahan memilih dudukan (mounting) memicu side-load berlebih dan piston rod bengkok (buckling). Pelajari perbedaan rigid vs pivot mounting serta aturan batas stroke aman Euler.',
+      en: 'Incorrect mounting selection causes excessive side-loading and rod buckling. Learn the engineering difference between rigid and pivot mounts and Euler buckling limits.'
+    },
+    content: {
+      id: `Sebagian besar kegagalan dini pada silinder hidrolik—mulai dari rod bearing cepat aus, seal bocor sebelah, hingga piston rod bengkok—berasal dari pemilihan tipe mounting yang tidak sesuai dengan lintasan gerak beban mesin.
+
+### 1. Rigid Mounts (Dudukan Kaku / Garis Lurus):
+Digunakan bila beban bergerak sejajar sempurna (linear) dengan sumbu silinder tanpa pergeseran sudut:
+- **Front / Rear Flange (FA / FB)**: Sangat kuat menahan beban dorong (thrust) dan tarik aksial langsung. Front flange ideal untuk beban tarik berat, sedangkan Rear flange cocok untuk beban dorong dengan tekanan tinggi.
+- **Foot Mounting (LB / LA)**: Pemasangan praktis di atas permukaan meja mesin. Catatan teknis: pada langkah panjang dan tekanan tinggi, foot mount dapat menghasilkan momen puntir (*bending moment*) terhadap baut pengikat, sehingga membutuhkan *shear key* atau pin penahan geser.
+
+### 2. Pivot Mounts (Dudukan Berporos / Mengayun):
+Wajib digunakan apabila beban bergerak melengkung (arc) atau berpotensi mengalami *misalignment*:
+- **Clevis Mounting (CA / CB)**: Memiliki lubang pin di bagian belakang tutup silinder (cap end), memungkinkan silinder mengayun bebas mengikuti gerak tuas atau lengan mekanis.
+- **Trunnion Mounting (TC / TA / TB)**: Pin poros berada di bagian depan, tengah, atau belakang tabung. **Center Trunnion** memiliki keunggulan besar karena mengurangi jarak bebas tak tertopang (*buckling length*), sehingga sangat aman untuk silinder berlangkah panjang (*long stroke*).
+
+### 3. Mencegah Buckling (Tekuk) pada Piston Rod:
+Saat silinder mendorong beban pada langkah panjang, piston rod berisiko mengalami tekuk elastis (*Euler Buckling*). Langkah pencegahan utama meliputi:
+1. Perbesar diameter rod atau gunakan material *high-tensile* (seperti S45C Induksi atau 42CrMo4).
+2. Gunakan **Stop Tube** (selongsong pembatas di dalam silinder) pada stroke di atas 1.000 mm untuk mengurangi beban lateral pada *piston ring* dan *rod gland*.
+3. Pilih pivot mounting yang tepat agar tidak muncul *side-load* paksa pada bushing depan.
+
+Konsultasikan kebutuhan custom mounting dan hitung kekuatan desain silinder Anda melalui [Katalog Teknis BELSA](/catalogue) atau cek dimensi dasar di [Kalkulator Engineering](/calculator).`,
+      en: `A vast majority of premature hydraulic cylinder failures—from uneven guide-ring wear and side-leaking rod seals to permanently bent piston rods—stem from selecting a mounting style that conflicts with the actual motion path of the machine load.
+
+### 1. Rigid Mounts (Fixed Straight-Line Motion):
+Specified when the driven load travels strictly along the cylinder centerline with zero angular deviation:
+- **Front / Rear Flange (FA / FB)**: Optimal for pure axial thrust and tension loads. Front flange mounting handles heavy pull loads directly through the head, while rear flange handles high-pressure compressive push loads.
+- **Side Lug / Foot Mounting (LB / LA)**: Convenient for flat machine baseplate bolting. Engineering note: at high pressures and long strokes, the offset centerline creates a twisting bending moment on the mounting bolts; precision dowel pins or shear keys are strongly recommended.
+
+### 2. Pivot Mounts (Curved / Arcing Motion):
+Mandatory whenever the driven linkage swings through an arc or faces potential machine frame deflection:
+- **Rear Clevis Mounting (CA / CB)**: Features a rear pivot eye that allows the entire cylinder assembly to swing freely in a single plane along with mechanical linkages.
+- **Trunnion Mounting (TC / TA / TB)**: Integrates trunnion pins at the head, intermediate barrel, or cap. **Intermediate/Center Trunnion** mounts dramatically shorten the effective column buckling length, making them ideal for long-stroke applications.
+
+### 3. Preventing Piston Rod Buckling:
+When pushing heavy compressive loads at extended strokes, slender piston rods face elastic instability (*Euler Buckling*). Key design safeguards include:
+1. Stepping up the piston rod diameter or upgrading to high-tensile induction-hardened alloy steel (42CrMo4).
+2. Installing an internal **Stop Tube** for strokes exceeding 1,000 mm to reduce bearing stress between the piston and rod gland.
+3. Selecting self-aligning spherical bearings on clevis eyes to eliminate parasitic side-loads.
+
+Explore standard ISO and custom mounting configurations in the [BELSA Technical Catalogue](/catalogue) or verify operating parameters with the [BELSA Engineering Calculator](/calculator).`
+    },
+    date: '2026-11-18',
+    readTime: '6 min baca',
+    image: '/images/cat_pillar_cylinder.webp',
+    tags: ['Mounting Silinder', 'Flange', 'Clevis', 'Trunnion', 'Rod Buckling']
+  },
+  {
+    id: 'standar-kebersihan-oli-hidrolik-iso-4406',
+    slug: 'standar-kebersihan-oli-hidrolik-iso-4406-pemilihan-filter',
+    category: 'Troubleshooting & Maintenance',
+    author: 'Tim Engineering BELSA',
+    title: {
+      id: 'Standar Kebersihan Oli Hidrolik ISO 4406: Cara Membaca Kode & Memilih Filter yang Tepat',
+      en: 'ISO 4406 Hydraulic Oil Cleanliness Standard: Code Interpretation & Filter Selection'
+    },
+    summary: {
+      id: 'Lebih dari 75% kerusakan pompa, valve, dan baret dinding silinder hidrolik disebabkan oleh kontaminasi partikel oli. Pelajari cara membaca kode kebersihan ISO 4406 (contoh 18/16/13) dan pemilihan rating mikron filter.',
+      en: 'Over 75% of hydraulic pump, valve, and cylinder failures stem from particulate oil contamination. Learn how to decode ISO 4406 cleanliness ratings and select optimal micron filtration.'
+    },
+    content: {
+      id: `Oli hidrolik yang terlihat jernih secara kasat mata belum tentu bersih bagi komponen mesin. Mata manusia hanya mampu melihat partikel berukuran sekitar 40 mikron ke atas, sedangkan celah presisi (*clearance*) di dalam spool directional valve atau pompa hidrolik hanya berkisar **3 hingga 10 mikron**.
+
+### 1. Cara Membaca Kode Kebersihan Oli ISO 4406:
+Standar internasional ISO 4406 menggunakan tiga angka (contoh: **18 / 16 / 13**) untuk menyatakan jumlah partikel padat dalam 1 mililiter (mL) sampel oli berdasarkan tiga ukuran partikel:
+- **Angka Pertama (18)**: Jumlah partikel berukuran **≥ 4 µm** (antara 1.300 – 2.500 partikel/mL).
+- **Angka Kedua (16)**: Jumlah partikel berukuran **≥ 6 µm** (antara 320 – 640 partikel/mL).
+- **Angka Ketiga (13)**: Jumlah partikel berukuran **≥ 14 µm** (antara 40 – 80 partikel/mL).
+
+Semakin kecil angkanya, semakin bersih oli tersebut. Setiap penurunan 1 angka berarti jumlah partikel berkurang setengahnya.
+
+### 2. Target Kode ISO 4406 Berdasarkan Komponen:
+- **Gear Pump & Silinder Standar (Tekanan < 150 Bar)**: Target minimal **19 / 17 / 14** (gunakan filter 10–25 µm).
+- **Piston Pump & Vane Pump Industri (150–250 Bar)**: Target minimal **17 / 15 / 12** (gunakan filter 10 µm).
+- **Proportional & Servo Valve Presisi Tinggi**: Target wajib **15 / 13 / 10** (gunakan *high-pressure filter* 3–5 µm dengan Beta Ratio $\beta_x \ge 200$).
+
+### 3. Tiga Lokasi Kritis Pemasangan Filter pada HPU:
+1. **Suction Strainer (Di dalam tangki)**: Rating kasar 100–150 mikron untuk melindungi pompa dari serpihan besar tanpa menyebabkan kavitasi.
+2. **Pressure Line Filter (Setelah pompa)**: Rating 3–10 mikron bertekanan tinggi untuk melindungi *proportional/solenoid valve* dari keausan mikro.
+3. **Return Line Filter (Jalur balik ke tangki)**: Rating 10 mikron untuk menangkap gram logam atau serpihan seal yang terbawa dari silinder sebelum masuk kembali ke reservoir.
+
+Butuh konsultasi perawatan, *flushing* oli, atau rekondisi silinder akibat baret kontaminasi? Hubungi tim teknis kami melalui halaman [Kontak & Support Engineering](/contact-us) atau lihat layanan kami di [Silinder Hidrolik & Pneumatik](/products/silinder-hidrolik-pneumatik).`,
+      en: `Hydraulic fluid that looks crystal-clear to the naked eye can still be severely damaging to precision machinery. Human vision can only detect particles around 40 microns and larger, whereas internal clearances inside hydraulic pumps and directional spool valves are as tight as **3 to 10 microns**.
+
+### 1. Decoding the ISO 4406 Cleanliness Code:
+The ISO 4406 standard expresses solid particle contamination per 1 milliliter (mL) of fluid using a three-number code (e.g., **18 / 16 / 13**):
+- **First Number (18)**: Particle count **≥ 4 µm** (1,300 to 2,500 particles/mL).
+- **Second Number (16)**: Particle count **≥ 6 µm** (320 to 640 particles/mL).
+- **Third Number (13)**: Particle count **≥ 14 µm** (40 to 80 particles/mL).
+
+Lower numbers indicate cleaner fluid; each step down by 1 unit cuts the allowable particle count in half.
+
+### 2. Recommended Target Codes by System Component:
+- **Gear Pumps & Standard Cylinders (< 150 Bar)**: Target **19 / 17 / 14** (10–25 µm filtration).
+- **Industrial Vane & Axial Piston Pumps (150–250 Bar)**: Target **17 / 15 / 12** (10 µm absolute filtration).
+- **Proportional & Servo Valves**: Target **15 / 13 / 10** (3–5 µm high-pressure filtration with Beta Ratio $\beta_x \ge 200$).
+
+### 3. Three Strategic Filter Locations in an HPU:
+1. **Suction Strainer (Submerged)**: Coarse 100–150 µm mesh to catch large debris without starving the pump (preventing cavitation).
+2. **Pressure Line Filter (Downstream of Pump)**: High-pressure 3–10 µm element protecting sensitive directional and proportional valves.
+3. **Return Line Filter (Tank Return)**: 10 µm element capturing wear metals and seal fragments returning from actuators before fluid re-enters the reservoir.
+
+Need oil flushing advice, filtration upgrades, or cylinder honing repairs caused by contaminated fluid? Reach our workshop specialists via [Contact & Engineering Support](/contact-us) or explore [Hydraulic & Pneumatic Cylinders](/products/silinder-hidrolik-pneumatik).`
+    },
+    date: '2026-11-19',
+    readTime: '6 min baca',
+    image: '/images/facility_metrology_inspection.webp',
+    tags: ['ISO 4406', 'Oli Hidrolik', 'Filter Hidrolik', 'Maintenance HPU', 'Kontaminasi']
+  },
+  {
+    id: 'panduan-frl-filter-regulator-lubricator-pneumatik',
+    slug: 'panduan-memilih-frl-filter-regulator-lubricator-pneumatik',
+    category: 'Pneumatic Cylinder',
+    author: 'Tim Engineering BELSA',
+    title: {
+      id: 'Panduan Memilih Air Preparation Unit (FRL: Filter, Regulator, Lubricator) untuk Sistem Pneumatik',
+      en: 'Guide to Selecting Pneumatic Air Preparation Units (FRL: Filter, Regulator, Lubricator)'
+    },
+    summary: {
+      id: 'Udara bertekanan dari kompresor mengandung uap air, kerak pipa, dan fluktuasi tekanan yang merusak seal silinder pneumatik dan solenoid valve. Pelajari fungsi serta cara menentukan ukuran FRL Unit yang tepat.',
+      en: 'Compressed air straight from plant compressors carries moisture, scale, and pressure spikes that damage pneumatic seals and valves. Learn how to size and configure FRL units accurately.'
+    },
+    content: {
+      id: `Kualitas udara bertekanan (*compressed air*) sangat menentukan umur pakai silinder pneumatik dan solenoid valve di lini produksi. Udara langsung dari kompresor mengandung kondensat air, debu partikel, dan oli kompresor yang dapat membuat seal mengeras dan spool valve macet.
+
+### 1. Fungsi Tiga Komponen Utama FRL Unit:
+- **F (Air Filter)**: Memisahkan air kondensat secara sentrifugal dan menyaring partikel debu (standar 5 µm atau 40 µm) sebelum masuk ke aktuator. Wajib dilengkapi fitur *auto-drain* jika lokasi pemasangan sulit dijangkau teknisi.
+- **R (Pressure Regulator)**: Menjaga tekanan kerja tetap stabil (misal diset konstan di 6 Bar) meskipun tekanan suplai utama dari tangki kompresor naik-turun. Tekanan berlebih hanya memboroskan energi udara tanpa menambah produktivitas.
+- **L (Air Lubricator)**: Mengabutkan oli pneumatik (ISO VG 32) dalam jumlah mikro ke aliran udara untuk melumasi seal bergerak dan komponen mekanis. **Catatan penting**: banyak silinder modern (seperti BELSA ACI/BMC) sudah menggunakan *pre-lubricated grease*, namun bila Anda memasang Lubricator sejak hari pertama, pasokan oli harus dijaga terus karena pelumasan awal akan terbilas.
+
+### 2. Cara Menentukan Ukuran Port & Kapasitas Aliran (Flow Rate):
+Jangan hanya menyamakan ukuran drat pipa (1/4", 3/8", 1/2", 3/4", 1"). Pemilihan FRL harus melihat **kebutuhan aliran udara (L/menit atau SCFM)** saat seluruh silinder bergerak bersamaan:
+- **Port 1/4"**: Cocok untuk 1–2 silinder bore kecil (Ø20–Ø40 mm), aliran ~500–1.000 L/menit.
+- **Port 3/8" – 1/2"**: Standar lini mesin manufaktur sedang (Ø50–Ø100 mm), aliran ~1.500–3.000 L/menit.
+- **Port 3/4" – 1"**: Main header cabang mesin atau silinder bore besar (Ø125–Ø250 mm).
+
+### 3. Tips Pemasangan Lapangan yang Benar:
+1. Pasang FRL sedekat mungkin dengan mesin/aktuator (maksimal jarak 3–5 meter) agar kondensat di pipa tidak terbentuk ulang.
+2. Pastikan panah arah aliran (*IN -> OUT*) pada bodi FRL sesuai arah suplai kompresor.
+3. Gunakan mangkuk pelindung logam (*metal bowl guard*) pada area pabrik bersuhu tinggi atau rawan benturan mekanis.
+
+Lihat pilihan seri silinder pneumatik dan komponen air preparation kami di [Katalog Produk BELSA](/catalogue) atau [Kategori Silinder Hidrolik & Pneumatik](/products/silinder-hidrolik-pneumatik).`,
+      en: `Compressed air quality directly dictates the operational lifespan of pneumatic cylinders and directional solenoid valves. Untreated air straight from a plant compressor carries condensed water vapor, pipe rust scale, and degraded compressor oil that rapidly harden elastomer seals and jam valve spools.
+
+### 1. Core Functions of an FRL Assembly:
+- **F (Air Filter)**: Extracts water droplets via centrifugal separation and traps solid particulates (typically 5 µm or 40 µm elements). An **auto-drain** bowl is strongly advised for hard-to-reach machine enclosures.
+- **R (Pressure Regulator)**: Maintains rock-steady downstream operating pressure (e.g., locked at 6 Bar) despite fluctuations in the main air receiver. Running excess pressure wastes compressed air energy and accelerates mechanical wear.
+- **L (Air Lubricator)**: Injects a controlled micro-mist of pneumatic oil (ISO VG 32) into the airstream. **Important engineering rule**: modern cylinders (including BELSA ACI and BMC series) ship pre-lubricated with heavy-duty grease for oil-free operation; however, once a lubricator is introduced, continuous oil supply must be maintained because the mist flushes out the factory grease.
+
+### 2. Sizing Port Threads & Flow Capacity:
+Never size an FRL solely by matching existing pipe threads (1/4", 3/8", 1/2", 3/4", 1"). Verify total **peak air consumption (L/min or SCFM)** across simultaneous actuators:
+- **1/4" Port**: Ideal for 1–2 small bore cylinders (Ø20–Ø40 mm), ~500–1,000 L/min capacity.
+- **3/8" – 1/2" Port**: Standard for medium automation stations (Ø50–Ø100 mm), ~1,500–3,000 L/min capacity.
+- **3/4" – 1" Port**: Main machine headers or heavy bore cylinders (Ø125–Ø250 mm).
+
+### 3. Best Installation Practices:
+1. Mount the FRL assembly as close as practical to the point-of-use machine (within 3–5 meters) to prevent downstream condensation.
+2. Verify flow direction arrows (*IN -> OUT*) match the supply line.
+3. Specify **metal bowl guards** in high-heat or high-impact factory zones to protect polycarbonate bowls from cracking.
+
+Browse BELSA ISO pneumatic cylinders and air system components in our [Product Catalogue](/catalogue) or explore [Hydraulic & Pneumatic Cylinders](/products/silinder-hidrolik-pneumatik).`
+    },
+    date: '2026-11-20',
+    readTime: '5 min baca',
+    image: '/images/hero_cylinder_user.webp',
+    tags: ['FRL Pneumatik', 'Air Filter Regulator', 'Pneumatik', 'Compressed Air', 'Maintenance']
   }
 ];

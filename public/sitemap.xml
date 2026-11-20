@@ -2,751 +2,787 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://belsa.id/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://belsa.id/products</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://belsa.id/knowledge-hub</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://belsa.id/knowledge-hub/panduan-standar-silinder-iso-15552</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://belsa.id/knowledge-hub/rumus-barlow-ketebalan-pipa-honing-hidrolik</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://belsa.id/knowledge-hub/material-seal-hidrolik-nbr-pu-viton-fkm</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://belsa.id/knowledge-hub/penyebab-silinder-hidrolik-bocor-cara-mengatasi</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://belsa.id/knowledge-hub/panduan-memilih-selang-hidrolik-sae-100-r1-r2-4sp</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
     <loc>https://belsa.id/about-us</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://belsa.id/contact-us</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://belsa.id/products/silinder-hidrolik-pneumatik</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://belsa.id/products/selang-hidrolik-industri</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://belsa.id/products/process-valve</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-ykk-ap-indonesia</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-the-master-steel-mfc-proyek-1</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-the-master-steel-mfc-proyek-2</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-elangperdana-tyre-industry</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-jx-nippon-oil-energy</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/projects/pt-sumi-rubber-indonesia-dunlop</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator/pressure</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator/thickness</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator/bolt</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator/weight</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
     <loc>https://belsa.id/calculator/torque</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
+    <loc>https://belsa.id/knowledge-hub/panduan-standar-silinder-iso-15552</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/rumus-barlow-ketebalan-pipa-honing-hidrolik</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/material-seal-hidrolik-nbr-pu-viton-fkm</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/penyebab-silinder-hidrolik-bocor-cara-mengatasi</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/panduan-memilih-selang-hidrolik-sae-100-r1-r2-4sp</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/panduan-menghitung-kapasitas-tangki-pompa-hydraulic-power-unit-hpu</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/cara-menghitung-gaya-dorong-tarik-silinder-hidrolik-pneumatik</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/standar-hard-chrome-plating-uji-salt-spray-batang-rod-silinder</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/cara-membaca-simbol-solenoid-directional-valve-hidrolik-spool-center</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/panduan-memilih-mounting-silinder-hidrolik-mencegah-buckling</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/standar-kebersihan-oli-hidrolik-iso-4406-pemilihan-filter</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://belsa.id/knowledge-hub/panduan-memilih-frl-filter-regulator-lubricator-pneumatik</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://belsa.id/catalogue/mpc1</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/lpc1</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/ncr</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/rc-rmc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/spc1</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/spc2</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/xpc1</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bcc140a</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bcc140s</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/brpc35r</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/btc70hp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/btc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nh</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nhc140h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nmc70h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nmc210h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/wcl</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/wcm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhh</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bmgv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bmbv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bsv-fl</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bmglv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/mrc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bs</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/ab</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/aci</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b150ld</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b160</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b350le</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b3wcv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b4we</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b4we10</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b4we6</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b4wrp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/b790</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/ba10vs</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bad</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bad14</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/ban</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bas</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bbf</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bbv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bct</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bcv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bdhnt</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/be</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bebm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bew</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bf</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bfc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bfm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bgrp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhda</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhda87</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhe</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhed</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhed8</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhgp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhsv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/blds</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/blit</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bls</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bmm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bpcbf</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bpcu</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bpg</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bphs</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bplf</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bpogv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bprv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bps</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bqc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/brc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/brj</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bsfs</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bsg</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bsqp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/btd120m</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bth</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bv150</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bvc</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bvf81</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bvh</loc>
-    <lastmod>2026-11-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://belsa.id/catalogue/bzw</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bzw-dm</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/hpbv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/ocac</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nhc210h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nhc250h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/nhc300h</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bhreb</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/bpv</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/dv175f</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/btc-clamp</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://belsa.id/catalogue/rej</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>

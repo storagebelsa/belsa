@@ -3,6 +3,7 @@ const path = require('path');
 
 const rootDir = path.resolve(__dirname, '..');
 const tsContent = fs.readFileSync(path.join(rootDir, 'src/data/belsaCatalogueFull.ts'), 'utf8');
+const articlesContent = fs.readFileSync(path.join(rootDir, 'src/data/articlesData.ts'), 'utf8');
 
 const deleted = new Set([
   'diverter_valve', 'bsp', 'cl_series', 'npp-nhpu', 'bhreb_20es_1',
@@ -19,6 +20,15 @@ while ((m = itemRegex.exec(tsContent)) !== null) {
   }
 }
 
+const articleSlugRegex = /slug:\s*'([^']+)'/g;
+const articleSlugs = [];
+let am;
+while ((am = articleSlugRegex.exec(articlesContent)) !== null) {
+  if (am[1]) {
+    articleSlugs.push(am[1]);
+  }
+}
+
 const baseUrl = 'https://belsa.id';
 const lastmod = new Date().toISOString().split('T')[0];
 
@@ -28,6 +38,7 @@ const urls = [
   { loc: `${baseUrl}/catalogue`, priority: '0.95', changefreq: 'weekly' },
   { loc: `${baseUrl}/projects`, priority: '0.85', changefreq: 'monthly' },
   { loc: `${baseUrl}/calculator`, priority: '0.9', changefreq: 'monthly' },
+  { loc: `${baseUrl}/knowledge-hub`, priority: '0.9', changefreq: 'weekly' },
   { loc: `${baseUrl}/about-us`, priority: '0.8', changefreq: 'monthly' },
   { loc: `${baseUrl}/contact-us`, priority: '0.8', changefreq: 'monthly' },
   ...['silinder-hidrolik-pneumatik', 'selang-hidrolik-industri', 'process-valve'].map((s) => ({
@@ -50,6 +61,11 @@ const urls = [
   ...['pressure', 'thickness', 'bolt', 'weight', 'torque'].map((s) => ({
     loc: `${baseUrl}/calculator/${s}`,
     priority: '0.88',
+    changefreq: 'monthly',
+  })),
+  ...articleSlugs.map((s) => ({
+    loc: `${baseUrl}/knowledge-hub/${s}`,
+    priority: '0.85',
     changefreq: 'monthly',
   })),
   ...slugs.map((s) => ({
