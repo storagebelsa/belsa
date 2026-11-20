@@ -751,7 +751,7 @@ export async function generateProductDatasheetPdf({
     <div style="margin-bottom: ${isSpacious ? '10px' : '8px'};">
       <div style="background: #dc2626; color: #ffffff; display: inline-block; height: ${tabHeight}px; line-height: ${tabHeight}px; padding: 0 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: ${isSpacious ? '9.5px' : '9px'}; letter-spacing: 0.03em; box-sizing: border-box; white-space: nowrap;">How to Order</div>
       <div style="border: 1.5px solid #fca5a5; border-radius: 0 8px 8px 8px; background: #fffafa; padding: ${isSpacious ? '9px 12px' : '7px 10px'};">
-        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '4px' : isSpacious ? '6px' : '5px'}; row-gap: 6px; flex-wrap: ${isManySlots ? 'wrap' : 'nowrap'};">
+        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '3px' : isSpacious ? '6px' : '5px'}; row-gap: 6px; flex-wrap: ${totalSlots > 12 ? 'wrap' : 'nowrap'};">
           ${slots.map((slotNum) => {
             const val = getSlotValue(slotNum);
             let delimiterAfter = '';
@@ -763,18 +763,16 @@ export async function generateProductDatasheetPdf({
               }
             }
             const hasVal = val !== undefined && val !== null && String(val).trim() !== '';
-            const isUnitBreak = isManySlots && delimiterAfter.trim() === '&';
             return `
               <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">
-                <div style="display: inline-block; min-width: ${isManySlots ? '28px' : isSpacious ? '38px' : '36px'}; height: ${slotBoxHeight}px; line-height: ${slotBoxHeight - 3}px; padding: 0 ${isManySlots ? '6px' : '8px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : isSpacious ? '10px' : '9.5px'}; font-weight: 800; text-align: center; box-sizing: border-box; white-space: nowrap;">${hasVal ? val : 'Nil'}</div>
+                <div style="display: inline-block; min-width: ${isManySlots ? '26px' : isSpacious ? '38px' : '36px'}; height: ${slotBoxHeight}px; line-height: ${slotBoxHeight - 3}px; padding: 0 ${isManySlots ? '5px' : '8px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : isSpacious ? '10px' : '9.5px'}; font-weight: 800; text-align: center; box-sizing: border-box; white-space: nowrap;">${hasVal ? val : 'Nil'}</div>
                 <div style="margin-top: 4px; display: flex; align-items: center; justify-content: center;">
                   ${renderSlotNumberBadge(slotNum, 'sm')}
                 </div>
               </div>
               ${delimiterAfter && delimiterAfter.trim() !== '' ? `
-                <div style="height: ${slotBoxHeight}px; line-height: ${slotBoxHeight}px; display: inline-block; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 2px; flex-shrink: 0; text-align: center;">${delimiterAfter.trim()}</div>
+                <div style="height: ${slotBoxHeight}px; line-height: ${slotBoxHeight}px; display: inline-block; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 1px; flex-shrink: 0; text-align: center;">${delimiterAfter.trim()}</div>
               ` : ''}
-              ${isUnitBreak ? '<div style="flex-basis: 100%; height: 0;"></div>' : ''}
             `;
           }).join('')}
         </div>
