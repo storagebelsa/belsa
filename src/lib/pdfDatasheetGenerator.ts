@@ -408,6 +408,66 @@ function isFullWidthBlock(block: any): boolean {
 }
 
 /**
+ * Estimate relative vertical height weight of an HTO block for balanced multi-column flow
+ */
+function estimateBlockWeight(b: any): number {
+  if (!b) return 3;
+  if (b.displayType === 'chips') {
+    return 2.5 + Math.ceil((b.chipValues?.length || 0) / 3);
+  }
+  if (b.displayType === 'stroke_matrix') {
+    return 4 + Math.ceil((b.standardStrokes?.length || 0) / 7);
+  }
+  return 2.5 + (b.rows?.length || 1);
+}
+
+/**
+ * Partition blocks sequentially into N columns with balanced vertical height,
+ * keeping reading order top-to-bottom within each column (e.g. 1->2->3 | 4->5->6 | 7->8).
+ */
+function partitionBlocksIntoColumns(blocks: any[], numCols: number): any[][] {
+  if (blocks.length <= numCols) {
+    return blocks.map((b) => [b]);
+  }
+  const weights = blocks.map(estimateBlockWeight);
+  const n = blocks.length;
+
+  if (numCols === 2) {
+    let bestIdx = Math.ceil(n / 2);
+    let bestDiff = Infinity;
+    for (let i = 1; i < n; i++) {
+      const w1 = weights.slice(0, i).reduce((a, b) => a + b, 0);
+      const w2 = weights.slice(i).reduce((a, b) => a + b, 0);
+      const diff = Math.abs(w1 - w2);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        bestIdx = i;
+      }
+    }
+    return [blocks.slice(0, bestIdx), blocks.slice(bestIdx)];
+  }
+
+  // Optimal sequential 3-column partition
+  let bestI = 1;
+  let bestJ = 2;
+  let bestSpread = Infinity;
+  for (let i = 1; i < n - 1; i++) {
+    const w1 = weights.slice(0, i).reduce((a, b) => a + b, 0);
+    for (let j = i + 1; j < n; j++) {
+      const w2 = weights.slice(i, j).reduce((a, b) => a + b, 0);
+      const w3 = weights.slice(j).reduce((a, b) => a + b, 0);
+      const spread = Math.max(w1, w2, w3) - Math.min(w1, w2, w3);
+      if (spread < bestSpread) {
+        bestSpread = spread;
+        bestI = i;
+        bestJ = j;
+      }
+    }
+  }
+  return [blocks.slice(0, bestI), blocks.slice(bestI, bestJ), blocks.slice(bestJ)];
+}
+
+/**
  * Render an individual HTO Block Card (supports 'table', 'chips', and 'stroke_matrix')
  */
 function renderBlockCard(
@@ -417,7 +477,8 @@ function renderBlockCard(
   maxStrokeFallback?: number,
   density: 'spacious' | 'medium' | 'compact' = 'compact',
   siblingTitles: (string | undefined)[] = [],
-  fullWidth = false
+  fullWidth = false,
+  narrowCol = false
 ): string {
   const isSpacious = density === 'spacious';
   const isMedium = density === 'medium';
@@ -505,14 +566,14 @@ function renderBlockCard(
       selectedSummaryLabel = activeRow.code || 'Nil';
     }
 
-    const subTableFont = isSpacious ? '8.6px' : isMedium ? '8.4px' : '8.2px';
-    const singleTableFont = isSpacious ? '9px' : isMedium ? '8.6px' : '8.4px';
-    const subCellPad = isSpacious ? '3.5px 5px' : isMedium ? '3px 4px' : '2.5px 4px';
-    const singleCellPad = isSpacious ? '4px 6px' : isMedium ? '3.2px 5px' : '2.5px 5px';
-    const thPad = isSpacious ? '4px 5px' : '3px 4px';
+    const subTableFont = narrowCol ? '8px' : isSpacious ? '8.6px' : isMedium ? '8.4px' : '8.2px';
+    const singleTableFont = narrowCol ? '8.2px' : isSpacious ? '9px' : isMedium ? '8.6px' : '8.4px';
+    const subCellPad = narrowCol ? '2.5px 4px' : isSpacious ? '3.5px 5px' : isMedium ? '3px 4px' : '2.5px 4px';
+    const singleCellPad = narrowCol ? '2.6px 5px' : isSpacious ? '4px 6px' : isMedium ? '3.2px 5px' : '2.5px 5px';
+    const thPad = narrowCol ? '3px 5px' : isSpacious ? '4px 5px' : '3px 4px';
 
-    // Split tables with > 5 rows into 2 side-by-side compact sub-tables when there is only 1 description column
-    if (rows.length > 5 && visibleColumns.length <= 1) {
+    // Split tables with > 5 rows into 2 side-by-side compact sub-tables when in 2-col/full-width mode
+    if (!narrowCol && rows.length > 5 && visibleColumns.length <= 1) {
       const mid = Math.ceil(rows.length / 2);
       const leftRows = rows.slice(0, mid);
       const rightRows = rows.slice(mid);
@@ -605,14 +666,14 @@ function renderBlockCard(
 
   const summaryPillH = isSpacious ? 18 : 16;
   return `
-    <div style="${fullWidth ? 'grid-column: span 2;' : ''} border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
-      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: ${isSpacious ? '5px 10px' : '4px 8px'}; min-height: ${isSpacious ? '28px' : '25px'}; display: flex; align-items: center; justify-content: space-between; gap: 6px; box-sizing: border-box;">
-        <div style="display: inline-flex; align-items: center; gap: 6px;">
+    <div style="${fullWidth ? 'width: 100%;' : ''} border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column;">
+      <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: ${narrowCol ? '4px 7px' : isSpacious ? '5px 10px' : '4px 8px'}; min-height: ${narrowCol ? '24px' : isSpacious ? '28px' : '25px'}; display: flex; align-items: center; justify-content: space-between; gap: 5px; box-sizing: border-box;">
+        <div style="display: inline-flex; align-items: center; gap: 5px;">
           ${numBadge}
-          <span style="font-size: ${isSpacious ? '9.6px' : '9px'}; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1.2; display: inline-block;">${blockTitle}</span>
+          <span style="font-size: ${narrowCol ? '8.6px' : isSpacious ? '9.6px' : '9px'}; font-weight: 800; color: #0f172a; letter-spacing: 0.01em; line-height: 1.2; display: inline-block;">${blockTitle}</span>
         </div>
         ${selectedSummaryLabel ? `
-          <span style="display: inline-block; height: ${summaryPillH}px; line-height: ${summaryPillH - 2}px; font-size: ${isSpacious ? '8px' : '7.5px'}; font-weight: 800; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0 6px; box-sizing: border-box; white-space: nowrap;">${selectedSummaryLabel}</span>
+          <span style="display: inline-block; height: ${summaryPillH}px; line-height: ${summaryPillH - 2}px; font-size: ${narrowCol ? '7.4px' : isSpacious ? '8px' : '7.5px'}; font-weight: 800; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0 5px; box-sizing: border-box; white-space: nowrap;">${selectedSummaryLabel}</span>
         ` : ''}
       </div>
       ${bodyHtml}
@@ -799,22 +860,56 @@ export async function generateProductDatasheetPdf({
     <!-- 3. How To Order Sequence Bar -->
     ${howToOrderBarHtml}
 
-    <!-- 4. Sequential 2-Column Adaptive HTO Specification Matrix -->
-    <div id="belsa-pdf-matrix" style="flex: ${rawBlocks.length >= 5 ? '1' : '0 0 auto'}; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: ${isSpacious ? '9px 11px' : '7px 10px'}; align-items: stretch; margin-bottom: ${isSpacious ? '11px' : '10px'};">
+    <!-- 4. Adaptive Multi-Column Vertical Flow HTO Specification Matrix -->
+    <div id="belsa-pdf-matrix" style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: ${isSpacious ? '11px' : '10px'};">
       ${(() => {
         const siblingTitles = rawBlocks.map((bl) => bl.title);
-        let colCursor = 0;
-        return rawBlocks.map((b, idx) => {
-          let spanFull = isFullWidthBlock(b);
-          const isLast = idx === rawBlocks.length - 1;
-          if (!spanFull && isLast && colCursor % 2 === 0) {
-            spanFull = true;
+        const narrowCount = rawBlocks.filter((b) => !isFullWidthBlock(b)).length;
+        const use3Cols = rawBlocks.length >= 7 && narrowCount >= 6;
+        const numCols = use3Cols ? 3 : 2;
+
+        const segments: { type: 'wide' | 'narrow'; items: any[] }[] = [];
+        for (const b of rawBlocks) {
+          if (isFullWidthBlock(b)) {
+            segments.push({ type: 'wide', items: [b] });
+          } else {
+            const last = segments[segments.length - 1];
+            if (last && last.type === 'narrow') {
+              last.items.push(b);
+            } else {
+              segments.push({ type: 'narrow', items: [b] });
+            }
           }
-          colCursor += spanFull ? 2 : 1;
-          if (colCursor >= 2) colCursor = colCursor % 2;
-          const selVal = getSlotValue(b.slotIndex);
-          return renderBlockCard(b, selVal, lang, product.maxStroke, density, siblingTitles, spanFull);
-        }).join('');
+        }
+
+        return segments
+          .map((seg) => {
+            if (seg.type === 'wide') {
+              return seg.items
+                .map((b) => renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, density, siblingTitles, true, false))
+                .join('');
+            }
+            const colsCount = seg.items.length < numCols ? seg.items.length : numCols;
+            const cols = partitionBlocksIntoColumns(seg.items, colsCount);
+            return `
+              <div style="display: grid; grid-template-columns: repeat(${colsCount}, 1fr); gap: ${use3Cols ? '7px' : '9px'}; align-items: start;">
+                ${cols
+                  .map(
+                    (colBlocks) => `
+                      <div style="display: flex; flex-direction: column; gap: ${use3Cols ? '7px' : '8px'};">
+                        ${colBlocks
+                          .map((b) =>
+                            renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, density, siblingTitles, false, use3Cols)
+                          )
+                          .join('')}
+                      </div>
+                    `
+                  )
+                  .join('')}
+              </div>
+            `;
+          })
+          .join('');
       })()}
     </div>
 
@@ -822,8 +917,8 @@ export async function generateProductDatasheetPdf({
     ${(() => {
       const modelCodeStr = activeModelCode || product.code;
       const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
-      const normCode = modelCodeStr.replace(/[\s\-]+/g, '').toLowerCase();
-      const normBreakdown = readableSlotBreakdown.replace(/[\s\-]+/g, '').toLowerCase();
+      const normCode = modelCodeStr.replace(/[\s\-&]+/g, '').toLowerCase();
+      const normBreakdown = readableSlotBreakdown.replace(/[\s\-&]+/g, '').toLowerCase();
       const showSlotBreakdown = Boolean(readableSlotBreakdown) && normCode !== normBreakdown;
       const supportNote = getCategorySupportNote(product.category, lang);
       return `
@@ -918,33 +1013,61 @@ export async function generateProductDatasheetPdf({
       }
     };
 
-    // Tier 2: Auto Multi-Page A4 for dense jumbo series (>= 11 blocks or > 1.12x A4 height with >= 9 blocks)
-    if (rawBlocks.length >= 11 || (naturalHeight > targetA4Height * 1.12 && rawBlocks.length >= 9)) {
+    // Tier 2: Auto Multi-Page A4 only when even 3-column flow exceeds 1.20x A4 height
+    if (naturalHeight > targetA4Height * 1.20 && rawBlocks.length >= 10) {
       const siblingTitles = rawBlocks.map((bl) => bl.title);
       const splitIdx = rawBlocks.length % 2 === 1 ? Math.floor(rawBlocks.length / 2) : Math.ceil(rawBlocks.length / 2);
       const firstBlocks = rawBlocks.slice(0, splitIdx);
       const secondBlocks = rawBlocks.slice(splitIdx);
 
       const renderBlockList = (list: any[]) => {
-        let colCursor = 0;
-        return list
-          .map((b, idx) => {
-            let spanFull = isFullWidthBlock(b);
-            const isLast = idx === list.length - 1;
-            if (!spanFull && isLast && colCursor % 2 === 0) {
-              spanFull = true;
+        const narrowCount = list.filter((b) => !isFullWidthBlock(b)).length;
+        const use3Cols = list.length >= 7 && narrowCount >= 6;
+        const numCols = use3Cols ? 3 : 2;
+        const segments: { type: 'wide' | 'narrow'; items: any[] }[] = [];
+        for (const b of list) {
+          if (isFullWidthBlock(b)) {
+            segments.push({ type: 'wide', items: [b] });
+          } else {
+            const last = segments[segments.length - 1];
+            if (last && last.type === 'narrow') last.items.push(b);
+            else segments.push({ type: 'narrow', items: [b] });
+          }
+        }
+        return segments
+          .map((seg) => {
+            if (seg.type === 'wide') {
+              return seg.items
+                .map((b) => renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, true, false))
+                .join('');
             }
-            colCursor += spanFull ? 2 : 1;
-            if (colCursor >= 2) colCursor = colCursor % 2;
-            return renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, spanFull);
+            const colsCount = seg.items.length < numCols ? seg.items.length : numCols;
+            const cols = partitionBlocksIntoColumns(seg.items, colsCount);
+            return `
+              <div style="display: grid; grid-template-columns: repeat(${colsCount}, 1fr); gap: ${use3Cols ? '7px' : '9px'}; align-items: start;">
+                ${cols
+                  .map(
+                    (colBlocks) => `
+                      <div style="display: flex; flex-direction: column; gap: ${use3Cols ? '7px' : '8px'};">
+                        ${colBlocks
+                          .map((b) =>
+                            renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, false, use3Cols)
+                          )
+                          .join('')}
+                      </div>
+                    `
+                  )
+                  .join('')}
+              </div>
+            `;
           })
           .join('');
       };
 
       const modelCodeStr = activeModelCode || product.code;
       const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
-      const normCode = modelCodeStr.replace(/[\s\-]+/g, '').toLowerCase();
-      const normBreakdown = readableSlotBreakdown.replace(/[\s\-]+/g, '').toLowerCase();
+      const normCode = modelCodeStr.replace(/[\s\-&]+/g, '').toLowerCase();
+      const normBreakdown = readableSlotBreakdown.replace(/[\s\-&]+/g, '').toLowerCase();
       const showSlotBreakdown = Boolean(readableSlotBreakdown) && normCode !== normBreakdown;
       const supportNote = getCategorySupportNote(product.category, lang);
 
@@ -987,7 +1110,7 @@ export async function generateProductDatasheetPdf({
           </div>
           <div style="font-size: 8.5px; font-weight: 800; color: #dc2626;">${lang === 'id' ? 'Halaman 2 / 2' : 'Page 2 / 2'}</div>
         </div>
-        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: 8px 10px; align-items: stretch; margin-bottom: 10px;">
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
           ${renderBlockList(secondBlocks)}
         </div>
         <div id="belsa-pdf-bottom-summary" style="margin-top: auto; padding-top: 2px;">
