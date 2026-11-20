@@ -21,3 +21,18 @@ export function formatProductImageUrl(url?: string): string {
 
   return trimmed;
 }
+
+/**
+ * Resolves an image URL into a safe, absolute HTTPS URL for OpenGraph / Twitter cards.
+ * Base64 data URIs or empty values fall back to the default BELSA OG banner.
+ */
+export function resolveOgImageUrl(rawUrl?: string): string {
+  const formatted = formatProductImageUrl(rawUrl);
+  if (!formatted || formatted.startsWith('data:')) {
+    return 'https://belsa.id/images/belsa_og_logo.png';
+  }
+  if (formatted.startsWith('http://') || formatted.startsWith('https://')) {
+    return formatted;
+  }
+  return `https://belsa.id${formatted.startsWith('/') ? '' : '/'}${formatted}`;
+}

@@ -233,9 +233,7 @@ export function CatalogueView({ initialSeriesSlug, initialProduct }: { initialSe
     }
     if (typeof window !== 'undefined') {
       const targetSlug = s.slug || s.id;
-      const url = new URL(window.location.href);
-      url.searchParams.set('series', targetSlug);
-      window.history.replaceState(null, '', url.pathname + '?' + url.searchParams.toString());
+      window.history.replaceState(null, '', `/catalogue/${encodeURIComponent(targetSlug)}`);
     }
   };
 

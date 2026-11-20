@@ -19,7 +19,14 @@ export const metadata: Metadata = {
     description:
       'Kirim spesifikasi, drawing, atau kebutuhan silinder hidrolik & pneumatik Anda. Kantor & Workshop di Tangerang, Banten.',
     url: 'https://belsa.id/contact-us',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hubungi Tim Sales & Engineering BELSA | PT. Rafitama Millenial Wahyudi',
+    description:
+      'Kirim spesifikasi, drawing, atau kebutuhan silinder hidrolik & pneumatik Anda. Kantor & Workshop di Tangerang, Banten.',
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
   },
 };
 

@@ -19,7 +19,14 @@ export const metadata: Metadata = {
     description:
       'Dokumentasi implementasi silinder hidrolik dan pneumatik heavy-duty BELSA pada sektor peleburan baja, manufaktur ban, ekstrusi aluminium, dan energi.',
     url: 'https://belsa.id/projects',
-    images: ['/images/projects/project_ykk_ap.webp'],
+    images: ['https://belsa.id/images/projects/project_ykk_ap.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Portofolio Proyek & Studi Kasus Industri | BELSA Hydraulic & Pneumatic',
+    description:
+      'Dokumentasi implementasi silinder hidrolik dan pneumatik heavy-duty BELSA pada sektor peleburan baja, manufaktur ban, ekstrusi aluminium, dan energi.',
+    images: ['https://belsa.id/images/projects/project_ykk_ap.webp'],
   },
 };
 

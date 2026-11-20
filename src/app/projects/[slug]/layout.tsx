@@ -60,7 +60,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${title} | BELSA`,
       description,
       url: `https://belsa.id/projects/${slug}`,
-      images: [image],
+      images: [image.startsWith('http') ? image : `https://belsa.id${image}`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | BELSA`,
+      description,
+      images: [image.startsWith('http') ? image : `https://belsa.id${image}`],
     },
   };
 }

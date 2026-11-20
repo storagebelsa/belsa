@@ -20,7 +20,14 @@ export const metadata: Metadata = {
     description:
       'Pilih seri silinder atau valve, susun kode model pemesanan secara interaktif (How to Order), dan unduh lembar spesifikasi teknis (PDF Datasheet A4).',
     url: 'https://belsa.id/catalogue',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Katalog Teknis Interaktif & Datasheet PDF | BELSA Hydraulic & Pneumatic',
+    description:
+      'Pilih seri silinder atau valve, susun kode model pemesanan secara interaktif (How to Order), dan unduh lembar spesifikasi teknis (PDF Datasheet A4).',
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
   },
 };
 

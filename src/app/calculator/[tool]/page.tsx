@@ -144,7 +144,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${seo.title} | BELSA`,
       description: seo.description,
       url: `https://belsa.id/calculator/${targetTool}`,
-      images: ['/images/prod_cylinder_clean.webp'],
+      images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${seo.title} | BELSA`,
+      description: seo.description,
+      images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
     },
   };
 }

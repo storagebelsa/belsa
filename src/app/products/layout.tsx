@@ -20,7 +20,14 @@ export const metadata: Metadata = {
     description:
       'Solusi lengkap aktuator silinder hidrolik & pneumatik, hose assembly tekanan tinggi, dan katup kontrol industri untuk pabrik di Indonesia.',
     url: 'https://belsa.id/products',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lini Produk Industri BELSA - Silinder, Selang Hidrolik & Process Valve',
+    description:
+      'Solusi lengkap aktuator silinder hidrolik & pneumatik, hose assembly tekanan tinggi, dan katup kontrol industri untuk pabrik di Indonesia.',
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
   },
 };
 

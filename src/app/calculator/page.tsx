@@ -99,9 +99,7 @@ function CalculatorContent({ initialTool }: { initialTool?: CalculatorTab }) {
     }, 240);
 
     if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.set('tool', tab);
-      window.history.replaceState(null, '', url.toString());
+      window.history.replaceState(null, '', `/calculator/${encodeURIComponent(tab)}`);
       if (window.innerWidth <= 768 && window.scrollY > 80) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }

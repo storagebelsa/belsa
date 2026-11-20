@@ -21,7 +21,14 @@ export const metadata: Metadata = {
     description:
       '5 alat bantu hitung teknis untuk engineer: Tekanan & Beban Silinder, Tebal Tube Honing, Safety Factor Baut Tie-Rod, Berat Baja/Rod, dan Torsi Baut.',
     url: 'https://belsa.id/calculator',
-    images: ['/images/prod_cylinder_clean.webp'],
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kalkulator Engineering Silinder Hidrolik & Material | BELSA',
+    description:
+      '5 alat bantu hitung teknis untuk engineer: Tekanan & Beban Silinder, Tebal Tube Honing, Safety Factor Baut Tie-Rod, Berat Baja/Rod, dan Torsi Baut.',
+    images: ['https://belsa.id/images/prod_cylinder_clean.webp'],
   },
 };
 

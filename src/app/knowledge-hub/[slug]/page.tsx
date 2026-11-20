@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
 import { GOOGLE_SCRIPT_URL } from '@/lib/googleSheetsConfig';
-import { formatProductImageUrl } from '@/lib/imageUtils';
+import { resolveOgImageUrl } from '@/lib/imageUtils';
 import ArticleDetailClient from './ArticleDetailClient';
 
 interface Props {
@@ -113,10 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = article.title.id || article.title.en;
   const description = article.summary.id || article.summary.en;
-  const formattedImg = formatProductImageUrl(article.image);
-  const imgUrl = formattedImg.startsWith('http')
-    ? formattedImg
-    : `https://belsa.id${formattedImg.startsWith('/') ? '' : '/'}${formattedImg}`;
+  const imgUrl = resolveOgImageUrl(article.image);
 
   return {
     title: `${title} | Engineering Knowledge Hub`,

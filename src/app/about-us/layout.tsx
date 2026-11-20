@@ -19,7 +19,14 @@ export const metadata: Metadata = {
     description:
       'Produsen silinder hidrolik dan pneumatik di Indonesia sejak 2017 dengan fasilitas machining, honing, dan pengujian kualitas berstandar ISO 9001:2015.',
     url: 'https://belsa.id/about-us',
-    images: ['/images/about_technician.webp'],
+    images: ['https://belsa.id/images/about_technician.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tentang BELSA - PT. Rafitama Millenial Wahyudi',
+    description:
+      'Produsen silinder hidrolik dan pneumatik di Indonesia sejak 2017 dengan fasilitas machining, honing, dan pengujian kualitas berstandar ISO 9001:2015.',
+    images: ['https://belsa.id/images/about_technician.webp'],
   },
 };
 

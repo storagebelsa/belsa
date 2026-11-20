@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { BelsaProductSeries } from '@/data/belsaCatalogueFull';
 import { INITIAL_CATALOGUE } from '@/data/initialCatalogue';
-import { formatProductImageUrl } from '@/lib/imageUtils';
+import { resolveOgImageUrl } from '@/lib/imageUtils';
 import { CatalogueView } from '../page';
 
 interface Props {
@@ -46,8 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${product.series} - ${cleanSubId} (${product.category})`;
   const description = `Spesifikasi teknis, tabel kode pemesanan (How to Order), dan unduh PDF Datasheet ${product.series} (${cleanSubId} / ${cleanSubEn}) dari BELSA. Fitur: ${featSnippet || 'Standar Industri ISO 9001:2015'}.`;
-  const formattedImg = formatProductImageUrl(product.image);
-  const imgUrl = formattedImg.startsWith('/') ? `https://belsa.id${formattedImg}` : formattedImg;
+  const imgUrl = resolveOgImageUrl(product.image);
 
   return {
     title,
@@ -70,6 +69,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `https://belsa.id/catalogue/${product.slug}`,
       images: [imgUrl],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | BELSA Hydraulic & Pneumatic`,
+      description,
+      images: [imgUrl],
+    },
   };
 }
 
@@ -77,10 +82,7 @@ export default async function CatalogueSlugPage({ params }: Props) {
   const { slug } = await params;
   const product = findProductBySlug(slug);
   const cleanSubId = product?.subTitle?.id?.replace(/\s*\([^)]*\)/g, '').trim() || '';
-  const formattedImg = formatProductImageUrl(product?.image);
-  const imgUrl = formattedImg.startsWith('/')
-    ? `https://belsa.id${formattedImg}`
-    : formattedImg;
+  const imgUrl = resolveOgImageUrl(product?.image);
 
   const jsonLd = product
     ? {

@@ -155,6 +155,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     image: '/images/prod_cylinder_clean.webp',
   };
 
+  const absImage = seo.image.startsWith('http') ? seo.image : `https://belsa.id${seo.image}`;
+
   return {
     title: seo.title,
     description: seo.description,
@@ -166,7 +168,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${seo.title} | BELSA`,
       description: seo.description,
       url: `https://belsa.id/products/${slug}`,
-      images: [seo.image],
+      images: [absImage],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${seo.title} | BELSA`,
+      description: seo.description,
+      images: [absImage],
     },
   };
 }
