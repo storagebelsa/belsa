@@ -39655,19 +39655,6 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         "11": ""
       },
       "totalSlots": 11,
-      "defaultSlotValues": {
-        "1": "NHPU",
-        "2": "100LT",
-        "3": "3.0KW",
-        "4": "PP10CC",
-        "5": "MBS4",
-        "6": "PP",
-        "7": "100LT",
-        "8": "3.0KW",
-        "9": "VP5CC",
-        "10": "MBS2",
-        "11": "M"
-      },
       "blocks": [
         {
           "id": "nhpu_b1",
