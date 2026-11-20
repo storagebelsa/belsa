@@ -99,6 +99,29 @@ export function cleanHtoTitle(title?: string): string {
   return t || title;
 }
 
+/**
+ * Strip only the leading numbering/bullets of an HTO title, keeping contextual parentheticals.
+ */
+function stripLeadingNumbering(title?: string): string {
+  if (!title) return '';
+  const t = title.replace(/^[\u2460-\u2473\u24ea-\u24ff#\$\d\s\.\-\–\—]+/, '').trim();
+  return t || title;
+}
+
+/**
+ * Resolve an HTO block title. When several blocks of the same product share the same
+ * base title (e.g. "Tank Capacity (HPU)" vs "Tank Capacity (Plunger Pump Unit)"),
+ * keep the contextual parenthetical so the titles stay distinguishable.
+ */
+export function resolveHtoBlockTitle(title: string | undefined, siblingTitles: (string | undefined)[] = []): string {
+  if (!title) return '';
+  const base = cleanHtoTitle(title);
+  const baseLower = base.toLowerCase();
+  const dupCount = siblingTitles.filter((s) => cleanHtoTitle(s).toLowerCase() === baseLower).length;
+  if (dupCount <= 1) return base;
+  return stripLeadingNumbering(title) || base;
+}
+
 function cleanColumnLabel(label: string, lang: 'id' | 'en'): string {
   if (!label) return lang === 'id' ? 'Deskripsi' : 'Description';
   const lower = label.toLowerCase().trim();
@@ -177,9 +200,11 @@ function localizeHtoText(text: string, lang: 'id' | 'en'): string {
 /**
  * Localize HTO Block Header Title
  */
-function localizeBlockTitle(title: string, lang: 'id' | 'en'): string {
+function localizeBlockTitle(title: string, lang: 'id' | 'en', siblingTitles: (string | undefined)[] = []): string {
   const cleaned = cleanHtoTitle(title);
-  if (lang === 'en') return cleaned;
+  const resolved = resolveHtoBlockTitle(title, siblingTitles);
+  const hasContext = resolved !== cleaned;
+  if (lang === 'en') return resolved;
 
   const mapId: Record<string, string> = {
     'series': 'Seri Produk (Series)',
@@ -202,7 +227,53 @@ function localizeBlockTitle(title: string, lang: 'id' | 'en'): string {
     'seal material': 'Material Seal',
     'rod end thread': 'Ulir Ujung Rod',
   };
-  return mapId[cleaned.toLowerCase()] || cleaned;
+  const mapped = mapId[cleaned.toLowerCase()];
+  if (!hasContext) return mapped || cleaned;
+  if (!mapped) return resolved;
+
+  // Re-attach the distinguishing context, e.g. "Seri Produk (Primary Unit)"
+  const contexts = (resolved.match(/\(([^)]*)\)/g) || []).filter(
+    (p) => !/^\((?:mm|inch|in\.|npt|bar|psi|cm|g)\)$/i.test(p)
+  );
+  const mappedBase = mapped.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  return contexts.length > 0 ? `${mappedBase} ${contexts.join(' ')}` : mapped;
+}
+
+/**
+ * Category-aware support note shown at the bottom-right of the datasheet
+ */
+function getCategorySupportNote(category: string, lang: 'id' | 'en'): { title: string; text: string } {
+  const c = (category || '').toLowerCase();
+  if (c.includes('cylinder')) {
+    return {
+      title: lang === 'id' ? 'LAYANAN CUSTOM & FABRIKASI CNC BELSA:' : 'BELSA CNC CUSTOM FABRICATION & SUPPORT:',
+      text: lang === 'id'
+        ? 'Menerima fabrikasi silinder bore/stroke khusus sesuai drawing atau sampel, pembuatan seal kit, dan perbaikan overhaul.'
+        : 'Custom cylinder bore/stroke manufacturing per drawing or sample, precision seal kits, and full hydraulic overhaul services.',
+    };
+  }
+  if (c.includes('pump') || c.includes('power unit')) {
+    return {
+      title: lang === 'id' ? 'LAYANAN PERAKITAN HPU & POWER PACK BELSA:' : 'BELSA HPU & POWER PACK ASSEMBLY:',
+      text: lang === 'id'
+        ? 'Menerima perakitan HPU & power pack custom (4–500 liter), penggantian pompa/motor, flushing oli ISO 4406, dan uji tekanan hingga 350 Bar.'
+        : 'Custom HPU & power pack assembly (4–500 liters), pump/motor replacement, ISO 4406 oil flushing, and pressure testing up to 350 Bar.',
+    };
+  }
+  if (c.includes('valve') || c.includes('hose') || c.includes('fitting')) {
+    return {
+      title: lang === 'id' ? 'LAYANAN VALVE & HOSE ASSEMBLY BELSA:' : 'BELSA VALVE & HOSE ASSEMBLY SERVICES:',
+      text: lang === 'id'
+        ? 'Tersedia crimping hose assembly custom bertekanan tinggi, konfigurasi manifold, dan konsultasi penggantian valve industri.'
+        : 'High-pressure custom hose assembly crimping, manifold configuration, and industrial valve replacement consultation.',
+    };
+  }
+  return {
+    title: lang === 'id' ? 'LAYANAN TEKNIS & PENGADAAN BELSA:' : 'BELSA ENGINEERING & SUPPLY SUPPORT:',
+    text: lang === 'id'
+      ? 'Konsultasi pemilihan komponen fluid power, pengadaan suku cadang industri, dan dukungan teknis instalasi di lokasi pabrik.'
+      : 'Fluid power component selection, industrial spare parts sourcing, and on-site installation engineering support.',
+  };
 }
 
 /**
@@ -293,7 +364,9 @@ function renderSlotNumberBadge(num: number, size: 'sm' | 'md' = 'md'): string {
 }
 
 /**
- * Render a code pill inside table cells with true vertical centering
+ * Render a code pill inside table cells.
+ * Uses plain inline-block + explicit line-height (no nested inline-flex) so html2canvas
+ * always paints the code text, and the pill auto-widens for long codes (e.g. B-PV2R1, VP10.8CC).
  */
 function renderCodePill(code: string, isSelected: boolean, compact = false, spacious = false): string {
   const bg = isSelected ? '#dc2626' : '#f1f5f9';
@@ -301,8 +374,37 @@ function renderCodePill(code: string, isSelected: boolean, compact = false, spac
   const border = isSelected ? '1px solid #dc2626' : '1px solid #cbd5e1';
   const fontSize = spacious ? (compact ? '8.2px' : '8.5px') : (compact ? '7.8px' : '8px');
   const minW = spacious ? (compact ? '26px' : '28px') : (compact ? '24px' : '26px');
-  const pillH = spacious ? '19px' : (compact ? '17px' : '18px');
-  return `<span style="display: inline-flex; align-items: center; justify-content: center; min-width: ${minW}; height: ${pillH}; padding: 0 5px; border-radius: 4px; background: ${bg}; color: ${color}; border: ${border}; font-weight: 800; font-size: ${fontSize}; line-height: 1; box-sizing: border-box; vertical-align: middle;"><span style="display: inline-block; line-height: 1;">${code || 'Nil'}</span></span>`;
+  const pillH = spacious ? 19 : (compact ? 17 : 18);
+  return `<span style="display: inline-block; min-width: ${minW}; height: ${pillH}px; line-height: ${pillH - 2}px; padding: 0 6px; border-radius: 4px; background: ${bg}; color: ${color}; border: ${border}; font-weight: 800; font-size: ${fontSize}; text-align: center; white-space: nowrap; box-sizing: border-box; vertical-align: middle;">${code || 'Nil'}</span>`;
+}
+
+/**
+ * Number of visible (non-code) description columns of a table block
+ */
+function getVisibleColumns(block: any): any[] {
+  return (block?.columns || []).filter((c: any) => {
+    const normLabel = (c.label || '').toLowerCase().trim();
+    const normId = (c.id || '').toLowerCase().trim();
+    return !(
+      normId === 'code' ||
+      normLabel === 'kode' ||
+      normLabel === 'code' ||
+      normLabel === 'symbol' ||
+      normLabel === 'simbol' ||
+      normId === 'symbol'
+    );
+  });
+}
+
+/**
+ * Whether an HTO block should span the full width (2 grid columns) of the datasheet
+ */
+function isFullWidthBlock(block: any): boolean {
+  if (!block) return false;
+  if (block.displayType === 'stroke_matrix') return true;
+  if (block.displayType === 'chips') return (block.chipValues || []).length > 12;
+  if (block.displayType === 'table') return getVisibleColumns(block).length >= 2;
+  return false;
 }
 
 /**
@@ -313,7 +415,9 @@ function renderBlockCard(
   selectedCode: string | undefined,
   lang: 'id' | 'en',
   maxStrokeFallback?: number,
-  density: 'spacious' | 'medium' | 'compact' = 'compact'
+  density: 'spacious' | 'medium' | 'compact' = 'compact',
+  siblingTitles: (string | undefined)[] = [],
+  fullWidth = false
 ): string {
   const isSpacious = density === 'spacious';
   const isMedium = density === 'medium';
@@ -327,7 +431,7 @@ function renderBlockCard(
     return c === normSelected;
   };
 
-  const blockTitle = localizeBlockTitle(block.title || '', lang);
+  const blockTitle = localizeBlockTitle(block.title || '', lang, siblingTitles);
   const slotNum = Number(block.slotIndex) || 1;
   const numBadge = renderSlotNumberBadge(slotNum, 'md');
 
@@ -337,7 +441,7 @@ function renderBlockCard(
   if (block.displayType === 'chips') {
     const chips: (string | number)[] = block.chipValues || [];
     selectedSummaryLabel = normSelected ? `Ø${normSelected} mm` : '';
-    const chipH = isSpacious ? '24px' : '21px';
+    const chipH = isSpacious ? 24 : 21;
     bodyHtml = `
       <div style="padding: ${isSpacious ? '9px 10px' : '7px 8px'}; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; align-content: center; flex: 1;">
         ${chips.map((chip) => {
@@ -346,9 +450,7 @@ function renderBlockCard(
           const color = sel ? '#ffffff' : '#0f172a';
           const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
           return `
-            <div style="flex: 1 0 48px; height: ${chipH}; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9.5px' : '9px'}; font-weight: 800; padding: 0 6px; line-height: 1; letter-spacing: 0.01em; box-sizing: border-box;">
-              <span style="display: inline-block; line-height: 1;">Ø${chip}</span>
-            </div>
+            <div style="flex: 1 0 48px; height: ${chipH}px; line-height: ${chipH - 2}px; text-align: center; border-radius: 5px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9.5px' : '9px'}; font-weight: 800; padding: 0 6px; letter-spacing: 0.01em; box-sizing: border-box; white-space: nowrap;">Ø${chip}</div>
           `;
         }).join('')}
       </div>
@@ -362,7 +464,7 @@ function renderBlockCard(
       !strokes.some((s) => String(s).trim() === normSelected);
 
     selectedSummaryLabel = normSelected ? `${normSelected} mm` : '';
-    const stkH = isSpacious ? '22px' : '19px';
+    const stkH = isSpacious ? 22 : 19;
 
     bodyHtml = `
       <div style="padding: ${isSpacious ? '8px 10px' : '6px 8px'}; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
@@ -373,9 +475,7 @@ function renderBlockCard(
             const color = sel ? '#ffffff' : '#334155';
             const border = sel ? '1.5px solid #dc2626' : '1px solid #cbd5e1';
             return `
-              <div style="height: ${stkH}; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9px' : '8.5px'}; font-weight: 800; padding: 0 2px; line-height: 1; box-sizing: border-box;">
-                <span style="display: inline-block; line-height: 1;">${stk}</span>
-              </div>
+              <div style="height: ${stkH}px; line-height: ${stkH - 2}px; text-align: center; border-radius: 4px; border: ${border}; background: ${bg}; color: ${color}; font-size: ${isSpacious ? '9px' : '8.5px'}; font-weight: 800; padding: 0 2px; box-sizing: border-box; white-space: nowrap;">${stk}</div>
             `;
           }).join('')}
         </div>
@@ -385,30 +485,19 @@ function renderBlockCard(
             ${lang === 'id' ? `Tersedia hingga maks. ${maxStk} mm` : `Available up to max. ${maxStk} mm`}
           </span>
           ${isCustomSelected ? `
-            <span style="display: inline-flex; align-items: center; justify-content: center; height: 18px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 0 6px; border-radius: 4px; line-height: 1;">
-              <span style="display: inline-block; line-height: 1;">${lang === 'id' ? 'Dipilih' : 'Selected'}: ${normSelected} mm</span>
-            </span>
+            <span style="display: inline-block; height: 18px; line-height: 16px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; font-weight: 800; padding: 0 6px; border-radius: 4px; box-sizing: border-box; white-space: nowrap;">${lang === 'id' ? 'Dipilih' : 'Selected'}: ${normSelected} mm</span>
           ` : ''}
         </div>
       </div>
     `;
   } else {
     // Table displayType
-    const visibleColumns = (block.columns || []).filter((c: any) => {
-      const normLabel = (c.label || '').toLowerCase().trim();
-      const normId = (c.id || '').toLowerCase().trim();
-      return !(
-        normId === 'code' ||
-        normLabel === 'kode' ||
-        normLabel === 'code' ||
-        normLabel === 'symbol' ||
-        normLabel === 'simbol' ||
-        normId === 'symbol'
-      );
-    });
+    const visibleColumns = getVisibleColumns(block);
 
     const rows: any[] = block.rows || [];
     const codeColLabel = lang === 'id' ? 'Kode' : 'Code';
+    const maxCodeLen = rows.reduce((max, r) => Math.max(max, String(r?.code || 'Nil').trim().length), 3);
+    const codeColWidth = maxCodeLen <= 4 ? '46px' : maxCodeLen <= 7 ? '64px' : '82px';
 
     // Find active row description for header badge summary
     const activeRow = rows.find((r) => isRowSelected(r.code));
@@ -433,7 +522,7 @@ function renderBlockCard(
         <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${subTableFont};">
           <thead>
             <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-              <th style="padding: ${thPad}; text-align: left; width: 44px; vertical-align: middle;">${codeColLabel}</th>
+              <th style="padding: ${thPad}; text-align: left; width: ${codeColWidth}; vertical-align: middle; white-space: nowrap;">${codeColLabel}</th>
               <th style="padding: ${thPad}; text-align: left; vertical-align: middle;">${colHeader}</th>
             </tr>
           </thead>
@@ -448,7 +537,7 @@ function renderBlockCard(
               const textColor = sel ? '#991b1b' : '#334155';
               return `
                 <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                  <td style="padding: ${subCellPad}; vertical-align: middle; width: 44px;">
+                  <td style="padding: ${subCellPad}; vertical-align: middle; width: ${codeColWidth};">
                     ${renderCodePill(r.code || 'Nil', sel, true, isSpacious)}
                   </td>
                   <td style="padding: ${subCellPad}; color: ${textColor}; font-weight: ${sel ? '700' : '500'}; vertical-align: middle; line-height: 1.25;">
@@ -474,7 +563,7 @@ function renderBlockCard(
           <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${singleTableFont};">
             <thead>
               <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
-                <th style="padding: ${thPad}; text-align: left; width: 52px; vertical-align: middle;">${codeColLabel}</th>
+                <th style="padding: ${thPad}; text-align: left; width: ${codeColWidth}; vertical-align: middle; white-space: nowrap;">${codeColLabel}</th>
                 ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => `
                   <th style="padding: ${thPad}; text-align: left; vertical-align: middle;">${cleanColumnLabel(c.label, lang)}</th>
                 `).join('') : `
@@ -489,7 +578,7 @@ function renderBlockCard(
                 const textColor = sel ? '#991b1b' : '#334155';
                 return `
                   <tr style="background: ${bg}; border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: ${singleCellPad}; vertical-align: middle; width: 52px;">
+                    <td style="padding: ${singleCellPad}; vertical-align: middle; width: ${codeColWidth};">
                       ${renderCodePill(r.code || 'Nil', sel, false, isSpacious)}
                     </td>
                     ${visibleColumns.length > 0 ? visibleColumns.map((c: any) => {
@@ -514,17 +603,16 @@ function renderBlockCard(
     }
   }
 
+  const summaryPillH = isSpacious ? 18 : 16;
   return `
-    <div style="border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+    <div style="${fullWidth ? 'grid-column: span 2;' : ''} border: 1px solid #cbd5e1; border-radius: 7px; background: #ffffff; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
       <div style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; padding: ${isSpacious ? '5px 10px' : '4px 8px'}; min-height: ${isSpacious ? '28px' : '25px'}; display: flex; align-items: center; justify-content: space-between; gap: 6px; box-sizing: border-box;">
         <div style="display: inline-flex; align-items: center; gap: 6px;">
           ${numBadge}
-          <span style="font-size: ${isSpacious ? '9.6px' : '9px'}; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1; display: inline-block;">${blockTitle}</span>
+          <span style="font-size: ${isSpacious ? '9.6px' : '9px'}; font-weight: 800; color: #0f172a; letter-spacing: 0.02em; line-height: 1.2; display: inline-block;">${blockTitle}</span>
         </div>
         ${selectedSummaryLabel ? `
-          <span style="display: inline-flex; align-items: center; justify-content: center; height: ${isSpacious ? '18px' : '16px'}; font-size: ${isSpacious ? '8px' : '7.5px'}; font-weight: 800; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0 6px; line-height: 1; box-sizing: border-box;">
-            <span style="display: inline-block; line-height: 1;">${selectedSummaryLabel}</span>
-          </span>
+          <span style="display: inline-block; height: ${summaryPillH}px; line-height: ${summaryPillH - 2}px; font-size: ${isSpacious ? '8px' : '7.5px'}; font-weight: 800; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 0 6px; box-sizing: border-box; white-space: nowrap;">${selectedSummaryLabel}</span>
         ` : ''}
       </div>
       ${bodyHtml}
@@ -595,15 +683,14 @@ export async function generateProductDatasheetPdf({
     .filter(Boolean)
     .join(' - ');
 
-  const slotBoxHeight = isManySlots ? '21px' : isSpacious ? '24px' : '22px';
+  const slotBoxHeight = isManySlots ? 21 : isSpacious ? 24 : 22;
+  const tabHeight = isSpacious ? 22 : 20;
 
   const howToOrderBarHtml = `
     <div style="margin-bottom: ${isSpacious ? '10px' : '8px'};">
-      <div style="background: #dc2626; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; height: ${isSpacious ? '22px' : '20px'}; padding: 0 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: ${isSpacious ? '9.5px' : '9px'}; letter-spacing: 0.03em; line-height: 1; box-sizing: border-box;">
-        <span style="display: inline-block; line-height: 1;">How to Order</span>
-      </div>
+      <div style="background: #dc2626; color: #ffffff; display: inline-block; height: ${tabHeight}px; line-height: ${tabHeight}px; padding: 0 14px; border-radius: 7px 7px 0 0; font-weight: 800; font-size: ${isSpacious ? '9.5px' : '9px'}; letter-spacing: 0.03em; box-sizing: border-box; white-space: nowrap;">How to Order</div>
       <div style="border: 1.5px solid #fca5a5; border-radius: 0 8px 8px 8px; background: #fffafa; padding: ${isSpacious ? '9px 12px' : '7px 10px'};">
-        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '3px' : isSpacious ? '6px' : '5px'}; flex-wrap: nowrap;">
+        <div style="display: flex; align-items: flex-start; justify-content: center; gap: ${isManySlots ? '4px' : isSpacious ? '6px' : '5px'}; row-gap: 6px; flex-wrap: ${isManySlots ? 'wrap' : 'nowrap'};">
           ${slots.map((slotNum) => {
             const val = getSlotValue(slotNum);
             let delimiterAfter = '';
@@ -615,20 +702,18 @@ export async function generateProductDatasheetPdf({
               }
             }
             const hasVal = val !== undefined && val !== null && String(val).trim() !== '';
+            const isUnitBreak = isManySlots && delimiterAfter.trim() === '&';
             return `
               <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">
-                <div style="display: inline-flex; align-items: center; justify-content: center; min-width: ${isManySlots ? '28px' : isSpacious ? '38px' : '36px'}; height: ${slotBoxHeight}; padding: 0 ${isManySlots ? '5px' : '8px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : isSpacious ? '10px' : '9.5px'}; font-weight: 800; text-align: center; line-height: 1; box-sizing: border-box;">
-                  <span style="display: inline-block; line-height: 1;">${hasVal ? val : 'Nil'}</span>
-                </div>
+                <div style="display: inline-block; min-width: ${isManySlots ? '28px' : isSpacious ? '38px' : '36px'}; height: ${slotBoxHeight}px; line-height: ${slotBoxHeight - 3}px; padding: 0 ${isManySlots ? '6px' : '8px'}; border-radius: 5px; background: #ffffff; border: ${hasVal ? '1.5px solid #dc2626' : '1px solid #fca5a5'}; color: ${hasVal ? '#dc2626' : '#94a3b8'}; font-size: ${isManySlots ? '8.5px' : isSpacious ? '10px' : '9.5px'}; font-weight: 800; text-align: center; box-sizing: border-box; white-space: nowrap;">${hasVal ? val : 'Nil'}</div>
                 <div style="margin-top: 4px; display: flex; align-items: center; justify-content: center;">
                   ${renderSlotNumberBadge(slotNum, 'sm')}
                 </div>
               </div>
               ${delimiterAfter && delimiterAfter.trim() !== '' ? `
-                <div style="height: ${slotBoxHeight}; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 1px; flex-shrink: 0; line-height: 1;">
-                  <span style="display: inline-block; line-height: 1;">${delimiterAfter}</span>
-                </div>
+                <div style="height: ${slotBoxHeight}px; line-height: ${slotBoxHeight}px; display: inline-block; font-size: 11px; font-weight: 900; color: #dc2626; padding: 0 2px; flex-shrink: 0; text-align: center;">${delimiterAfter.trim()}</div>
               ` : ''}
+              ${isUnitBreak ? '<div style="flex-basis: 100%; height: 0;"></div>' : ''}
             `;
           }).join('')}
         </div>
@@ -676,12 +761,8 @@ export async function generateProductDatasheetPdf({
           <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.1; letter-spacing: -0.02em;">
             ${product.series}
           </h1>
-          <span style="display: inline-flex; align-items: center; justify-content: center; height: 20px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 0 8px; border-radius: 4px; letter-spacing: 0.05em; line-height: 1; box-sizing: border-box;">
-            <span style="display: inline-block; line-height: 1;">${product.category}</span>
-          </span>
-          <span style="display: inline-flex; align-items: center; justify-content: center; height: 20px; font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 0 7px; border-radius: 4px; line-height: 1; box-sizing: border-box;">
-            <span style="display: inline-block; line-height: 1;">ISO 9001:2015</span>
-          </span>
+          <span style="display: inline-block; height: 20px; line-height: 20px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; background: #fee2e2; color: #dc2626; padding: 0 8px; border-radius: 4px; letter-spacing: 0.05em; box-sizing: border-box; white-space: nowrap;">${product.category}</span>
+          <span style="display: inline-block; height: 20px; line-height: 20px; font-size: 8px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 0 7px; border-radius: 4px; box-sizing: border-box; white-space: nowrap;">ISO 9001:2015</span>
         </div>
         <div style="font-size: 10.5px; color: #475569; font-weight: 600; margin-top: 3px;">
           ${subTitleText}
@@ -718,55 +799,63 @@ export async function generateProductDatasheetPdf({
     <!-- 3. How To Order Sequence Bar -->
     ${howToOrderBarHtml}
 
-    <!-- 4. Sequential 2-Column HTO Specification Matrix (Strict 1 -> 2 -> 3 -> 4 Order) -->
-    <div style="flex: ${rawBlocks.length >= 5 ? '1' : '0 0 auto'}; display: grid; grid-template-columns: 1fr 1fr; gap: ${isSpacious ? '9px 11px' : '7px 10px'}; align-items: stretch; margin-bottom: ${isSpacious ? '11px' : '10px'};">
-      ${rawBlocks.map((b) => {
-        const selVal = getSlotValue(b.slotIndex);
-        return renderBlockCard(b, selVal, lang, product.maxStroke, density);
-      }).join('')}
+    <!-- 4. Sequential 2-Column Adaptive HTO Specification Matrix -->
+    <div id="belsa-pdf-matrix" style="flex: ${rawBlocks.length >= 5 ? '1' : '0 0 auto'}; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: ${isSpacious ? '9px 11px' : '7px 10px'}; align-items: stretch; margin-bottom: ${isSpacious ? '11px' : '10px'};">
+      ${(() => {
+        const siblingTitles = rawBlocks.map((bl) => bl.title);
+        return rawBlocks.map((b) => {
+          const selVal = getSlotValue(b.slotIndex);
+          return renderBlockCard(b, selVal, lang, product.maxStroke, density, siblingTitles, isFullWidthBlock(b));
+        }).join('');
+      })()}
     </div>
 
     <!-- 5. Bottom Summary: Print-Friendly Configured Model Code & Official Footer -->
-    <div style="margin-top: auto; padding-top: 2px;">
-      <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
-        <!-- Print-Friendly Model Code Box -->
-        <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 6px 12px 8px 12px; display: flex; flex-direction: column; justify-content: center;">
-          <div style="font-size: 7.4px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">
-            ${lang === 'id' ? 'KODE PEMESANAN MODEL (CONFIGURED MODEL CODE):' : 'CONFIGURED ORDERING MODEL CODE:'}
-          </div>
-          <div style="font-size: 14.5px; font-weight: 900; color: #0f172a; letter-spacing: 0.03em; margin-top: 1px; line-height: 1.2;">
-            ${activeModelCode || product.code}
-          </div>
-          ${readableSlotBreakdown ? `
-            <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
-              ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
+    ${(() => {
+      const modelCodeStr = activeModelCode || product.code;
+      const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
+      const supportNote = getCategorySupportNote(product.category, lang);
+      return `
+        <div id="belsa-pdf-bottom-summary" style="margin-top: auto; padding-top: 2px;">
+          <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
+            <!-- Print-Friendly Model Code Box -->
+            <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 6px 12px 8px 12px; display: flex; flex-direction: column; justify-content: center;">
+              <div style="font-size: 7.4px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">
+                ${lang === 'id' ? 'KODE PEMESANAN MODEL (CONFIGURED MODEL CODE):' : 'CONFIGURED ORDERING MODEL CODE:'}
+              </div>
+              <div style="font-size: ${modelCodeFontSize}; font-weight: 900; color: #0f172a; letter-spacing: 0.02em; margin-top: 2px; line-height: 1.25; word-break: break-word;">
+                ${modelCodeStr}
+              </div>
+              ${readableSlotBreakdown ? `
+                <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
+                  ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
+                </div>
+              ` : ''}
             </div>
-          ` : ''}
-        </div>
 
-        <!-- Workshop & Custom Engineering Note -->
-        <div style="border: 1px solid #fecdd3; border-radius: 7px; background: #fff1f2; padding: 6px 10px 8px 10px; display: flex; flex-direction: column; justify-content: center;">
-          <div style="font-size: 7.8px; font-weight: 800; color: #9f1239; margin-bottom: 1.5px;">
-            ${lang === 'id' ? 'LAYANAN CUSTOM & FABRIKASI CNC BELSA:' : 'BELSA CNC CUSTOM FABRICATION & SUPPORT:'}
+            <!-- Category-Specific Engineering Support Note -->
+            <div style="border: 1px solid #fecdd3; border-radius: 7px; background: #fff1f2; padding: 6px 10px 8px 10px; display: flex; flex-direction: column; justify-content: center;">
+              <div style="font-size: 7.8px; font-weight: 800; color: #9f1239; margin-bottom: 1.5px;">
+                ${supportNote.title}
+              </div>
+              <div style="font-size: 7.4px; color: #475569; line-height: 1.35;">
+                ${supportNote.text}
+              </div>
+            </div>
           </div>
-          <div style="font-size: 7.4px; color: #475569; line-height: 1.35;">
-            ${lang === 'id'
-              ? 'Menerima fabrikasi silinder bore/stroke khusus sesuai drawing atau sampel, pembuatan seal kit, dan perbaikan overhaul.'
-              : 'Custom cylinder bore/stroke manufacturing per drawing or sample, precision seal kits, and full hydraulic overhaul services.'}
-          </div>
-        </div>
-      </div>
 
-      <!-- Official Letterhead Footer -->
-      <div style="border-top: 1.5px solid #cbd5e1; padding-top: 5px; display: flex; align-items: center; justify-content: space-between; font-size: 7.8px; color: #475569;">
-        <div>
-          <strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline/WA: +62 811-1916-8752 • Email: sales@rafitama.com • <strong>www.belsa.id</strong>
+          <!-- Official Letterhead Footer -->
+          <div style="border-top: 1.5px solid #cbd5e1; padding-top: 5px; display: flex; align-items: center; justify-content: space-between; font-size: 7.8px; color: #475569;">
+            <div>
+              <strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline/WA: +62 811-1916-8752 • Email: sales@belsa.id • <strong>www.belsa.id</strong>
+            </div>
+            <div style="font-weight: 800; color: #dc2626;">
+              BELSA Fluid Power Systems • Official Technical Datasheet
+            </div>
+          </div>
         </div>
-        <div style="font-weight: 800; color: #dc2626;">
-          BELSA Fluid Power Systems • Official Technical Datasheet
-        </div>
-      </div>
-    </div>
+      `;
+    })()}
   `;
 
   host.appendChild(page);
@@ -774,17 +863,20 @@ export async function generateProductDatasheetPdf({
 
   try {
     // Wait for all images inside offscreen page to decode
-    const imgs = Array.from(page.querySelectorAll('img'));
-    await Promise.all(
-      imgs.map((img) => {
-        if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-        return new Promise((resolve) => {
-          img.onload = () => resolve(true);
-          img.onerror = () => resolve(false);
-        });
-      })
-    );
+    const waitForImages = async (root: HTMLElement) => {
+      const imgs = Array.from(root.querySelectorAll('img'));
+      await Promise.all(
+        imgs.map((img) => {
+          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+          });
+        })
+      );
+    };
 
+    await waitForImages(page);
     await new Promise((r) => requestAnimationFrame(r));
 
     // Proportional Standard A4 Fitting (210mm x 297mm = 1 : 1.4142857)
@@ -793,51 +885,153 @@ export async function generateProductDatasheetPdf({
     let naturalHeight = page.scrollHeight;
     let targetA4Height = Math.round(currentWidth * A4_RATIO);
 
-    // If a 14-block series is taller than base A4 height, proportionally widen container so aspect ratio matches A4 1:1.414
-    if (naturalHeight > targetA4Height) {
-      currentWidth = Math.min(1040, Math.ceil(naturalHeight / A4_RATIO));
-      page.style.width = `${currentWidth}px`;
-      await new Promise((r) => requestAnimationFrame(r));
-      naturalHeight = page.scrollHeight;
-      targetA4Height = Math.round(currentWidth * A4_RATIO);
-    }
-
-    const finalRenderHeight = Math.max(naturalHeight, targetA4Height);
-    page.style.minHeight = `${finalRenderHeight}px`;
-
-    const canvas = await html2canvas(page, {
-      scale: 2.2,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      width: currentWidth,
-      height: finalRenderHeight,
-      windowWidth: currentWidth,
-      windowHeight: finalRenderHeight,
-      logging: false,
-    });
-
-    const imgData = canvas.toDataURL('image/png');
-
-    // Always output Standard A4 Portrait (210mm x 297mm)
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
       format: 'a4',
       compress: true,
     });
-
     const pageWidthMm = 210;
     const pageHeightMm = 297;
-    const renderedRatio = canvas.height / canvas.width;
 
-    if (renderedRatio <= A4_RATIO * 1.02) {
-      // Fits cleanly on 1 Standard A4 sheet
-      pdf.addImage(imgData, 'PNG', 0, 0, pageWidthMm, pageHeightMm, undefined, 'FAST');
+    const addCanvasToPdfPage = (canvas: HTMLCanvasElement, isFirst: boolean) => {
+      if (!isFirst) pdf.addPage('a4', 'portrait');
+      const imgData = canvas.toDataURL('image/png');
+      const renderedRatio = canvas.height / canvas.width;
+      if (renderedRatio <= A4_RATIO * 1.02) {
+        pdf.addImage(imgData, 'PNG', 0, 0, pageWidthMm, pageHeightMm, undefined, 'FAST');
+      } else {
+        const fitW = pageHeightMm / renderedRatio;
+        const offsetX = (pageWidthMm - fitW) / 2;
+        pdf.addImage(imgData, 'PNG', offsetX, 0, fitW, pageHeightMm, undefined, 'FAST');
+      }
+    };
+
+    // Tier 2: Auto Multi-Page A4 when jumbo series (> 9 blocks) exceeds 1.25x A4 height
+    if (naturalHeight > targetA4Height * 1.25 && rawBlocks.length >= 9) {
+      const siblingTitles = rawBlocks.map((bl) => bl.title);
+      const splitIdx = Math.ceil(rawBlocks.length / 2);
+      const firstBlocks = rawBlocks.slice(0, splitIdx);
+      const secondBlocks = rawBlocks.slice(splitIdx);
+
+      const renderBlockList = (list: any[]) =>
+        list
+          .map((b) => renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, isFullWidthBlock(b)))
+          .join('');
+
+      const modelCodeStr = activeModelCode || product.code;
+      const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
+      const supportNote = getCategorySupportNote(product.category, lang);
+
+      // Update Page 1 to contain firstBlocks + clean Page 1 footer
+      const matrixEl = page.querySelector('#belsa-pdf-matrix');
+      if (matrixEl) matrixEl.innerHTML = renderBlockList(firstBlocks);
+      const bottomEl = page.querySelector('#belsa-pdf-bottom-summary');
+      if (bottomEl) {
+        bottomEl.innerHTML = `
+          <div style="border-top: 1.5px solid #cbd5e1; padding-top: 5px; display: flex; align-items: center; justify-content: space-between; font-size: 7.8px; color: #475569;">
+            <div><strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline/WA: +62 811-1916-8752 • Email: sales@belsa.id • <strong>www.belsa.id</strong></div>
+            <div style="font-weight: 800; color: #dc2626;">${lang === 'id' ? 'Halaman 1 / 2 (Berlanjut ke Halaman 2)' : 'Page 1 / 2 (Continued on Page 2)'}</div>
+          </div>
+        `;
+      }
+      const page1Height = Math.max(page.scrollHeight, targetA4Height);
+      page.style.minHeight = `${page1Height}px`;
+
+      const canvas1 = await html2canvas(page, {
+        scale: 2.2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        width: currentWidth,
+        height: page1Height,
+        windowWidth: currentWidth,
+        windowHeight: page1Height,
+        logging: false,
+      });
+      addCanvasToPdfPage(canvas1, true);
+
+      // Build Page 2 with Mini Continuation Header + secondBlocks + Bottom Summary
+      const page2 = document.createElement('div');
+      page2.style.cssText = page.style.cssText;
+      page2.style.minHeight = `${targetA4Height}px`;
+      page2.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 7px; margin-bottom: 10px;">
+          <div>
+            <div style="font-size: 14px; font-weight: 900; color: #0f172a;">${product.series} — ${lang === 'id' ? 'Lanjutan Spesifikasi How to Order' : 'How to Order Specifications (Cont.)'}</div>
+            <div style="font-size: 9px; color: #64748b; font-weight: 600;">${subTitleText}</div>
+          </div>
+          <div style="font-size: 8.5px; font-weight: 800; color: #dc2626;">${lang === 'id' ? 'Halaman 2 / 2' : 'Page 2 / 2'}</div>
+        </div>
+        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: 8px 10px; align-items: stretch; margin-bottom: 10px;">
+          ${renderBlockList(secondBlocks)}
+        </div>
+        <div id="belsa-pdf-bottom-summary" style="margin-top: auto; padding-top: 2px;">
+          <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 10px; align-items: stretch; margin-bottom: 7px;">
+            <div style="border: 1.5px solid #0f172a; border-left: 5px solid #dc2626; border-radius: 7px; background: #f8fafc; padding: 6px 12px 8px 12px; display: flex; flex-direction: column; justify-content: center;">
+              <div style="font-size: 7.4px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">
+                ${lang === 'id' ? 'KODE PEMESANAN MODEL (CONFIGURED MODEL CODE):' : 'CONFIGURED ORDERING MODEL CODE:'}
+              </div>
+              <div style="font-size: ${modelCodeFontSize}; font-weight: 900; color: #0f172a; letter-spacing: 0.02em; margin-top: 2px; line-height: 1.25; word-break: break-word;">
+                ${modelCodeStr}
+              </div>
+              ${readableSlotBreakdown ? `
+                <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
+                  ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
+                </div>
+              ` : ''}
+            </div>
+            <div style="border: 1px solid #fecdd3; border-radius: 7px; background: #fff1f2; padding: 6px 10px 8px 10px; display: flex; flex-direction: column; justify-content: center;">
+              <div style="font-size: 7.8px; font-weight: 800; color: #9f1239; margin-bottom: 1.5px;">${supportNote.title}</div>
+              <div style="font-size: 7.4px; color: #475569; line-height: 1.35;">${supportNote.text}</div>
+            </div>
+          </div>
+          <div style="border-top: 1.5px solid #cbd5e1; padding-top: 5px; display: flex; align-items: center; justify-content: space-between; font-size: 7.8px; color: #475569;">
+            <div><strong>PT. Rafitama Millenial Wahyudi</strong> • Hotline/WA: +62 811-1916-8752 • Email: sales@belsa.id • <strong>www.belsa.id</strong></div>
+            <div style="font-weight: 800; color: #dc2626;">BELSA Fluid Power Systems • Official Technical Datasheet</div>
+          </div>
+        </div>
+      `;
+      host.appendChild(page2);
+      await waitForImages(page2);
+      await new Promise((r) => requestAnimationFrame(r));
+      const page2Height = Math.max(page2.scrollHeight, targetA4Height);
+      page2.style.minHeight = `${page2Height}px`;
+
+      const canvas2 = await html2canvas(page2, {
+        scale: 2.2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        width: currentWidth,
+        height: page2Height,
+        windowWidth: currentWidth,
+        windowHeight: page2Height,
+        logging: false,
+      });
+      addCanvasToPdfPage(canvas2, false);
     } else {
-      // Fit proportionally inside A4 with minimal centered margin if ultra-tall
-      const fitW = pageHeightMm / renderedRatio;
-      const offsetX = (pageWidthMm - fitW) / 2;
-      pdf.addImage(imgData, 'PNG', offsetX, 0, fitW, pageHeightMm, undefined, 'FAST');
+      // Tier 1: Single-page A4 proportional fit
+      if (naturalHeight > targetA4Height) {
+        currentWidth = Math.min(1040, Math.ceil(naturalHeight / A4_RATIO));
+        page.style.width = `${currentWidth}px`;
+        await new Promise((r) => requestAnimationFrame(r));
+        naturalHeight = page.scrollHeight;
+        targetA4Height = Math.round(currentWidth * A4_RATIO);
+      }
+
+      const finalRenderHeight = Math.max(naturalHeight, targetA4Height);
+      page.style.minHeight = `${finalRenderHeight}px`;
+
+      const canvas = await html2canvas(page, {
+        scale: 2.2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        width: currentWidth,
+        height: finalRenderHeight,
+        windowWidth: currentWidth,
+        windowHeight: finalRenderHeight,
+        logging: false,
+      });
+      addCanvasToPdfPage(canvas, true);
     }
 
     const dateStr = new Date().toISOString().slice(0, 10);
