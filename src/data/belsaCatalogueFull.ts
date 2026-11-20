@@ -39611,5 +39611,444 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       ]
     },
     "slug": "b25v"
+  },
+  {
+    "id": "nhpu",
+    "slug": "nhpu",
+    "series": "NHPU Series",
+    "code": "NHPU",
+    "category": "Hydraulic Pump & Power Unit",
+    "subTitle": {
+      "id": "Hydraulic Power Unit & Plunger Pump",
+      "en": "Hydraulic Power Unit & Plunger Pump"
+    },
+    "image": "/images/facility_production_floor.webp",
+    "symbolType": "powerpack",
+    "features": {
+      "id": [
+        "Kombinasi Hydraulic Power Unit (HPU) dan Plunger Pump dalam satu unit portabel.",
+        "Tersedia berbagai konfigurasi power pack dengan komponen dan ukuran tangki standar (4 liter hingga 500 liter).",
+        "Solusi custom-made tersedia sesuai kebutuhan tekanan, kapasitas aliran, dan dimensi aplikasi.",
+        "Unit portabel dilengkapi roda untuk mobilitas operasional di area pabrik maupun lapangan."
+      ],
+      "en": [
+        "Combination of Hydraulic Power Unit and Plunger Pump.",
+        "Various power packs are available with standard components and tank sizes (4 liters to 500 liters).",
+        "Custom-made solutions are available.",
+        "Portable Item."
+      ]
+    },
+    "htoConfig": {
+      "codePrefix": "NHPU",
+      "separator": " ",
+      "slotDelimiters": {
+        "1": " - ",
+        "2": " ",
+        "3": " ",
+        "4": " ",
+        "5": " & ",
+        "6": " - ",
+        "7": " ",
+        "8": " ",
+        "9": " ",
+        "10": " - ",
+        "11": ""
+      },
+      "totalSlots": 11,
+      "defaultSlotValues": {
+        "1": "NHPU",
+        "2": "100LT",
+        "3": "3.0KW",
+        "4": "PP10CC",
+        "5": "MBS4",
+        "6": "PP",
+        "7": "100LT",
+        "8": "3.0KW",
+        "9": "VP5CC",
+        "10": "MBS2",
+        "11": "M"
+      },
+      "blocks": [
+        {
+          "id": "nhpu_b1",
+          "title": "1. Series (Primary Unit)",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_s1",
+              "code": "NHPU",
+              "label": "Hydraulic Power Unit",
+              "values": { "desc": "Hydraulic Power Unit" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b2",
+          "title": "2. Tank Capacity (HPU)",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Kapasitas Tangki" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_t1_004",
+              "code": "004LT",
+              "label": "4 liter",
+              "values": { "desc": "4 liter" }
+            },
+            {
+              "id": "nhpu_t1_006",
+              "code": "006LT",
+              "label": "6 liter",
+              "values": { "desc": "6 liter" }
+            },
+            {
+              "id": "nhpu_t1_100",
+              "code": "100LT",
+              "label": "100 liter",
+              "values": { "desc": "100 liter (Contoh Standar)" }
+            },
+            {
+              "id": "nhpu_t1_500",
+              "code": "500LT",
+              "label": "500 liter",
+              "values": { "desc": "500 liter" }
+            },
+            {
+              "id": "nhpu_t1_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (contoh: 004LT - 500LT)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b3",
+          "title": "3. Electric Motor (HPU)",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Daya Motor Listrik" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_m1_02",
+              "code": "0.2KW",
+              "label": "0.2 kilo Watt",
+              "values": { "desc": "0.2 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m1_04",
+              "code": "0.4KW",
+              "label": "0.4 kilo Watt",
+              "values": { "desc": "0.4 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m1_075",
+              "code": "0.75KW",
+              "label": "0.75 kilo Watt",
+              "values": { "desc": "0.75 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m1_22",
+              "code": "2.2KW",
+              "label": "2.2 kilo Watt",
+              "values": { "desc": "2.2 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m1_30",
+              "code": "3.0KW",
+              "label": "3.0 kilo Watt",
+              "values": { "desc": "3.0 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m1_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b4",
+          "title": "4. Hydraulic Pump (HPU) — Specify cc/rev",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Pompa & Displacement (cc/rev)" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_p1_gp",
+              "code": "GP",
+              "label": "Gear pump (contoh: GP2.5CC)",
+              "values": { "desc": "Gear pump — cantumkan kapasitas cc/rev (contoh: GP2.5CC)" }
+            },
+            {
+              "id": "nhpu_p1_vp",
+              "code": "VP",
+              "label": "Vane pump (contoh: VP10.8CC)",
+              "values": { "desc": "Vane pump — cantumkan kapasitas cc/rev (contoh: VP10.8CC)" }
+            },
+            {
+              "id": "nhpu_p1_pp",
+              "code": "PP10CC",
+              "label": "Piston pump (contoh: PP10CC)",
+              "values": { "desc": "Piston pump — cantumkan kapasitas cc/rev (contoh: PP10CC)" }
+            },
+            {
+              "id": "nhpu_p1_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (cantumkan cc/rev)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b5",
+          "title": "5. Number of Manifold Block Stations (HPU)",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Jumlah Station" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_mbs1_1",
+              "code": "MBS1",
+              "label": "1 station",
+              "values": { "desc": "1 station" }
+            },
+            {
+              "id": "nhpu_mbs1_2",
+              "code": "MBS2",
+              "label": "2 stations",
+              "values": { "desc": "2 stations" }
+            },
+            {
+              "id": "nhpu_mbs1_4",
+              "code": "MBS4",
+              "label": "4 stations",
+              "values": { "desc": "4 stations" }
+            },
+            {
+              "id": "nhpu_mbs1_10",
+              "code": "MBS10",
+              "label": "10 stations",
+              "values": { "desc": "10 stations" }
+            },
+            {
+              "id": "nhpu_mbs1_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (MBS1 - MBS10)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b6",
+          "title": "6. Series (Secondary Unit)",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_s2_pp",
+              "code": "PP",
+              "label": "Plunger Pump",
+              "values": { "desc": "Plunger Pump" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b7",
+          "title": "7. Tank Capacity (Plunger Pump Unit)",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Kapasitas Tangki" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_t2_004",
+              "code": "004LT",
+              "label": "4 liter",
+              "values": { "desc": "4 liter" }
+            },
+            {
+              "id": "nhpu_t2_006",
+              "code": "006LT",
+              "label": "6 liter",
+              "values": { "desc": "6 liter" }
+            },
+            {
+              "id": "nhpu_t2_100",
+              "code": "100LT",
+              "label": "100 liter",
+              "values": { "desc": "100 liter (Contoh Standar)" }
+            },
+            {
+              "id": "nhpu_t2_500",
+              "code": "500LT",
+              "label": "500 liter",
+              "values": { "desc": "500 liter" }
+            },
+            {
+              "id": "nhpu_t2_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (contoh: 004LT - 500LT)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b8",
+          "title": "8. Electric Motor (Plunger Pump Unit)",
+          "slotIndex": 8,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Daya Motor Listrik" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_m2_02",
+              "code": "0.2KW",
+              "label": "0.2 kilo Watt",
+              "values": { "desc": "0.2 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m2_04",
+              "code": "0.4KW",
+              "label": "0.4 kilo Watt",
+              "values": { "desc": "0.4 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m2_075",
+              "code": "0.75KW",
+              "label": "0.75 kilo Watt",
+              "values": { "desc": "0.75 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m2_22",
+              "code": "2.2KW",
+              "label": "2.2 kilo Watt",
+              "values": { "desc": "2.2 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m2_30",
+              "code": "3.0KW",
+              "label": "3.0 kilo Watt",
+              "values": { "desc": "3.0 kilo Watt" }
+            },
+            {
+              "id": "nhpu_m2_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b9",
+          "title": "9. Hydraulic Pump (Plunger Pump Unit) — Specify cc/rev",
+          "slotIndex": 9,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Pompa & Displacement (cc/rev)" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_p2_gp",
+              "code": "GP",
+              "label": "Gear pump (contoh: GP2.5CC)",
+              "values": { "desc": "Gear pump — cantumkan kapasitas cc/rev (contoh: GP2.5CC)" }
+            },
+            {
+              "id": "nhpu_p2_vp",
+              "code": "VP5CC",
+              "label": "Vane pump (contoh: VP5CC / VP10.8CC)",
+              "values": { "desc": "Vane pump — cantumkan kapasitas cc/rev (contoh: VP5CC, VP10.8CC)" }
+            },
+            {
+              "id": "nhpu_p2_pp",
+              "code": "PP",
+              "label": "Piston pump",
+              "values": { "desc": "Piston pump — cantumkan kapasitas cc/rev" }
+            },
+            {
+              "id": "nhpu_p2_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (cantumkan cc/rev)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b10",
+          "title": "10. Number of Manifold Block Stations (Plunger Pump Unit)",
+          "slotIndex": 10,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Jumlah Station" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_mbs2_1",
+              "code": "MBS1",
+              "label": "1 station",
+              "values": { "desc": "1 station" }
+            },
+            {
+              "id": "nhpu_mbs2_2",
+              "code": "MBS2",
+              "label": "2 stations",
+              "values": { "desc": "2 stations" }
+            },
+            {
+              "id": "nhpu_mbs2_10",
+              "code": "MBS10",
+              "label": "10 stations",
+              "values": { "desc": "10 stations" }
+            },
+            {
+              "id": "nhpu_mbs2_custom",
+              "code": "~",
+              "label": "According to customer's need",
+              "values": { "desc": "Sesuai kebutuhan customer (MBS1 - MBS10)" }
+            }
+          ]
+        },
+        {
+          "id": "nhpu_b11",
+          "title": "11. Special Order",
+          "slotIndex": 11,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            {
+              "id": "nhpu_so_nil",
+              "code": "",
+              "label": "Nil - Standard",
+              "values": { "desc": "Standard" }
+            },
+            {
+              "id": "nhpu_so_m",
+              "code": "M",
+              "label": "Custom Made",
+              "values": { "desc": "Custom Made" }
+            }
+          ]
+        }
+      ]
+    }
   }
 ];
