@@ -40048,7 +40048,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       "id": "Hydraulic Pump & Motor (Pompa & Motor Terintegrasi)",
       "en": "Hydraulic Pump & Motor"
     },
-    "image": "/images/facility_production_floor.webp",
+    "image": "https://lh3.googleusercontent.com/d/1Tc3PpHEG3YgOoYWOEk5TxCVoAOBmUcF5",
     "symbolType": "powerpack",
     "features": {
       "id": [
@@ -40252,7 +40252,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
       "id": "Hydraulic Power Pack / Hydraulic Power Unit",
       "en": "Hydraulic Power Pack / Hydraulic Power Unit"
     },
-    "image": "/images/facility_production_floor.webp",
+    "image": "https://lh3.googleusercontent.com/d/1PrH2uzU5sULCwipzSjjIo406u70h3gub",
     "symbolType": "powerpack",
     "features": {
       "id": [
