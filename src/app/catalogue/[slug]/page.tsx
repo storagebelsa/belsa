@@ -1,33 +1,27 @@
 import type { Metadata } from 'next';
-import { BelsaProductSeries } from '@/data/belsaCatalogueFull';
 import { INITIAL_CATALOGUE } from '@/data/initialCatalogue';
+import { fetchLiveCatalogue, findLiveProductBySlug } from '@/lib/catalogueServer';
 import { resolveOgImageUrl } from '@/lib/imageUtils';
 import { CatalogueView } from '../page';
+
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-function findProductBySlug(slug: string): BelsaProductSeries | undefined {
-  const s = decodeURIComponent(slug).toLowerCase().trim();
-  return INITIAL_CATALOGUE.find(
-    (item) =>
-      item.slug?.toLowerCase() === s ||
-      item.id.toLowerCase() === s ||
-      item.code.toLowerCase() === s ||
-      item.series.toLowerCase() === s
-  );
-}
-
 export async function generateStaticParams() {
-  return INITIAL_CATALOGUE.filter((item) => Boolean(item.slug)).map((item) => ({
-    slug: item.slug,
-  }));
+  const list = await fetchLiveCatalogue().catch(() => INITIAL_CATALOGUE);
+  return list
+    .filter((item) => Boolean(item.slug))
+    .map((item) => ({
+      slug: item.slug as string,
+    }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = findProductBySlug(slug);
+  const product = await findLiveProductBySlug(slug);
 
   if (!product) {
     return {
@@ -80,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CatalogueSlugPage({ params }: Props) {
   const { slug } = await params;
-  const product = findProductBySlug(slug);
+  const product = await findLiveProductBySlug(slug);
   const cleanSubId = product?.subTitle?.id?.replace(/\s*\([^)]*\)/g, '').trim() || '';
   const imgUrl = resolveOgImageUrl(product?.image);
 

@@ -944,30 +944,10 @@ export default function BelsaAdminPage() {
         htoConfig: dynamicHtoConfig
       };
 
-      // 1. Save to /api/catalogue (serverless buffer & local database)
+      // 1. Synchronize directly to Google Sheets & Google Drive first so ISR revalidation reads fresh data
       let isSaved = false;
       let errMsg = '';
 
-      try {
-        const resApi = await fetch('/api/catalogue', {
-          method: 'POST',
-          headers: getAdminAuthHeaders(),
-          body: JSON.stringify({
-            action: isEditing ? 'update' : 'create',
-            product: productPayload
-          })
-        });
-        const dataApi = await resApi.json();
-        if (dataApi.success) {
-          isSaved = true;
-        } else {
-          errMsg = dataApi.message || '';
-        }
-      } catch (errApi: any) {
-        errMsg = errApi?.message || '';
-      }
-
-      // 2. Synchronize directly to Google Sheets & Google Drive
       try {
         await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
@@ -988,6 +968,26 @@ export default function BelsaAdminPage() {
         isSaved = true;
       } catch (gasErr) {
         console.warn('Google Sheets sync notice:', gasErr);
+      }
+
+      // 2. Save to /api/catalogue (triggers Next.js on-demand revalidatePath & local overrides)
+      try {
+        const resApi = await fetch('/api/catalogue', {
+          method: 'POST',
+          headers: getAdminAuthHeaders(),
+          body: JSON.stringify({
+            action: isEditing ? 'update' : 'create',
+            product: productPayload
+          })
+        });
+        const dataApi = await resApi.json();
+        if (dataApi.success) {
+          isSaved = true;
+        } else {
+          errMsg = dataApi.message || '';
+        }
+      } catch (errApi: any) {
+        errMsg = errApi?.message || '';
       }
 
       if (isSaved) {

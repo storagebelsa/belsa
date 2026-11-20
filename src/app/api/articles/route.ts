@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import fs from 'fs';
 import path from 'path';
 import { DEFAULT_ARTICLES, ArticleItem } from '@/data/articlesData';
@@ -159,6 +160,11 @@ export async function POST(req: Request) {
         console.warn('Google Script sync notice:', gasErr);
       }
 
+      try {
+        revalidatePath('/knowledge-hub');
+        if (article.slug) revalidatePath(`/knowledge-hub/${article.slug}`);
+      } catch {}
+
       return NextResponse.json({ success: true, data: updatedList });
     }
 
@@ -179,6 +185,11 @@ export async function POST(req: Request) {
       } catch (gasErr) {
         console.warn('Google Script sync notice:', gasErr);
       }
+
+      try {
+        revalidatePath('/knowledge-hub');
+        revalidatePath(`/knowledge-hub/${slug}`);
+      } catch {}
 
       return NextResponse.json({ success: true, data: updatedList });
     }

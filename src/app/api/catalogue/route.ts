@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import fs from 'fs';
 import path from 'path';
 import { BELSA_CATALOGUE_FULL, BelsaProductSeries } from '@/data/belsaCatalogueFull';
@@ -151,6 +152,11 @@ export async function POST(req: NextRequest) {
       overrides.customItems.push(newProduct);
 
       saveOverrides(overrides);
+      try {
+        revalidatePath('/catalogue');
+        const targetSlug = newProduct.slug || newProduct.code?.toLowerCase();
+        if (targetSlug) revalidatePath(`/catalogue/${targetSlug}`);
+      } catch {}
       return NextResponse.json({ success: true, message: `Seri ${newProduct.series} berhasil ditambahkan ke katalog!`, data: newProduct });
     }
 
@@ -172,6 +178,11 @@ export async function POST(req: NextRequest) {
       overrides.deletedIds = overrides.deletedIds.filter(dId => dId !== product.id);
 
       saveOverrides(overrides);
+      try {
+        revalidatePath('/catalogue');
+        const targetSlug = product.slug || product.code?.toLowerCase() || product.id;
+        if (targetSlug) revalidatePath(`/catalogue/${targetSlug}`);
+      } catch {}
       return NextResponse.json({ success: true, message: `Perubahan pada seri ${product.series} berhasil disimpan!`, data: product });
     }
 
@@ -191,6 +202,10 @@ export async function POST(req: NextRequest) {
       }
 
       saveOverrides(overrides);
+      try {
+        revalidatePath('/catalogue');
+        revalidatePath(`/catalogue/${targetId}`);
+      } catch {}
       return NextResponse.json({ success: true, message: `Produk berhasil dihapus dari katalog!` });
     }
 
@@ -200,10 +215,17 @@ export async function POST(req: NextRequest) {
         overrides.deletedIds = overrides.deletedIds.filter(dId => dId !== id);
         delete overrides.modifiedItems[id];
         saveOverrides(overrides);
+        try {
+          revalidatePath('/catalogue');
+          revalidatePath(`/catalogue/${id}`);
+        } catch {}
         return NextResponse.json({ success: true, message: `Produk berhasil dipulihkan ke versi master katalog!` });
       } else {
         // Full reset
         saveOverrides({ deletedIds: [], customItems: [], modifiedItems: {} });
+        try {
+          revalidatePath('/catalogue');
+        } catch {}
         return NextResponse.json({ success: true, message: `Seluruh katalog berhasil di-reset ke baseline resmi pabrik!` });
       }
     }
