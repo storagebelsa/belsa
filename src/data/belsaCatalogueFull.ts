@@ -39698,7 +39698,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
               "id": "nhpu_t1_100",
               "code": "100LT",
               "label": "100 liter",
-              "values": { "desc": "100 liter (Contoh Standar)" }
+              "values": { "desc": "100 liter" }
             },
             {
               "id": "nhpu_t1_500",
@@ -39879,7 +39879,7 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
               "id": "nhpu_t2_100",
               "code": "100LT",
               "label": "100 liter",
-              "values": { "desc": "100 liter (Contoh Standar)" }
+              "values": { "desc": "100 liter" }
             },
             {
               "id": "nhpu_t2_500",
@@ -40159,8 +40159,8 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
             {
               "id": "bpm_pt_other",
               "code": "OTHER",
-              "label": "Other Series (Check details on catalogue/order guide)",
-              "values": { "desc": "Check the details on catalogue/order guide" }
+              "label": "Other Series (Konsultasi Engineering BELSA)",
+              "values": { "desc": "Seri pompa lainnya (hubungi Tim Engineering BELSA)" }
             }
           ]
         },

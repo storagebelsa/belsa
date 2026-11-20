@@ -519,7 +519,7 @@ function renderBlockCard(
       const colHeader = visibleColumns.length > 0 ? cleanColumnLabel(visibleColumns[0].label, lang) : (lang === 'id' ? 'Deskripsi' : 'Description');
 
       const renderSubTable = (subRows: any[]) => `
-        <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${subTableFont};">
+        <table style="width: 100%; border-collapse: collapse; font-size: ${subTableFont};">
           <thead>
             <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
               <th style="padding: ${thPad}; text-align: left; width: ${codeColWidth}; vertical-align: middle; white-space: nowrap;">${codeColLabel}</th>
@@ -551,16 +551,16 @@ function renderBlockCard(
       `;
 
       bodyHtml = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; align-items: stretch;">
-          <div style="display: flex; flex-direction: column; height: 100%;">${renderSubTable(leftRows)}</div>
-          <div style="border-left: 1px solid #e2e8f0; padding-left: 6px; display: flex; flex-direction: column; height: 100%;">${renderSubTable(rightRows)}</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; align-items: start;">
+          <div>${renderSubTable(leftRows)}</div>
+          <div style="border-left: 1px solid #e2e8f0; padding-left: 6px;">${renderSubTable(rightRows)}</div>
         </div>
       `;
     } else {
       // Standard single table inside card (supports 1 or multiple visible columns)
       bodyHtml = `
-        <div style="padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-          <table style="width: 100%; height: 100%; border-collapse: collapse; font-size: ${singleTableFont};">
+        <div style="padding: ${isSpacious ? '4px 7px' : '3px 6px'}; flex: 1; display: flex; flex-direction: column; justify-content: flex-start;">
+          <table style="width: 100%; border-collapse: collapse; font-size: ${singleTableFont};">
             <thead>
               <tr style="background: #f8fafc; border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 700;">
                 <th style="padding: ${thPad}; text-align: left; width: ${codeColWidth}; vertical-align: middle; white-space: nowrap;">${codeColLabel}</th>
@@ -803,9 +803,17 @@ export async function generateProductDatasheetPdf({
     <div id="belsa-pdf-matrix" style="flex: ${rawBlocks.length >= 5 ? '1' : '0 0 auto'}; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: ${isSpacious ? '9px 11px' : '7px 10px'}; align-items: stretch; margin-bottom: ${isSpacious ? '11px' : '10px'};">
       ${(() => {
         const siblingTitles = rawBlocks.map((bl) => bl.title);
-        return rawBlocks.map((b) => {
+        let colCursor = 0;
+        return rawBlocks.map((b, idx) => {
+          let spanFull = isFullWidthBlock(b);
+          const isLast = idx === rawBlocks.length - 1;
+          if (!spanFull && isLast && colCursor % 2 === 0) {
+            spanFull = true;
+          }
+          colCursor += spanFull ? 2 : 1;
+          if (colCursor >= 2) colCursor = colCursor % 2;
           const selVal = getSlotValue(b.slotIndex);
-          return renderBlockCard(b, selVal, lang, product.maxStroke, density, siblingTitles, isFullWidthBlock(b));
+          return renderBlockCard(b, selVal, lang, product.maxStroke, density, siblingTitles, spanFull);
         }).join('');
       })()}
     </div>
@@ -814,6 +822,9 @@ export async function generateProductDatasheetPdf({
     ${(() => {
       const modelCodeStr = activeModelCode || product.code;
       const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
+      const normCode = modelCodeStr.replace(/[\s\-]+/g, '').toLowerCase();
+      const normBreakdown = readableSlotBreakdown.replace(/[\s\-]+/g, '').toLowerCase();
+      const showSlotBreakdown = Boolean(readableSlotBreakdown) && normCode !== normBreakdown;
       const supportNote = getCategorySupportNote(product.category, lang);
       return `
         <div id="belsa-pdf-bottom-summary" style="margin-top: auto; padding-top: 2px;">
@@ -826,7 +837,7 @@ export async function generateProductDatasheetPdf({
               <div style="font-size: ${modelCodeFontSize}; font-weight: 900; color: #0f172a; letter-spacing: 0.02em; margin-top: 2px; line-height: 1.25; word-break: break-word;">
                 ${modelCodeStr}
               </div>
-              ${readableSlotBreakdown ? `
+              ${showSlotBreakdown ? `
                 <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
                   ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
                 </div>
@@ -907,20 +918,34 @@ export async function generateProductDatasheetPdf({
       }
     };
 
-    // Tier 2: Auto Multi-Page A4 when jumbo series (> 9 blocks) exceeds 1.25x A4 height
-    if (naturalHeight > targetA4Height * 1.25 && rawBlocks.length >= 9) {
+    // Tier 2: Auto Multi-Page A4 for dense jumbo series (>= 11 blocks or > 1.12x A4 height with >= 9 blocks)
+    if (rawBlocks.length >= 11 || (naturalHeight > targetA4Height * 1.12 && rawBlocks.length >= 9)) {
       const siblingTitles = rawBlocks.map((bl) => bl.title);
-      const splitIdx = Math.ceil(rawBlocks.length / 2);
+      const splitIdx = rawBlocks.length % 2 === 1 ? Math.floor(rawBlocks.length / 2) : Math.ceil(rawBlocks.length / 2);
       const firstBlocks = rawBlocks.slice(0, splitIdx);
       const secondBlocks = rawBlocks.slice(splitIdx);
 
-      const renderBlockList = (list: any[]) =>
-        list
-          .map((b) => renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, isFullWidthBlock(b)))
+      const renderBlockList = (list: any[]) => {
+        let colCursor = 0;
+        return list
+          .map((b, idx) => {
+            let spanFull = isFullWidthBlock(b);
+            const isLast = idx === list.length - 1;
+            if (!spanFull && isLast && colCursor % 2 === 0) {
+              spanFull = true;
+            }
+            colCursor += spanFull ? 2 : 1;
+            if (colCursor >= 2) colCursor = colCursor % 2;
+            return renderBlockCard(b, getSlotValue(b.slotIndex), lang, product.maxStroke, 'medium', siblingTitles, spanFull);
+          })
           .join('');
+      };
 
       const modelCodeStr = activeModelCode || product.code;
       const modelCodeFontSize = modelCodeStr.length <= 32 ? '14.5px' : modelCodeStr.length <= 55 ? '11.5px' : '9.5px';
+      const normCode = modelCodeStr.replace(/[\s\-]+/g, '').toLowerCase();
+      const normBreakdown = readableSlotBreakdown.replace(/[\s\-]+/g, '').toLowerCase();
+      const showSlotBreakdown = Boolean(readableSlotBreakdown) && normCode !== normBreakdown;
       const supportNote = getCategorySupportNote(product.category, lang);
 
       // Update Page 1 to contain firstBlocks + clean Page 1 footer
@@ -974,7 +999,7 @@ export async function generateProductDatasheetPdf({
               <div style="font-size: ${modelCodeFontSize}; font-weight: 900; color: #0f172a; letter-spacing: 0.02em; margin-top: 2px; line-height: 1.25; word-break: break-word;">
                 ${modelCodeStr}
               </div>
-              ${readableSlotBreakdown ? `
+              ${showSlotBreakdown ? `
                 <div style="font-size: 7.6px; font-weight: 700; color: #dc2626; margin-top: 2px; letter-spacing: 0.02em;">
                   ${lang === 'id' ? 'Rincian Slot:' : 'Slot Breakdown:'} ${readableSlotBreakdown}
                 </div>
