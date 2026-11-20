@@ -40037,5 +40037,345 @@ export const BELSA_CATALOGUE_FULL: BelsaProductSeries[] = [
         }
       ]
     }
+  },
+  {
+    "id": "bpm",
+    "slug": "bpm",
+    "series": "BPM Series",
+    "code": "BPM",
+    "category": "Hydraulic Pump & Power Unit",
+    "subTitle": {
+      "id": "Hydraulic Pump & Motor (Pompa & Motor Terintegrasi)",
+      "en": "Hydraulic Pump & Motor"
+    },
+    "image": "/images/facility_production_floor.webp",
+    "symbolType": "powerpack",
+    "features": {
+      "id": [
+        "Motor pump kompak yang mengintegrasikan pompa hidrolik dan motor listrik dalam satu bodi.",
+        "Menghemat ruang instalasi, mengurangi kebisingan, dan meminimalkan kebocoran kopling.",
+        "Tersedia pilihan pompa Variable Piston (B-VPP), Double Vane (B-VVPE), Variable/Fixed Vane (B-VDC, B-PV2R), serta Gear Pump (B-HGP, B-PR)."
+      ],
+      "en": [
+        "These are motor pumps that integrate a pump and an electric motor in one body.",
+        "Compact footprint, low noise operation, and eliminates external coupling alignment issues.",
+        "Available with Piston, Vane, and Gear pump configurations from 10 to 145 cm3/rev."
+      ]
+    },
+    "htoConfig": {
+      "codePrefix": "BPM",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "-",
+        "2": "-",
+        "3": "-",
+        "4": "-",
+        "5": "-",
+        "6": "-",
+        "7": ""
+      },
+      "totalSlots": 7,
+      "blocks": [
+        {
+          "id": "bpm_b1",
+          "title": "Series",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            {
+              "id": "bpm_s1",
+              "code": "BPM",
+              "label": "BPM Series - Integrated Hydraulic Pump & Motor",
+              "values": { "desc": "Hydraulic Pump & Electric Motor in One Body" }
+            }
+          ]
+        },
+        {
+          "id": "bpm_b2",
+          "title": "1. Pump Type",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Pompa Hidrolik" }
+          ],
+          "rows": [
+            {
+              "id": "bpm_pt_vpp",
+              "code": "B-VPP",
+              "label": "Variable displacement piston pumps",
+              "values": { "desc": "Variable displacement piston pumps" }
+            },
+            {
+              "id": "bpm_pt_vvpe",
+              "code": "B-VVPE",
+              "label": "Double variable vane pumps",
+              "values": { "desc": "Double variable vane pumps" }
+            },
+            {
+              "id": "bpm_pt_vdc",
+              "code": "B-VDC",
+              "label": "Medium pressure variable displacement vane pumps",
+              "values": { "desc": "Medium pressure variable displacement vane pumps" }
+            },
+            {
+              "id": "bpm_pt_pv2r1",
+              "code": "B-PV2R1",
+              "label": "High pressure fixed displacement vane pump (PV2R1)",
+              "values": { "desc": "High pressure fixed displacement vane pumps" }
+            },
+            {
+              "id": "bpm_pt_pv2r2",
+              "code": "B-PV2R2",
+              "label": "High pressure fixed displacement vane pump (PV2R2)",
+              "values": { "desc": "High pressure fixed displacement vane pumps" }
+            },
+            {
+              "id": "bpm_pt_pv2r3",
+              "code": "B-PV2R3",
+              "label": "High pressure fixed displacement vane pump (PV2R3)",
+              "values": { "desc": "High pressure fixed displacement vane pumps" }
+            },
+            {
+              "id": "bpm_pt_pv2r4",
+              "code": "B-PV2R4",
+              "label": "High pressure fixed displacement vane pump (PV2R4)",
+              "values": { "desc": "High pressure fixed displacement vane pumps" }
+            },
+            {
+              "id": "bpm_pt_hgp",
+              "code": "B-HGP",
+              "label": "Single gear pumps",
+              "values": { "desc": "Single gear pumps" }
+            },
+            {
+              "id": "bpm_pt_pr",
+              "code": "B-PR",
+              "label": "Gear pump with relief",
+              "values": { "desc": "Gear pump with relief" }
+            },
+            {
+              "id": "bpm_pt_other",
+              "code": "OTHER",
+              "label": "Other Series (Check details on catalogue/order guide)",
+              "values": { "desc": "Check the details on catalogue/order guide" }
+            }
+          ]
+        },
+        {
+          "id": "bpm_b3",
+          "title": "2. Geometric Displacement (cm3/rev)",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Kapasitas Pemindahan (cm³/rev)" }
+          ],
+          "rows": [
+            { "id": "bpm_d10", "code": "10", "label": "10 cm3/rev", "values": { "desc": "10 cm3/rev" } },
+            { "id": "bpm_d16", "code": "16", "label": "16 cm3/rev", "values": { "desc": "16 cm3/rev" } },
+            { "id": "bpm_d22", "code": "22", "label": "22 cm3/rev", "values": { "desc": "22 cm3/rev" } },
+            { "id": "bpm_d37", "code": "37", "label": "37 cm3/rev", "values": { "desc": "37 cm3/rev" } },
+            { "id": "bpm_d56", "code": "56", "label": "56 cm3/rev", "values": { "desc": "56 cm3/rev" } },
+            { "id": "bpm_d70", "code": "70", "label": "70 cm3/rev", "values": { "desc": "70 cm3/rev" } },
+            { "id": "bpm_d145", "code": "145", "label": "145 cm3/rev", "values": { "desc": "145 cm3/rev" } }
+          ]
+        },
+        {
+          "id": "bpm_b4",
+          "title": "3. Motor Power (kW)",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Daya Motor (kW)" }
+          ],
+          "rows": [
+            { "id": "bpm_kw04", "code": "0.4", "label": "0.4 kW", "values": { "desc": "0.4 kW" } },
+            { "id": "bpm_kw075", "code": "0.75", "label": "0.75 kW", "values": { "desc": "0.75 kW" } },
+            { "id": "bpm_kw15", "code": "1.5", "label": "1.5 kW", "values": { "desc": "1.5 kW" } },
+            { "id": "bpm_kw22", "code": "2.2", "label": "2.2 kW", "values": { "desc": "2.2 kW" } },
+            { "id": "bpm_kw37", "code": "3.7", "label": "3.7 kW", "values": { "desc": "3.7 kW" } },
+            { "id": "bpm_kw55", "code": "5.5", "label": "5.5 kW", "values": { "desc": "5.5 kW" } },
+            { "id": "bpm_kw75", "code": "7.5", "label": "7.5 kW", "values": { "desc": "7.5 kW" } }
+          ]
+        },
+        {
+          "id": "bpm_b5",
+          "title": "4. Direction of Rotations",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Arah Putaran" }
+          ],
+          "rows": [
+            { "id": "bpm_cw", "code": "CW", "label": "Clockwise", "values": { "desc": "Clockwise (Searah jarum jam)" } },
+            { "id": "bpm_ccw", "code": "CCW", "label": "Counter Clockwise", "values": { "desc": "Counter Clockwise (Berlawanan jarum jam)" } }
+          ]
+        },
+        {
+          "id": "bpm_b6",
+          "title": "5. Mounting",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Pemasangan" }
+          ],
+          "rows": [
+            { "id": "bpm_mf", "code": "F", "label": "Flange", "values": { "desc": "Flange Mounting" } },
+            { "id": "bpm_ml", "code": "L", "label": "Foot", "values": { "desc": "Foot Mounting" } }
+          ]
+        },
+        {
+          "id": "bpm_b7",
+          "title": "6. Special Order",
+          "slotIndex": 7,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            { "id": "bpm_so_nil", "code": "", "label": "Nil - Standard", "values": { "desc": "Standard" } },
+            { "id": "bpm_so_m", "code": "M", "label": "Custom made", "values": { "desc": "Custom made" } }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "npp_nhpu",
+    "slug": "npp-nhpu",
+    "series": "NPP/NHPU Series",
+    "code": "NPP/NHPU",
+    "category": "Hydraulic Pump & Power Unit",
+    "subTitle": {
+      "id": "Hydraulic Power Pack / Hydraulic Power Unit",
+      "en": "Hydraulic Power Pack / Hydraulic Power Unit"
+    },
+    "image": "/images/facility_production_floor.webp",
+    "symbolType": "powerpack",
+    "features": {
+      "id": [
+        "Tersedia berbagai konfigurasi power pack dengan komponen dan ukuran tangki standar (4 liter hingga 500 liter).",
+        "Solusi custom-made tersedia sesuai spesifikasi dimensi, tekanan, dan kebutuhan aplikasi Anda."
+      ],
+      "en": [
+        "Various power packs are available with standard components and tank sizes.",
+        "Custom-made solutions are available."
+      ]
+    },
+    "htoConfig": {
+      "codePrefix": "NHPU",
+      "separator": "-",
+      "slotDelimiters": {
+        "1": "-",
+        "2": "-",
+        "3": "-",
+        "4": "-",
+        "5": "-",
+        "6": ""
+      },
+      "totalSlots": 6,
+      "defaultSlotValues": {},
+      "blocks": [
+        {
+          "id": "npp_nhpu_b1",
+          "title": "1. Series",
+          "slotIndex": 1,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Unit & Kapasitas Tangki" }
+          ],
+          "rows": [
+            {
+              "id": "npp_s1",
+              "code": "NPP",
+              "label": "Power pack (tank capacity ≤ 70 liter)",
+              "values": { "desc": "Power pack (tank capacity ≤ 70 liter)" }
+            },
+            {
+              "id": "nhpu_s1",
+              "code": "NHPU",
+              "label": "Hydraulic power unit (tank capacity ≥ 70 liter)",
+              "values": { "desc": "Hydraulic power unit (tank capacity ≥ 70 liter)" }
+            }
+          ]
+        },
+        {
+          "id": "npp_nhpu_b2",
+          "title": "2. Tank Capacity",
+          "slotIndex": 2,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Kapasitas Tangki" }
+          ],
+          "rows": [
+            { "id": "npp_t_004", "code": "004LT", "label": "4 liter", "values": { "desc": "4 liter" } },
+            { "id": "npp_t_006", "code": "006LT", "label": "6 liter", "values": { "desc": "6 liter" } },
+            { "id": "npp_t_500", "code": "500LT", "label": "500 liter", "values": { "desc": "500 liter" } },
+            { "id": "npp_t_custom", "code": "~", "label": "According to customer's need", "values": { "desc": "According to customer's need (004LT - 500LT)" } }
+          ]
+        },
+        {
+          "id": "npp_nhpu_b3",
+          "title": "3. Electric Motor",
+          "slotIndex": 3,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Daya Motor Listrik" }
+          ],
+          "rows": [
+            { "id": "npp_m_02", "code": "0.2KW", "label": "0.2 kilo Watt", "values": { "desc": "0.2 kilo Watt" } },
+            { "id": "npp_m_04", "code": "0.4KW", "label": "0.4 kilo Watt", "values": { "desc": "0.4 kilo Watt" } },
+            { "id": "npp_m_075", "code": "0.75KW", "label": "0.75 kilo Watt", "values": { "desc": "0.75 kilo Watt" } },
+            { "id": "npp_m_22", "code": "2.2KW", "label": "2.2 kilo Watt", "values": { "desc": "2.2 kilo Watt" } },
+            { "id": "npp_m_custom", "code": "~", "label": "According to customer's need", "values": { "desc": "According to customer's need" } }
+          ]
+        },
+        {
+          "id": "npp_nhpu_b4",
+          "title": "4. Hydraulic Pump — Specify cc/rev",
+          "slotIndex": 4,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Tipe Pompa & Displacement (cc/rev)" }
+          ],
+          "rows": [
+            { "id": "npp_p_gp", "code": "GP", "label": "Gear pump (contoh: GP2.5CC)", "values": { "desc": "Gear pump — cantumkan cc/rev (contoh: GP2.5CC)" } },
+            { "id": "npp_p_vp", "code": "VP", "label": "Vane pump (contoh: VP10.8CC)", "values": { "desc": "Vane pump — cantumkan cc/rev (contoh: VP10.8CC)" } },
+            { "id": "npp_p_pp", "code": "PP", "label": "Piston pump", "values": { "desc": "Piston pump — cantumkan cc/rev" } },
+            { "id": "npp_p_custom", "code": "~", "label": "According to customer's need", "values": { "desc": "According to customer's need (cantumkan cc/rev)" } }
+          ]
+        },
+        {
+          "id": "npp_nhpu_b5",
+          "title": "5. Number of Manifold Block Stations",
+          "slotIndex": 5,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Jumlah Station" }
+          ],
+          "rows": [
+            { "id": "npp_mbs_1", "code": "MBS1", "label": "1 station", "values": { "desc": "1 station" } },
+            { "id": "npp_mbs_2", "code": "MBS2", "label": "2 stations", "values": { "desc": "2 stations" } },
+            { "id": "npp_mbs_10", "code": "MBS10", "label": "10 stations", "values": { "desc": "10 stations" } },
+            { "id": "npp_mbs_custom", "code": "~", "label": "According to customer's need", "values": { "desc": "According to customer's need (MBS1 - MBS10)" } }
+          ]
+        },
+        {
+          "id": "npp_nhpu_b6",
+          "title": "6. Special Order",
+          "slotIndex": 6,
+          "displayType": "table",
+          "columns": [
+            { "id": "desc", "label": "Keterangan" }
+          ],
+          "rows": [
+            { "id": "npp_so_blank", "code": "", "label": "Blank (Omit) - Standard", "values": { "desc": "Standard" } },
+            { "id": "npp_so_m", "code": "M", "label": "Custom made dimension and specification", "values": { "desc": "Custom made dimension and specification" } }
+          ]
+        }
+      ]
+    }
   }
 ];
